@@ -1,0 +1,235 @@
+{
+  "main": {
+    "id": "18bcd11ef7d86c88",
+    "type": "split",
+    "children": [
+      {
+        "id": "9c4a168564658e9b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fcaeb7b64d87075b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Documentos/Machine Learning data mining/curvas roc.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a762b23dbc510aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "dda92df4bad419be",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1307f7dfb702e6e1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bf120a299b77e1b5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "desarollar metodol",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "63d7dd14c3fd4ce7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 259.5
+  },
+  "right": {
+    "id": "7a56c00f8d6a3410",
+    "type": "split",
+    "children": [
+      {
+        "id": "37531d8b310ada75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8329317ec09f3ca8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Documentos/Machine Learning data mining/curvas roc.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7fef18f5477ee7b9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Documentos/Machine Learning data mining/curvas roc.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3af07950a61a90ac",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "7d28b0a65f43850c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Documentos/Machine Learning data mining/curvas roc.md"
+              }
+            }
+          },
+          {
+            "id": "44f15e68e92cba10",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          },
+          {
+            "id": "21e7fddb0f5fe695",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "94554c5f1abec761",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              }
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "dbfolder:Create a new database table": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "audio-recorder:Start/stop recording": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "obsidian42-brat:BRAT": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "1307f7dfb702e6e1",
+  "lastOpenFiles": [
+    "Documentos/Machine Learning data mining/test harness.md",
+    "Documentos/Machine Learning data mining/modelos de regresion.md",
+    "modelos de regresion.md",
+    "test harness.md",
+    "Screenshots/Pasted image 20240617191702.png",
+    "Documentos/tecnologias de seguridad/ataques a contraseñas.md",
+    "Backend.md",
+    "bootstrap.md",
+    "Github.md",
+    "hi.md",
+    "Documentos/Machine Learning data mining/curvas roc.md",
+    "Screenshots/Pasted image 20240617191423.png",
+    "Screenshots/Pasted image 20240617185334.png",
+    "Documentos/Machine Learning data mining/metricas para clasificadores.md",
+    "Screenshots/Pasted image 20240617184110.png",
+    "Sin título.md",
+    "Sin título 1.md",
+    "Sin título 1 1.md",
+    "XP.md",
+    "Documentos/Machine Learning data mining/Ajuste de modelos.md",
+    "Screenshots/Pasted image 20240603073921.png",
+    "Documentos/Machine Learning data mining/Validacion Cruzada.md",
+    "Documentos/Machine Learning data mining/algoritmos parametricos y no parametricos.md",
+    "Documentos/Machine Learning data mining/metodo hold out.md",
+    "Documentos/Machine Learning data mining/tipos de machine learning.md",
+    "Documentos/Machine Learning data mining/resampling methods.md",
+    "Documentos/Machine Learning data mining/machine learning  algoritmos parametricos.md",
+    "Documentos/mallaway.excalidraw.md",
+    "Documentos/Software 2/historias de usuario.md",
+    "Documentos/Software 2/software 2.md",
+    "Documentos/Software 2/tecnicas pruebas.md",
+    "Screenshots/Pasted image 20240520224457.png",
+    "Screenshots/Pasted image 20240520223126.png",
+    "un soy nugget/Pasted image 20240519214757.png",
+    "Screenshots/Pasted image 20240519214614.png",
+    "un soy nugget/Pasted image 20240519214525.png",
+    "Documentos/Web",
+    "Documentos/Software 2",
+    "Documentos/Machine Learning data mining",
+    "Documentos/tecnologias de seguridad",
+    "Documentos/Computacion ditribuida",
+    "Osint",
+    "DGIP_SAEw.pdf",
+    "Screenshots/malla_computación.pdf",
+    "Screenshots/nmap_cheet_sheet_0.6.pdf",
+    "Documentos/Compiladores",
+    "Documentos/Redes/ospf.canvas",
+    "Sin título.canvas"
+  ]
+}

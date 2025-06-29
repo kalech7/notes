@@ -1,0 +1,222 @@
+{
+  "main": {
+    "id": "18bcd11ef7d86c88",
+    "type": "split",
+    "children": [
+      {
+        "id": "1004b364f57843df",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a39633403860b921",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a762b23dbc510aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "dda92df4bad419be",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1307f7dfb702e6e1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bf120a299b77e1b5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "63d7dd14c3fd4ce7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "7a56c00f8d6a3410",
+    "type": "split",
+    "children": [
+      {
+        "id": "37531d8b310ada75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8329317ec09f3ca8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7fef18f5477ee7b9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3af07950a61a90ac",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "7d28b0a65f43850c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "44f15e68e92cba10",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          },
+          {
+            "id": "21e7fddb0f5fe695",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "94554c5f1abec761",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency"
+              }
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "dbfolder:Crear una nueva tabla de base de datos": false,
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo canvas": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "markdown-importer:Abrir el importador de Markdown": false,
+      "audio-recorder:Empezar/Parar de grabar": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "obsidian42-brat:BRAT": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "1307f7dfb702e6e1",
+  "lastOpenFiles": [
+    "Documentos/Redes/Vector distancia.md",
+    "OSPFv2(Open Shortest Path First).md",
+    "Screenshots/Pasted image 20231114002503.png",
+    "Screenshots/Pasted image 20231114002357.png",
+    "Screenshots/Pasted image 20231114002348.png",
+    "Screenshots/Pasted image 20231114002249.png",
+    "Screenshots/Pasted image 20231114002230.png",
+    "Screenshots/Pasted image 20231114002108.png",
+    "Screenshots/Pasted image 20231114001414.png",
+    "Documentos/Redes/topologiaproyecto.excalidraw.md",
+    "Documentos/Redes/STP (Protocolo de árbol de extensión).md",
+    "Documentos/Redes/SLAAC (Stateless Address Autoconfiguration).md",
+    "Documentos/Redes/Port Security.md",
+    "Documentos/Redes/NAT y PAT.md",
+    "Documentos/Redes/Inter-VLAN.md",
+    "Documentos/Redes/FHRP (Protocolos de redundancia de primer salto).md",
+    "Documentos/Redes/HSRP (Hot Standby Router Protocol).md",
+    "Documentos/Redes/Comandos para examinar el IOS.md",
+    "Documentos/Redes/Configuración del Switch Consola, Acceso remoto..md",
+    "Documentos/Redes/DCHPv4.md",
+    "Documentos/Redes/DHCP IPV6.md",
+    "Documentos/Redes/dhcpv4.excalidraw.md",
+    "Documentos/Redes/Dominios de Colisiones y broadcast.md",
+    "Documentos/Redes/Enrutamiento.md",
+    "Documentos/Redes/estado de enlace.md",
+    "un soy nugget/Pasted Image 20231016221537_399.png",
+    "un soy nugget/Pasted Image 20231016215826_287.png",
+    "Excalidraw/Drawing 2023-10-04 11.19.30.excalidraw.md",
+    "Excalidraw/Drawing 2023-10-05 21.14.09.excalidraw.md",
+    "un soy nugget/Pasted Image 20231016201642_762.png",
+    "Excalidraw/Drawing 2023-10-04 11.20.21.excalidraw.md",
+    "DGIP_SAEw.pdf",
+    "Documentos/mallaway.excalidraw.md",
+    "malla_computación.pdf",
+    "Excalidraw/Drawing 2023-10-01 15.41.44.excalidraw.md",
+    "Hack the box/Hacking/Codificación/MD5SUM - Generar Hash md5 de un Archivo.md",
+    "Hack the box/Hacking/Codificación/Base64.md",
+    "nmap_cheet_sheet_0.6.pdf",
+    "un soy nugget",
+    "Excalidraw/library/mathematical-symbols.excalidrawlib",
+    "Hack the box",
+    "Excalidraw/library/common-home-network-basics.excalidrawlib",
+    "Excalidraw/library/network-topology-icons.excalidrawlib",
+    "Excalidraw/Scripts/Downloaded",
+    "Excalidraw/Scripts"
+  ]
+}

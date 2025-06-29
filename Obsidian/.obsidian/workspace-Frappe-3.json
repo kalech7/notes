@@ -1,0 +1,230 @@
+{
+  "main": {
+    "id": "18bcd11ef7d86c88",
+    "type": "split",
+    "children": [
+      {
+        "id": "2d616a37ba1c4584",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1aef42964bcb3f44",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Documentos/Compiladores/optimizacion compiladores.excalidraw.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a762b23dbc510aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "dda92df4bad419be",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1307f7dfb702e6e1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bf120a299b77e1b5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "clases ",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "63d7dd14c3fd4ce7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "7a56c00f8d6a3410",
+    "type": "split",
+    "children": [
+      {
+        "id": "37531d8b310ada75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8329317ec09f3ca8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Documentos/Compiladores/optimizacion compiladores.excalidraw.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7fef18f5477ee7b9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Documentos/Compiladores/optimizacion compiladores.excalidraw.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3af07950a61a90ac",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "7d28b0a65f43850c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Documentos/Compiladores/optimizacion compiladores.excalidraw.md"
+              }
+            }
+          },
+          {
+            "id": "44f15e68e92cba10",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          },
+          {
+            "id": "21e7fddb0f5fe695",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "94554c5f1abec761",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency"
+              }
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "dbfolder:Create a new database table": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "audio-recorder:Start/stop recording": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "obsidian42-brat:BRAT": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "1aef42964bcb3f44",
+  "lastOpenFiles": [
+    "Documentos/Compiladores/Estados de acpetaacon simplificacion.excalidraw.md",
+    "wan.md",
+    "nmap_cheet_sheet_0.6.pdf",
+    "Screenshots/Pasted image 20231209113703.png",
+    "Documentos/Redes/topologia redes2.excalidraw.md",
+    "Documentos/Compiladores/optimizacion compiladores.excalidraw.md",
+    "Documentos/Compiladores/optimizacion con esa tabla.excalidraw.png",
+    "Excalidraw/Drawing 2023-12-12 12.37.06.excalidraw.png",
+    "Documentos/Compiladores",
+    "Documentos/Ing software/Apuntes de clase.md",
+    "Documentos/Redes/Inter-VLAN.md",
+    "Documentos/Inteligencia artificial/conducta racional.md",
+    "Documentos/Arquitectura de computadores/ejercicios memoria cache.excalidraw.md",
+    "Documentos/Bases de datos/Distribuidas/Conexion remota.md",
+    "Documentos/Ing software/Modelo en cascadaexcalidraw.md",
+    "Documentos/Redes/ospf.canvas",
+    "Documentos/Redes/NAT y PAT.md",
+    "Documentos/mallaway.excalidraw.md",
+    "malla_computación.pdf",
+    "Github.md",
+    "DGIP_SAEw.pdf",
+    "Sin título.canvas",
+    "Documentos/Redes/Port Security.md",
+    "Documentos/Redes/OSPFv2(Open Shortest Path First).md",
+    "Documentos/Redes/HSRP (Hot Standby Router Protocol).md",
+    "Documentos/Redes/FHRP (Protocolos de redundancia de primer salto).md",
+    "Documentos/Redes/Comandos para examinar el IOS.md",
+    "Documentos/Redes/Configuración del Switch Consola, Acceso remoto..md",
+    "Documentos/Redes/DCHPv4.md",
+    "Documentos/Redes/dhcpv4.excalidraw.md",
+    "Documentos/Redes/Dominios de Colisiones y broadcast.md",
+    "Documentos/Redes/Vector distancia.md",
+    "Documentos/Redes/SLAAC (Stateless Address Autoconfiguration).md",
+    "Documentos/Redes/STP (Protocolo de árbol de extensión).md",
+    "Documentos/Bases de datos/fundamentos",
+    "Sin Sin título título",
+    "Documentos/Bases de datos/Distribuidas",
+    "Excalidraw/Drawing 2023-10-04 11.19.30.excalidraw.png",
+    "Documentos/Ing software",
+    "Documentos/gestion",
+    "Screenshots/Pasted image 20231115163602.png",
+    "Screenshots/Pasted image 20231115154452.png",
+    "Pasted image 20231115154452.png",
+    "Screenshots/Pasted image 20231115145138.png",
+    "Screenshots/Pasted image 20231115142718.png",
+    "Documentos/Inteligencia artificial",
+    "Screenshots/Pasted image 20231114002503.png"
+  ]
+}
