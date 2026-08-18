@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "migrated": 2,
+    "iconPacksPath": ".obsidian/plugins/obsidian-icon-folder/icons",
+    "fontSize": 16,
+    "emojiStyle": "none",
+    "iconColor": null,
+    "recentlyUsedIcons": [
+      "TiStairs",
+      "FabEthereum",
+      "FabDrupal",
+      "FabEarlybirds",
+      "FabEvernote"
+    ],
+    "recentlyUsedIconsSize": 5,
+    "rules": [],
+    "extraMargin": {
+      "top": 0,
+      "right": 4,
+      "bottom": 0,
+      "left": 0
+    },
+    "iconInTabsEnabled": false
+  },
+  "Documentos/Redes": "LiNetwork",
+  "Documentos/Bases de datos": "IbDatabse",
+  "Documentos/Algoritmos": "SiThealgorithms",
+  "Documentos/Arquitectura de computadores": "TiChartArcs3",
+  "Documentos/Inteligencia artificial": "FasShareNodes",
+  "Documentos/Ing software": "FabBuffer",
+  "Documentos/Compiladores": "FabConfluence",
+  "Documentos/Computacion ditribuida": "FabCloudflare",
+  "Documentos/tecnologias de seguridad": "FabChromecast",
+  "Documentos/Machine Learning data mining": "FabAvianex",
+  "Documentos/Software 2": "RiStackLine",
+  "Documentos/Web": "FasShuttleSpace",
+  "Documentos/Recuperacion de informacion": "FabAirbnb",
+  "Documentos/seguridad informatica": "FabEdge",
+  "Documentos/HCI(human-computer interaction)": "FabEvernote",
+  "Documentos/computacion grafica": "FabEarlybirds",
+  "Documentos/aplicaciones moviles": "FabDrupal",
+  "Documentos/business intelligence": "FabEthereum",
+  "Documentos/emprendimiento": "TiStairs"
+}

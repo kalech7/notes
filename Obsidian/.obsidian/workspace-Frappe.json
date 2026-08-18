@@ -1,0 +1,166 @@
+{
+  "main": {
+    "id": "18bcd11ef7d86c88",
+    "type": "split",
+    "children": [
+      {
+        "id": "3d66b63c08742f15",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ea9a38b32b2719df",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a762b23dbc510aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "dda92df4bad419be",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1307f7dfb702e6e1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bf120a299b77e1b5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "63d7dd14c3fd4ce7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "7a56c00f8d6a3410",
+    "type": "split",
+    "children": [
+      {
+        "id": "37531d8b310ada75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8329317ec09f3ca8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7fef18f5477ee7b9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3af07950a61a90ac",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "7d28b0a65f43850c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md"
+              }
+            }
+          },
+          {
+            "id": "44f15e68e92cba10",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "audio-recorder:Start/stop recording": false,
+      "markdown-importer:Open format converter": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "obsidian42-brat:BRAT": false
+    }
+  },
+  "active": "ea9a38b32b2719df",
+  "lastOpenFiles": [
+    "Documentos/Bases de datos/ejemplos.md",
+    "Documentos/Bases de datos/ejercicios.md",
+    "Documentos/Bases de datos/Subconsultas.md",
+    "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md"
+  ]
+}

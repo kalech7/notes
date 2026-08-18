@@ -1,0 +1,181 @@
+{
+  "main": {
+    "id": "d33ad3cfb8f1c641",
+    "type": "split",
+    "children": [
+      {
+        "id": "b33f8d47292c358e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0917a926b68ae6d6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Documentos/Bases de datos/Subconsultas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "2bb028a939b882bb",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Documentos/Bases de datos/ejercicios.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ac5bc510d07c279e",
+    "type": "split",
+    "children": [
+      {
+        "id": "0a56aee0c2bcd04c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "372bf5e81f4f9ac5",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "2b218a613f31a145",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "0a36a90b35da0a0f",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c4ca841a357b7628",
+    "type": "split",
+    "children": [
+      {
+        "id": "fbb9eafbeca8ff71",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a85f483376f7796c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Documentos/Bases de datos/ejercicios.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "6dd19ef372ec24b3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Documentos/Bases de datos/ejercicios.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "354ca24f648be7c2",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "dfc2cba278e71924",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Documentos/Bases de datos/ejercicios.md"
+              }
+            }
+          },
+          {
+            "id": "aba9663f5126ec82",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir quick switcher": false,
+      "graph:Abrir vista de gráfico": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "obsidian42-brat:BRAT": false,
+      "audio-recorder:Empezar/Parar de grabar": false,
+      "markdown-importer:Abrir el importador de Markdown": false
+    }
+  },
+  "active": "372bf5e81f4f9ac5",
+  "lastOpenFiles": [
+    "Documentos/Bases de datos/Subconsultas.md",
+    "Documentos/Bases de datos/ejercicios.md",
+    "Documentos/Bases de datos/ejemplos.md",
+    "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md"
+  ]
+}

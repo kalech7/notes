@@ -1,0 +1,221 @@
+{
+  "main": {
+    "id": "18bcd11ef7d86c88",
+    "type": "split",
+    "children": [
+      {
+        "id": "24742f945988c109",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "728a5c10388d1765",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Documentos/Bases de datos/Conexion a la base datos.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a762b23dbc510aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "dda92df4bad419be",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1307f7dfb702e6e1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bf120a299b77e1b5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "63d7dd14c3fd4ce7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "7a56c00f8d6a3410",
+    "type": "split",
+    "children": [
+      {
+        "id": "37531d8b310ada75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8329317ec09f3ca8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Documentos/Bases de datos/Conexion a la base datos.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7fef18f5477ee7b9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Documentos/Bases de datos/Conexion a la base datos.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3af07950a61a90ac",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "7d28b0a65f43850c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Documentos/Bases de datos/Conexion a la base datos.md"
+              }
+            }
+          },
+          {
+            "id": "44f15e68e92cba10",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          },
+          {
+            "id": "21e7fddb0f5fe695",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "dbfolder:Crear una nueva tabla de base de datos": false,
+      "switcher:Abrir quick switcher": false,
+      "graph:Abrir vista de gráfico": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "markdown-importer:Abrir el importador de Markdown": false,
+      "audio-recorder:Empezar/Parar de grabar": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "canvas:Create new canvas": false,
+      "obsidian42-brat:BRAT": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
+    }
+  },
+  "active": "1307f7dfb702e6e1",
+  "lastOpenFiles": [
+    "Documentos/Bases de datos/Diagrama conexion base de datos.excalidraw.md",
+    "Documentos/Bases de datos/Comandos.md",
+    "Documentos/Bases de datos/Conexion a la base datos.md",
+    "Documentos/Arquitectura de computadores/Principios de funcionamiento.md",
+    "Documentos/Arquitectura de computadores/Ejercicio Correspondencia directa.excalidraw.md",
+    "Documentos/Redes/HSRP (Hot Standby Router Protocol).md",
+    "Documentos/Arquitectura de computadores/funcion asociativa.excalidraw.md",
+    "Documentos/Bases de datos/SQL data adapter.md",
+    "Screenshots/Pasted image 20230822161220.png",
+    "Documentos/Redes/FHRP (Protocolos de redundancia de primer salto).md",
+    "Documentos/Redes/DCHPv4.md",
+    "Screenshots/Pasted image 20230822103529.png",
+    "Documentos/Redes/NAT y PAT.md",
+    "Screenshots/Pasted image 20230821233813.png",
+    "Documentos/Redes/SLAAC (Stateless Address Autoconfiguration).md",
+    "Documentos/Algoritmos/Algoritmo voraz aproximacion .excalidraw.md",
+    "Documentos/Algoritmos/Calendarizacion.excalidraw.md",
+    "Documentos/Algoritmos/Grafo Dijkstra corrida de escritorio.excalidraw.md",
+    "Documentos/Redes/Inter-VLAN.md",
+    "Documentos/Redes/Enrutamiento.md",
+    "Screenshots/Pasted image 20230816085427.png",
+    "Screenshots/Pasted image 20230815150330.png",
+    "Screenshots/Pasted image 20230815145932.png",
+    "Documentos/Arquitectura de computadores/Funcionamiento del Sistema de Memoria.md",
+    "Documentos/Arquitectura de computadores/ejercicios memoria cache.excalidraw.md",
+    "Documentos/Algoritmos/grafos corrida de escritorio BFS Y DFS.excalidraw.md",
+    "Screenshots/Pasted Image 20230814114830_317.png",
+    "Screenshots/Pasted Image 20230814113455_755.png",
+    "Documentos/Algoritmos/Algoritmo Dijkstra.md",
+    "Screenshots/Pasted Image 20230813173255_338.png",
+    "Screenshots/Pasted Image 20230811161921_265.png",
+    "Documentos/Redes/dhcpv4.excalidraw.md",
+    "Documentos/Algoritmos/Untitled.md",
+    "Documentos/Redes/Untitled database.md",
+    "Documentos/Redes/Opciones de FHRP.md",
+    "Documentos/Bases de datos/Principales tipo de datos.md",
+    "Documentos/Arquitectura de computadores",
+    "Excalidraw/library/algorithms-and-data-structures-arrays-matrices-trees.excalidrawlib",
+    "Excalidraw/library/db-eng.excalidrawlib",
+    "Excalidraw/library/software-architecture.excalidrawlib",
+    "Excalidraw/library/aws-architecture-icons.excalidrawlib",
+    "Excalidraw/library/decision-flow-control.excalidrawlib",
+    "Excalidraw/library",
+    "Excalidraw/New folder",
+    "Recording 20230705150539.webm",
+    "Documentos/Redes"
+  ]
+}

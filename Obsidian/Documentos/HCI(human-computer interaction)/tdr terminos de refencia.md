@@ -1,0 +1,1 @@
+para cuando se tenga aceptado se deben hacer firmar hitos en cada fase de hci y se genera el doc 
