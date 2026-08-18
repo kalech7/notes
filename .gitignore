@@ -1,0 +1,10 @@
+# Obsidian local/workspace state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Copilot local cache (large, machine-specific)
+.copilot/model-catalog-cache.json
+
+# OS
+.DS_Store
