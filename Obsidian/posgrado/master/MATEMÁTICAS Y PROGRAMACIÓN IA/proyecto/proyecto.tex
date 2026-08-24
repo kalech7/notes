@@ -3,7 +3,7 @@
 % --- Paquetes de tipografía y formato formal (estilo Word / Paper) ---
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[margin=1.6cm,top=1.3cm,bottom=1.3cm]{geometry}
+\usepackage[margin=1.55cm,top=1.3cm,bottom=1.3cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
 \usepackage{titlesec}
@@ -16,8 +16,9 @@
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
 
 % --- Configuración de colores sobrios ---
-\definecolor{boxbg}{RGB}{245, 247, 250}
-\definecolor{boxborder}{RGB}{60, 80, 110}
+\definecolor{boxbg}{RGB}{248, 250, 253}
+\definecolor{boxborder}{RGB}{50, 75, 105}
+\definecolor{arrowcolor}{RGB}{35, 60, 90}
 
 % --- Configuración de enlaces sobrios ---
 \hypersetup{
@@ -42,7 +43,7 @@
   {\thesubsection.}{0.35em}{}
 
 \titlespacing*{\section}{0pt}{4pt}{1.5pt}
-\titlespacing*{\subsection}{0pt}{2.8pt}{1pt}
+\titlespacing*{\subsection}{0pt}{2.5pt}{1pt}
 
 % --- Configuración de listas formal ---
 \setlist[itemize]{leftmargin=13pt, itemsep=0.6pt, topsep=0.8pt, parsep=0pt}
@@ -98,46 +99,68 @@ El problema fundamental que se pretende estudiar es que el comportamiento de una
 \clearpage
 
 \subsection{Descripción Técnica}
-El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las siguientes librerías:
-\begin{itemize}
-    \item \textbf{Pandas, NumPy y SciPy:} Ingesta, limpieza, transformaciones estadísticas, álgebra lineal y series de tiempo.
-    \item \textbf{Scikit-learn:} Escalado robusto, entrenamiento de modelos, validación cruzada y cálculo de métricas de clasificación.
-    \item \textbf{Matplotlib y Seaborn:} Análisis exploratorio, visualización de distribuciones y matrices de confusión.
-    \item \textbf{SHAP:} Análisis de interpretabilidad y explicabilidad del impacto de las características en las decisiones del modelo.
-\end{itemize}
+El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las librerías: \textbf{Pandas, NumPy y SciPy} (procesamiento de datos y series temporales), \textbf{Scikit-learn} (modelado, validación y métricas), \textbf{Matplotlib y Seaborn} (visualización) y \textbf{SHAP} (interpretabilidad de características).
 
 % --- Diagrama de Arquitectura / Pipeline del Proyecto ---
+\vspace{2pt}
 \begin{center}
 \begin{tikzpicture}[
-    node distance=0.28cm and 0.35cm,
+    node distance=0.4cm and 0.45cm,
     every node/.style={font=\scriptsize},
-    stage/.style={rectangle, draw=boxborder, fill=boxbg, rounded corners=2pt, text width=2.45cm, minimum height=1.05cm, align=center, line width=0.6pt},
-    split/.style={rectangle, draw=boxborder, dashed, fill=white, rounded corners=2pt, text width=2.45cm, minimum height=0.95cm, align=center, line width=0.5pt},
-    decision/.style={rectangle, draw=boxborder, fill=boxbg, rounded corners=2pt, text width=2.5cm, minimum height=1.05cm, align=center, line width=0.6pt},
-    arr/.style={-{Stealth[scale=0.8]}, line width=0.6pt, color=boxborder}
+    block/.style={
+        rectangle,
+        draw=boxborder,
+        fill=boxbg,
+        rounded corners=2.5pt,
+        text width=5.1cm,
+        minimum height=1.15cm,
+        inner sep=4pt,
+        align=center,
+        line width=0.6pt
+    },
+    arr/.style={-{Stealth[scale=0.85]}, line width=0.7pt, color=arrowcolor}
 ]
-    % Nodos superiores
-    \node[stage] (n1) {\textbf{1. Datos Brutos}\\ \textit{Teclado \& Mouse}\\ $(x,y,t, \text{clics, teclas})$};
-    \node[stage, right=of n1] (n2) {\textbf{2. Preprocesamiento}\\ Limpieza, filtrado y ventaneo móvil};
-    \node[stage, right=of n2] (n3) {\textbf{3. Feature Engineering}\\ Tiempos, cinemática, aceleración, pausas};
-    \node[stage, right=of n3] (n4) {\textbf{4. Selección Variable}\\ Varianza intra vs inter-usuario};
+    % Fila Superior: Fases 1 a 3
+    \node[block] (b1) {
+        \textbf{1. Ingesta de Datos Brutos}\\[1pt]
+        Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas continuas de mouse $(x, y, t, \text{clics})$
+    };
+    
+    \node[block, right=of b1] (b2) {
+        \textbf{2. Preprocesamiento \& Ventaneo}\\[1pt]
+        Filtrado de ruido, sincronización temporal y segmentación en ventanas móviles por sesión
+    };
+    
+    \node[block, right=of b2] (b3) {
+        \textbf{3. Feature Engineering}\\[1pt]
+        Cálculo de tiempos (\textit{Hold/Flight}), velocidad, aceleración, curvatura y pausas cognitivas
+    };
 
-    % Nodos inferiores
-    \node[split, below=0.35cm of n4] (n5) {\textbf{5. Modelado Comparativo}\\ Baseline vs. Eng. Features\\ \textit{(LR, RF, SVM, IsoForest)}};
-    \node[stage, left=of n5] (n6) {\textbf{6. Validación Cruzada}\\ \textit{Out-of-Session Split}\\ (Separación temporal)};
-    \node[decision, left=of n6] (n7) {\textbf{7. Clasificación \& SHAP}\\ Legítimo (Variación/Drift)\\ vs. Impostor (Alerta)};
+    % Fila Inferior: Fases 6 a 4 (de derecha a izquierda para flujo natural)
+    \node[block, below=0.45cm of b3] (b4) {
+        \textbf{4. Modelado Comparativo}\\[1pt]
+        Entrenamiento de clasificadores y detección de anomalías (\textit{Baseline} vs. \textit{FE})
+    };
+    
+    \node[block, left=of b4] (b5) {
+        \textbf{5. Validación Out-of-Session}\\[1pt]
+        Partición temporal de sesiones independientes para evaluar resistencia a la deriva natural
+    };
+    
+    \node[block, left=of b5] (b6) {
+        \textbf{6. Decisión \& Interpretabilidad}\\[1pt]
+        Discriminación: Legítimo (\textit{Drift}) vs. Impostor, complementado con análisis SHAP
+    };
 
-    % Conexiones
-    \draw[arr] (n1) -- (n2);
-    \draw[arr] (n2) -- (n3);
-    \draw[arr] (n3) -- (n4);
-    \draw[arr] (n4) -- (n5);
-    \draw[arr] (n5) -- (n6);
-    \draw[arr] (n6) -- (n7);
+    % Flechas de conexión del flujo
+    \draw[arr] (b1) -- (b2);
+    \draw[arr] (b2) -- (b3);
+    \draw[arr] (b3.south) -- (b4.north);
+    \draw[arr] (b4) -- (b5);
+    \draw[arr] (b5) -- (b6);
 \end{tikzpicture}
 \end{center}
-
-\vspace{-4pt}
+\vspace{-2pt}
 
 \textbf{Pipeline y Arquitectura de Implementación:}
 \begin{enumerate}
