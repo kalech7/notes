@@ -1,9 +1,9 @@
 \documentclass[10pt,letterpaper]{article}
 
-% --- Paquetes de configuración y tipografía ---
+% --- Paquetes de tipografía, color y maquetación ---
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[margin=1.7cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage[margin=1.5cm,top=1.3cm,bottom=1.3cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{enumitem}
@@ -12,104 +12,156 @@
 \usepackage{titlesec}
 \usepackage{microtype}
 \usepackage{tabularx}
+\usepackage{tcolorbox}
 
-% --- Paleta de colores sobria y académica ---
-\definecolor{primary}{RGB}{18, 52, 102}      % Azul marino académico
-\definecolor{secondary}{RGB}{70, 80, 95}    % Gris pizarra
-\definecolor{accent}{RGB}{0, 102, 153}       % Azul enlaces
+% --- Configuración de tcolorbox ---
+\tcbuselibrary{skins,breakable}
+
+% --- Paleta cromática profesional y armónica ---
+\definecolor{primary}{RGB}{20, 45, 80}       % Azul marino institucional
+\definecolor{secondary}{RGB}{35, 110, 160}   % Azul medio
+\definecolor{bgsoft}{RGB}{244, 248, 253}     % Fondo azul suave
+\definecolor{cardbg}{RGB}{250, 251, 252}     % Fondo gris claro
+\definecolor{cardborder}{RGB}{210, 218, 228} % Borde sutil
+\definecolor{accenturl}{RGB}{13, 94, 158}    % Azul enlace
 
 % --- Configuración de hipervínculos ---
 \hypersetup{
     colorlinks=true,
-    linkcolor=accent,
-    urlcolor=accent,
-    citecolor=accent
+    linkcolor=accenturl,
+    urlcolor=accenturl,
+    citecolor=accenturl
 }
 
-% --- Ajuste fino de listas y títulos ---
-\setlist{noitemsep, topsep=1.5pt, parsep=0.8pt, partopsep=0pt, leftmargin=14pt}
-\titleformat{\section}{\large\bfseries\color{primary}}{\thesection.}{0.45em}{}[\titlerule]
-\titleformat{\subsection}{\normalsize\bfseries\color{secondary}}{\thesubsection.}{0.35em}{}
-\titlespacing*{\section}{0pt}{4pt}{2.5pt}
-\titlespacing*{\subsection}{0pt}{3.5pt}{1.5pt}
-\setlength{\parskip}{2.2pt}
+% --- Estilos de Título de Secciones ---
+\titleformat{\section}
+  {\large\bfseries\color{primary}}
+  {\thesection.}{0.4em}{}
+  [{\color{primary}\titlerule[1.1pt]}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{secondary}}
+  {\thesubsection.}{0.35em}{}
+
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\titlespacing*{\subsection}{0pt}{4pt}{2pt}
+
+% --- Espaciado de párrafos y listas ---
+\setlength{\parskip}{2.8pt}
 \setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=14pt, itemsep=2pt, topsep=1.5pt, parsep=0pt}
+\setlist[enumerate]{leftmargin=14pt, itemsep=2pt, topsep=1.5pt, parsep=0pt}
+
+% --- Cajas de diseño estructurado ---
+\newtcolorbox{highlightbox}[1][]{
+    colback=bgsoft,
+    colframe=secondary,
+    arc=2.5mm,
+    boxrule=0.8pt,
+    left=7pt, right=7pt, top=4pt, bottom=4pt,
+    #1
+}
+
+\newtcolorbox{datasetbox}[2][]{
+    colback=cardbg,
+    colframe=cardborder,
+    arc=2mm,
+    boxrule=0.6pt,
+    left=6pt, right=6pt, top=3pt, bottom=3pt,
+    title={\footnotesize\bfseries\color{primary}#2},
+    #1
+}
 
 \begin{document}
 
-% --- Encabezado institucional ---
-\begin{center}
-    {\small\textbf{\color{primary}MAESTRÍA EN INTELIGENCIA ARTIFICIAL -- MATEMÁTICAS Y PROGRAMACIÓN PARA IA}}\\[1.5pt]
-    {\Large\textbf{PROPUESTA DE PROYECTO DE INVESTIGACIÓN Y DESARROLLO}}\\[2.5pt]
-    {\color{primary}\rule{\textwidth}{1.0pt}}
-\end{center}
+% =========================================================================
+% ENCABEZADO INSTITUCIONAL
+% =========================================================================
+\begin{tcolorbox}[colback=primary, colframe=primary, arc=2mm, top=5pt, bottom=5pt, left=8pt, right=8pt]
+    \centering
+    {\fontsize{10}{12}\selectfont\textbf{\color{white}MAESTRÍA EN INTELIGENCIA ARTIFICIAL -- MATEMÁTICAS Y PROGRAMACIÓN IA}}\\[1.5pt]
+    {\fontsize{13}{15}\selectfont\textbf{\color{white}PROPUESTA DE PROYECTO DE INVESTIGACIÓN Y DESARROLLO}}
+\end{tcolorbox}
 
-\vspace{-6pt}
+\vspace{-4pt}
 
 % =========================================================================
 \section{Tema}
 % =========================================================================
-\textbf{Detección de suplantación de identidad frente a variaciones naturales del comportamiento mediante biometría conductual, Feature Engineering y Machine Learning.}
+\begin{tcolorbox}[colback=bgsoft, colframe=secondary, arc=2mm, boxrule=0.9pt, left=7pt, right=7pt, top=3.5pt, bottom=3.5pt]
+    \centering
+    \textbf{\color{primary}Detección de suplantación de identidad frente a variaciones naturales del comportamiento mediante biometría conductual, Feature Engineering y Machine Learning}
+\end{tcolorbox}
 
 % =========================================================================
 \section{Descripción de la Propuesta}
 % =========================================================================
 
 \subsection{Descripción Funcional}
-Los sistemas tradicionales de autenticación basados en credenciales estáticas (contraseñas o tokens) validan la identidad únicamente en el acceso inicial, siendo vulnerables al robo de sesiones activas. La \textbf{autenticación continua} mediante \textbf{biometría conductual} soluciona esto al monitorear en segundo plano los patrones neuromotores de interacción humano-computadora (pulsaciones de teclado y dinámica del mouse).
+Los sistemas tradicionales de autenticación estática (contraseñas, tokens) verifican la identidad únicamente al inicio de la sesión. Frente a esta limitación, la \textbf{autenticación continua} mediante \textbf{biometría conductual} evalúa en segundo plano los patrones neuromotores de interacción del usuario (dinámica de tecleo y movimientos del cursor) de forma transparente y sin fricción.
 
-El principal desafío radica en que la conducta del usuario no es constante: un mismo usuario legítimo presenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) causadas por fatiga, estado anímico, multitarea o cambios de postura. Si el sistema ignora esta variabilidad, incurre en elevadas tasas de falso rechazo (\textit{False Rejection Rate, FRR}). Por tanto, el proyecto evaluará la capacidad de diferenciar entre:
+\textbf{Problema central:} El comportamiento de una persona no es constante en el tiempo; experimenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) ocasionadas por fatiga, estrés o cambios de contexto. Si el sistema no reconoce esta variabilidad inherente, genera altos índices de falsas alarmas (\textit{False Rejection Rate}). 
+
+\begin{highlightbox}[title=\footnotesize\textbf{Pregunta Central de Investigación}]
+    \textit{¿Qué características espaciotemporales extraídas mediante Feature Engineering permiten discriminar con robustez entre la deriva natural del usuario legítimo y una suplantación real de identidad, minimizando los falsos rechazos?}
+\end{highlightbox}
+
+El sistema analizará y diferenciará entre tres estados operativos:
 \begin{enumerate}
-    \item \textbf{Comportamiento habitual} del usuario legítimo.
-    \item \textbf{Variaciones naturales de comportamiento} del mismo usuario entre diferentes sesiones temporales.
-    \item \textbf{Comportamiento de suplantación} generado por un impostor o usuario no autorizado.
+    \item \textbf{Comportamiento habitual:} Patrón de interacción recurrente del usuario legítimo.
+    \item \textbf{Variaciones naturales:} Desviaciones legítimas de velocidad y pausas del mismo usuario entre distintas sesiones.
+    \item \textbf{Suplantación de identidad:} Patrón anómalo correspondiente a un atacante o usuario no autorizado.
 \end{enumerate}
 
-\textbf{Pregunta central de investigación:} \textit{¿Qué características conductuales y técnicas de Feature Engineering permiten distinguir de manera robusta una variación natural del usuario legítimo de una suplantación real de identidad, minimizando los falsos positivos de alarma?}
-
-\textbf{Datasets públicos y gratuitos a utilizar:}
-Para el desarrollo se emplearán dos repositorios abiertos de referencia internacional:
+\textbf{Datasets Públicos y Gratuitos de Libre Descarga:}
 \begin{itemize}
-    \item \href{https://github.com/balabit/Mouse-Dynamics-Challenge}{\textbf{Balabit Mouse Dynamics Challenge Dataset:}} Benchmark público especializado en dinámica de cursor. Contiene sesiones cronológicas de múltiples usuarios con registros de coordenadas continuas $(x, y, t)$, acciones de botón (\textit{Left/Right Click}) y trayectorias de movimiento en entornos de escritorio libres.
-    \item \href{https://data.mendeley.com/datasets/f78jsh6zp9/2}{\textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):}} Dataset multi-sesión de acceso abierto con más de 140\,000 registros que integran simultáneamente eventos de teclado (\textit{KeyDown, KeyUp}, tiempos de retención \textit{Hold Time} y tiempos de vuelo \textit{Flight Time}) junto con eventos continuos de mouse.
+    \item \textbf{Balabit Mouse Dynamics Challenge Dataset:} Benchmark público internacional con sesiones continuas de interacción de múltiples usuarios en entornos reales, capturando coordenadas $(x, y, t)$, clics y trayectorias.\\
+    \textbf{Enlace de descarga:} \url{https://github.com/balabit/Mouse-Dynamics-Challenge}
+    \item \textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):} Repositorio multi-sesión abierto con más de 140\,000 registros integrados de pulsaciones de teclado (\textit{Hold Time, Flight Time}) y métricas de cursor.\\
+    \textbf{Enlace de descarga:} \url{https://data.mendeley.com/datasets/f78jsh6zp9/2}
+    \item \textbf{CMU Keystroke Dynamics Benchmark Dataset:} Dataset de referencia histórica de dinámica de tecleo multi-sesión.\\
+    \textbf{Enlace de descarga:} \url{https://www.cs.cmu.edu/~keystroke/}
 \end{itemize}
 
-\textbf{Definición de clases y escenario experimental:} Se implementarán dos esquemas de clasificación:
+\textbf{Estructuración de Clases y Escenario de Clasificación:}
 \begin{itemize}
-    \item \textbf{Clasificación Binaria Supervisada:} \textbf{Clase 0 (Legítimo)}, conformada por sesiones base y sesiones con variación natural del usuario; frente a \textbf{Clase 1 (Impostor)}, conformada por sesiones de usuarios ajenos que simulan accesos no autorizados.
-    \item \textbf{Detección de Anomalías (One-Class):} Perfilado no supervisado (\textit{One-Class Learning}) entrenado exclusivamente con el perfil legítimo, evaluando el umbral de tolerancia frente a variaciones naturales vs. intrusiones.
+    \item \textbf{Clasificación Binaria Supervisada:} \textbf{Clase 0 (Legítimo)}, agrupando sesiones base y sesiones con variación natural del usuario; frente a \textbf{Clase 1 (Impostor)}, con sesiones de terceros.
+    \item \textbf{Detección de Anomalías (One-Class):} Perfilado no supervisado entrenado exclusivamente con el comportamiento del usuario legítimo para evaluar umbrales dinámicos frente a ataques.
 \end{itemize}
+
+\newpage
 
 \subsection{Descripción Técnica}
-El proyecto se implementará en \textbf{Python}, aprovechando su ecosistema para ciencia de datos e IA:
+El proyecto se implementará en \textbf{Python}, empleando las siguientes librerías especializadas:
 \begin{itemize}
-    \item \textbf{Manipulación y Procesamiento Matemático:} \texttt{pandas}, \texttt{numpy} y \texttt{scipy} (cálculo matricial, series temporales y transformaciones estadísticas).
-    \item \textbf{Modelado y Validación:} \texttt{scikit-learn} (algoritmos supervisados, métricas de clasificación y escalado robusto).
-    \item \textbf{Visualización e Interpretabilidad:} \texttt{matplotlib}, \texttt{seaborn} y \texttt{SHAP} (análisis de importancia y explicabilidad basada en teoría de juegos / valores de Shapley).
+    \item \textbf{Procesamiento Numérico y Datos:} \texttt{pandas}, \texttt{numpy}, \texttt{scipy} (álgebra lineal, transformaciones estadísticas y series temporales).
+    \item \textbf{Machine Learning \& Validación:} \texttt{scikit-learn} (clasificadores supervisados, reducción dimensional y métricas).
+    \item \textbf{Interpretabilidad y Visualización:} \texttt{matplotlib}, \texttt{seaborn} y \texttt{SHAP} (valores de Shapley para análisis de atribución).
 \end{itemize}
 
-\textbf{Pipeline y Arquitectura de Implementación:}
-El pipeline modular se estructurará en las siguientes fases:
+\textbf{Pipeline y Arquitectura de la Solución:}
 \begin{enumerate}
-    \item \textbf{Preprocesamiento y Segmentación:} Limpieza de valores nulos, filtrado de eventos espurios, sincronización temporal y división en ventanas de observación móviles independientes por usuario y sesión.
-    \item \textbf{Feature Engineering Avanzado:} Generación de atributos enriquecidos a partir de los datos crudos:
+    \item \textbf{Ingesta y Preprocesamiento:} Limpieza de valores nulos, filtrado de eventos espurios y segmentación en ventanas temporales móviles por usuario y sesión.
+    \item \textbf{Feature Engineering de Alto Nivel:} Extracción de descriptores conductuales especializados:
     \begin{itemize}
-        \item \textit{Teclado:} Tiempo medio y desviación estándar de presión (\textit{Hold Time}), latencia entre pares de teclas (\textit{Digraph Flight Time}), velocidad media de tipeo (WPM), coeficiente de variación del ritmo, tasa de uso de teclas de corrección (\textit{Backspace/Delete}) y duración de pausas de pensamiento.
-        \item \textit{Mouse:} Velocidad tangencial media y máxima, aceleración instantánea, curvatura y rectitud de trayectorias (distancia euclidiana vs. real), tasa de cambio de dirección angular (\textit{jitter}), frecuencia de clics y ratio de inactividad.
+        \item \textit{Teclado:} Tiempos de pulsación (\textit{Hold Time}), tiempos de vuelo entre dígrafos (\textit{Flight Time}), velocidad de tipeo (WPM), variabilidad del ritmo, frecuencia de borrado (\textit{Backspace}) y duración de pausas cognitivas.
+        \item \textit{Mouse:} Velocidad tangencial media, aceleración instantánea, curvatura y rectitud de trayectorias (distancia euclidiana vs. real), tasa de cambio de dirección angular (\textit{jitter}), frecuencia de clics y ratio de tiempo inactivo.
     \end{itemize}
-    \item \textbf{Análisis Estadístico y Selección de Características:} Evaluación de la varianza intra-usuario (estabilidad temporal) frente a la varianza inter-usuario (capacidad discriminativa) mediante análisis de correlación y pruebas estadísticas para seleccionar el subconjunto óptimo de variables.
-    \item \textbf{Entrenamiento y Comparación Experimental:} Se contrastarán dos configuraciones:
+    \item \textbf{Análisis Estadístico y Selección de Atributos:} Cálculo de varianza intra-sesión vs. inter-usuario para seleccionar variables con alta estabilidad temporal individual y alto poder discriminativo frente a terceros.
+    \item \textbf{Entrenamiento y Comparación de Modelos:} Se contrastarán dos configuraciones experimentales:
     \begin{itemize}
-        \item \textit{Modelo Baseline:} Entrenado únicamente con variables crudas o agregaciones elementales directas.
-        \item \textit{Modelo con Feature Engineering:} Entrenado con el vector completo de descriptores espaciotemporales.
+        \item \textit{Modelo Baseline:} Entrenado únicamente con variables crudas o estadísticas elementales directas.
+        \item \textit{Modelo con Feature Engineering:} Entrenado con el conjunto optimizado de descriptores espaciotemporales.
     \end{itemize}
-    Se evaluarán modelos como: \textbf{Logistic Regression}, \textbf{Random Forest Classifier}, \textbf{Support Vector Machines (SVM con kernel RBF)} e \textbf{Isolation Forest}.
-    \item \textbf{Validación Estratificada por Sesión (Out-of-Session Split):} Validación temporal estricta donde las sesiones iniciales de un usuario se usan para entrenamiento y sesiones independientes posteriores para prueba, garantizando que el modelo generalice ante la deriva natural y no memorice patrones de una única sesión.
-    \item \textbf{Métricas de Evaluación:} \textit{Accuracy, Precision, Recall, F1-Score, ROC-AUC} y tasa de error equivalente (\textit{Equal Error Rate, EER}), analizando matrices de confusión con énfasis en falsos positivos.
+    Modelos evaluados: \textbf{Logistic Regression}, \textbf{Random Forest}, \textbf{Support Vector Machines (SVM RBF)} e \textbf{Isolation Forest}.
+    \item \textbf{Validación Estratificada por Sesión (Out-of-Session Split):} Partición estricta basada en sesiones temporales independientes (las primeras sesiones entrenan y sesiones posteriores evalúan), garantizando que el modelo generalice ante la deriva natural sin memorizar una única sesión (\textit{data leakage}).
+    \item \textbf{Evaluación e Interpretabilidad:} Medición mediante \textit{Precision, Recall, F1-Score, ROC-AUC, EER} (Equal Error Rate) y análisis de importancia de variables con \texttt{SHAP}.
 \end{enumerate}
 
-\textbf{Tema de investigación complementario (fuera del temario del curso):}
-Se investigarán los fundamentos teóricos de la \textbf{Biometría Conductual Continua} y el fenómeno de \textbf{Behavioral Drift} (deriva del patrón conductual a lo largo del tiempo). Se profundizará en técnicas de actualización adaptativa de perfiles y ajuste dinámico de umbrales de decisión para mantener la seguridad sin generar fricción al usuario legítimo.
+\begin{tcolorbox}[colback=bgsoft, colframe=secondary, arc=2mm, boxrule=0.7pt, left=7pt, right=7pt, top=3pt, bottom=3pt]
+    \small\textbf{\color{primary}Tema de Investigación Complementario (Fuera del Temario del Curso):}\\
+    \footnotesize Se investigarán los fundamentos teóricos de la \textbf{Biometría Conductual Continua} y el fenómeno de \textbf{Behavioral Drift} (deriva temporal del patrón de conducta), analizando técnicas de actualización adaptativa de perfiles y ajuste dinámico de umbrales para mantener la seguridad sin generar fricción al usuario legítimo.
+\end{tcolorbox}
 
 % =========================================================================
 \section{Objetivos}
@@ -120,13 +172,13 @@ Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Eng
 
 \subsection{Objetivos Específicos}
 \begin{enumerate}
-    \item \textbf{Adquirir y estructurar} datasets públicos de biometría conductual (teclado y mouse) organizados en sesiones independientes de interacción multi-usuario.
-    \item \textbf{Construir e implementar} un pipeline de Feature Engineering para la extracción de descriptores cinemáticos, estadísticos y temporales a partir de las señales brutas de interacción.
-    \item \textbf{Evaluar estadísticamente} la estabilidad temporal intra-usuario y el poder de discriminación inter-usuario de las características calculadas.
-    \item \textbf{Entrenar y comparar} diversos modelos de Machine Learning supervisados y de detección de anomalías bajo dos esquemas: características básicas (\textit{baseline}) y características enriquecidas con Feature Engineering.
-    \item \textbf{Validar la capacidad de generalización} del sistema ante variaciones naturales del comportamiento aplicando una partición estricta por sesiones desacopladas (\textit{out-of-session validation}).
-    \item \textbf{Interpretar y cuantificar} el desempeño del sistema mediante métricas de clasificación (\textit{Precision, Recall, F1-Score, ROC-AUC, EER}) y análisis de importancia de variables con SHAP.
-    \item \textbf{Investigar y documentar} los fundamentos de biometría conductual, autenticación continua y \textit{behavioral drift} como marco conceptual complementario al proyecto.
+    \item \textbf{Adquirir y estructurar} datasets públicos de biometría conductual (teclado y mouse) con sesiones independientes multi-usuario.
+    \item \textbf{Implementar un pipeline de Feature Engineering} que extraiga descriptores cinemáticos, estadísticos y temporales.
+    \item \textbf{Evaluar estadísticamente} la estabilidad temporal intra-usuario y el poder discriminativo inter-usuario de las variables.
+    \item \textbf{Entrenar y comparar} múltiples modelos de Machine Learning bajo las modalidades \textit{Baseline} y con \textit{Feature Engineering}.
+    \item \textbf{Validar la robustez del sistema} ante variaciones naturales aplicando evaluación por sesiones desacopladas (\textit{out-of-session}).
+    \item \textbf{Interpretar el rendimiento} mediante métricas de clasificación (\textit{Precision, Recall, F1, ROC-AUC, EER}) y análisis SHAP.
+    \item \textbf{Investigar y sintetizar} los conceptos teóricos de biometría conductual, autenticación continua y \textit{behavioral drift}.
 \end{enumerate}
 
 \end{document}
