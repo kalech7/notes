@@ -6,6 +6,10 @@
 # Copilot local cache (large, machine-specific)
 .copilot/model-catalog-cache.json
 
+# IDE / Editor
+.idea/
+.vscode/
+
 # OS
 .DS_Store
 
