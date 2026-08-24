@@ -28,9 +28,9 @@
     citecolor=black
 }
 
-% --- Interlineado mejorado y espaciado formal y legible ---
-\setstretch{1.14}
-\setlength{\parskip}{3.2pt}
+% --- Interlineado y espaciado de párrafos ---
+\setstretch{1.13}
+\setlength{\parskip}{3pt}
 \setlength{\parindent}{0pt}
 
 % --- Formato formal de títulos de sección ---
@@ -46,8 +46,8 @@
 \titlespacing*{\subsection}{0pt}{3pt}{1pt}
 
 % --- Configuración de listas formal y espaciada ---
-\setlist[itemize]{leftmargin=13pt, itemsep=1.2pt, topsep=1.2pt, parsep=0pt}
-\setlist[enumerate]{leftmargin=13pt, itemsep=1.2pt, topsep=1.2pt, parsep=0pt}
+\setlist[itemize]{leftmargin=13pt, itemsep=1.1pt, topsep=1.1pt, parsep=0pt}
+\setlist[enumerate]{leftmargin=13pt, itemsep=1.1pt, topsep=1.1pt, parsep=0pt}
 
 \begin{document}
 
@@ -71,29 +71,31 @@
 % =========================================================================
 
 \subsection{Descripción Funcional}
-Los sistemas tradicionales de autenticación basados en factores estáticos (contraseñas, PIN o biometría física) verifican la identidad únicamente al inicio de la sesión. Frente a este esquema, el proyecto propone desarrollar un sistema de \textbf{autenticación continua} fundamentado en \textbf{biometría conductual}, el cual monitorea en segundo plano los patrones de interacción humano-computadora (pulsaciones de teclado y dinámica del mouse) para determinar si la sesión corresponde al usuario legítimo o a una posible suplantación.
+Los sistemas tradicionales de autenticación estática (contraseñas, PIN) verifican la identidad únicamente al inicio de la sesión. Frente a esto, el proyecto propone desarrollar un sistema de \textbf{autenticación continua} basado en \textbf{biometría conductual}, monitoreando en segundo plano patrones de interacción (pulsaciones de teclado y dinámica de mouse) para determinar si la sesión corresponde al usuario legítimo o a una suplantación.
 
-El problema fundamental que se pretende estudiar es que el comportamiento de una persona no es constante: un mismo usuario legítimo presenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) provocadas por cansancio, nivel de concentración, postura o cambio de dispositivo. Por este motivo, el sistema no buscará únicamente clasificar entre usuario e impostor, sino diferenciar de forma precisa entre:
+El problema fundamental radica en que el comportamiento humano no es uniforme: un usuario legítimo presenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) por fatiga o estrés. Asimismo, este enfoque se conecta estrechamente con la tecnología de los \textbf{CAPTCHAs conductuales e invisibles} modernos (e.g., reCAPTCHA v3, Turnstile), los cuales analizan micro-movimientos de mouse, trayectorias y tiempos de reacción para diferenciar humanos de bots o atacantes automatizados. En este sistema, la detección de anomalías servirá tanto para identificar impostores como para activar desafíos adaptativos tipo CAPTCHA ante caídas de confianza sin cerrar la sesión abruptamente.
+
+Por este motivo, el sistema analizará la diferenciación entre:
 \begin{enumerate}
     \item \textbf{Comportamiento habitual del usuario legítimo.}
     \item \textbf{Variaciones naturales del comportamiento} del mismo usuario entre diferentes sesiones temporales.
-    \item \textbf{Comportamiento correspondiente a una suplantación de identidad} por un tercero no autorizado.
+    \item \textbf{Comportamiento de suplantación} por un tercero o mediante patrones automatizados/sintéticos (bots tipo CAPTCHA).
 \end{enumerate}
 
-\textbf{Pregunta de investigación:} \textit{¿Qué características conductuales y transformaciones de Feature Engineering permiten distinguir de manera robusta una variación natural del usuario legítimo de una suplantación real, minimizando la tasa de falsos rechazos?}
+\textbf{Pregunta de investigación:} \textit{¿Qué características conductuales permiten distinguir de manera robusta una variación natural del usuario legítimo de una suplantación real o automatizada, minimizando los falsos rechazos?}
 
 \textbf{Datasets públicos y gratuitos a utilizar:}
 \begin{itemize}
     \item \textbf{Balabit Mouse Dynamics Challenge Dataset:} Benchmark público con sesiones de interacción de múltiples usuarios en entornos reales, capturando coordenadas $(x, y, t)$, acciones de clic y vectores de trayectoria.\\
     Enlace de descarga: \url{https://github.com/balabit/Mouse-Dynamics-Challenge}
-    \item \textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):} Repositorio multi-sesión abierto con más de 140\,000 registros integrados de eventos de teclado (\textit{Hold Time}, \textit{Flight Time}) y cinemática de mouse.\\
+    \item \textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):} Repositorio multi-sesión abierto con más de 140\,000 registros integrados de eventos de teclado (\textit{Hold/Flight Time}) y cinemática de mouse.\\
     Enlace de descarga: \url{https://data.mendeley.com/datasets/f78jsh6zp9/2}
 \end{itemize}
 
 \textbf{Definición de clases y escenario de evaluación:}
 \begin{itemize}
-    \item \textbf{Clasificación Binaria Supervisada:} Clase 0 (Usuario Legítimo, integrando sesiones base y de variación natural) vs. Clase 1 (Impostor, conformado por sesiones de usuarios ajenos).
-    \item \textbf{Detección de Anomalías (One-Class):} Perfilado entrenado exclusivamente con el comportamiento del usuario legítimo para evaluar umbrales de tolerancia frente a variaciones legítimas vs. ataques.
+    \item \textbf{Clasificación Binaria Supervisada:} Clase 0 (Usuario Legítimo, integrando sesiones base y de variación natural) vs. Clase 1 (Impostor, conformado por sesiones de usuarios ajenos y patrones anómalos).
+    \item \textbf{Detección de Anomalías (One-Class):} Perfilado entrenado exclusivamente con el comportamiento del usuario legítimo para evaluar umbrales dinámicos frente a variaciones legítimas vs. ataques.
 \end{itemize}
 
 \clearpage
@@ -123,7 +125,7 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
     % Fila Superior: Fases 1 a 3
     \node[block] (b1) {
         \textbf{1. Ingesta de Datos Brutos}\\[1pt]
-        Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas continuas de mouse $(x, y, t, \text{clics})$
+        Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas de mouse $(x, y, t, \text{clics, CAPTCHA})$
     };
     
     \node[block, right=of b1] (b2) {
@@ -149,7 +151,7 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
     
     \node[block, left=of b5] (b6) {
         \textbf{6. Decisión \& Interpretabilidad}\\[1pt]
-        Discriminación: Legítimo (\textit{Drift}) vs. Impostor, complementado con análisis SHAP
+        Discriminación: Legítimo (\textit{Drift}) vs. Impostor / Activación CAPTCHA, con SHAP
     };
 
     % Flechas de conexión del flujo
@@ -173,7 +175,7 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
 \end{enumerate}
 
 \textbf{Tema de investigación complementario (fuera del alcance del curso):}\\
-Se investigarán los fundamentos de la \textbf{Biometría Conductual Continua} y el fenómeno de \textbf{Behavioral Drift} (deriva temporal del patrón de conducta), analizando mecanismos de adaptación dinámica de umbrales para mantener la seguridad sin generar fricción al usuario legítimo.
+Se investigarán los fundamentos de la \textbf{Biometría Conductual Continua}, el fenómeno de \textbf{Behavioral Drift} y los mecanismos de análisis cinemático empleados en \textbf{CAPTCHAs invisibles y adaptativos}, analizando estrategias para el ajuste dinámico de umbrales y la mitigación de ataques automatizados sin fricción.
 
 % =========================================================================
 \section{Objetivos}
@@ -190,7 +192,7 @@ Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Eng
     \item \textbf{Entrenar y comparar} modelos supervisados y de detección de anomalías bajo esquemas \textit{Baseline} y con \textit{Feature Engineering}.
     \item \textbf{Validar la robustez} del sistema ante variaciones naturales aplicando partición por sesiones desacopladas (\textit{out-of-session}).
     \item \textbf{Interpretar el rendimiento} mediante métricas de clasificación (\textit{Precision, Recall, F1, ROC-AUC, EER}) y análisis SHAP.
-    \item \textbf{Investigar y documentar} los fundamentos teóricos de biometría conductual, autenticación continua y \textit{behavioral drift}.
+    \item \textbf{Investigar y documentar} los fundamentos teóricos de biometría conductual, CAPTCHAs conductuales y \textit{behavioral drift}.
 \end{enumerate}
 
 \end{document}
