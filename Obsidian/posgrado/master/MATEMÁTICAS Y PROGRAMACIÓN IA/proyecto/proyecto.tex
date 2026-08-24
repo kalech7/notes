@@ -71,18 +71,16 @@
 % =========================================================================
 
 \subsection{Descripción Funcional}
-Los sistemas tradicionales de autenticación estática (contraseñas, PIN) verifican la identidad únicamente al inicio de la sesión. Frente a esto, el proyecto propone desarrollar un sistema de \textbf{autenticación continua} basado en \textbf{biometría conductual}, monitoreando en segundo plano patrones de interacción (pulsaciones de teclado y dinámica de mouse) para determinar si la sesión corresponde al usuario legítimo o a una suplantación.
+Los sistemas tradicionales de seguridad y los mecanismos tipo \textbf{CAPTCHA} tradicionales o basados en retos estáticos han demostrado \textbf{no ser plenamente confiables}: generan alta fricción al usuario, son vulnerables a bots avanzados potenciados con IA y únicamente validan la identidad de forma puntual en un instante aislado, dejando la sesión desprotegida tras el acceso inicial. Frente a esto, el proyecto propone desarrollar un sistema de \textbf{autenticación continua} fundamentado en \textbf{biometría conductual}, monitoreando en segundo plano los patrones neuromotores de interacción (teclado y mouse) a lo largo de toda la sesión.
 
-El problema fundamental radica en que el comportamiento humano no es uniforme: un usuario legítimo presenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) por fatiga o estrés. Asimismo, este enfoque se conecta estrechamente con la tecnología de los \textbf{CAPTCHAs conductuales e invisibles} modernos (e.g., reCAPTCHA v3, Turnstile), los cuales analizan micro-movimientos de mouse, trayectorias y tiempos de reacción para diferenciar humanos de bots o atacantes automatizados. En este sistema, la detección de anomalías servirá tanto para identificar impostores como para activar desafíos adaptativos tipo CAPTCHA ante caídas de confianza sin cerrar la sesión abruptamente.
-
-Por este motivo, el sistema analizará la diferenciación entre:
+El problema fundamental radica en que el comportamiento humano no es uniforme: un usuario legítimo presenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) provocadas por fatiga, estrés o multitarea. Los sistemas rígidos y los CAPTCHAs convencionales fallan en este punto, clasificando erróneamente variaciones humanas legítimas como anomalías o dejando pasar suplantaciones sofisticadas. Por ello, el sistema propuesto integrará modelos adaptativos de Machine Learning capaces de diferenciar de forma precisa entre:
 \begin{enumerate}
     \item \textbf{Comportamiento habitual del usuario legítimo.}
     \item \textbf{Variaciones naturales del comportamiento} del mismo usuario entre diferentes sesiones temporales.
-    \item \textbf{Comportamiento de suplantación} por un tercero o mediante patrones automatizados/sintéticos (bots tipo CAPTCHA).
+    \item \textbf{Comportamiento de suplantación} ejecutado por un tercero o mediante herramientas automatizadas (bots).
 \end{enumerate}
 
-\textbf{Pregunta de investigación:} \textit{¿Qué características conductuales permiten distinguir de manera robusta una variación natural del usuario legítimo de una suplantación real o automatizada, minimizando los falsos rechazos?}
+\textbf{Pregunta de investigación:} \textit{¿Qué características conductuales y transformaciones de Feature Engineering permiten superar la baja confiabilidad de los retos puntuales tipo CAPTCHA, distinguiendo de manera robusta la deriva natural del usuario legítimo de una suplantación real?}
 
 \textbf{Datasets públicos y gratuitos a utilizar:}
 \begin{itemize}
@@ -125,7 +123,7 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
     % Fila Superior: Fases 1 a 3
     \node[block] (b1) {
         \textbf{1. Ingesta de Datos Brutos}\\[1pt]
-        Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas de mouse $(x, y, t, \text{clics, CAPTCHA})$
+        Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas continuas de mouse $(x, y, t, \text{clics})$
     };
     
     \node[block, right=of b1] (b2) {
@@ -151,7 +149,7 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
     
     \node[block, left=of b5] (b6) {
         \textbf{6. Decisión \& Interpretabilidad}\\[1pt]
-        Discriminación: Legítimo (\textit{Drift}) vs. Impostor / Activación CAPTCHA, con SHAP
+        Superación de CAPTCHAs: Legítimo (\textit{Drift}) vs. Impostor, con explicabilidad SHAP
     };
 
     % Flechas de conexión del flujo
@@ -175,14 +173,14 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
 \end{enumerate}
 
 \textbf{Tema de investigación complementario (fuera del alcance del curso):}\\
-Se investigarán los fundamentos de la \textbf{Biometría Conductual Continua}, el fenómeno de \textbf{Behavioral Drift} y los mecanismos de análisis cinemático empleados en \textbf{CAPTCHAs invisibles y adaptativos}, analizando estrategias para el ajuste dinámico de umbrales y la mitigación de ataques automatizados sin fricción.
+Se investigarán los fundamentos teóricos de la \textbf{Biometría Conductual Continua}, el fenómeno de \textbf{Behavioral Drift} y las limitaciones de confiabilidad de los esquemas tradicionales tipo \textbf{CAPTCHA}, analizando cómo el análisis cinemático adaptativo de señales biométricas mitiga vulnerabilidades frente a bots y suplantadores avanzados sin degradar la usabilidad.
 
 % =========================================================================
 \section{Objetivos}
 % =========================================================================
 
 \subsection{Objetivo General}
-Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Engineering para la autenticación continua mediante biometría conductual de teclado y mouse, capaz de discriminar de forma robusta entre variaciones naturales del comportamiento de un usuario legítimo y eventos de suplantación de identidad.
+Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Engineering para la autenticación continua mediante biometría conductual de teclado y mouse, capaz de superar las limitaciones de confiabilidad de los métodos tradicionales y discriminar de forma robusta entre variaciones naturales del usuario legítimo y suplantaciones de identidad.
 
 \subsection{Objetivos Específicos}
 \begin{enumerate}
@@ -192,7 +190,7 @@ Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Eng
     \item \textbf{Entrenar y comparar} modelos supervisados y de detección de anomalías bajo esquemas \textit{Baseline} y con \textit{Feature Engineering}.
     \item \textbf{Validar la robustez} del sistema ante variaciones naturales aplicando partición por sesiones desacopladas (\textit{out-of-session}).
     \item \textbf{Interpretar el rendimiento} mediante métricas de clasificación (\textit{Precision, Recall, F1, ROC-AUC, EER}) y análisis SHAP.
-    \item \textbf{Investigar y documentar} los fundamentos teóricos de biometría conductual, CAPTCHAs conductuales y \textit{behavioral drift}.
+    \item \textbf{Investigar y documentar} los fundamentos de biometría conductual, la falta de confiabilidad de los CAPTCHAs y el \textit{behavioral drift}.
 \end{enumerate}
 
 \end{document}
