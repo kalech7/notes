@@ -1,0 +1,147 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{setspace}
+
+% Formato general
+\setlength{\parskip}{0.5em}   % espacio entre párrafos
+\setlength{\parindent}{1.25em} % indentación primer renglón
+
+% Para títulos, sin indentación y con espacio inferior
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{1em}{0.5em} % margen izq, espacio arriba y abajo
+
+% Unificar sangría y espacio para listas itemize
+\setlist[itemize]{leftmargin=2em, noitemsep, topsep=0.18em}
+
+% Definir un entorno general para sangría uniforme
+\newenvironment{uniformindent}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\itemsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\newenvironment{indentedpar}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\topsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Alejandro Chavez}} \\[0.15cm]
+    Ingeniero en Ciencias de la Computaci\'on \\[0.2cm]
+    \begin{tabular}{@{} c @{}}
+        \href{mailto:chavezalejo85@gmail.com}{chavezalejo85@gmail.com} \quad | \quad +593 999274384 \quad | \quad \href{https://www.linkedin.com/in/alech7/}{linkedin.com/in/alech7}
+    \end{tabular}
+\end{center}
+
+\begin{uniformindent}
+
+\section*{Educaci\'on}
+
+\begin{samepage}
+\textbf{Maestr\'ia en Inteligencia Artificial} \hfill Agosto 2026 -- Agosto 2027\\
+Universidad San Francisco de Quito\\
+\end{samepage}
+
+\begin{samepage}
+\textbf{Ingenier\'ia en Ciencias de la Computaci\'on} \hfill Septiembre 2021 -- Febrero 2026\\
+Escuela Polit\'ecnica Nacional\\
+\end{samepage}
+
+\section*{Experiencia}
+
+\textbf{Freelancer} \hfill Abril 2026 -- Presente
+\begin{itemize}
+    \item Desarrollo de servicios backend con .NET (C\#) y aplicaciones m\'oviles en Swift para clientes.
+    \item Creaci\'on de un bot para agenda de citas en lenguaje natural usando n8n, WhatsApp Business y Next.js.
+    \item Creaci\'on de un sistema RAG para la recuperaci\'on de memorias del agente de IA por usuario.
+    \item Integraci\'on de contacto directo con el doctor dentro del flujo de agendamiento.
+\end{itemize}
+
+\textbf{Busmatick Group} \hfill Abril 2026 -- Agosto 2026
+\begin{itemize}
+    \item Soporte a usuarios y al sistema.
+    \item Revisi\'on de logs, bases de datos y cuentas de usuarios para resolver incidentes y apoyar la operaci\'on.
+    \item Automatizaci\'on de procesos para mejorar flujos de soporte y confiabilidad del sistema.
+\end{itemize}
+
+\textbf{Ecuavisa} \hfill Agosto 2025 -- Febrero 2026
+\begin{itemize}
+    \item Levantamiento de procesos y automatizaci\'on con IA (LLMs, visi\'on por computador y ML).
+    \item Construcci\'on de soluciones con Google Cloud, la plataforma de OpenAI, Apache Spark y Kafka.
+\end{itemize}
+
+\textbf{BlueHat Corp} \hfill Marzo 2025 -- Agosto 2025
+\begin{itemize}
+    \item Ejecuci\'on de pruebas de ingenier\'ia social, OSINT y pentesting web para evaluar exposici\'on, riesgos reputacionales y postura de seguridad.
+    \item Apoyo en iniciativas de gobierno de ciberseguridad alineadas con CGCI, incluyendo seguimiento con base en ISO/IEC 27001.
+\end{itemize}
+
+\textbf{Pasant\'ia en SLB} \hfill Octubre 2024 -- Marzo 2025
+\begin{itemize}
+    \item Pasante desarrollador en Power Platform, con dise\~no y desarrollo de soluciones en PowerApps para optimizar el seguimiento del consumo de di\'esel y la gesti\'on de activos.
+    \item Implementaci\'on de formularios y reglas de negocio para validaci\'on de datos y mejora de la calidad y exactitud de la informaci\'on registrada.
+    \item Contribuci\'on a modelos de datos en Dataverse, componentes UX/UI y gesti\'on \'agil del proyecto mediante Azure DevOps.
+\end{itemize}
+
+\textbf{Pasant\'ia en IQVIA} \hfill Marzo 2024 -- Mayo 2024
+\begin{itemize}
+    \item Pasant\'ia en soporte y administraci\'on de bases de datos, con automatizaci\'on y verificaci\'on de procesos semanales mediante ETL, SQL y PowerShell.
+    \item Dise\~no y desarrollo de paneles en Tableau y Power BI para visualizaci\'on y seguimiento de KPIs.
+    \item Dise\~no y desarrollo de consultas personalizadas para atender necesidades espec\'ificas de clientes y garantizar la entrega precisa de datos.
+\end{itemize}
+
+\section*{Proyectos Personales}
+
+\textbf{Busqua} \hfill \href{https://busqua.com}{busqua.com}
+\begin{indentedpar}
+Plataforma de b\'usqueda de productos en tiempo real que conecta proveedores, ubicaci\'on y datos de contacto. Tecnolog\'ias: AWS, Odoo, Elixir, Python, SQL y React.
+\end{indentedpar}
+
+\textbf{Retrieval Augmented System}
+\begin{indentedpar}
+Desarroll\'e un sistema RAG para recuperar datos de un corpus personalizado y generar res\'umenes concisos y contextualizados.
+\end{indentedpar}
+
+\section*{Certificaciones}
+
+\textbf{AWS Academy Cloud Foundations}\\
+Amazon Web Services (AWS) \\ Emitido: Julio 2025\\
+
+\textbf{Network Defense Essentials}\\
+EC-Council \\ Emitido: Enero 2025 -- Expira: Enero 2028\\
+ID de credencial: ECC5837692041
+
+\section*{Publicaciones}
+
+\textit{``Dise\~no y evaluaci\'on de un pipeline de b\'usqueda sem\'antica basado en RAG para la recuperaci\'on de informaci\'on cient\'ifica''} --- Publicaci\'on pendiente.\\
+Revisi\'on sistem\'atica sobre los fundamentos de los sistemas RAG, sus componentes clave, flujos de implementaci\'on, aplicaciones en investigaci\'on cient\'ifica y desaf\'ios actuales.
+
+\section*{Idiomas y Habilidades}
+
+\textbf{Programaci\'on:} Python, Java, JavaScript, C\# (.NET backend), Swift, HTML, CSS\\
+\textbf{Herramientas:} Kali Linux, SQL, React, Azure, PowerShell\\
+\textbf{Metodolog\'ias:} Scrum, XP\\
+\textbf{Otros:} Ingl\'es fluido, franc\'es b\'asico, conocimientos en sistemas Cisco
+
+\end{uniformindent}
+
+\end{document}

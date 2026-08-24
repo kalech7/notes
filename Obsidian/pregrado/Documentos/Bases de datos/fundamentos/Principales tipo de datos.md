@@ -10,3 +10,9 @@ TIMESTAMP -- YYYY-MM-DD HH:MM:SS USED FOR RECORDING
 ```
 PRIMARY KEY
 FOREIGN KEY
+
+## Notas relacionadas
+- [[SQL]]
+- [[Comandos]]
+- [[Insertar datos]]
+- [[Transaccion]]

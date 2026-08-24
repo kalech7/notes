@@ -13,3 +13,8 @@ UNIQUE
 
 ```
 [[SQL]]
+
+## Notas relacionadas
+- [[Comandos]]
+- [[Principales tipo de datos]]
+- [[Transaccion]]

@@ -46,3 +46,10 @@ autenticacion autorizacion
 ## administracion de identidad
 repositorio de identidad 
 administracion de identidad 
+
+## Notas relacionadas
+- [[Acceso]]
+- [[seguridad informatica]]
+- [[fundamentos de seguridad]]
+- [[controles administrativos]]
+- [[egsi]]

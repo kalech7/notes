@@ -13,3 +13,10 @@ el aprendizaje de maquina es el apredizaje de una funcion  y produce un conjunto
 2 clasificiacion (etiqueta numero entero)
 3 reduccion de dimensionalidad (PCA)
 4 desicion markov Porcess(MDP)
+
+## Notas relacionadas
+- [[tipos de machine learning]]
+- [[Ajuste de modelos]]
+- [[modelos de regresion]]
+- [[metricas para clasificadores]]
+- [[conducta racional]]

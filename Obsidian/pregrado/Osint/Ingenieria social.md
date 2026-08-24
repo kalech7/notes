@@ -25,3 +25,9 @@ a las personas por lo general no nos importan demasiado las historias de los dem
 * constancia
 * empatia
 * atencion 
+
+## Notas relacionadas
+- [[OPEN SOURCE INTELLIGENCE]]
+- [[ataques a contraseñas]]
+- [[fundamentos de seguridad]]
+- [[seguridad informatica]]

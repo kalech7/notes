@@ -114,4 +114,9 @@ distance vector (se basa en la cantidad de saltos de un lugar A a un luga B)
 
 link state (estados de los links) va a describir como son todas sus conexiones esto va aformar una base de datos para tomar desciones 
 
-Ospf separa por areas de backbone 
+Ospf separa por areas de backbone
+
+## Notas relacionadas
+- [[Enrutamiento]]
+- [[estado de enlace]]
+- [[Vector distancia]]

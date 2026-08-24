@@ -14,3 +14,8 @@ try
 catch
 save guarda lo hecho hasta cierto punto(puntos seguros) sin afectar a la consistencia de la base de datos
 
+## Notas relacionadas
+- [[SQL]]
+- [[Comandos]]
+- [[Insertar datos]]
+- [[Vistas]]

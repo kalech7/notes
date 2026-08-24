@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{setspace}
+
+% Formato general
+\setlength{\parskip}{0.5em}   % espacio entre párrafos
+\setlength{\parindent}{1.25em} % indentación primer renglón
+
+% Para títulos, sin indentación y con espacio inferior
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{1em}{0.5em} % margen izq, espacio arriba y abajo
+
+% Unificar sangría y espacio para listas itemize
+\setlist[itemize]{leftmargin=2em, noitemsep, topsep=0pt}
+
+% Definir un entorno general para sangría uniforme
+\newenvironment{uniformindent}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\itemsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\newenvironment{indentedpar}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\topsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Alejandro Chavez}} \\[0.15cm]
+    Lavador de Platos | Asistente de Cocina | Mesero \\[0.2cm]
+    \begin{tabular}{@{} c @{}}
+        \href{mailto:chavezalejo85@gmail.com}{chavezalejo85@gmail.com} \quad | \quad +593 999274384
+    \end{tabular}
+\end{center}
+
+\begin{uniformindent}
+
+\section*{Objetivo Profesional}
+Busco una oportunidad laboral en restaurantes, cafeter\'ias o negocios de comida como lavador de platos, asistente de cocina o mesero. Me caracterizo por ser puntual, responsable, ordenado y con buena actitud de servicio. Tengo facilidad para trabajar en equipo, mantener la limpieza del \'area de trabajo y cumplir tareas bajo presi\'on.
+
+\section*{Educaci\'on}
+
+\begin{samepage}
+\textbf{Bachillerato Internacional} \hfill Jul 2020\\
+Colegio 24 de Mayo\\
+\end{samepage}
+
+\section*{Habilidades}
+
+\begin{itemize}
+    \item Lavado y desinfecci\'on de platos, utensilios y \'areas de trabajo.
+    \item Apoyo en preparaci\'on b\'asica de alimentos y organizaci\'on de cocina.
+    \item Atenci\'on cordial al cliente y buen trato en sala.
+    \item Trabajo en equipo y cumplimiento de instrucciones.
+    \item Orden, limpieza y cuidado de normas de higiene.
+    \item Buena disposici\'on para turnos rotativos y trabajo bajo presi\'on.
+\end{itemize}
+
+\section*{Idiomas}
+
+\textbf{Espa\~nol:} Nativo\\
+\textbf{Ingl\'es:} Fluido\\
+\textbf{Franc\'es:} B\'asico
+
+\end{uniformindent}
+
+\end{document}

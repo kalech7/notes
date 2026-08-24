@@ -20,3 +20,10 @@ SELECT * FROM productos
 INSERT INTO productos
 VALUES()
 ```
+
+## Notas relacionadas
+- [[Comandos]]
+- [[Principales tipo de datos]]
+- [[Insertar datos]]
+- [[Vistas]]
+- [[Transaccion]]

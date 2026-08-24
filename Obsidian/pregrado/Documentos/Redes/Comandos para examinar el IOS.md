@@ -11,3 +11,9 @@ Switch# show version
 ```
 Si tengo una arquitectura fullduplex a 1000 mbps el rendimiento es de 200 Mbps
 ![[Pasted image 20230912223010.png]]
+
+## Notas relacionadas
+- [[Configuración del Switch Consola, Acceso remoto.]]
+- [[Enrutamiento]]
+- [[VLAN]]
+- [[Port Security]]

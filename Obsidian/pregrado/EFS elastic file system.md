@@ -7,3 +7,9 @@ ciclo de vida cuando se tiene archivos que no se aacceden hace mucho tiempo esos
 efs fx(for windows)
 
 efs fx(for lustre)
+
+## Notas relacionadas
+- [[Cloud computing]]
+- [[ebs(network)]]
+- [[vpc]]
+- [[responsabilidad compartida]]

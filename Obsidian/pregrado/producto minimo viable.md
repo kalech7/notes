@@ -5,4 +5,10 @@ intercominicacion
 3) oferta o entrega de productos
 4) producto minimo viable de una manera economica 
 5) comprobar si los clientes del mercado estan dispuestos a pagar el precio
-6) analizar los resultados 
+6) analizar los resultados
+
+## Notas relacionadas
+- [[emprendimiento]]
+- [[ecosistema de emprendimiento]]
+- [[design thinking]]
+- [[proyectos]]

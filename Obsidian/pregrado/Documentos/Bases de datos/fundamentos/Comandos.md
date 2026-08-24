@@ -141,3 +141,11 @@ WHERE first_name='grace'
 ```
 [[ejemplos]]
 [[ejercicios]]
+
+## Notas relacionadas
+- [[SQL]]
+- [[Principales tipo de datos]]
+- [[Insertar datos]]
+- [[Subconsultas]]
+- [[Vistas]]
+- [[Transaccion]]

@@ -14,3 +14,9 @@
 14. **Efectividad:**  suma de la eficacia más la eficiencia 
 15. **Flexibilidad:** capacidad de ser modificado con facilidad 
 16. I**nteroperabilidad:** puede trabajar con otros sistemas sin problemas
+
+## Notas relacionadas
+- [[El proceso de software]]
+- [[Software e Ingeniería  de Software]]
+- [[pruebas de usabilidad]]
+- [[tecnicas pruebas]]

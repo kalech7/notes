@@ -35,4 +35,8 @@ sus componentes son:
 - Agentes basados en utilidad:toman decisiones basadas en la maximizacion de la utilidad esperada
 - Agentes de aprendizaje: aprenden y mejoran su desempeño a lo largo del tiempo
 
+## Notas relacionadas
+- [[problemas en IA]]
+- [[machine learning]]
+- [[web semantica]]
 

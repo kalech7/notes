@@ -1,4 +1,11 @@
 procesamiento 
+
+## Notas relacionadas
+- [[sockets]]
+- [[Remote Procedure Call (rpc)]]
+- [[servidores]]
+- [[peer to peer]]
+- [[tiempo de respuesta vs Throughput]]
 almacenamiento 
 entrada salida
 

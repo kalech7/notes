@@ -61,3 +61,8 @@ AND A.city_id=T.city_id
 AND city IN ('Oyo','Namibe','Jelets ','Pune')
 ```
 Solo sirve con inner join igualar clave primaria con clave extranjera
+
+## Notas relacionadas
+- [[Comandos]]
+- [[Subconsultas]]
+- [[ejercicios]]

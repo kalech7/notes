@@ -58,4 +58,12 @@ cómo ser más efectivo para a continuación ajustar y
 perfeccionar su comportamiento en consecuencia.
 
 fdd pruebas del sistema resultados 
-bdd el usuario el comportamiento 
+bdd el usuario el comportamiento
+
+## Notas relacionadas
+- [[scrum]]
+- [[XP (eXtremme programming)]]
+- [[kanban]]
+- [[historias de usuario]]
+- [[tecnicas pruebas]]
+- [[El proceso de software]]

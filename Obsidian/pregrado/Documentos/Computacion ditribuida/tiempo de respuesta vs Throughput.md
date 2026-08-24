@@ -19,3 +19,9 @@ se refiere a la cantidad de trabajo que un sistema puede manejar en un período 
     
     - **Tiempo de respuesta:** Importante para la experiencia del usuario y aplicaciones en tiempo real.
     - **Throughput:** Importante para la capacidad y eficiencia del sistema en entornos de alta carga.
+
+## Notas relacionadas
+- [[rendimineto de htpp]]
+- [[SLA]]
+- [[servidores]]
+- [[computacion distribuida]]

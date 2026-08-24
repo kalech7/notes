@@ -15,5 +15,12 @@ se envia http request para la pagina
 ejecuta/busca rescursos embebidos/renderiza
 limpia cualquier idle  de conexiones tcp
 ## estatico vs dinamico 
+
+## Notas relacionadas
+- [[Desarollo web]]
+- [[WEB RESTful]]
+- [[http caching and proxies]]
+- [[rendimineto de htpp]]
+- [[content delivery networks]]
 * paginas web estatica es un contenido en archivo ej imagen
 * web dinamica es el resultado de un programa en ejecucion (javascript en un cliente,php en un servidor o ambos)

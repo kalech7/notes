@@ -17,3 +17,8 @@ sistema p falla 30 min
 enterprise 
 sistema de produccion 30 min 
 sistema falla 15
+
+## Notas relacionadas
+- [[Cloud computing]]
+- [[responsabilidad compartida]]
+- [[SLA]]

@@ -5,4 +5,8 @@ embeddings(word2vec) es una representación numérica densa de objetos, como pal
 se tranformacada palabra en un vector 
 [the quick brown fox jumps over the lazy dog] es para ver la tipografia porque tienen todas las letras del alfabeto 
 
+## Notas relacionadas
+- [[matriz termino frecuencia]]
+- [[web semantica]]
+- [[retrival augmented generation]]
 

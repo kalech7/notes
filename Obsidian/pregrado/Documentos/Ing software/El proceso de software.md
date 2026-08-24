@@ -37,7 +37,14 @@ uno necesita encontrar un equilibrio entre procesos dirigidos por un plan y proc
 existe un ámbito para mejorar el proceso de software. Los procesos quizás incluyan técnicas obsoletas o tal vez no aprovechen las mejores prácticas en la industria
 
 pueden mejorarse con la ==**estandarización**== de los procesos, donde se reduce la diversidad en los procesos de software en una organización. mejorar la comunicación, a reducir el tiempo de capacitación, y a que el soporte de los procesos automatizados sea más económico.  representa un primer paso importante tanto en la introducción de nuevos métodos y técnicas de ingeniería de software, como en sus buenas prácticas.
-## Modelos del proceso de software 
+## Notas relacionadas
+- [[Actividades del proceso de software]]
+- [[Software e Ingeniería  de Software]]
+- [[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]
+- [[Apuntes de clase]]
+- [[software 2]]
+
+## Modelos del proceso de software
 ### modelo cascada
 Se aplica cuando:
 los requerimientos del problema se comprenden bien

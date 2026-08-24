@@ -11,3 +11,8 @@ la perscion de facigilidad hace qeu crezac o decezaca
 ### heuriticas de nielsen 
 
 ### ux laws
+
+## Notas relacionadas
+- [[Ciclo de vida de hci]]
+- [[design thinking]]
+- [[pruebas de usabilidad]]

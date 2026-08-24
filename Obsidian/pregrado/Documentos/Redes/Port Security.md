@@ -25,3 +25,9 @@ sw port-security (aging)
 				 (violation)
 sw port-security mac-address sticky (hace que aprenda de manera dinamica la dir mac)
 ```
+
+## Notas relacionadas
+- [[VLAN]]
+- [[Configuración del Switch Consola, Acceso remoto.]]
+- [[Acceso]]
+- [[seguridad informatica]]

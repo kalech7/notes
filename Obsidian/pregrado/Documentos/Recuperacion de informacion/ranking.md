@@ -10,3 +10,9 @@ coseno(se usan valores numericos) para tf -idf
 las metricas son para el sistema de recuperacion de informacion son la precision y recall
 
 ground truth  se usan metriccas de un aprendizaje supervisado en uno no supervisado 
+
+## Notas relacionadas
+- [[que es recuperacion de informacion]]
+- [[matriz termino frecuencia]]
+- [[retrival augmented generation]]
+- [[machine learning]]

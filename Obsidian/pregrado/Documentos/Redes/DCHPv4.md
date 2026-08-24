@@ -106,3 +106,7 @@ el servidor responde con un acknoledge confirmando asi la consecion de la direcc
 Ahora tiene el cliente tedras configuarado de manera automatica una direccion ip y los parametros tcp/ip
 [[DHCP IPV6]]
 
+## Notas relacionadas
+- [[VLAN]]
+- [[Enrutamiento]]
+- [[SLAAC (Stateless Address Autoconfiguration)]]

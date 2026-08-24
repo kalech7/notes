@@ -52,3 +52,10 @@ XP requiere que los clientes, desarrolladores y gerentes trabajen codo a codo, a
 ![[Pasted image 20240519155420.png]]
 ## principios de xp
 incremntal changes, assumed simplicity , embracing change, quality work, rapid feedback
+
+## Notas relacionadas
+- [[software 2]]
+- [[historias de usuario]]
+- [[scrum]]
+- [[kanban]]
+- [[tecnicas pruebas]]

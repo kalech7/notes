@@ -14,3 +14,9 @@ los beneficios se limitan a seguridad dinamico asi como "long tail"
 ![[Pasted image 20240618001251.png]]
 
 los clientes se conetectas por porxy y el proxy contaactar el server
+
+## Notas relacionadas
+- [[Http introduccion]]
+- [[content delivery networks]]
+- [[futuro de http]]
+- [[rendimineto de htpp]]

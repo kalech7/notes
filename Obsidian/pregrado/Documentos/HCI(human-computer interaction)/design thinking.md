@@ -10,3 +10,9 @@ diagrama ishaktua (espina de pescado)
 
 al principio se ponen la causas y luego el problema 
 es una herramienta de calidad 
+
+## Notas relacionadas
+- [[Ciclo de vida de hci]]
+- [[pruebas de usabilidad]]
+- [[emprendimiento]]
+- [[producto minimo viable]]

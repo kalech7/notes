@@ -21,3 +21,10 @@ encoder/decoder
 multiheader attention 
 
 encoder mecanismo de atencion 
+
+## Notas relacionadas
+- [[que es recuperacion de informacion]]
+- [[retrival augmented generation]]
+- [[Untitled 2]]
+- [[machine learning]]
+- [[conducta racional]]

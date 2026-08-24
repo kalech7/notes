@@ -25,3 +25,9 @@ conn.close()
 [[ejemplos]]
 [[SQL]]
 data control access
+
+## Notas relacionadas
+- [[SQL]]
+- [[Comandos]]
+- [[Conexion remota]]
+- [[SQL data adapter]]

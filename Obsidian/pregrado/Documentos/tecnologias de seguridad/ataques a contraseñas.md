@@ -21,3 +21,8 @@ es un live de linux trinity rescue key para acceder a SAMm
 ### colision hash: 
 hace uun barrido de todos los usuarios con la misma contraseña
 
+## Notas relacionadas
+- [[seguridad informatica]]
+- [[fundamentos de seguridad]]
+- [[Ingenieria social]]
+- [[protocolos criptograficos]]

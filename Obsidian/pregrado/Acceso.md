@@ -10,3 +10,9 @@ effect: Allow/Deny
 action: S3 put object S3 get object
 resource:
 principal:
+
+## Notas relacionadas
+- [[Cloud computing]]
+- [[responsabilidad compartida]]
+- [[control de acceso]]
+- [[egsi]]

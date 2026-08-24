@@ -24,3 +24,10 @@ arq.incremental
 explorar 360
 walking skeleton
 exitos tempranos
+
+## Notas relacionadas
+- [[software 2]]
+- [[historias de usuario]]
+- [[XP (eXtremme programming)]]
+- [[pruebas de usabilidad]]
+- [[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]

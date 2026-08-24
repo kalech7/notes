@@ -9,4 +9,9 @@ se toman las actividades en secuencia
 
 estimiacion optimistas 
 se deben buscar un termino medio
+
+## Notas relacionadas
+- [[proyectos]]
+- [[software 2]]
+- [[Algoritmo Dijkstra]]
 estimacion pesimistas 

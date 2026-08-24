@@ -16,6 +16,13 @@ Existen sistemas basados en computadora más sofisticados y complejos gracias a:
 Cuando un sistema tiene éxito, la sofisticación y complejidad producen resultados deslumbrantes, pero también plantean problemas enormes para aquellos que deben construir sistemas complejos.
 la enorme industria del software se ha convertido en un factor dominante en las economías del mundo industrializado
 
+## Notas relacionadas
+- [[El proceso de software]]
+- [[Actividades del proceso de software]]
+- [[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]
+- [[Desarollo web]]
+- [[machine learning]]
+
 ## Conceptos basicos del software
 **Software**
 programas de computadora, procedimientos y posiblemente documentación y datos asociados, referentes a la operación de un sistema de computación

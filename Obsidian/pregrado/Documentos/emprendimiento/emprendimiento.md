@@ -11,4 +11,9 @@ emprender es la creacion de la idea de un nuevo negocio enfocado en la innovacio
 
 la idea tiene que soluciones un problema o cubirar una necesidad 
 
+## Notas relacionadas
+- [[ecosistema de emprendimiento]]
+- [[producto minimo viable]]
+- [[design thinking]]
+- [[proyectos]]
 

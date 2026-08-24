@@ -16,3 +16,8 @@ incluye informacion sobre vecinos como la id, tipo de enlace
 | ventajas | desventajas |
 | -------- | ----------- |
 |          |             |
+
+## Notas relacionadas
+- [[OSPFv2(Open Shortest Path First)]]
+- [[Enrutamiento]]
+- [[Vector distancia]]

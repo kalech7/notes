@@ -1,0 +1,147 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{setspace}
+
+% Formato general
+\setlength{\parskip}{0.5em}   % espacio entre párrafos
+\setlength{\parindent}{1.25em} % indentación primer renglón
+
+% Para títulos, sin indentación y con espacio inferior
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{1em}{0.5em} % margen izq, espacio arriba y abajo
+
+% Unificar sangría y espacio para listas itemize
+\setlist[itemize]{leftmargin=2em, noitemsep, topsep=0.18em}
+
+% Definir un entorno general para sangría uniforme
+\newenvironment{uniformindent}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\itemsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\newenvironment{indentedpar}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\topsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Alejandro Chavez}} \\[0.15cm]
+    Computer Science Engineer \\[0.2cm]
+    \begin{tabular}{@{} c @{}}
+        \href{mailto:chavezalejo85@gmail.com}{chavezalejo85@gmail.com} \quad | \quad +593 999274384 \quad | \quad \href{https://www.linkedin.com/in/alech7/}{linkedin.com/in/alech7}
+    \end{tabular}
+\end{center}
+
+\begin{uniformindent}
+
+\section*{Education}
+
+\begin{samepage}
+\textbf{Master's in Artificial Intelligence} \hfill August 2026 -- August 2027\\
+Universidad San Francisco de Quito\\
+\end{samepage}
+
+\begin{samepage}
+\textbf{Computer Science Engineer} \hfill September 2021 -- February 2026\\
+Escuela Politécnica Nacional\\
+\end{samepage}
+
+\section*{Experience}
+
+\textbf{Freelancer} \hfill April 2026 -- Present
+\begin{itemize}
+    \item Develop backend services with .NET (C\#) and mobile applications in Swift for clients.
+    \item Created a natural-language appointment scheduling bot using n8n, WhatsApp Business, and Next.js.
+    \item Built a RAG system to retrieve AI agent memories per user.
+    \item Enabled direct contact with the doctor through the appointment workflow.
+\end{itemize}
+
+\textbf{Busmatick Group} \hfill April 2026 -- August 2026
+\begin{itemize}
+    \item Provide support to users and internal systems.
+    \item Review logs, databases, and user accounts to troubleshoot incidents and support operations.
+    \item Automate processes to improve support workflows and system reliability.
+\end{itemize}
+
+\textbf{Ecuavisa} \hfill August 2025 -- February 2026
+\begin{itemize}
+    \item Mapped processes and automated them with AI (LLMs, computer vision, and ML).
+    \item Built solutions using Google Cloud, the OpenAI platform, Apache Spark, and Kafka.
+\end{itemize}
+
+\textbf{BlueHat Corp} \hfill March 2025 -- August 2025
+\begin{itemize}
+    \item Performed social engineering, OSINT, and web application penetration testing to assess exposure, reputational risks, and security posture.
+    \item Supported cybersecurity governance efforts aligned with CGCI, including follow-up based on ISO/IEC 27001.
+\end{itemize}
+
+\textbf{SLB Internship} \hfill October 2024 -- March 2025
+\begin{itemize}
+    \item Power Platform developer intern, designing and developing PowerApps solutions to streamline diesel usage tracking and asset management.
+    \item Implemented forms and business rules to validate data and improve the quality and accuracy of recorded information.
+    \item Contributed to Dataverse data models, UX/UI components, and agile project management via Azure DevOps.
+\end{itemize}
+
+\textbf{IQVIA Internship} \hfill March 2024 -- May 2024
+\begin{itemize}
+    \item Internship in database support and administration, automating and verifying weekly processes using ETL, SQL, and PowerShell.
+    \item Designed and developed dashboards in Tableau and Power BI for KPI visualization and tracking.
+    \item Designed and developed tailored queries to address unique client needs and ensure accurate data delivery.
+\end{itemize}
+
+\section*{Personal Projects}
+
+\textbf{Busqua} \hfill \href{https://busqua.com}{busqua.com}
+\begin{indentedpar}
+Real-time product search platform connecting suppliers, location, and contact details. Technologies: AWS, Odoo, Elixir, Python, SQL, and React.
+\end{indentedpar}
+
+\textbf{Retrieval Augmented System}
+\begin{indentedpar}
+Built a RAG system to retrieve data from a custom corpus and generate concise, context-aware summaries.
+\end{indentedpar}
+
+\section*{Certifications}
+
+\textbf{AWS Academy Cloud Foundations}\\
+Amazon Web Services (AWS) \\ Issued: July 2025\\
+
+\textbf{Network Defense Essentials}\\
+EC-Council \\ Issued: January 2025 -- Expires: January 2028\\
+Credential ID: ECC5837692041
+
+\section*{Publications}
+
+\textit{"Design and Evaluation of a RAG-Based Semantic Search Pipeline for Scientific Information Retrieval"} — Pending publication.\\
+A systematic review covering the fundamentals of RAG systems, key components, implementation pipelines, applications in scientific research, and current challenges.
+
+\section*{Languages and Skills}
+
+\textbf{Programming:} Python, Java, JavaScript, C\# (.NET backend), Swift, HTML, CSS\\
+\textbf{Tools:} Kali Linux, SQL, React, Azure, PowerShell\\
+\textbf{Methodologies:} Scrum, XP\\
+\textbf{Other:} Fluent English, Basic French, Cisco Systems knowledge
+
+\end{uniformindent}
+
+\end{document}

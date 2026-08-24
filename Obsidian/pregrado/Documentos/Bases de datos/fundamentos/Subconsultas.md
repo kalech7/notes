@@ -18,3 +18,9 @@ AND store_id = 1
 
 ```
 [[SQL]]
+
+## Notas relacionadas
+- [[Comandos]]
+- [[ejemplos]]
+- [[ejercicios]]
+- [[Vistas]]

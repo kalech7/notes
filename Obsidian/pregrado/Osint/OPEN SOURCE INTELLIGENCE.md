@@ -41,3 +41,9 @@ automiza procesos osint y se realiment con los datos obtenidos
 
 maltego
 es ayudarnos a visualizar contextualizar y establcer relaciones entre fragmetos independientes de informacion (pueden ser numeros de telefono ,direcciones correo electronico )
+
+## Notas relacionadas
+- [[Ingenieria social]]
+- [[seguridad informatica]]
+- [[ataques a contraseñas]]
+- [[web semantica]]

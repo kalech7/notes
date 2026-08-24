@@ -26,3 +26,8 @@ INNER JOIN proveedores V ON (P.id_proveedor = v.id_proveedor )
 ```
 la vista materazliada crea como una foto en el momento que sea creo en ese instante no cambia se mantiene en el tiempo ni cambiar dentro de la vista nada es mantiene tal cual
 
+## Notas relacionadas
+- [[Comandos]]
+- [[SQL]]
+- [[Subconsultas]]
+- [[SQL data adapter]]

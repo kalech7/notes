@@ -15,7 +15,13 @@ un algoritmo de renderis va a llenar los fragmentos con los colores
 ahora que se tiene la informacion de los pixel se miestra la informacion en la panatalla 
 
 
-## transformer 
+## Notas relacionadas
+- [[OpenGl]]
+- [[pixeles]]
+- [[open gl]]
+- [[Untitled 4]]
+
+## transformer
 se puede hacer una opercacon de transformacion  de escala es tener difernentes  coordenadas mover transladar agrandar 
 
 ## el alogrimo de cliiper 

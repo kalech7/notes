@@ -7,3 +7,9 @@ porque es importae el preporcesamiento?
 puntacion 
 normalizacion (todo se traduce a un solo contexto)
 n-gram 
+
+## Notas relacionadas
+- [[machine learning]]
+- [[Caracteristicas del big data]]
+- [[extract transform load]]
+- [[matriz termino frecuencia]]

@@ -64,3 +64,10 @@ Debido a que esta noción no existe oficialmente en el método [Scrum](https://
 ![[Pasted image 20240623221655.png]]
 
 tiempo de entrega 
+
+## Notas relacionadas
+- [[software 2]]
+- [[XP (eXtremme programming)]]
+- [[kanban]]
+- [[historias de usuario]]
+- [[proyectos]]

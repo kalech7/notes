@@ -7,3 +7,9 @@ los datos no  estan dispuestos de manera ordenada en las filas y columnas de una
 
 ___
 cuando se agrega una caractersitica mas de v se supera la capacidad del enfoque estandar para analizar los datos . lo que el big data es que no se puede usar el enfoque estandar cuando se tiene este tipo de datos
+
+## Notas relacionadas
+- [[extract transform load]]
+- [[crisp-dm]]
+- [[machine learning]]
+- [[SQL]]

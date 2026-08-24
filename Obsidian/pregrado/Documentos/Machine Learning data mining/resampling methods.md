@@ -5,3 +5,9 @@ es usado por el algoritmo de machine learning para el modelo de entrenamiento
 las filas son asiganadas en cada dataset son radomicamente selecionada respetando los paramentros previamente establecidos lo que se quiere es minimizar el error del desepeño, se minimiza con la aleatoriedad 
 
 2) validacion cruzada
+
+## Notas relacionadas
+- [[metodo hold out]]
+- [[Validacion Cruzada]]
+- [[test harness]]
+- [[Ajuste de modelos]]

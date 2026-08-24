@@ -12,6 +12,13 @@ que se organizan de diversa manera en diferentes procesos de desarrollo
 En el modelo en cascada se organizan en secuencia, mientras que se entrelazan en el desarrollo incremental.
 La forma en que se llevan a cabo estas actividades depende del tipo de software, del personal y de la inclusión de estructuras organizativas.
 
+## Notas relacionadas
+- [[El proceso de software]]
+- [[Software e Ingeniería  de Software]]
+- [[Apuntes de clase]]
+- [[tecnicas pruebas]]
+- [[Ciclo de vida de hci]]
+
 ## Especificacion del software
 consisten en el proceso de comprender y definir qué servicios se requieren del sistema, así como la identificación de las restricciones sobre la operación y el desarrollo del sistema.
 es una etapa particularmente crítica del proceso de software, ya que los errores en esta etapa conducen de manera inevitable a problemas posteriores tanto en el diseño como en la implementación del sistema.

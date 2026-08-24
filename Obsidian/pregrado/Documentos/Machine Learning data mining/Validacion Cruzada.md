@@ -21,7 +21,13 @@ validar con la particion oculta y almacenar desempeño
 *finalmente*
 se repite k veces cambiando la particion oculta  una vez terminadas la iteraciones tendremos k medidas de desempeño para los sets y entrenamiento y validacion usados en cada iteracion 
 asi que el desemeño final del modelo sera simplemtne el promedio de los desempeños anteriores 
+## Notas relacionadas
+- [[machine learning]]
+- [[resampling methods]]
+- [[metodo hold out]]
+- [[Ajuste de modelos]]
+- [[test harness]]
+
 ## numero adecuado de particiones
 no existe una unica respuesta todo depende del modelo que estemos construyendo y los datos que estemos usando. podria ser adecuando estos valores de kni muy pequeños ni muy grandes para evitar el uso excesivo de poder computacional y si es muy pequeño es posible que no detecte muy bien los patrones de nuestro modelo
-
 

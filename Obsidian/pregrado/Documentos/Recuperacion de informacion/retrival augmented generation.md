@@ -24,3 +24,10 @@ machine learning aprender patrones
 deep learning cuando  las reades neuronales son  complejas  caapas intermedias >6 es deeplearning 
 
 cada neurona tiene un peso las matores tienen mayor importancia 
+
+## Notas relacionadas
+- [[que es recuperacion de informacion]]
+- [[matriz termino frecuencia]]
+- [[ranking]]
+- [[machine learning]]
+- [[web semantica]]

@@ -105,3 +105,7 @@ ip nat inside source list (lista) interface (interface) overload
 debug ip nat  # todas las traducciones se muestren en tiempo real en el modo global
 ```
 
+## Notas relacionadas
+- [[Enrutamiento]]
+- [[VLAN]]
+- [[Http introduccion]]

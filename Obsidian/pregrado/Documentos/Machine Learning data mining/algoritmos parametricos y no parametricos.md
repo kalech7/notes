@@ -29,6 +29,12 @@ Desviación estándar
 Restringido: Al elegir una forma funcional, estos  métodos están altamente restringidos a la forma especificada.
 Complejidad limitada: los métodos son más adecuados para problemas más simples.
 Mal ajuste: en la práctica es poco probable que los métodos coincidan la función de mapeo subyacente.
+## Notas relacionadas
+- [[machine learning]]
+- [[machine learning  algoritmos parametricos]]
+- [[modelos de regresion]]
+- [[tipos de machine learning]]
+
 ## no parametricos 
 son tecnicas estadisticas que no se basan en supuestos especificos sobre le distrivucion subyacente de la poblacion que se estudia . se denominan metodos libres de distribucion 
 la idea basica detras del metodo parametrico es que no es necesario hacer suposcion de parametros para la poblacion dada

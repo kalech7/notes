@@ -1,0 +1,101 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{setspace}
+
+% Formato general
+\setlength{\parskip}{0.5em}   % espacio entre párrafos
+\setlength{\parindent}{1.25em} % indentación primer renglón
+
+% Para títulos, sin indentación y con espacio inferior
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{1em}{0.5em} % margen izq, espacio arriba y abajo
+
+% Unificar sangría y espacio para listas itemize
+\setlist[itemize]{leftmargin=2em, noitemsep, topsep=0pt}
+
+% Definir un entorno general para sangría uniforme
+\newenvironment{uniformindent}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\itemsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\newenvironment{indentedpar}{%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{2em}
+    \setlength{\rightmargin}{0pt}
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\topsep}{0pt}
+  }
+  \item[]
+}{%
+  \end{list}
+}
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Alejandro Chavez}} \\[0.15cm]
+    Operaciones | Log\'istica | Bodega \\[0.2cm]
+    \begin{tabular}{@{} c @{}}
+        \href{mailto:chavezalejo85@gmail.com}{chavezalejo85@gmail.com} \quad | \quad +593 999274384
+    \end{tabular}
+\end{center}
+
+\begin{uniformindent}
+
+\section*{Objetivo Profesional}
+Busco una oportunidad laboral en el \'area de operaciones y log\'istica para apoyar en procesos de recepci\'on, organizaci\'on y despacho de mercader\'ia. Me caracterizo por ser puntual, responsable y ordenado, con facilidad para seguir instrucciones, trabajar en equipo y mantener el control de tareas bajo presi\'on.
+
+\section*{Experiencia}
+
+\textbf{Asistente de Operaciones y Log\'istica} \hfill Marzo 2025 -- Marzo 2026\\
+Empresa Comercial (Quito, Ecuador)
+\begin{itemize}
+    \item Verificaci\'on y registro de recepci\'on de pedidos de proveedores en Odoo.
+    \item Control de inventario, conteos c\'iclicos y actualizaci\'on de stock en sistema.
+    \item Coordinaci\'on y programaci\'on de despachos mediante servicios de mensajer\'ia (couriers).
+    \item Seguimiento y trazabilidad de entregas, gestionando incidencias log\'isticas.
+    \item Gesti\'on documental de ingresos, despachos y devoluciones.
+    \item Soporte a clientes internos y socios sobre el estado de pedidos.
+    \item Propuesta de mejoras continuas en procesos log\'isticos y operativos.
+    \item Cumplimiento de pol\'iticas de seguridad de la informaci\'on y confidencialidad de datos.
+\end{itemize}
+
+\section*{Educaci\'on}
+
+\begin{samepage}
+\textbf{Bachillerato Internacional} \hfill Jul 2020\\
+Colegio 24 de Mayo\\
+\end{samepage}
+
+\section*{Habilidades}
+
+\begin{itemize}
+    \item Recepci\'on, conteo y clasificaci\'on de productos.
+    \item Organizaci\'on de bodega y control de inventario b\'asico.
+    \item Preparaci\'on y despacho de pedidos con atenci\'on al detalle.
+    \item Apoyo en carga y descarga, manteniendo orden y seguridad.
+    \item Uso b\'asico de hojas de c\'alculo para registro de datos.
+    \item Trabajo en equipo, responsabilidad y cumplimiento de tiempos.
+\end{itemize}
+
+\section*{Idiomas}
+
+\textbf{Espa\~nol:} Nativo\\
+\textbf{Ingl\'es:} Fluido\\
+\textbf{Franc\'es:} B\'asico
+
+\end{uniformindent}
+
+\end{document}

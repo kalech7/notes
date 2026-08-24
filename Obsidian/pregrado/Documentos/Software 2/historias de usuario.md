@@ -46,4 +46,11 @@ seguridad en redes,bases de datos , software
 identifcar un riesgo es tambien idenficar tareas 
 
 refactorizar significar  cambiar el codigo manteininedo la limpieza y le eficiencia lo pongo en las mejores condiciones
-deuda tecnica: el sistema funciona pero se puede hacer algo mas para mejorarlo 
+deuda tecnica: el sistema funciona pero se puede hacer algo mas para mejorarlo
+
+## Notas relacionadas
+- [[software 2]]
+- [[scrum]]
+- [[XP (eXtremme programming)]]
+- [[tecnicas pruebas]]
+- [[pruebas de usabilidad]]

@@ -124,3 +124,8 @@ El resultado resaltado en el ejemplo confirma que RA indicará al host que obten
 **Nota**: Puede usar el comando **no ipv6 nd managed-config-flag** para devolver la bandera M a su valor predeterminado de 0. El comando **no** **ipv6 nd prefix default no-autoconfig** devuelve la bandera A a su valor predeterminado de 1.
 [[DCHPv4]]
 [[SLAAC (Stateless Address Autoconfiguration)]]
+
+## Notas relacionadas
+- [[DCHPv4]]
+- [[SLAAC (Stateless Address Autoconfiguration)]]
+- [[VLAN]]

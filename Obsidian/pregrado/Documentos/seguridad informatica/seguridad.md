@@ -10,6 +10,12 @@ contrpl de accesos
  conveniio de budapest nace hace 20 años se describe penalidades 
  - derechos de autor 
  - pornografia infantil 
+
+## Notas relacionadas
+- [[seguridad informatica]]
+- [[fundamentos de seguridad]]
+- [[control de acceso]]
+- [[sgsi]]
  - grooming
  
 ley de proteccion de datos 
@@ -31,6 +37,5 @@ tratamiento
 3) transferir
 4) aceptar 
 controles identificar 
-
 
 

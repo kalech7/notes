@@ -10,3 +10,9 @@ Realizar un seguimiento y supervisar todos los accesos a los recursos de la red 
 Probar periódicamente los sistemas y procesos de seguridad
 * Mantener una política de seguridad de la información
 Mantener una política que aborde la seguridad de la información para todo el personal
+
+## Notas relacionadas
+- [[seguridad]]
+- [[sgsi]]
+- [[metodologias de analisis y evaluacion de riesgo]]
+- [[linea base]]

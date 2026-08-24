@@ -33,4 +33,10 @@ usa tracker o un decentralizado indice dht
 1. se empiza con una descripcion de l torrent
 2. se contacta al tracker para unir y obtener la lista de nodos o un dht 
 3. intercambia pedazos con diferentes nodos 
-4. favorece a los nodos que pueden cargar hacia a mi y axifixia nodos que no bajando la carga hacia ellos 
+4. favorece a los nodos que pueden cargar hacia a mi y axifixia nodos que no bajando la carga hacia ellos
+
+## Notas relacionadas
+- [[content delivery networks]]
+- [[computacion distribuida]]
+- [[servidores]]
+- [[Historia del internet]]

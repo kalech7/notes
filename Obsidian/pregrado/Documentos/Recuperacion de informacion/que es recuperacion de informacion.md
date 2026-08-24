@@ -5,3 +5,9 @@ el corpus se transforma en un indice ( el cual nos presenta el inditificador del
 
 
 es una disciplina que busca informacion relevante a partir de una solicitud de informacion y no datos 
+
+## Notas relacionadas
+- [[matriz termino frecuencia]]
+- [[ranking]]
+- [[retrival augmented generation]]
+- [[web semantica]]

@@ -30,3 +30,8 @@ los routers tienen informacion de los vecinos de los vecinos
 temporizador de actualizacion se envia 30 segundos 
 temporizador de invalides 
 temporizador de purge 
+
+## Notas relacionadas
+- [[Enrutamiento]]
+- [[OSPFv2(Open Shortest Path First)]]
+- [[estado de enlace]]

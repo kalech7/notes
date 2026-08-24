@@ -5,3 +5,8 @@ capa 1: un dominio de colision para todas sus conexion (hub)
 ![[Pasted image 20230911215213.png]]
 Amarillo broadcast 
 negro colision
+
+## Notas relacionadas
+- [[VLAN]]
+- [[STP (Protocolo de árbol de extensión)]]
+- [[EthernetChannel]]

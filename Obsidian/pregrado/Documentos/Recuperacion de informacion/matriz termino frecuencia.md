@@ -40,3 +40,9 @@ la compraciones se hacen elemento por elemento
 indicie jarccard  cuentos los unos jaccard(q,doc)
 q interseccion doc
 q union do
+
+## Notas relacionadas
+- [[que es recuperacion de informacion]]
+- [[ranking]]
+- [[retrival augmented generation]]
+- [[Untitled 2]]

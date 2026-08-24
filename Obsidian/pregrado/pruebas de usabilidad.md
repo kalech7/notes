@@ -5,3 +5,9 @@ paso 4 realizacion del test de usabilidad
 
 artefactos (high o low fidelity)
 instrumentos(forma de recoleccion de informacion) AFECTIVA
+
+## Notas relacionadas
+- [[Ciclo de vida de hci]]
+- [[design thinking]]
+- [[tecnicas pruebas]]
+- [[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]

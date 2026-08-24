@@ -74,3 +74,8 @@ sh standby brief
 - Los routers activos HSRP siguen siendo el router activo incluso si otro router con una prioridad más alta se une a la red.
 - En el estado de habla HSRP, el router comienza a enviar mensajes de saludo periódicos.
 - En el estado de aprendizaje de HSRP, el router aún no ha determinado la dirección IP virtual.
+
+## Notas relacionadas
+- [[FHRP (Protocolos de redundancia de primer salto)]]
+- [[Enrutamiento]]
+- [[VLAN]]

@@ -26,6 +26,12 @@ Service Level Agreement es un contrato formal entre un proveedor de servicios y 
     
     - Establece un proceso para revisar y actualizar el SLA regularmente para asegurar que siga siendo relevante y adecuado.
 ## importancia
+
+## Notas relacionadas
+- [[tiempo de respuesta vs Throughput]]
+- [[rendimineto de htpp]]
+- [[Cloud computing]]
+- [[responsabilidad compartida]]
 - **Claridad y Transparencia:**
     - Proporciona una comprensión clara y mutua de lo que se espera del proveedor y del cliente, reduciendo malentendidos y disputas.
 - **Mejora del Desempeño:**

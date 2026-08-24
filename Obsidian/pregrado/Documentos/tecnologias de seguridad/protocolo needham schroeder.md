@@ -4,3 +4,8 @@ N-S usea nonces (numbers used once ), generados aleatoriamente para evitar el re
 a y b tienen una comunicacion simetrica segura con S usando Kas y Kbs
 nonce no es timestamp 
 
+## Notas relacionadas
+- [[protocolos criptograficos]]
+- [[seguridad informatica]]
+- [[ataques a contraseñas]]
+- [[protocolo N-S]]

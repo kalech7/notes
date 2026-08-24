@@ -3,3 +3,9 @@ significa manterner un conjunto en particular. simplemente evaluamos el otro con
 lo que basicamente hace es dividir en dos conjuntos separados cuando nuestra data tiene muchas instancias del metodo de reserva
 1. data de entrenamiento(construye el modelo e identifica un valor de corte)
 2. data de testeo (calcula la presicion, la especificidad etc)
+
+## Notas relacionadas
+- [[resampling methods]]
+- [[Validacion Cruzada]]
+- [[Ajuste de modelos]]
+- [[metricas para clasificadores]]

@@ -91,3 +91,8 @@ ORDER BY suma DESC
 limit 1
 
 ```
+
+## Notas relacionadas
+- [[Subconsultas]]
+- [[ejemplos]]
+- [[Comandos]]

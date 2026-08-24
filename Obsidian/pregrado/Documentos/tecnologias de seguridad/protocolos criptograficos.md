@@ -22,3 +22,9 @@ A(la computadora a)->(envia) B(la computadora b):M(el mensaje)
 * impersonation: el atacante asume la identidad de una de las entidades legitimas de la red
 * man in the middle: el atacante se interpone entre dos entidades
 * interleaving attack: el atacante inyecta mensajes adulteradas en un protcolo para interrumpilo o subertirlo
+
+## Notas relacionadas
+- [[protocolo needham schroeder]]
+- [[seguridad informatica]]
+- [[fundamentos de seguridad]]
+- [[ataques a contraseñas]]

@@ -34,3 +34,8 @@ datos del módulo de memoria. A menudo es igual a la longitud de palabra.
 * EEPROM (Electrical Erase Programable Read Only Memory): Pueden ser grabadas o borradas por el usuario. Es posible situarlas online en algunos sistemas computacionales (BIOS actuales).
 * Flash memory: Su nombre se debe a que pueden ser borradas en bloques a alta velocidad.
 ![[Pasted image 20230730184430.png]]
+
+## Notas relacionadas
+- [[Principios de funcionamiento]]
+- [[Ejercicio Correspondencia directa.excalidraw]]
+- [[Documentos/computacion grafica/pipeline grafico|Pipeline gráfico]]

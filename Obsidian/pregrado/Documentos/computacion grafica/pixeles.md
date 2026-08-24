@@ -7,3 +7,8 @@ el proceso de rendering nos devuelve una imagen en 2d
 color tiene (r,g,b) se usan 8 bits para representar cada color red green blue un color puede ser representado por 24 bits 
 con 8 bits se puede represnetar desde 0-255 o normalizado entre 0-1
 los colores son aditivos 
+
+## Notas relacionadas
+- [[OpenGl]]
+- [[pipeline grafico]]
+- [[Untitled 4]]

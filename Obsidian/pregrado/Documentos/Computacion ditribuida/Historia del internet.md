@@ -11,3 +11,9 @@ demasiado creciemitno desde pcs y ethernets lans (casas,educacion,empresas)
 **arquitectura moderna del internet**
 * esta todavia descentalizada 
 ![[Pasted image 20240429220138.png]]
+
+## Notas relacionadas
+- [[Http introduccion]]
+- [[sockets]]
+- [[computacion distribuida]]
+- [[administracion de redes]]

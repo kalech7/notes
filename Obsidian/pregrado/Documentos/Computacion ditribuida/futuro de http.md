@@ -30,3 +30,9 @@ reescribe paginas en el vuelo con las reglas basadas en las mejores practicas
 - Pipelining
 ### Caching y Proxies  (CARP)
 ### CDN
+
+## Notas relacionadas
+- [[Http introduccion]]
+- [[http caching and proxies]]
+- [[content delivery networks]]
+- [[rendimineto de htpp]]

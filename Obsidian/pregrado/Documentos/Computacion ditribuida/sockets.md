@@ -28,3 +28,8 @@ sockets usan estructura de datos que es llamda socket
 3. replay <-
 4. close <->
 
+## Notas relacionadas
+- [[Http introduccion]]
+- [[Remote Procedure Call (rpc)]]
+- [[servidores]]
+- [[computacion distribuida]]

@@ -42,6 +42,10 @@ Además, m representa el número de líneas de caché.
 ![[Pasted image 20230730193411.png]]
 ![[Pasted image 20230730193431.png]]
 ### Ejercicio
+
+## Notas relacionadas
+- [[Funcionamiento del Sistema de Memoria]]
+- [[Ejercicio Correspondencia directa.excalidraw]]
 [[Ejercicio Correspondencia directa.excalidraw]]
 ## Correspondencia Asociativa
 Permite que cada bloque de memoria principal pueda cargarse en cualquier línea de la caché. En este caso, la lógica de control de la caché interpreta una dirección de memoria simplemente como una etiqueta (identifica unívocamente un bloque de memoria principal) y un campo de palabra

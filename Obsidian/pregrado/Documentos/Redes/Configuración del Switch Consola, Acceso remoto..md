@@ -95,3 +95,10 @@ Switch(config)# exit
 ## Acceso remoto al Switch: Auxiliar.
 - Forma antigua de acceder a consola de forma remota
 - Se prefiere el puerto de consola sobre el auxiliar.
+
+## Notas relacionadas
+- [[Comandos para examinar el IOS]]
+- [[VLAN]]
+- [[STP (Protocolo de árbol de extensión)]]
+- [[EthernetChannel]]
+- [[Port Security]]

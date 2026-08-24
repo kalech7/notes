@@ -1,3 +1,9 @@
+## Notas relacionadas
+- [[Documentos/computacion grafica/OpenGl|OpenGL y shaders]]
+- [[Documentos/computacion grafica/pipeline grafico|Pipeline gráfico]]
+- [[Documentos/computacion grafica/pixeles|Píxeles]]
+- [[Untitled 4]]
+
 # Element buffer objects 
 Es un buffer que alamacena indices que opengl usa para decidir que vertices usar para dibujar
 unsigned int EBO

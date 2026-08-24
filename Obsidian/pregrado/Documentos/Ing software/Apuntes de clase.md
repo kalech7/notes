@@ -134,3 +134,10 @@ linea base
 
 permitir que los protyecto puedan llevar a acabo
 facilitan la ejecucion de procesos en la empresa 
+
+## Notas relacionadas
+- [[El proceso de software]]
+- [[Actividades del proceso de software]]
+- [[Software e Ingeniería  de Software]]
+- [[proyectos]]
+- [[metodologias de analisis y evaluacion de riesgo]]

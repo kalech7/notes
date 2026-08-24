@@ -42,3 +42,8 @@ Cuando falla el router activo, el protocolo de redundancia hace que el router de
 - Un router en espera(reserva) es un dispositivo que forma parte de un grupo de routers virtuales al que se le asigna la función de puerta de enlace predeterminada alternativa.
 - Un router de reenvío es un dispositivo que forma parte de un grupo de routers virtuales asignado a la función de puerta de enlace predeterminada.
 - HSRP y HSRP para IPv6 son propiedad de Cisco. VRRPV2 e IRDP son protocolos no propietarios.
+
+## Notas relacionadas
+- [[HSRP (Hot Standby Router Protocol)]]
+- [[Enrutamiento]]
+- [[VLAN]]

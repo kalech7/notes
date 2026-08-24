@@ -10,4 +10,10 @@ para tratar el riesgo
   2) acepto el riesgo
   implementacion de los nuevos controles 
   1) politicas y procedimientos 
+
+## Notas relacionadas
+- [[sgsi]]
+- [[egsi]]
+- [[controles administrativos]]
+- [[fundamentos de seguridad]]
   

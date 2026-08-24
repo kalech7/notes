@@ -13,3 +13,8 @@ auc=0.7 cuando las distribuciones se superponen introducen errores dependiendo d
 la peor situacion es cuando el auc es aprox 0.5 el modelo no tiene la capacidad de diiscriminacion para distinguir entre las clases positivas y negativas 
 
 cuando auc es aprox 00 el modelo en realidad esta correspondiendo las clases significa que el modelo predice la clase negativa como una positiva y viceversa 
+
+## Notas relacionadas
+- [[metricas para clasificadores]]
+- [[metodo hold out]]
+- [[tipos de machine learning]]

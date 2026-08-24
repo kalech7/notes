@@ -30,3 +30,10 @@ el server se mantiene esta soportando concurrentes solicitudes para muchos clien
 * como ayuda esto?
 conexionnes paralelas no son relentizadas mucho
 t
+
+## Notas relacionadas
+- [[Http introduccion]]
+- [[http caching and proxies]]
+- [[content delivery networks]]
+- [[futuro de http]]
+- [[tiempo de respuesta vs Throughput]]

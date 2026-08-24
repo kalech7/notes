@@ -128,3 +128,11 @@ En la entrada de la tabla de enrutamiento,  [1/0] a 172.16.2.2, los números d
 
 
 [[VLAN]]
+
+## Notas relacionadas
+- [[Inter-VLAN]]
+- [[OSPFv2(Open Shortest Path First)]]
+- [[Vector distancia]]
+- [[estado de enlace]]
+- [[NAT y PAT]]
+- [[FHRP (Protocolos de redundancia de primer salto)]]

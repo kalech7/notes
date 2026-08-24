@@ -16,3 +16,10 @@ md5:125 bits sha-1:160bits
 * disponibiidad
 asegura que la informacion swa accesible en el momento deseado por los usuarios autorizados
 redundancia y tolerancia a falllos 
+
+## Notas relacionadas
+- [[fundamentos de seguridad]]
+- [[control de acceso]]
+- [[protocolos criptograficos]]
+- [[sgsi]]
+- [[repaso prueba]]

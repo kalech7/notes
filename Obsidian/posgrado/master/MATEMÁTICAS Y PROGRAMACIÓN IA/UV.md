@@ -1,5 +1,8 @@
 **es una herramienta moderna para gestionar proyectos de Python.** Sirve para crear entornos virtuales, instalar dependencias, manejar versiones de Python y mantener las librerías del proyecto organizadas y reproducibles.
 
+> [!info] Lugar de esta nota en el grafo del posgrado
+> `uv` es la base de ejecución para las demás notas: [[Estructuras de Python en un experimento de IA]], [[Programación orientada a objetos aplicada a Machine Learning]], [[numpy pandas parquet arrow]] y [[funcion de perdida]]. Para estudiar POO por sesiones, entra por [[poo ia/00 Índice - POO e IA]].
+
 # ¿Qué es UV?
 
 **uv** es un gestor de paquetes y proyectos de Python escrito en **Rust**, creado por [Astral](https://astral.sh) (los mismos de Ruff). Su propuesta es reemplazar con **una sola herramienta** todo el ecosistema fragmentado que tradicionalmente usabas por separado:
@@ -434,5 +437,4 @@ uv sync
 - **`uv add` vs `uv pip install`**: el primero es declarativo (modifica `pyproject.toml` + lock); el segundo es imperativo y efímero. Mezclarlos genera entornos que no coinciden con el lock.
 - **Caché**: `uv cache dir` te dice dónde vive; `uv cache clean` la limpia si necesitas espacio.
 - **PyTorch con GPU**: uv soporta índices alternativos vía `[[tool.uv.index]]` en el `pyproject.toml`, lo que resuelve el clásico problema de instalar la build de CUDA correcta.
-
 

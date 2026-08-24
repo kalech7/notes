@@ -10,3 +10,8 @@ DATE_PART('YEAR',fecha)
 DATE_PART('MONTH',fecha)
 DATE_PART('DAY',fecha)
 ```
+
+## Notas relacionadas
+- [[Comandos]]
+- [[Principales tipo de datos]]
+- [[Transaccion]]

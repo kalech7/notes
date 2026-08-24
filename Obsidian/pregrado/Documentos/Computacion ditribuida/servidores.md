@@ -17,3 +17,9 @@ actualizaciones perdidas
 
 fro i in { 1 .. 20}; do rm f2; ./ fileconc f2 padre hijo;sleep 2; more f2;done
 no hay que cpmf
+
+## Notas relacionadas
+- [[sockets]]
+- [[Remote Procedure Call (rpc)]]
+- [[administracion de redes]]
+- [[computacion distribuida]]

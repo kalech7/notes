@@ -7,3 +7,8 @@
 - **conocimiento:** el grado en que el conocimiento previo puede ser utlizado para resolver ele problema 
 -  **intereaccion humana:** la necesidad de interaccion con humanos en la resolucion del problema 
 ![[Pasted image 20231115154452.png]]
+
+## Notas relacionadas
+- [[conducta racional]]
+- [[machine learning]]
+- [[Algoritmo Dijkstra]]

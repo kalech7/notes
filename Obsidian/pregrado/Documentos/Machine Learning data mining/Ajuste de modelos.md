@@ -7,6 +7,13 @@ tanto el problema del ajuste por debajo(underfitting) como por encima(overfittin
 
 ## overfitting
 nuestra maquina solo se ajustar a aprender los casos particulares que le enseñamos y sera incapaz de reconocer nuevos datos de entrada. cuando sobre entrenamosa nuestro modelo estara considerando como validos solo los datos identicos a los de nuestro conjunt de entrenamiento incluido sus defectos (muchas veces introducimos muestras atipicas o anomalas )
+## Notas relacionadas
+- [[machine learning]]
+- [[Validacion Cruzada]]
+- [[metodo hold out]]
+- [[bias y viarianza]]
+- [[test harness]]
+
 ## equilibrio del aprendizaje
 debemos encontrar un punto medio en el aprendizaje de nuestro modelo en el que no estemos en underfitting y tampoco en overfitting 
 ![[Pasted image 20240603073921.png]]

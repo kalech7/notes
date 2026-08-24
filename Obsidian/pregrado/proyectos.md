@@ -10,3 +10,10 @@ PMs (project manager)
 SCMs (cadena de suministro)
 
 plnes de continuidad
+
+## Notas relacionadas
+- [[Untitled 1]]
+- [[producto minimo viable]]
+- [[emprendimiento]]
+- [[software 2]]
+- [[tdr terminos de refencia]]

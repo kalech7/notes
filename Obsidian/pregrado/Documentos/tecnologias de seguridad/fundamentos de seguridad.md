@@ -107,3 +107,9 @@ empelan herramientas extremadamente avanzadas y tecnicas que son muy dificiles
 
 #### externos
 
+## Notas relacionadas
+- [[seguridad informatica]]
+- [[metodologias de analisis y evaluacion de riesgo]]
+- [[ataques a contraseñas]]
+- [[protocolos criptograficos]]
+- [[Ingenieria social]]

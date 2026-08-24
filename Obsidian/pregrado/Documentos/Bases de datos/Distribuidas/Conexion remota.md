@@ -46,3 +46,8 @@ para ver el nombre de la base
 ```sql
 show parameters service
 ```
+
+## Notas relacionadas
+- [[Conexion a la base datos]]
+- [[SQL]]
+- [[computacion distribuida]]

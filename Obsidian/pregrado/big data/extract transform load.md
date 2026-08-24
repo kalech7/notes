@@ -21,6 +21,12 @@ Las transformaciones típicas incluyen agregadores, enmascaramiento de datos, ex
 * limpiar datos irrelevantes 
 * ordenar y filtrar datos 
 * borrar la info duplicada 
+## Notas relacionadas
+- [[Caracteristicas del big data]]
+- [[crisp-dm]]
+- [[SQL]]
+- [[Conexion a la base datos]]
+
 # Carga
 es cargar los conjuntos de datos transformados en la base de datos de destinopara su almacenamiento y analisis.
 para cargar los datos se lo realiza mediante una rutina de insercion SQL donde la insercion de los datos se lleva a cabo de manera manual (este proceso toma mucho tiempo peor tiene mejor control de calidad ) otra forma es de manera masica(mucho mas rapido y reduce la posibilidad de errores sin embargo no realiza controles de calidad para cada registro lo que puede porvar problemas de integridad de los datos )
