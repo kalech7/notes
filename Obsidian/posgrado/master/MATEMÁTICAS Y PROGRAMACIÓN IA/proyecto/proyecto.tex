@@ -1,9 +1,9 @@
 \documentclass[10pt,letterpaper]{article}
 
-% --- Paquetes de tipografía y formato formal (estilo Word / Paper) ---
+% --- Paquetes de tipografía y formato formal ---
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[margin=1.55cm,top=1.3cm,bottom=1.3cm]{geometry}
+\usepackage[margin=1.5cm,top=1.25cm,bottom=1.25cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
 \usepackage{titlesec}
@@ -28,9 +28,9 @@
     citecolor=black
 }
 
-% --- Interlineado y espaciado de párrafos ---
-\setstretch{1.02}
-\setlength{\parskip}{2.2pt}
+% --- Interlineado mejorado y espaciado formal y legible ---
+\setstretch{1.14}
+\setlength{\parskip}{3.2pt}
 \setlength{\parindent}{0pt}
 
 % --- Formato formal de títulos de sección ---
@@ -42,12 +42,12 @@
   {\normalfont\normalsize\bfseries}
   {\thesubsection.}{0.35em}{}
 
-\titlespacing*{\section}{0pt}{4pt}{1.5pt}
-\titlespacing*{\subsection}{0pt}{2.5pt}{1pt}
+\titlespacing*{\section}{0pt}{4.5pt}{1.8pt}
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
 
-% --- Configuración de listas formal ---
-\setlist[itemize]{leftmargin=13pt, itemsep=0.6pt, topsep=0.8pt, parsep=0pt}
-\setlist[enumerate]{leftmargin=13pt, itemsep=0.6pt, topsep=0.8pt, parsep=0pt}
+% --- Configuración de listas formal y espaciada ---
+\setlist[itemize]{leftmargin=13pt, itemsep=1.2pt, topsep=1.2pt, parsep=0pt}
+\setlist[enumerate]{leftmargin=13pt, itemsep=1.2pt, topsep=1.2pt, parsep=0pt}
 
 \begin{document}
 
@@ -59,7 +59,7 @@
     \rule{\textwidth}{0.7pt}
 \end{center}
 
-\vspace{-5pt}
+\vspace{-6pt}
 
 % =========================================================================
 \section{Tema}
@@ -105,7 +105,7 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
 \vspace{2pt}
 \begin{center}
 \begin{tikzpicture}[
-    node distance=0.4cm and 0.45cm,
+    node distance=0.35cm and 0.45cm,
     every node/.style={font=\scriptsize},
     block/.style={
         rectangle,
@@ -113,8 +113,8 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
         fill=boxbg,
         rounded corners=2.5pt,
         text width=5.1cm,
-        minimum height=1.15cm,
-        inner sep=4pt,
+        minimum height=1.1cm,
+        inner sep=3.5pt,
         align=center,
         line width=0.6pt
     },
@@ -136,8 +136,8 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
         Cálculo de tiempos (\textit{Hold/Flight}), velocidad, aceleración, curvatura y pausas cognitivas
     };
 
-    % Fila Inferior: Fases 6 a 4 (de derecha a izquierda para flujo natural)
-    \node[block, below=0.45cm of b3] (b4) {
+    % Fila Inferior: Fases 6 a 4 (de derecha a izquierda)
+    \node[block, below=0.38cm of b3] (b4) {
         \textbf{4. Modelado Comparativo}\\[1pt]
         Entrenamiento de clasificadores y detección de anomalías (\textit{Baseline} vs. \textit{FE})
     };
@@ -160,20 +160,20 @@ El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las lib
     \draw[arr] (b5) -- (b6);
 \end{tikzpicture}
 \end{center}
-\vspace{-2pt}
+\vspace{-3pt}
 
 \textbf{Pipeline y Arquitectura de Implementación:}
 \begin{enumerate}
-    \item \textbf{Ingesta y Preprocesamiento:} Limpieza de ruido, sincronización temporal y segmentación en ventanas temporales móviles.
-    \item \textbf{Feature Engineering:} Extracción de descriptores cinemáticos y temporales (tiempos de vuelo, pulsación, velocidad de tipeo, aceleración de cursor, curvatura de trayectorias, tasa de cambio de dirección angular y pausas cognitivas).
+    \item \textbf{Ingesta y Preprocesamiento:} Limpieza de ruido, sincronización temporal y segmentación en ventanas móviles.
+    \item \textbf{Feature Engineering:} Extracción de descriptores cinemáticos y temporales (tiempos de vuelo, pulsación, velocidad de tipeo, aceleración de cursor, curvatura de trayectorias, cambio angular y pausas cognitivas).
     \item \textbf{Análisis Estadístico y Selección:} Evaluación de estabilidad intra-sesión vs. poder discriminativo inter-usuario.
     \item \textbf{Entrenamiento y Comparación de Modelos:} Comparación entre \textbf{Modelo Baseline} (variables crudas) vs. \textbf{Modelo con Feature Engineering}, evaluando \textbf{Logistic Regression}, \textbf{Random Forest}, \textbf{SVM RBF} e \textbf{Isolation Forest}.
-    \item \textbf{Validación Estratificada por Sesión (Out-of-Session Split):} Partición temporal estricta de sesiones independientes para verificar robustez ante la deriva natural y evitar filtrado de datos (\textit{data leakage}).
+    \item \textbf{Validación Estratificada por Sesión (Out-of-Session Split):} Partición temporal de sesiones independientes para verificar robustez ante la deriva natural y evitar filtrado de datos (\textit{data leakage}).
     \item \textbf{Métricas de Evaluación:} \textit{Accuracy}, \textit{Precision}, \textit{Recall}, \textit{F1-Score}, \textit{ROC-AUC}, \textit{Equal Error Rate} (EER) y SHAP.
 \end{enumerate}
 
 \textbf{Tema de investigación complementario (fuera del alcance del curso):}\\
-Se investigarán los fundamentos teóricos de la \textbf{Biometría Conductual Continua} y el fenómeno de \textbf{Behavioral Drift} (deriva del patrón conductual a lo largo del tiempo), analizando mecanismos de adaptación dinámica de umbrales para mantener la seguridad sin generar fricción al usuario legítimo.
+Se investigarán los fundamentos de la \textbf{Biometría Conductual Continua} y el fenómeno de \textbf{Behavioral Drift} (deriva temporal del patrón de conducta), analizando mecanismos de adaptación dinámica de umbrales para mantener la seguridad sin generar fricción al usuario legítimo.
 
 % =========================================================================
 \section{Objetivos}
