@@ -1,19 +1,25 @@
+% !TeX root = proyecto.tex
+% !TeX program = pdflatex
 \documentclass[10pt,letterpaper]{article}
 
 % --- Paquetes de tipografía y formato formal ---
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage[margin=1.5cm,top=1.25cm,bottom=1.25cm]{geometry}
-\usepackage{amsmath,amssymb,amstext} % amstext incluido explícitamente para evitar advertencias de IDE
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{setspace}
 \usepackage{microtype}
+\usepackage{color}
 \usepackage{xcolor}
-\usepackage{hyperref}
-\usepackage{times} % Tipografía estándar formal Times
+\usepackage{pgf}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
+\usepackage{url}
+\usepackage{hyperref}
 
 % --- Configuración de colores sobrios ---
 \definecolor{boxbg}{RGB}{248, 250, 253}
@@ -71,22 +77,28 @@
 % =========================================================================
 
 \subsection{Descripción Funcional}
-Los sistemas tradicionales de seguridad y los mecanismos tipo \textbf{CAPTCHA} tradicionales o basados en retos estáticos han demostrado \textbf{no ser plenamente confiables}: generan alta fricción al usuario, son vulnerables a bots avanzados potenciados con IA y únicamente validan la identidad de forma puntual en un instante aislado, dejando la sesión desprotegida tras el acceso inicial. Frente a esto, el proyecto propone desarrollar un sistema de \textbf{autenticación continua} fundamentado en \textbf{biometría conductual}, monitoreando en segundo plano los patrones neuromotores de interacción (teclado y mouse) a lo largo de toda la sesión.
+Los mecanismos tradicionales de autenticación permiten verificar la identidad del usuario
+principalmente al inicio de una sesión, pero no garantizan que la misma persona continúe
+utilizando el sistema posteriormente.
+Esta limitación cobra mayor relevancia ante posibles suplantaciones realizadas tanto por
+terceros como por herramientas automatizadas o agentes basados en Inteligencia Artificial.
+Frente a este problema, el proyecto propone desarrollar un sistema de
+\textbf{autenticación continua} basado en \textbf{biometría conductual}, analizando en segundo
+plano los patrones de interacción del usuario mediante teclado y mouse a lo largo de la sesión.
 
-El problema fundamental radica en que el comportamiento humano no es uniforme: un usuario legítimo presenta \textbf{variaciones naturales intra-usuario} (\textit{behavioral drift}) provocadas por fatiga, estrés o multitarea. Los sistemas rígidos y los CAPTCHAs convencionales fallan en este punto, clasificando erróneamente variaciones humanas legítimas como anomalías o dejando pasar suplantaciones sofisticadas. Por ello, el sistema propuesto integrará modelos adaptativos de Machine Learning capaces de diferenciar de forma precisa entre:
 \begin{enumerate}
     \item \textbf{Comportamiento habitual del usuario legítimo.}
     \item \textbf{Variaciones naturales del comportamiento} del mismo usuario entre diferentes sesiones temporales.
     \item \textbf{Comportamiento de suplantación} ejecutado por un tercero o mediante herramientas automatizadas (bots).
 \end{enumerate}
 
-\textbf{Pregunta de investigación:} \textit{¿Qué características conductuales y transformaciones de Feature Engineering permiten superar la baja confiabilidad de los retos puntuales tipo CAPTCHA, distinguiendo de manera robusta la deriva natural del usuario legítimo de una suplantación real?}
+\textbf{Pregunta de investigación:} \textit{¿Qué características obtenidas mediante Feature Engineering permiten distinguir variaciones naturales del usuario legítimo frente a una suplantación de identidad?}
 
 \textbf{Datasets públicos y gratuitos a utilizar:}
 \begin{itemize}
     \item \textbf{Balabit Mouse Dynamics Challenge Dataset:} Benchmark público con sesiones de interacción de múltiples usuarios en entornos reales, capturando coordenadas $(x, y, t)$, acciones de clic y vectores de trayectoria.\\
     Enlace de descarga: \url{https://github.com/balabit/Mouse-Dynamics-Challenge}
-    \item \textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):} Repositorio multi-sesión abierto con más de 140\,000 registros integrados de eventos de teclado (\textit{Hold/Flight Time}) y cinemática de mouse.\\
+    \item \textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):} Dataset público de biometría conductual que contiene más de 142\,000 registros de interacción de 11 usuarios, incluyendo eventos de teclado y dinámicas de mouse recopilados mediante una aplicación web.\\
     Enlace de descarga: \url{https://data.mendeley.com/datasets/f78jsh6zp9/2}
 \end{itemize}
 
@@ -99,82 +111,87 @@ El problema fundamental radica en que el comportamiento humano no es uniforme: u
 \clearpage
 
 \subsection{Descripción Técnica}
-El proyecto será desarrollado en el lenguaje \textbf{Python}, empleando las librerías: \textbf{Pandas, NumPy y SciPy} (procesamiento de datos y series temporales), \textbf{Scikit-learn} (modelado, validación y métricas), \textbf{Matplotlib y Seaborn} (visualización) y \textbf{SHAP} (interpretabilidad de características).
+El proyecto será desarrollado en Python, empleando las librerías: \textbf{Pandas, NumPy y SciPy} (procesamiento de datos y series temporales), \textbf{Scikit-learn} (modelado, validación y métricas), \textbf{Matplotlib y Seaborn} (visualización) y \textbf{SHAP} (interpretabilidad de características).
 
 % --- Diagrama de Arquitectura / Pipeline del Proyecto ---
 \vspace{2pt}
 \begin{center}
-\begin{tikzpicture}[
-    node distance=0.35cm and 0.45cm,
-    every node/.style={font=\scriptsize},
-    block/.style={
-        rectangle,
-        draw=boxborder,
-        fill=boxbg,
-        rounded corners=2.5pt,
-        text width=5.1cm,
-        minimum height=1.1cm,
-        inner sep=3.5pt,
-        align=center,
-        line width=0.6pt
-    },
-    arr/.style={-{Stealth[scale=0.85]}, line width=0.7pt, color=arrowcolor}
-]
-    % Fila Superior: Fases 1 a 3
-    \node[block] (b1) {
-        \textbf{1. Ingesta de Datos Brutos}\\[1pt]
-        Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas continuas de mouse $(x, y, t)$, clics
-    };
-    
-    \node[block, right=of b1] (b2) {
-        \textbf{2. Preprocesamiento \& Ventaneo}\\[1pt]
-        Filtrado de ruido, sincronización temporal y segmentación en ventanas móviles por sesión
-    };
-    
-    \node[block, right=of b2] (b3) {
-        \textbf{3. Feature Engineering}\\[1pt]
-        Cálculo de tiempos (\textit{Hold/Flight}), velocidad, aceleración, curvatura y pausas cognitivas
-    };
+    \begin{tikzpicture}[
+        node distance=0.35cm and 0.45cm,
+        every node/.style={font=\scriptsize},
+        block/.style={
+            rectangle,
+            draw=boxborder,
+            fill=boxbg,
+            rounded corners=2.5pt,
+            text width=5.1cm,
+            minimum height=1.1cm,
+            inner sep=3.5pt,
+            align=center,
+            line width=0.6pt
+        },
+        arr/.style={-{Stealth[scale=0.85]}, line width=0.7pt, color=arrowcolor}
+    ]
 
-    % Fila Inferior: Fases 6 a 4 (de derecha a izquierda)
-    \node[block, below=0.38cm of b3] (b4) {
-        \textbf{4. Modelado Comparativo}\\[1pt]
-        Entrenamiento de clasificadores y detección de anomalías (\textit{Baseline} vs. \textit{FE})
-    };
-    
-    \node[block, left=of b4] (b5) {
-        \textbf{5. Validación Out-of-Session}\\[1pt]
-        Partición temporal de sesiones independientes para evaluar resistencia a la deriva natural
-    };
-    
-    \node[block, left=of b5] (b6) {
-        \textbf{6. Decisión \& Interpretabilidad}\\[1pt]
-        Superación de CAPTCHAs: Legítimo (\textit{Drift}) vs. Impostor, con explicabilidad SHAP
-    };
+        % Fila Superior: Fases 1 a 3
+        \node[block] (b1) {
+            \textbf{1. Ingesta de Datos}\\[1pt]
+            Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas de mouse $(x, y, t)$ y clics
+        };
 
-    % Flechas de conexión del flujo
-    \draw[arr] (b1) -- (b2);
-    \draw[arr] (b2) -- (b3);
-    \draw[arr] (b3.south) -- (b4.north);
-    \draw[arr] (b4) -- (b5);
-    \draw[arr] (b5) -- (b6);
-\end{tikzpicture}
+        \node[block, right=of b1] (b2) {
+            \textbf{2. Preprocesamiento}\\[1pt]
+            Limpieza, filtrado de ruido y normalización de los datos
+        };
+
+        \node[block, right=of b2] (b3) {
+            \textbf{3. Feature Engineering}\\[1pt]
+            Extracción de \textit{Hold/Flight Time}, velocidad, aceleración, curvatura y pausas
+        };
+
+        % Fila Inferior: Fases 6 a 4
+        \node[block, below=0.38cm of b3] (b4) {
+            \textbf{4. Modelado Comparativo}\\[1pt]
+            Comparación de modelos \textit{Baseline} y modelos con características obtenidas mediante \textit{Feature Engineering}
+        };
+
+        \node[block, left=of b4] (b5) {
+            \textbf{5. Validación por Sesión}\\[1pt]
+            Entrenamiento y evaluación con sesiones diferentes para comprobar la capacidad de generalización
+        };
+
+        \node[block, left=of b5] (b6) {
+            \textbf{6. Evaluación e Interpretabilidad}\\[1pt]
+            Clasificación Legítimo vs. Impostor y análisis de las características más relevantes mediante SHAP
+        };
+
+        % Flechas de conexión del flujo
+        \draw[arr] (b1) -- (b2);
+        \draw[arr] (b2) -- (b3);
+        \draw[arr] (b3.south) -- (b4.north);
+        \draw[arr] (b4) -- (b5);
+        \draw[arr] (b5) -- (b6);
+
+    \end{tikzpicture}
 \end{center}
 \vspace{-3pt}
 
 \textbf{Pipeline y Arquitectura de Implementación:}
 \begin{enumerate}
-    \item \textbf{Ingesta y Preprocesamiento:} Limpieza de ruido, sincronización temporal y segmentación en ventanas móviles.
+    \item \textbf{Ingesta y Preprocesamiento:} Limpieza de datos y filtrado de ruido.
     \item \textbf{Feature Engineering:} Extracción de descriptores cinemáticos y temporales (tiempos de vuelo, pulsación, velocidad de tipeo, aceleración de cursor, curvatura de trayectorias, cambio angular y pausas cognitivas).
-    \item \textbf{Análisis Estadístico y Selección:} Evaluación de estabilidad intra-sesión vs. poder discriminativo inter-usuario.
-    \item \textbf{Entrenamiento y Comparación de Modelos:} Comparación entre \textbf{Modelo Baseline} (variables crudas) vs. \textbf{Modelo con Feature Engineering}, evaluando \textbf{Logistic Regression}, \textbf{Random Forest}, \textbf{SVM RBF} e \textbf{Isolation Forest}.
-    \item \textbf{Validación Estratificada por Sesión (Out-of-Session Split):} Partición temporal de sesiones independientes para verificar robustez ante la deriva natural y evitar filtrado de datos (\textit{data leakage}).
-    \item \textbf{Métricas de Evaluación:} \textit{Accuracy}, \textit{Precision}, \textit{Recall}, \textit{F1-Score}, \textit{ROC-AUC}, \textit{Equal Error Rate} (EER) y SHAP.
+    \item \textbf{Análisis Estadístico y Selección:} Analizar qué características se mantienen relativamente estables para un mismo usuario y cuáles permiten diferenciarlo de otros usuarios.
+    \item \textbf{Entrenamiento y Comparación de Modelos:} Entrenar modelos utilizando variables base y características obtenidas mediante \textit{Feature Engineering}, comparando su rendimiento con \textbf{Random Forest} para clasificación y \textbf{Isolation Forest} para detección de anomalías.
+    \item \textbf{Validación por Sesión:} Entrenar y evaluar el modelo usando sesiones diferentes del usuario para comprobar su capacidad de generalización.
+    \item \textbf{Métricas de Evaluación:} \textit{Accuracy}, \textit{Precision}, \textit{Recall} y \textit{F1-Score}.
 \end{enumerate}
 
 \textbf{Tema de investigación complementario (fuera del alcance del curso):}\\
-Se investigarán los fundamentos teóricos de la \textbf{Biometría Conductual Continua}, el fenómeno de \textbf{Behavioral Drift} y las limitaciones de confiabilidad de los esquemas tradicionales tipo \textbf{CAPTCHA}, analizando cómo el análisis cinemático adaptativo de señales biométricas mitiga vulnerabilidades frente a bots y suplantadores avanzados sin degradar la usabilidad.
-
+Se investigarán los fundamentos teóricos de la Biometría Conductual Continua,
+el fenómeno de Behavioral Drift, las limitaciones de confiabilidad de los mecanismos
+CAPTCHA y el uso de técnicas de interpretabilidad como SHAP,
+con el objetivo de comprender cómo estas herramientas pueden ayudar a explicar qué
+características conductuales influyen en la detección de suplantaciones.
 % =========================================================================
 \section{Objetivos}
 % =========================================================================
@@ -184,13 +201,15 @@ Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Eng
 
 \subsection{Objetivos Específicos}
 \begin{enumerate}
-    \item \textbf{Adquirir y estructurar} datasets públicos de biometría conductual (teclado y mouse) en sesiones independientes.
-    \item \textbf{Construir e implementar} un pipeline de Feature Engineering para la extracción de descriptores cinemáticos y temporales.
-    \item \textbf{Evaluar estadísticamente} la estabilidad temporal intra-usuario y el poder discriminativo inter-usuario de las variables.
-    \item \textbf{Entrenar y comparar} modelos supervisados y de detección de anomalías bajo esquemas \textit{Baseline} y con \textit{Feature Engineering}.
-    \item \textbf{Validar la robustez} del sistema ante variaciones naturales aplicando partición por sesiones desacopladas (\textit{out-of-session}).
-    \item \textbf{Interpretar el rendimiento} mediante métricas de clasificación (\textit{Precision, Recall, F1, ROC-AUC, EER}) y análisis SHAP.
-    \item \textbf{Investigar y documentar} los fundamentos de biometría conductual, la falta de confiabilidad de los CAPTCHAs y el \textit{behavioral drift}.
+    \item \textbf{Obtener y preparar} datasets públicos de biometría conductual de teclado y mouse.
+
+    \item \textbf{Extraer características} temporales y de movimiento mediante técnicas de \textit{Feature Engineering}.
+
+    \item \textbf{Analizar} qué características permiten diferenciar el comportamiento de un usuario legítimo frente al de un impostor.
+
+    \item \textbf{Entrenar y comparar} modelos de clasificación y detección de anomalías utilizando datos base y características obtenidas mediante \textit{Feature Engineering}.
+
+    \item \textbf{Evaluar} el rendimiento de los modelos mediante métricas de evaluación (\textit{Accuracy}, \textit{Precision}, \textit{Recall} y \textit{F1-Score}).
 \end{enumerate}
 
 \end{document}
