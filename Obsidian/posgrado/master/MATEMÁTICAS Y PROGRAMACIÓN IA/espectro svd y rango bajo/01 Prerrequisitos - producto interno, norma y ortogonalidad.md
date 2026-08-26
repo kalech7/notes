@@ -13,6 +13,8 @@ Anterior: [[00 Índice - Espectro, SVD y rango bajo]] · Siguiente: [[02 Autoval
 
 Glosario de apoyo: [[00 Glosario visual - términos esenciales para entender SVD]]
 
+Formulario general: [[00 Formulario razonado - fundamentos, espectro y SVD|fórmulas explicadas paso a paso]].
+
 > [!abstract] La idea central
 > Un vector tiene **dirección** y **longitud**. El producto interno compara direcciones; la norma mide longitudes; la ortogonalidad detecta direcciones independientes. Estas tres ideas permiten entender qué hace la SVD: encontrar las direcciones más importantes de una matriz y medir cuánto aporta cada una.
 
@@ -244,6 +246,42 @@ $$
 
 > [!tip] Conexión con la SVD
 > Aproximar una matriz con rango bajo consiste, en esencia, en conservar sus proyecciones sobre las direcciones más importantes y descartar las menos importantes.
+
+### De una proyección a todas las coordenadas: $V^Tx$
+
+Si las columnas de
+
+$$
+V=\begin{bmatrix}v_1&v_2&\cdots&v_n\end{bmatrix}
+$$
+
+forman una base ortonormal, entonces
+
+$$
+V^Tx=
+\begin{bmatrix}
+v_1^Tx\\
+v_2^Tx\\
+\vdots\\
+v_n^Tx
+\end{bmatrix}.
+$$
+
+Cada entrada es un producto interno y, por tanto, una **coordenada de $x$ en una dirección $v_i$**. $V^Tx$ no es una operación misteriosa: reúne de una sola vez las proyecciones escalares sobre todos los ejes de $V$.
+
+Si se conservan todas las direcciones, $VV^Tx=x$. Si solo se conservan $k$ columnas, $V_kV_k^Tx$ es la proyección de $x$ sobre el subespacio generado por esas $k$ direcciones.
+
+```mermaid
+flowchart LR
+    X["vector x"] --> P1["v₁ᵀx"]
+    X --> P2["v₂ᵀx"]
+    X --> PN["vₙᵀx"]
+    P1 --> C["Vᵀx: vector de coordenadas"]
+    P2 --> C
+    PN --> C
+```
+
+![[assets/infografia-02.jpg|900]]
 
 ## 5. Base ortonormal y matrices ortogonales
 

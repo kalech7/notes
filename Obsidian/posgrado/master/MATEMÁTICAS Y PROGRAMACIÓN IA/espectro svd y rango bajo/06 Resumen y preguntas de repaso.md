@@ -10,6 +10,8 @@ related: "[[00 Índice - Espectro, SVD y rango bajo]]"
 
 Anterior: [[05 Espacio latente, PCA e interpretación]] · Volver al [[00 Índice - Espectro, SVD y rango bajo|índice]]
 
+Formulario completo: [[00 Formulario razonado - fundamentos, espectro y SVD|todas las fórmulas explicadas paso a paso]].
+
 ## Tabla esencial
 
 | Concepto | Qué responde | Fórmula central |
@@ -80,4 +82,3 @@ Anterior: [[05 Espacio latente, PCA e interpretación]] · Volver al [[00 Índic
 - [ ] No atribuyo semántica sin validación.
 - [ ] Sé cuándo SVD corresponde a PCA.
 - [ ] Puedo seguir la explicación de Python en [[python/00 Índice - Demo computacional M05]].
-
