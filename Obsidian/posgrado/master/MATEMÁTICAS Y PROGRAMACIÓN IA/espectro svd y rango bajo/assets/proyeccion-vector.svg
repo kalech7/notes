@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="390" viewBox="0 0 820 390" role="img" aria-labelledby="title desc">
+  <title id="title">Proyección de un vector sobre una dirección</title>
+  <desc id="desc">El vector x se descompone en su proyección sobre u y un residuo perpendicular.</desc>
+  <defs>
+    <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#4f78d1"/></marker>
+    <marker id="orangeArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#e28a36"/></marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#27865c"/></marker>
+    <style>.bg{fill:#f8f9fb;stroke:#c8ced8;stroke-width:2}.axis{stroke:#b7bec9;stroke-width:1.5}.xvec{stroke:#4f78d1;stroke-width:6;marker-end:url(#blueArrow)}.proj{stroke:#27865c;stroke-width:6;marker-end:url(#greenArrow)}.res{stroke:#e28a36;stroke-width:5;stroke-dasharray:9 7;marker-end:url(#orangeArrow)}.guide{stroke:#8c95a3;stroke-width:2;stroke-dasharray:5 6}.title{font:700 22px sans-serif;fill:#252a34}.label{font:17px sans-serif;fill:#3e4653}.blue{fill:#4f78d1}.green{fill:#27865c}.orange{fill:#d77720}</style>
+  </defs>
+  <rect class="bg" x="10" y="10" width="800" height="370" rx="16"/>
+  <text class="title" x="265" y="45">x = proyección + residuo</text>
+  <g transform="translate(115 305)">
+    <line class="axis" x1="-55" y1="0" x2="610" y2="0"/>
+    <line class="axis" x1="0" y1="45" x2="0" y2="-230"/>
+    <line class="guide" x1="0" y1="0" x2="535" y2="-80"/>
+    <line class="proj" x1="0" y1="0" x2="385" y2="-58"/>
+    <line class="res" x1="385" y1="-58" x2="335" y2="-205"/>
+    <line class="xvec" x1="0" y1="0" x2="335" y2="-205"/>
+    <path d="M363 -55 L359 -75 L380 -82" fill="none" stroke="#6d7480" stroke-width="2"/>
+    <text class="label" x="530" y="-88">dirección u</text>
+    <text class="label green" x="170" y="-45">projᵤ(x)</text>
+    <text class="label orange" x="410" y="-145">residuo r</text>
+    <text class="label blue" x="180" y="-145">vector x</text>
+    <text class="label" x="395" y="-38">90°</text>
+  </g>
+  <text class="label" x="235" y="360">El residuo es perpendicular a la dirección u.</text>
+</svg>

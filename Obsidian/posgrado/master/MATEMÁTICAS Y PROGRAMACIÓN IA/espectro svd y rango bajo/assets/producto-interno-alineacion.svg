@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="title desc">
+  <title id="title">Interpretación geométrica del producto interno</title>
+  <desc id="desc">Tres paneles muestran vectores con producto interno positivo, cero y negativo.</desc>
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#4f78d1"/></marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#e28a36"/></marker>
+    <style>
+      .panel{fill:#f8f9fb;stroke:#c8ced8;stroke-width:2}.axis{stroke:#b7bec9;stroke-width:1.5}.v1{stroke:#4f78d1;stroke-width:5;marker-end:url(#arrowBlue)}.v2{stroke:#e28a36;stroke-width:5;marker-end:url(#arrowOrange)}.heading{font:700 20px sans-serif;fill:#252a34}.label{font:16px sans-serif;fill:#3e4653}.positive{fill:#27865c}.zero{fill:#566273}.negative{fill:#c34747}
+    </style>
+  </defs>
+  <rect class="panel" x="10" y="10" width="300" height="280" rx="14"/>
+  <rect class="panel" x="330" y="10" width="300" height="280" rx="14"/>
+  <rect class="panel" x="650" y="10" width="300" height="280" rx="14"/>
+  <g transform="translate(55 208)"><line class="axis" x1="-22" y1="0" x2="220" y2="0"/><line class="axis" x1="0" y1="35" x2="0" y2="-135"/><line class="v1" x1="0" y1="0" x2="180" y2="0"/><line class="v2" x1="0" y1="0" x2="130" y2="-90"/><path d="M50 0 A50 50 0 0 0 41 -28" fill="none" stroke="#6d7480" stroke-width="2"/><text class="label" x="77" y="-15">θ &lt; 90°</text></g>
+  <text class="heading positive" x="80" y="45">xᵀy &gt; 0</text><text class="label" x="73" y="270">Direcciones parecidas</text>
+  <g transform="translate(420 208)"><line class="axis" x1="-55" y1="0" x2="170" y2="0"/><line class="axis" x1="0" y1="35" x2="0" y2="-150"/><line class="v1" x1="0" y1="0" x2="150" y2="0"/><line class="v2" x1="0" y1="0" x2="0" y2="-125"/><path d="M30 0 L30 -30 L0 -30" fill="none" stroke="#6d7480" stroke-width="2"/></g>
+  <text class="heading zero" x="424" y="45">xᵀy = 0</text><text class="label" x="400" y="270">Perpendiculares</text>
+  <g transform="translate(805 208)"><line class="axis" x1="-125" y1="0" x2="115" y2="0"/><line class="axis" x1="0" y1="35" x2="0" y2="-135"/><line class="v1" x1="0" y1="0" x2="105" y2="0"/><line class="v2" x1="0" y1="0" x2="-105" y2="-75"/><path d="M45 0 A45 45 0 0 0 -37 -26" fill="none" stroke="#6d7480" stroke-width="2"/><text class="label" x="-22" y="-45">θ &gt; 90°</text></g>
+  <text class="heading negative" x="744" y="45">xᵀy &lt; 0</text><text class="label" x="704" y="270">Sentidos opuestos</text>
+</svg>
