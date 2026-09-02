@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788016358611-gkdhe025d",
+  "providerId": "codex",
+  "title": "revisa que este implementado k cross validation sp...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1788016358630,
+  "lastActivityAt": 1788016646247,
+  "sessionId": "01a04e14-76f8-7d42-bb15-b3f70d18d0d7",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a04e14-76f8-7d42-bb15-b3f70d18d0d7",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/08/29/rollout-2026-08-29T10-12-39-01a04e14-76f8-7d42-bb15-b3f70d18d0d7.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/comparacion estadistica de modelos/09 Resumen, errores frecuentes y preguntas de repaso.md",
+  "usage": {
+    "inputTokens": 59252,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 58112,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 59252,
+    "percentage": 23,
+    "model": "gpt-5.6-sol"
+  }
+}

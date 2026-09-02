@@ -1,0 +1,12 @@
+o o 0 o
+Caso, corrida, dataset y fold generalizan de forma distinta
+PROCEDENCIA UNIDAD FUENTE DE VARIABILIDAD ALCANCE
+4 CASO heterogeneidad entre casos futuros
+caso de prueba observaciones futuras : comparables
+CORRIDA optimización nuevas corridas
+2 corrida / semilla y entrenamiento : del pipeline
+DATASET heterogeneidad nuevas tareas
+© j dataset / tarea entre problemas : comparables
+FOLD partición dependiente NO EQUIVALE A
+© E fold del mismo dataset rr al datos reutilizados estudios independientes
+@ COMPARTIR DIEZ FILAS NO CREA EL MISMO PROCESO DE MUESTREO la unidad fija el alcance

@@ -1,0 +1,18 @@
+o y
+"[' compara la media de ¿] con su error estándar
+UNA RAZÓN - DOS OBJETOS ESCALA DE ERRORES ESTÁNDAR DESDE CERO
+NUMERADOR - DIFERENCIA MEDIA DISTANCIA ESTANDARIZADA
++) señal observada frente a cero d-0=0.019 ¿Cuántas unidades de incertidumbre separan
++ la media observada de cero?
+— Ens
+ESTADÍSTICO OBSERVADO Lops = 2.30979656
+d—0
+Tobs = == — > :
+0.019 0
+————— = 230975656 2 2
+0.0082259751 ld — A
+4 LECTURA CORRECTA
+a DENOMINADOR - ERROR ESTÁNDAR La media observada queda a esta distancia
+incertidumbre de la media se(d) — 0.0082259751 estandarizada de la referencia nula.
+e . z yo ESTANDARIZAR NO RESPONDE
+ES T no mide relevancia practica. | si el cambio importa en la escala natural del problema.

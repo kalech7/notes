@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1787889258222-39e0rjh4e",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787889258263-21xbua1",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1787889258218-3cxx0ft",
+      "timestamp": 1787889258218,
+      "rawDisplayText": "explicame mejor esta nota no entendi y redactalo mejor",
+      "canonicalText": "explicame mejor esta nota no entendi y redactalo mejor",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/espectro svd y rango bajo/05 Espacio latente, PCA e interpretación.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "51cc7087feecc0a557f376c03af7600010fddd7043c33d6c19c89f854c25dec9",
+      "providerUserMessageId": "01a04681-10c2-78a1-b125-2084d238d4dd",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a910727770087d2b799483180ee53c4"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787891057935-mcopizc",
+      "userTurnOrdinal": 2,
+      "state": "accepted",
+      "localMessageId": "msg-1787891057927-i18jkl0",
+      "timestamp": 1787891057927,
+      "rawDisplayText": "que se difenrecia y cunado usar pca y svd ?",
+      "canonicalText": "que se difenrecia y cunado usar pca y svd ?",
+      "images": [],
+      "contentDigest": "ad00a70dfff8fb4c9634a1e7281acf3c5f361ac1cf68b4e32c16656fd4123a0f",
+      "providerUserMessageId": "01a0469c-8543-7093-9f5a-b72a75889a56",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a910d74594887d29551ee85cea7859d"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787891163017-8ly3ct7",
+      "userTurnOrdinal": 3,
+      "state": "accepted",
+      "localMessageId": "msg-1787891163005-naooltw",
+      "timestamp": 1787891163005,
+      "rawDisplayText": "eso coloca en mi nota para que me quede mas claro ya que ahora pienso que hacen lo mismo pero una hacer con media y varinaza. y la otra solo comprime",
+      "canonicalText": "eso coloca en mi nota para que me quede mas claro ya que ahora pienso que hacen lo mismo pero una hacer con media y varinaza. y la otra solo comprime",
+      "images": [],
+      "contentDigest": "af8148be13f40ed18a78a9eac104c1d888f217069abfae39462e9ba94f833740",
+      "providerUserMessageId": "01a0469e-1f9a-7f51-9702-d014050ec658",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a910e09f21c87d2bad1c42948ab17f4"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787891337930-a8dg0qs",
+      "userTurnOrdinal": 4,
+      "state": "accepted",
+      "localMessageId": "msg-1787891337915-hk762ny",
+      "timestamp": 1787891337915,
+      "rawDisplayText": "enticnes que es svd?",
+      "canonicalText": "enticnes que es svd?",
+      "images": [],
+      "contentDigest": "5c871b5c05f52fcd0c1975f2add1e0ca137145abb832a531ca9f600c0dd45c11",
+      "providerUserMessageId": "01a046a0-cb17-7e81-92b0-32fc095f3e94",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a910e8e08b887d2823d0d15b959348e"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787891417298-h0dqq4f",
+      "userTurnOrdinal": 5,
+      "state": "accepted",
+      "localMessageId": "msg-1787891417286-qcyljt0",
+      "timestamp": 1787891417286,
+      "rawDisplayText": "y como descrubre esos valores",
+      "canonicalText": "y como descrubre esos valores",
+      "images": [],
+      "contentDigest": "78980fb25164caf3aa208b9e4341d50a157b1ca412a4850792cbd1c74dea6b75",
+      "providerUserMessageId": "01a046a2-00e5-7021-b078-fc6021c24dbd",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a910edf905c87d285846fee2decc2d4"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787894038893-pbndc8b",
+      "userTurnOrdinal": 6,
+      "state": "accepted",
+      "localMessageId": "msg-1787894038867-ezm91uv",
+      "timestamp": 1787894038867,
+      "rawDisplayText": "> [!question]- Si $\\sigma=(10,3,0.1)$ y eliges $k=2$, ¿cuál es el error espectral óptimo?\n> $\\sigma_3=0.1$.\n\nwhy",
+      "canonicalText": "> [!question]- Si $\\sigma=(10,3,0.1)$ y eliges $k=2$, ¿cuál es el error espectral óptimo?\n> $\\sigma_3=0.1$.\n\nwhy",
+      "images": [],
+      "contentDigest": "98dc9a2eb98dc4da1913a49b0207b38416f5b7d817a9eda44e5dde2c998de823",
+      "providerUserMessageId": "01a046ca-01dc-7192-abc6-09fef4b36e8c",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a91192d500c87d2ae06579e7e193ba1"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787894178482-li8mxv7",
+      "userTurnOrdinal": 7,
+      "state": "accepted",
+      "localMessageId": "msg-1787894178472-225hmez",
+      "timestamp": 1787894178472,
+      "rawDisplayText": "que es a? y a sub 2",
+      "canonicalText": "que es a? y a sub 2",
+      "images": [],
+      "contentDigest": "610666747f674cdb2a2236a24c3baf45dd0702ac6bb6731f4ada112279324215",
+      "providerUserMessageId": "01a046cc-22c3-7a31-9804-851419eb20b8",
+      "providerAssistantMessageId": "msg_0f5803f2a16fec2d016a9119a5f5dc87d2815df140300d3ba4"
+    }
+  ]
+}

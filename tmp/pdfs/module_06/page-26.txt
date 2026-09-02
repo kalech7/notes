@@ -1,0 +1,16 @@
+Diez pares producen exactamente 1024 asignaciones de signo
+MOTOR DE ENUMERACIÓN EXACTA O AL MA Eu
+NO USA SEMILLA
+01 - ENTRADA FIJA 02 - SIGNOS VARIABLES 03 - REPETIR LA OPERACIÓN 04 - COMPARAR
+10 DIFERENCIAS ) 10 = 1024 o. < VALOR ABSOLUTO
+00000 ex |7@ 1 for signs in product((-1, 1), |
+XII repeat=10): sal
+@ [09] [10 5 —>E mean_null = mean(signs * d) hed
+> } > 0.019
+e 3 extreme = abs(mean_null) }
+agg sete LE (0) = 10 >= 0.019 A o
+magnitudes + pares fijos s € { I, +1} estadistico bilateral
+una vuelta por vector
+asignar signos multiplicar promediar comparar valores absolutos
+a PISTA VISIBLE
+Señala qué objetos permanecen fijos y qué operación se repite en cada configuración. fijo # variable

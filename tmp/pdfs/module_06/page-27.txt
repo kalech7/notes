@@ -1,0 +1,16 @@
+Sesenta y ocho de 1024 configuraciones dan =p = 0.06640625
+DISTRIBUCIÓN NULA EXACTA DE LAS MEDIAS enumeración completa
+extremidad definida antes de contar
+sz CONFIGURACIONES
+an dnula| > 0.019 A EXTREMAS EN TOTAL
+| | | |
+I! i 1
+|
+o —_ de todas las
+| oan | | 1024
+| | MEDIAS NULAS
+CB a ESA conteo exhaustivo
+—0.019 0 +0.019
+UN SOLO CONJUNTO BILATERAL
+OS
+g Proporción bajo la referencia nula declarada; no es un veredicto sobre los modelos.

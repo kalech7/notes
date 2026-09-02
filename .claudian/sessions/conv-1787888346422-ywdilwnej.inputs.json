@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1787888346422-ywdilwnej",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787888346868-9ykuu09",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1787888346412-pauhjy7",
+      "timestamp": 1787888346412,
+      "rawDisplayText": "que es el teorma mirky que se llaga con esa formula",
+      "canonicalText": "que es el teorma mirky que se llaga con esa formula",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/espectro svd y rango bajo/04 Aproximación de rango bajo y elección de k.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "b02dcf4ef1d716ffebbe35a4308c5c529aa1e70fd91358abbc85ae2a9f79065f",
+      "providerUserMessageId": "01a04673-3978-7710-a983-232eeed21d2c",
+      "providerAssistantMessageId": "msg_0c8a7d4d71fc66e8016a9102e5132087d2b4c64bcba10a12bc"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787888436679-15q7kf9",
+      "userTurnOrdinal": 2,
+      "state": "accepted",
+      "localMessageId": "msg-1787888436671-znkx30o",
+      "timestamp": 1787888436671,
+      "rawDisplayText": "que era la norma espectral",
+      "canonicalText": "que era la norma espectral",
+      "images": [],
+      "contentDigest": "54e2229f90b182f34c0608ebce0fc2cd715dedb4ba2dd2dc59a50edb55482b65",
+      "providerUserMessageId": "01a04674-8720-7502-afdd-9e5bd9298ea9",
+      "providerAssistantMessageId": "msg_0c8a7d4d71fc66e8016a91033616d487d2b46d700eec2eb144"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1787889161455-58w9vy0",
+      "userTurnOrdinal": 3,
+      "state": "accepted",
+      "localMessageId": "msg-1787889161445-gtsxwd2",
+      "timestamp": 1787889161445,
+      "rawDisplayText": "explica mejor esta nota no me quedo claro",
+      "canonicalText": "explica mejor esta nota no me quedo claro",
+      "images": [],
+      "contentDigest": "01238e93bf56d59c83719e01caddaf31dfc1717b094f903d5ff8ae75dd25c35e",
+      "providerUserMessageId": "01a0467f-9643-7e00-a391-287a6ac137e1",
+      "providerAssistantMessageId": "msg_0c8a7d4d71fc66e8016a91060dee4087d285f992149f63190e"
+    }
+  ]
+}

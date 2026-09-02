@@ -1,0 +1,12 @@
+La prueba; produce ¿(9) = 2.30975656 y p= 0.0462549274
+CÁLCULO REPRODUCIBLE SALIDA EXACTA DEL PROCEDIMIENTO
+| ESTADÍSTICO t(9) = 2.30975656
+stats.ttest_rel(
+loss_a, > | RESULTADO BILATERAL Dbilateral = 0.0462549274
+loss_b
+) | INTERVALO ICz 95% = [0.00039155, 0.03760845]
+CERCA DE UN UMBRAL CONVENCIONAL; TODAVÍA NO CONCLUYE
+Léelo junto con: ———— e ——————————— O ————————————— O ———
+EFECTO OBSERVADO INTERVALO SUPUESTOS
+SIGUIENTE PREGUNTA
+O ¿Qué probabilidad representa realmente este p-value ?

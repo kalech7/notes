@@ -105,6 +105,17 @@ $$
 
 ![[assets/infografia-05.jpg|900]]
 
+### Gráfico de diagnóstico: espectro, retención y error
+
+![[assets/diagnostico-eleccion-k.png|900]]
+
+El panel izquierdo usa escala logarítmica para que también sean visibles $\sigma_3$ y $\sigma_4$. La caída entre $\sigma_2$ y $\sigma_3$ sugiere un posible codo, pero el codo **solo propone** $k$; el panel derecho permite defenderlo con cantidades declaradas. Para $k=2$ se conserva aproximadamente $99.962\%$ de la energía algebraica y el error relativo de Frobenius es aproximadamente $1.941\%$.
+
+El gráfico se puede regenerar y auditar con [[python/generar_grafico_eleccion_k.py|este script de Python]].
+
+> [!tip] Cómo leer el gráfico sin confundirse
+> La curva verde usa cuadrados de valores singulares; la roja usa la raíz de la masa cuadrática descartada. Por eso $99.962\%$ retenido no significa $0.038\%$ de error relativo: el error es $\sqrt{1-0.99962}\approx1.94\%$.
+
 ## 5. Por qué $k=2$ es una decisión defendible
 
 Primero calculamos el tamaño total de la matriz:
@@ -119,11 +130,11 @@ $$
 Después comparamos qué ocurre al conservar distinta cantidad de componentes:
 
 | $k$ | Error $\lVert X-X_k\rVert_F$ | Error relativo | Peor error $\lVert X-X_k\rVert_2$ | Masa cuadrática conservada |
-| ---: | ---: | ---: | ---: | ---: |
-| 1 | $8.0970$ | $57.984\%$ | $8.0925$ | $66.379\%$ |
-| 2 | $0.2711$ | $1.941\%$ | $0.2492$ | $99.962\%$ |
-| 3 | $0.1068$ | $0.765\%$ | $0.1068$ | $99.994\%$ |
-| 4 | $0$ | $0\%$ | $0$ | $100\%$ |
+| --: | ---------------------------: | -------------: | --------------------------------: | -------------------------: |
+|   1 |                     $8.0970$ |     $57.984\%$ |                          $8.0925$ |                 $66.379\%$ |
+|   2 |                     $0.2711$ |      $1.941\%$ |                          $0.2492$ |                 $99.962\%$ |
+|   3 |                     $0.1068$ |      $0.765\%$ |                          $0.1068$ |                 $99.994\%$ |
+|   4 |                          $0$ |          $0\%$ |                               $0$ |                    $100\%$ |
 
 La caída entre $k=1$ y $k=2$ es enorme: el error relativo pasa de casi $58\%$ a menos de $2\%$. En cambio, pasar de $k=2$ a $k=3$ mejora cerca de $1.18$ puntos porcentuales. Por eso $k=2$ marca un «codo» razonable si el objetivo tolera un error de alrededor del $2\%$.
 
@@ -202,6 +213,20 @@ El rango algebraico cuenta valores singulares exactamente no nulos. En cálculo 
 
 > [!warning] Una tolerancia es parte de la afirmación
 > No digas solamente «el rango es 2» cuando quieres decir «el rango numérico bajo este umbral es 2».
+
+## 9. Plantilla para defender una elección de $k$
+
+Una respuesta completa debe separar el cálculo de su alcance:
+
+1. **Forma y preprocesamiento:** $X\in\mathbb{R}^{m\times n}$; indicar si las columnas se centraron o no.
+2. **Descomposición:** $X=U\Sigma V^T$ y valores singulares ordenados.
+3. **Criterio de $k$:** umbral de error, energía algebraica, costo de almacenamiento o métrica de tarea.
+4. **Error medido:** norma espectral, norma de Frobenius o ambas.
+5. **Alcance:** qué estructura algebraica queda bien reconstruida.
+6. **Límite:** qué afirmación estadística, semántica o predictiva todavía requiere validación.
+
+> [!example] Defensa del caso conductor
+> Elijo $k=2$ porque hay una caída fuerte después de $\sigma_2$. La aproximación $X_2=U_2\Sigma_2V_2^T$ tiene error espectral $\lVert X-X_2\rVert_2\approx0.2492$ y error relativo de Frobenius de aproximadamente $1.94\%$. Por Eckart-Young-Mirsky es una mejor aproximación de rango a lo sumo 2 bajo ambas normas. Esto respalda reconstrucción algebraica; sin centrado no lo llamo automáticamente varianza explicada y, sin evaluar una tarea, no afirmo que se conserve su rendimiento.
 
 ## Preguntas rápidas
 

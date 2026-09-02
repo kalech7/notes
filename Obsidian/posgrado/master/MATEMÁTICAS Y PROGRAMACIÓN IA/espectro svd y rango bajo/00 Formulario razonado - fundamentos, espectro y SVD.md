@@ -894,12 +894,12 @@ $$
 (11.3771,\ 8.0925,\ 0.2492,\ 0.1068).
 $$
 
-| $k$ | Error relativo de Frobenius | Masa conservada | Lectura |
-| ---: | ---: | ---: | --- |
-| 1 | $57.984\%$ | $66.379\%$ | falta el segundo patrón dominante |
-| 2 | $1.941\%$ | $99.962\%$ | buen equilibrio algebraico |
-| 3 | $0.765\%$ | $99.994\%$ | mejora pequeña adicional |
-| 4 | $0\%$ | $100\%$ | reconstrucción exacta |
+| $k$ | Error relativo de Frobenius | Masa conservada | Lectura                           |
+| --: | --------------------------: | --------------: | --------------------------------- |
+|   1 |                  $57.984\%$ |      $66.379\%$ | falta el segundo patrón dominante |
+|   2 |                   $1.941\%$ |      $99.962\%$ | buen equilibrio algebraico        |
+|   3 |                   $0.765\%$ |      $99.994\%$ | mejora pequeña adicional          |
+|   4 |                       $0\%$ |         $100\%$ | reconstrucción exacta             |
 
 ![[assets/infografia-05.jpg|900]]
 

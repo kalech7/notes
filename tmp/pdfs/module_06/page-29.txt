@@ -1,0 +1,11 @@
+La contrasta media cero; los signos exigen una invariancia más fuerte
+MISMO VECTOR OBSERVADO
+d
+1 CONTRATO ; 2 CONTRATO DE SIGNOS
+NULIDAD Hos+: E(d) =0 SE CONSERVA Magnitudesy pares fijos: — |d|
+REFERENCIA Modelo para las diferencias. NULIDAD Distribución conjunta invariante ante
+T d las inversiones de signo permitidas.
+dia sa//n REGLA dt-+s@|d|, s; € [-1,+1)
+QUE ORDENA ESTADÍSTICO
+La media de q en unidades de su error estándar. |d| sobre otra referencia.
+2) Referencias distintas: el diseño fija el contrato; no se elige por el menor — p-valuc.

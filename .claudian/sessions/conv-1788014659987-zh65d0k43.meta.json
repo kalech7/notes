@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788014659987-zh65d0k43",
+  "providerId": "codex",
+  "title": "agrega en mis notas cde comparacion de shapiro wil...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1788014660017,
+  "lastActivityAt": 1788016352162,
+  "sessionId": "01a04dfa-8eab-79f1-89f1-1a9b770a8cd3",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a04dfa-8eab-79f1-89f1-1a9b770a8cd3",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/08/29/rollout-2026-08-29T09-44-21-01a04dfa-8eab-79f1-89f1-1a9b770a8cd3.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/comparacion estadistica de modelos/06 Unidad de análisis, dependencia y validación cruzada.md",
+  "usage": {
+    "inputTokens": 185476,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 184320,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 185476,
+    "percentage": 72,
+    "model": "gpt-5.6-sol"
+  }
+}

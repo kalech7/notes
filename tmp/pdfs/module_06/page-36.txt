@@ -1,0 +1,12 @@
+Los folds reutilizan datos y no constituyen réplicas independientes
+UN ÚNICO DATASET D
+. a Fi Fy E Fi Fs
+Las observaciones se reutilizan al entrenar.
+EL TEST ROTA; EL TRAIN SE SOLAPA REGLA DE CADA CORRIDA
+TRAIN; =D\F; | TEST; =F;
+MISMO ORIGEN
+PA SAA
+SOLAPAMIENTO RECONSTRUIBLE NO SON CINCO ESTUDIOS
+Cualquier par de entrenamientos comparte 3 de 5 bloques 5scores del mismo D # 5estudios
+O El solapamiento de entrenamiento y la reutilización del dataset pueden subestimar la incertidumbre
+Detecta la dependencia y detén la inferencia automática: aquí no existe una receta universal.

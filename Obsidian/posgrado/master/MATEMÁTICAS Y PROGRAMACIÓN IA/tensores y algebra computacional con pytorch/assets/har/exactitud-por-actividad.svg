@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 455" role="img" aria-labelledby="title desc">
+  <title id="title">Exactitud por actividad</title>
+  <desc id="desc">Gráfico de barras horizontales. Laying alcanza 96,67 por ciento y Walking Downstairs 56,67 por ciento.</desc>
+  <rect width="900" height="455" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+  <text x="28" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#101828">Exactitud por actividad</text>
+  <text x="28" y="62" font-family="Arial, sans-serif" font-size="13" fill="#667085">60 ventanas de prueba por clase · exactitud global: 76,67 %</text>
+
+  <g stroke="#e4e7ec" stroke-width="1">
+    <line x1="225" y1="82" x2="225" y2="405"/>
+    <line x1="355" y1="82" x2="355" y2="405"/>
+    <line x1="485" y1="82" x2="485" y2="405"/>
+    <line x1="615" y1="82" x2="615" y2="405"/>
+    <line x1="745" y1="82" x2="745" y2="405"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="12" fill="#667085" text-anchor="middle">
+    <text x="225" y="427">0 %</text>
+    <text x="355" y="427">25 %</text>
+    <text x="485" y="427">50 %</text>
+    <text x="615" y="427">75 %</text>
+    <text x="745" y="427">100 %</text>
+  </g>
+
+  <g font-family="Arial, sans-serif" font-size="14" fill="#344054" text-anchor="end">
+    <text x="210" y="119">WALKING</text>
+    <text x="210" y="170">WALKING_UPSTAIRS</text>
+    <text x="210" y="221">WALKING_DOWNSTAIRS</text>
+    <text x="210" y="272">SITTING</text>
+    <text x="210" y="323">STANDING</text>
+    <text x="210" y="374">LAYING</text>
+  </g>
+
+  <g>
+    <rect x="225" y="96" width="355.3" height="30" rx="7" fill="#6d5dfc"/>
+    <rect x="225" y="147" width="416" height="30" rx="7" fill="#6d5dfc"/>
+    <rect x="225" y="198" width="294.7" height="30" rx="7" fill="#ed7125"/>
+    <rect x="225" y="249" width="381.3" height="30" rx="7" fill="#078b75"/>
+    <rect x="225" y="300" width="442" height="30" rx="7" fill="#078b75"/>
+    <rect x="225" y="351" width="502.7" height="30" rx="7" fill="#078b75"/>
+  </g>
+
+  <g font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#101828">
+    <text x="590" y="116">68,33 %</text>
+    <text x="651" y="167">80,00 %</text>
+    <text x="530" y="218">56,67 %</text>
+    <text x="617" y="269">73,33 %</text>
+    <text x="678" y="320">85,00 %</text>
+    <text x="738" y="371">96,67 %</text>
+  </g>
+</svg>

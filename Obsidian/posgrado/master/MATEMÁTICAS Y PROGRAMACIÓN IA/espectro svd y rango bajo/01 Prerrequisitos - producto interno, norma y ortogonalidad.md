@@ -179,6 +179,67 @@ $$
 - Normalizar datos.
 - Medir el error entre un resultado exacto y una aproximación.
 
+### Norma de Frobenius: medir el tamaño o el error de una matriz
+
+La **norma de Frobenius** es la versión de la norma euclídea para matrices. Consiste en elevar al cuadrado todos sus elementos, sumarlos y calcular la raíz:
+
+$$
+\lVert A\rVert_F=
+\sqrt{\sum_{i,j}a_{ij}^2}.
+$$
+
+Es como convertir la matriz en un solo vector y medir su longitud. Por ejemplo:
+
+$$
+A=\begin{bmatrix}3&4\\0&2\end{bmatrix}
+$$
+
+$$
+\lVert A\rVert_F
+=\sqrt{3^2+4^2+0^2+2^2}
+=\sqrt{29}.
+$$
+
+#### ¿Para qué sirve?
+
+Sirve principalmente para medir **cuánto se parece una matriz a otra**. Si $A_k$ es una aproximación de $A$, calculamos el error como:
+
+$$
+\lVert A-A_k\rVert_F.
+$$
+
+Por ejemplo, sean:
+
+$$
+A=\begin{bmatrix}4&5\\3&4\end{bmatrix},
+\qquad
+A_1=\begin{bmatrix}4&5\\3&3.8\end{bmatrix}.
+$$
+
+La diferencia es:
+
+$$
+A-A_1=\begin{bmatrix}0&0\\0&0.2\end{bmatrix}.
+$$
+
+Por tanto, el error total es:
+
+$$
+\lVert A-A_1\rVert_F
+=\sqrt{0^2+0^2+0^2+0.2^2}
+=0.2.
+$$
+
+La norma de Frobenius resume todos los errores de la matriz en un solo número: cuanto menor sea, más parecida es la aproximación a la matriz original. En la SVD se usa para comparar aproximaciones de rango bajo y elegir un valor de $k$ que produzca un error aceptable.
+
+También puede calcularse el error relativo:
+
+$$
+\frac{\lVert A-A_k\rVert_F}{\lVert A\rVert_F}.
+$$
+
+Un error relativo de $0.02$ equivale aproximadamente a un $2\%$ de error global.
+
 ## 3. Ortogonalidad: direcciones perpendiculares
 
 ### ¿Qué significa?

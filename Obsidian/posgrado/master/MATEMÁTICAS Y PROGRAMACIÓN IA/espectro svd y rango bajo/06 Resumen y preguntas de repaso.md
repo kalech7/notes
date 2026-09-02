@@ -71,6 +71,15 @@ Formulario completo: [[00 Formulario razonado - fundamentos, espectro y SVD|toda
 > [!question]- ¿Qué convierte la SVD de una matriz de datos en PCA?
 > Centrar las columnas primero y adoptar la interpretación estadística de la covarianza.
 
+> [!question]- ¿Es correcto decir «$k=2$ conserva $99.962\%$ de la información»?
+> Es una afirmación excesiva. Conserva aproximadamente esa fracción de energía algebraica $\sum_i\sigma_i^2$ en el caso conductor; no certifica semántica ni rendimiento predictivo.
+
+> [!question]- ¿Un error relativo de Frobenius de $1.94\%$ implica casi la misma `accuracy`?
+> No. Solo cuantifica reconstrucción matricial. La `accuracy` debe medirse en una evaluación downstream con etiquetas y datos no usados para ajustar decisiones.
+
+> [!question]- ¿PCA y TruncatedSVD siempre devuelven las mismas direcciones?
+> No. PCA trabaja con datos centrados; TruncatedSVD suele operar sobre la matriz original. Coinciden en este aspecto solo si la matriz ya está centrada, salvo ambigüedades de signo o multiplicidad.
+
 ## Lista final
 
 - [ ] Distingo espectro y SVD.

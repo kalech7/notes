@@ -1,0 +1,12 @@
+La diferencia observada es ().019 puntos de log-loss a favor de B
+DIEZ DIFERENCIAS EN LA ESCALA DE LOG-LOSS menor pérdida = mejor
+1 2 3 ca) 5 6 7 8 9 10
++0.04 +0.01 +0.03 -0.02 +0.05 0.00 +0.02 +0.06 +0.01 -0.01
+O 7 positivas O 2negativas O 1cero 7), — |()
+EFECTO OBSERVADO
+CALCULAR EN LA ESCALA NATURAL
+= | 10
+d=— ¥ d;=0.019 > 0.019
+media de las diez e puntos de log-loss
+El signo positivo favorece a B.
+0 Sin etiqueta universal: la relevancia depende del dominio, los costos y el umbral sustantivo.

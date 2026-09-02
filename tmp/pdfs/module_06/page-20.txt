@@ -1,0 +1,11 @@
+O o o
+El [C, admite mejoras desde casi cero hasta ().0376 puntos de log-loss
+INTERVALO EXACTO EN LA ESCALA DEL EFECTO
+puntos de log-loss - resta declarada : valores positivos favorecen a B IC¿.95% = [0.00039155, 0.03760845]
+0.00039155 A om 0.03760845
+ausencia de diferencia mejora compatible mayor
+O LECTURA FRECUENTISTA VÁLIDA ES LECTURA PROBABILÍSTICA INVÁLIDA
+Valores compatibles con los datos bajo el “Hay 95% de probabilidad de que el
+procedimiento paramétrico y sus supuestos. parámetro fijo esté dentro.”
+IDEA CLAVE
+El intervalo cuantifica compatibilidad y precisión; no vuelve aleatorio al parámetro.

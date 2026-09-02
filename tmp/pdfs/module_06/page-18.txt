@@ -1,0 +1,16 @@
+El p-value mide extremidad bajo Ho ; no mide la probabilidad de Ho
+LA PREGUNTA QUE RESPONDE @ Qué se supone
+Ho , diseño y supuestos fijan
+la distribución de referencia:
+LS na mn. qué valores podría tomar T bajo Ho.
+oe P(\7| > IT, | Hp, diseño y supuestos)
+© Qué se calcula
+. Se compara |7.,»,| con esa referencia.
+@) Bajo Ho, el diseño y los supuestos: p mide la proporción con |7] > |7;p,,|.
+¿qué tan extremo es |7,,,| frente a lo que Ho produciría? laa oi ee lt
+© Qué no calcula
+LECTURAS INVALIDAS
+Xx Py datas)
+x P(Bres-mejoxtdatos)
+Ba ll a
+@ p-value = extremidad bajo Ho , no probabilidad posterior.

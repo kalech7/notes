@@ -1,0 +1,28 @@
+{
+  "id": "conv-1787889258222-39e0rjh4e",
+  "providerId": "codex",
+  "title": "explicame mejor esta nota no entendi y redactalo m...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1787889258229,
+  "lastActivityAt": 1787894193803,
+  "sessionId": "01a04681-0f84-7aa2-a006-09e2a0e10225",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a04681-0f84-7aa2-a006-09e2a0e10225",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/08/27/rollout-2026-08-27T22-54-18-01a04681-0f84-7aa2-a006-09e2a0e10225.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/espectro svd y rango bajo/05 Espacio latente, PCA e interpretación.md",
+  "usage": {
+    "inputTokens": 43536,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 42752,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 43536,
+    "percentage": 17,
+    "model": "gpt-5.6-sol"
+  }
+}
