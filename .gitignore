@@ -9,8 +9,9 @@
 # IDE / Editor
 .idea/
 .vscode/
-# Temporary files and directories
+# Temporary files, cache and datasets
 tmp/
+data/
 
 # OS
 .DS_Store
