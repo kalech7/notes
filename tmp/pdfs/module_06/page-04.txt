@@ -1,8 +1,0 @@
-La resta 4 — B conserva quién mejora porque menor log-loss es mejor
-0 PERDIDA POR UNIDAD E) SENTIDO DE MEJORA
-Ey, q) = — (y log(q) + (1 — y) log(1 — q) ——> log-loss | MEJOR
-La métrica ya fija qué dirección significa mejorar. La mejora apunta hacia pérdidas más pequeñas.
-RESTA DECLARADA
-d; = loss4(1) — lossg(2)
-EL SIGNO CONSERVA QUIÉN MEJORA v
-favorece a A empate favorece a B
