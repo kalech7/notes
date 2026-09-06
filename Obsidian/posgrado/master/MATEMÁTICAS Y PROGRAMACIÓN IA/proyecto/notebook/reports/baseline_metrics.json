@@ -1,0 +1,536 @@
+{
+  "config": {
+    "validation_fraction": 0.25,
+    "legitimate_rejection_quantile": 0.95,
+    "random_state": 7,
+    "n_estimators": 200
+  },
+  "users": {
+    "user12": {
+      "training_sessions": 7,
+      "enrollment_sessions": 5,
+      "validation_sessions": 2,
+      "test_sessions_total": 233,
+      "test_sessions_labeled": 105,
+      "test_sessions_unlabeled": 128,
+      "models": {
+        "rms_z": {
+          "tp": 49,
+          "fp": 56,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.4666666666666667,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.6363636363636364,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.4666666666666667,
+          "threshold_validation": 1.0923882593568288,
+          "eer_exploratory_on_test": {
+            "threshold": 17.605332156285915,
+            "far": 0.42857142857142855,
+            "frr": 0.42857142857142855,
+            "eer": 0.42857142857142855,
+            "gap": 0.0
+          }
+        },
+        "isolation_forest": {
+          "tp": 28,
+          "fp": 36,
+          "fn": 21,
+          "tn": 20,
+          "precision_impostor": 0.4375,
+          "recall_impostor": 0.5714285714285714,
+          "f1_impostor": 0.49557522123893805,
+          "far": 0.42857142857142855,
+          "frr": 0.6428571428571429,
+          "accuracy": 0.45714285714285713,
+          "threshold_validation": 0.46307090086455577,
+          "eer_exploratory_on_test": {
+            "threshold": 0.46926515455538304,
+            "far": 0.5714285714285714,
+            "frr": 0.5535714285714286,
+            "eer": 0.5625,
+            "gap": 0.017857142857142794
+          }
+        }
+      }
+    },
+    "user15": {
+      "training_sessions": 6,
+      "enrollment_sessions": 4,
+      "validation_sessions": 2,
+      "test_sessions_total": 247,
+      "test_sessions_labeled": 115,
+      "test_sessions_unlabeled": 132,
+      "models": {
+        "rms_z": {
+          "tp": 70,
+          "fp": 45,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.6086956521739131,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.7567567567567568,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.6086956521739131,
+          "threshold_validation": 1.9166756461931278,
+          "eer_exploratory_on_test": {
+            "threshold": 9.686627695541933,
+            "far": 0.4857142857142857,
+            "frr": 0.4888888888888889,
+            "eer": 0.4873015873015873,
+            "gap": 0.0031746031746031633
+          }
+        },
+        "isolation_forest": {
+          "tp": 70,
+          "fp": 44,
+          "fn": 0,
+          "tn": 1,
+          "precision_impostor": 0.6140350877192983,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.7608695652173912,
+          "far": 0.0,
+          "frr": 0.9777777777777777,
+          "accuracy": 0.6173913043478261,
+          "threshold_validation": 0.43515534412037604,
+          "eer_exploratory_on_test": {
+            "threshold": 0.4556127414973233,
+            "far": 0.3142857142857143,
+            "frr": 0.3111111111111111,
+            "eer": 0.3126984126984127,
+            "gap": 0.0031746031746031633
+          }
+        }
+      }
+    },
+    "user16": {
+      "training_sessions": 6,
+      "enrollment_sessions": 4,
+      "validation_sessions": 2,
+      "test_sessions_total": 195,
+      "test_sessions_labeled": 106,
+      "test_sessions_unlabeled": 89,
+      "models": {
+        "rms_z": {
+          "tp": 38,
+          "fp": 68,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.3584905660377358,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.5277777777777778,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.3584905660377358,
+          "threshold_validation": 3.26392950674596,
+          "eer_exploratory_on_test": {
+            "threshold": 21.01735666399908,
+            "far": 0.4473684210526316,
+            "frr": 0.4411764705882353,
+            "eer": 0.44427244582043346,
+            "gap": 0.006191950464396301
+          }
+        },
+        "isolation_forest": {
+          "tp": 27,
+          "fp": 43,
+          "fn": 11,
+          "tn": 25,
+          "precision_impostor": 0.38571428571428573,
+          "recall_impostor": 0.7105263157894737,
+          "f1_impostor": 0.5,
+          "far": 0.2894736842105263,
+          "frr": 0.6323529411764706,
+          "accuracy": 0.49056603773584906,
+          "threshold_validation": 0.4549791166126028,
+          "eer_exploratory_on_test": {
+            "threshold": 0.4650904242079781,
+            "far": 0.47368421052631576,
+            "frr": 0.5147058823529411,
+            "eer": 0.4941950464396284,
+            "gap": 0.04102167182662536
+          }
+        }
+      }
+    },
+    "user20": {
+      "training_sessions": 7,
+      "enrollment_sessions": 5,
+      "validation_sessions": 2,
+      "test_sessions_total": 107,
+      "test_sessions_labeled": 50,
+      "test_sessions_unlabeled": 57,
+      "models": {
+        "rms_z": {
+          "tp": 12,
+          "fp": 13,
+          "fn": 8,
+          "tn": 17,
+          "precision_impostor": 0.48,
+          "recall_impostor": 0.6,
+          "f1_impostor": 0.5333333333333332,
+          "far": 0.4,
+          "frr": 0.43333333333333335,
+          "accuracy": 0.58,
+          "threshold_validation": 7.921596155455627,
+          "eer_exploratory_on_test": {
+            "threshold": 8.30860503185487,
+            "far": 0.45,
+            "frr": 0.43333333333333335,
+            "eer": 0.44166666666666665,
+            "gap": 0.016666666666666663
+          }
+        },
+        "isolation_forest": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 20,
+          "tn": 30,
+          "precision_impostor": 0.0,
+          "recall_impostor": 0.0,
+          "f1_impostor": 0.0,
+          "far": 1.0,
+          "frr": 0.0,
+          "accuracy": 0.6,
+          "threshold_validation": 0.5307364176977576,
+          "eer_exploratory_on_test": {
+            "threshold": 0.46163991118361836,
+            "far": 0.3,
+            "frr": 0.3333333333333333,
+            "eer": 0.31666666666666665,
+            "gap": 0.033333333333333326
+          }
+        }
+      }
+    },
+    "user21": {
+      "training_sessions": 7,
+      "enrollment_sessions": 5,
+      "validation_sessions": 2,
+      "test_sessions_total": 114,
+      "test_sessions_labeled": 59,
+      "test_sessions_unlabeled": 55,
+      "models": {
+        "rms_z": {
+          "tp": 22,
+          "fp": 37,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.3728813559322034,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.54320987654321,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.3728813559322034,
+          "threshold_validation": 1.5192889251721504,
+          "eer_exploratory_on_test": {
+            "threshold": 19.36915011152991,
+            "far": 0.5,
+            "frr": 0.4864864864864865,
+            "eer": 0.49324324324324326,
+            "gap": 0.013513513513513487
+          }
+        },
+        "isolation_forest": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 21,
+          "tn": 37,
+          "precision_impostor": 1.0,
+          "recall_impostor": 0.045454545454545456,
+          "f1_impostor": 0.08695652173913045,
+          "far": 0.9545454545454546,
+          "frr": 0.0,
+          "accuracy": 0.6440677966101694,
+          "threshold_validation": 0.5136283335235483,
+          "eer_exploratory_on_test": {
+            "threshold": 0.4588979222772412,
+            "far": 0.4090909090909091,
+            "frr": 0.40540540540540543,
+            "eer": 0.40724815724815727,
+            "gap": 0.0036855036855036882
+          }
+        }
+      }
+    },
+    "user23": {
+      "training_sessions": 6,
+      "enrollment_sessions": 4,
+      "validation_sessions": 2,
+      "test_sessions_total": 136,
+      "test_sessions_labeled": 71,
+      "test_sessions_unlabeled": 65,
+      "models": {
+        "rms_z": {
+          "tp": 33,
+          "fp": 38,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.4647887323943662,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.6346153846153846,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.4647887323943662,
+          "threshold_validation": 4.557037349529571,
+          "eer_exploratory_on_test": {
+            "threshold": 15.731974304900273,
+            "far": 0.6060606060606061,
+            "frr": 0.6052631578947368,
+            "eer": 0.6056618819776715,
+            "gap": 0.0007974481658692412
+          }
+        },
+        "isolation_forest": {
+          "tp": 24,
+          "fp": 37,
+          "fn": 9,
+          "tn": 1,
+          "precision_impostor": 0.39344262295081966,
+          "recall_impostor": 0.7272727272727273,
+          "f1_impostor": 0.5106382978723404,
+          "far": 0.2727272727272727,
+          "frr": 0.9736842105263158,
+          "accuracy": 0.352112676056338,
+          "threshold_validation": 0.4625851357947635,
+          "eer_exploratory_on_test": {
+            "threshold": 0.48828337733303456,
+            "far": 0.7272727272727273,
+            "frr": 0.7105263157894737,
+            "eer": 0.7188995215311005,
+            "gap": 0.01674641148325362
+          }
+        }
+      }
+    },
+    "user29": {
+      "training_sessions": 7,
+      "enrollment_sessions": 5,
+      "validation_sessions": 2,
+      "test_sessions_total": 117,
+      "test_sessions_labeled": 63,
+      "test_sessions_unlabeled": 54,
+      "models": {
+        "rms_z": {
+          "tp": 15,
+          "fp": 26,
+          "fn": 5,
+          "tn": 17,
+          "precision_impostor": 0.36585365853658536,
+          "recall_impostor": 0.75,
+          "f1_impostor": 0.4918032786885247,
+          "far": 0.25,
+          "frr": 0.6046511627906976,
+          "accuracy": 0.5079365079365079,
+          "threshold_validation": 4.381887479148673,
+          "eer_exploratory_on_test": {
+            "threshold": 7.7889595952788,
+            "far": 0.4,
+            "frr": 0.3953488372093023,
+            "eer": 0.39767441860465114,
+            "gap": 0.004651162790697716
+          }
+        },
+        "isolation_forest": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 20,
+          "tn": 43,
+          "precision_impostor": 0.0,
+          "recall_impostor": 0.0,
+          "f1_impostor": 0.0,
+          "far": 1.0,
+          "frr": 0.0,
+          "accuracy": 0.6825396825396826,
+          "threshold_validation": 0.5429460144214681,
+          "eer_exploratory_on_test": {
+            "threshold": 0.4467591263055746,
+            "far": 0.55,
+            "frr": 0.5348837209302325,
+            "eer": 0.5424418604651162,
+            "gap": 0.015116279069767535
+          }
+        }
+      }
+    },
+    "user35": {
+      "training_sessions": 5,
+      "enrollment_sessions": 4,
+      "validation_sessions": 1,
+      "test_sessions_total": 188,
+      "test_sessions_labeled": 108,
+      "test_sessions_unlabeled": 80,
+      "models": {
+        "rms_z": {
+          "tp": 60,
+          "fp": 27,
+          "fn": 13,
+          "tn": 8,
+          "precision_impostor": 0.6896551724137931,
+          "recall_impostor": 0.821917808219178,
+          "f1_impostor": 0.75,
+          "far": 0.1780821917808219,
+          "frr": 0.7714285714285715,
+          "accuracy": 0.6296296296296297,
+          "threshold_validation": 11.22718174793442,
+          "eer_exploratory_on_test": {
+            "threshold": 24.37531340533731,
+            "far": 0.5753424657534246,
+            "frr": 0.5714285714285714,
+            "eer": 0.573385518590998,
+            "gap": 0.003913894324853229
+          }
+        },
+        "isolation_forest": {
+          "tp": 73,
+          "fp": 34,
+          "fn": 0,
+          "tn": 1,
+          "precision_impostor": 0.6822429906542056,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.8111111111111111,
+          "far": 0.0,
+          "frr": 0.9714285714285714,
+          "accuracy": 0.6851851851851852,
+          "threshold_validation": 0.4783330651305628,
+          "eer_exploratory_on_test": {
+            "threshold": 0.5059602666408649,
+            "far": 0.4931506849315068,
+            "frr": 0.4857142857142857,
+            "eer": 0.4894324853228963,
+            "gap": 0.007436399217221112
+          }
+        }
+      }
+    },
+    "user7": {
+      "training_sessions": 7,
+      "enrollment_sessions": 5,
+      "validation_sessions": 2,
+      "test_sessions_total": 151,
+      "test_sessions_labeled": 73,
+      "test_sessions_unlabeled": 78,
+      "models": {
+        "rms_z": {
+          "tp": 37,
+          "fp": 36,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.5068493150684932,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.6727272727272727,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.5068493150684932,
+          "threshold_validation": 1.8095533127111052,
+          "eer_exploratory_on_test": {
+            "threshold": 15.936793305890133,
+            "far": 0.02702702702702703,
+            "frr": 0.027777777777777776,
+            "eer": 0.027402402402402402,
+            "gap": 0.0007507507507507477
+          }
+        },
+        "isolation_forest": {
+          "tp": 8,
+          "fp": 1,
+          "fn": 29,
+          "tn": 35,
+          "precision_impostor": 0.8888888888888888,
+          "recall_impostor": 0.21621621621621623,
+          "f1_impostor": 0.34782608695652173,
+          "far": 0.7837837837837838,
+          "frr": 0.027777777777777776,
+          "accuracy": 0.589041095890411,
+          "threshold_validation": 0.5228156818195093,
+          "eer_exploratory_on_test": {
+            "threshold": 0.5078079171879365,
+            "far": 0.13513513513513514,
+            "frr": 0.1388888888888889,
+            "eer": 0.13701201201201202,
+            "gap": 0.0037537537537537524
+          }
+        }
+      }
+    },
+    "user9": {
+      "training_sessions": 7,
+      "enrollment_sessions": 5,
+      "validation_sessions": 2,
+      "test_sessions_total": 123,
+      "test_sessions_labeled": 66,
+      "test_sessions_unlabeled": 57,
+      "models": {
+        "rms_z": {
+          "tp": 43,
+          "fp": 23,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.6515151515151515,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.7889908256880734,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.6515151515151515,
+          "threshold_validation": 0.8782988872826453,
+          "eer_exploratory_on_test": {
+            "threshold": 30.355031193725736,
+            "far": 0.09302325581395349,
+            "frr": 0.08695652173913043,
+            "eer": 0.08998988877654196,
+            "gap": 0.006066734074823055
+          }
+        },
+        "isolation_forest": {
+          "tp": 43,
+          "fp": 23,
+          "fn": 0,
+          "tn": 0,
+          "precision_impostor": 0.6515151515151515,
+          "recall_impostor": 1.0,
+          "f1_impostor": 0.7889908256880734,
+          "far": 0.0,
+          "frr": 1.0,
+          "accuracy": 0.6515151515151515,
+          "threshold_validation": 0.444744560143859,
+          "eer_exploratory_on_test": {
+            "threshold": 0.47701634963771267,
+            "far": 0.37209302325581395,
+            "frr": 0.391304347826087,
+            "eer": 0.38169868554095043,
+            "gap": 0.019211324570273025
+          }
+        }
+      }
+    }
+  },
+  "aggregate": {
+    "rms_z": {
+      "tp": 379,
+      "fp": 369,
+      "fn": 26,
+      "tn": 42,
+      "precision_impostor": 0.5066844919786097,
+      "recall_impostor": 0.9358024691358025,
+      "f1_impostor": 0.6574154379878577,
+      "far": 0.06419753086419754,
+      "frr": 0.8978102189781022,
+      "accuracy": 0.5159313725490197
+    },
+    "isolation_forest": {
+      "tp": 274,
+      "fp": 218,
+      "fn": 131,
+      "tn": 193,
+      "precision_impostor": 0.556910569105691,
+      "recall_impostor": 0.6765432098765433,
+      "f1_impostor": 0.6109253065774806,
+      "far": 0.3234567901234568,
+      "frr": 0.5304136253041363,
+      "accuracy": 0.5723039215686274
+    }
+  }
+}

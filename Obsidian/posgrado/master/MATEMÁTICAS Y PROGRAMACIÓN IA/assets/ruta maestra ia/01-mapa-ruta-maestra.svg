@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#56627A"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="1200" height="700" rx="26" fill="#F7F9FC"/>
+  <text x="60" y="68" font-family="Helvetica,Arial,sans-serif" font-size="30" font-weight="700" fill="#172033">Ruta maestra para entender IA</text>
+  <text x="60" y="100" font-family="Helvetica,Arial,sans-serif" font-size="17" fill="#56627A">Cada capa responde una pregunta distinta; saltarse una deja huecos</text>
+  
+  <g filter="url(#shadow)">
+    <rect x="60" y="145" width="230" height="150" rx="18" fill="#FFFFFF" stroke="#815AC0" stroke-width="2"/>
+    <text x="80" y="179" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">1 · Lenguaje</text>
+    <text x="80" y="209" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">Python, objetos</text><text x="80" y="233" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">pruebas y contratos</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="330" y="145" width="230" height="150" rx="18" fill="#FFFFFF" stroke="#2F6BFF" stroke-width="2"/>
+    <text x="350" y="179" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">2 · Matemática</text>
+    <text x="350" y="209" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">probabilidad, cálculo</text><text x="350" y="233" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">álgebra y numérica</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="600" y="145" width="230" height="150" rx="18" fill="#FFFFFF" stroke="#19A7AE" stroke-width="2"/>
+    <text x="620" y="179" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">3 · Aprendizaje</text>
+    <text x="620" y="209" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">pérdidas, métricas</text><text x="620" y="233" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">generalización</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="870" y="145" width="270" height="150" rx="18" fill="#FFFFFF" stroke="#2AA876" stroke-width="2"/>
+    <text x="890" y="179" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">4 · Modelos</text>
+    <text x="890" y="209" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">redes, atención</text><text x="890" y="233" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">RAG y anomalías</text>
+  </g>
+  <g><line x1="290" y1="220" x2="330" y2="220" stroke="#56627A" stroke-width="3" marker-end="url(#arrow)"/></g><g><line x1="560" y1="220" x2="600" y2="220" stroke="#56627A" stroke-width="3" marker-end="url(#arrow)"/></g><g><line x1="830" y1="220" x2="870" y2="220" stroke="#56627A" stroke-width="3" marker-end="url(#arrow)"/></g>
+  <g filter="url(#shadow)">
+    <rect x="170" y="380" width="250" height="135" rx="18" fill="#FFFFFF" stroke="#F59E42" stroke-width="2"/>
+    <text x="190" y="414" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">Representar</text>
+    <text x="190" y="444" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">¿Cómo convierto el mundo</text><text x="190" y="468" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">en números y tensores?</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="475" y="380" width="250" height="135" rx="18" fill="#FFFFFF" stroke="#E25555" stroke-width="2"/>
+    <text x="495" y="414" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">Aprender</text>
+    <text x="495" y="444" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">¿Qué error minimizo y</text><text x="495" y="468" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">cómo cambian parámetros?</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="780" y="380" width="250" height="135" rx="18" fill="#FFFFFF" stroke="#2AA876" stroke-width="2"/>
+    <text x="800" y="414" font-family="Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#172033">Evaluar</text>
+    <text x="800" y="444" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">¿Generaliza, es seguro</text><text x="800" y="468" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#56627A">y sirve al objetivo?</text>
+  </g>
+  <g><line x1="420" y1="448" x2="475" y2="448" stroke="#56627A" stroke-width="3" marker-end="url(#arrow)"/></g><g><line x1="725" y1="448" x2="780" y2="448" stroke="#56627A" stroke-width="3" marker-end="url(#arrow)"/></g>
+  <rect x="60" y="625" width="1080" height="42" rx="14" fill="#172033"/><text x="600" y="652" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="17" font-weight="700" fill="white">Entender = definir → calcular → implementar → verificar → explicar límites</text>
+
+</svg>

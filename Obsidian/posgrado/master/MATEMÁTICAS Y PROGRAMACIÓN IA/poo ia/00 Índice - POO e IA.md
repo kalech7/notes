@@ -19,6 +19,8 @@ Esta carpeta reorganiza la nota completa [[Programación orientada a objetos apl
 5. [[05 Scalar y autodiferenciación]]
 6. [[06 Grafo computacional y neurona]]
 
+Después continúa con [[../ingenieria de software para machine learning/00 Índice y recordatorio - Ingeniería de software para ML|Ingeniería de software para ML]] para convertir clases aisladas en experimentos reproducibles, validados y probados.
+
 ## Mapa de conceptos
 
 ```text
@@ -76,6 +78,7 @@ Enlaces directos:
 - [[Estructuras de Python en un experimento de IA]] — `list`, `tuple`, `dict`, aliasing y copias defensivas.
 - [[numpy pandas parquet arrow]] — representación, validación y almacenamiento de datos.
 - [[funcion de perdida]] — *feature engineering*, pérdida, gradientes y entrenamiento.
+- [[../ingenieria de software para machine learning/00 Índice y recordatorio - Ingeniería de software para ML|Ingeniería de software para ML]] — contratos, configuración, pruebas, logs y artefactos.
 
 ## Lista de comprobación
 

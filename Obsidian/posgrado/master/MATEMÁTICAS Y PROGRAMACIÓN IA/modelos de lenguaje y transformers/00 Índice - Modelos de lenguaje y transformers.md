@@ -58,6 +58,11 @@ Si los nombres todavía se mezclan, empieza por [[00 Glosario visual - LLMs]].
 13. [[13 Multimodalidad - ViT, CLIP y LLaVA]]
 14. [[14 Laboratorio - mini Transformer causal en PyTorch]]
 15. [[15 Resumen, mapa mental y autoevaluación]]
+16. [[16 Tokenización práctica - BPE, WordPiece y SentencePiece]]
+17. [[17 Fine-tuning eficiente - LoRA, QLoRA y PEFT]]
+18. [[18 RAG - chunking, embeddings, recuperación y reranking]]
+19. [[19 Evaluación, alucinaciones, seguridad y prompt injection]]
+20. [[20 Laboratorio aplicado - elegir prompting, RAG o fine-tuning]]
 
 ## Prerrequisitos que ya existen en el vault
 
@@ -66,6 +71,8 @@ Este módulo no vuelve a desarrollar desde cero contenidos que ya están bien cu
 - [[../espacios vectoriales y embeddings/00 Índice - Espacios vectoriales y embeddings|Espacios vectoriales y embeddings]] para distinguir objeto, vector y representación.
 - [[../tensores y algebra computacional con pytorch/00 Índice - Tensores y álgebra computacional con PyTorch|Tensores y PyTorch]] para formas, ejes, broadcasting y productos matriciales.
 - [[../gradientes autodiferenciacion y optimizacion/00 Índice - Gradientes, autodiferenciación y optimización|Gradientes y optimización]] para backpropagation, Adam y tasa de aprendizaje.
+- [[../probabilidad y estadistica para ia/00 Índice y recordatorio - Probabilidad para IA|Probabilidad para IA]] para verosimilitud, entropía, muestreo e incertidumbre.
+- [[../machine learning clasico y generalizacion/00 Índice y recordatorio - Machine Learning clásico|Machine Learning clásico]] para generalización, validación, métricas y calibración.
 - [[funcion de perdida|Funciones de pérdida]] para entropía cruzada.
 - [[../comparacion estadistica de modelos/00 Índice - Comparación estadística de modelos|Comparación estadística de modelos]] para no confundir una diferencia observada con evidencia estadística.
 
@@ -78,6 +85,8 @@ Este módulo no vuelve a desarrollar desde cero contenidos que ya están bien cu
 | entender costes y despliegue | 05 → 06 → 08 → 09 → 12 |
 | entender alineamiento | 01 → 05 → 07 → 11 |
 | entender modelos multimodales | 01 → 02 → 03 → 04 → 13 |
+| construir una aplicación con documentos | 16 → 18 → 19 → 20 |
+| adaptar un modelo con pocos recursos | 05 → 11 → 16 → 17 → 19 |
 
 ## Convención de formas
 

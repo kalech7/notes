@@ -207,4 +207,4 @@ Marca solo cuando puedas explicarlo sin leer:
 
 ---
 
-Anterior: [[14 Laboratorio - mini Transformer causal en PyTorch]] · Volver a [[00 Índice - Modelos de lenguaje y transformers]]
+Anterior: [[14 Laboratorio - mini Transformer causal en PyTorch]] · Siguiente: [[16 Tokenización práctica - BPE, WordPiece y SentencePiece]] · Volver a [[00 Índice - Modelos de lenguaje y transformers]]
