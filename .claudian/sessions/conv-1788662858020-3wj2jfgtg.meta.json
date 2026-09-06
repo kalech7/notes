@@ -1,0 +1,27 @@
+{
+  "id": "conv-1788662858020-3wj2jfgtg",
+  "providerId": "codex",
+  "title": "Sep 5, 09:47 PM",
+  "createdAt": 1788662858093,
+  "lastActivityAt": 1788662942059,
+  "sessionId": "01a0749d-495b-7132-a66c-ba430381c753",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a0749d-495b-7132-a66c-ba430381c753",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/05/rollout-2026-09-05T21-47-40-01a0749d-495b-7132-a66c-ba430381c753.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/07 Mini-batch y SGD como estimador.md",
+  "usage": {
+    "inputTokens": 26507,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 19328,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 26507,
+    "percentage": 10,
+    "model": "gpt-5.6-sol"
+  }
+}

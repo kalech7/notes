@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788663126394-auv8x8h25",
+  "providerId": "codex",
+  "title": "Make answers clickable",
+  "titleGenerationStatus": "success",
+  "createdAt": 1788663126403,
+  "lastActivityAt": 1788663203870,
+  "sessionId": "01a074a1-5c1c-7511-a5be-87a5da8766ac",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a074a1-5c1c-7511-a5be-87a5da8766ac",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/05/rollout-2026-09-05T21-52-07-01a074a1-5c1c-7511-a5be-87a5da8766ac.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/machine learning clasico y generalizacion/01 Problema de aprendizaje, representación y particiones.md",
+  "usage": {
+    "inputTokens": 22976,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 22144,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 22976,
+    "percentage": 9,
+    "model": "gpt-5.6-sol"
+  }
+}

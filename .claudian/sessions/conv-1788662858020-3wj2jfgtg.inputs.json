@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788662858020-3wj2jfgtg",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788662858432-d6kwgfq",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788662857981-975cshe",
+      "timestamp": 1788662857981,
+      "rawDisplayText": ". Qué significa cada símbolo\n\n| Símbolo | Qué es | Lectura intuitiva |\n|---|---|---|\n| $N$ | número total de ejemplos del dataset | cuántos datos existen |\n| $i$ | índice de un ejemplo, desde $1$ hasta $N$ | qué dato estamos mirando |\n| $\\theta$ | todos los parámetros entrenables del modelo | pesos y sesgos que queremos aprender |\n| $\\theta_t$ | valor de los parámetros en el paso $t$ | estado actual del modelo |\n| $\\ell_i(\\theta)$ | pérdida del ejemplo $i$ | qué tan mal funciona el modelo en ese ejemplo |\n| $L(\\theta)$ | pérdida media de todo el dataset | error global que queremos minimizar |\n| $\\nabla$ | operador gradiente | calcula derivadas respecto a todos los parámetros |\n| $\\nabla\\ell_i(\\theta)$ | gradiente aportado por el ejemplo $i$ | dirección que sugiere ese ejemplo |\n| $S_t$ | conjunto de índices elegidos en el paso $t$ | mini-batch actual |\n| $m=|S_t|$ | cantidad de ejemplos del mini-batch | `batch_size` |\n| $g_t$ | gradiente calculado con el mini-batch | estimación del gradiente completo |\n| $\\eta$ | tasa de aprendizaje | tamaño del paso de actualización |\n| $\\mathbb E[\\cdot]$ | esperanza o promedio teórico | media obtenida al repetir el muestreo muchas veces |\n\nexplica mejor esta tabla escribelo en mi nota",
+      "canonicalText": ". Qué significa cada símbolo\n\n| Símbolo | Qué es | Lectura intuitiva |\n|---|---|---|\n| $N$ | número total de ejemplos del dataset | cuántos datos existen |\n| $i$ | índice de un ejemplo, desde $1$ hasta $N$ | qué dato estamos mirando |\n| $\\theta$ | todos los parámetros entrenables del modelo | pesos y sesgos que queremos aprender |\n| $\\theta_t$ | valor de los parámetros en el paso $t$ | estado actual del modelo |\n| $\\ell_i(\\theta)$ | pérdida del ejemplo $i$ | qué tan mal funciona el modelo en ese ejemplo |\n| $L(\\theta)$ | pérdida media de todo el dataset | error global que queremos minimizar |\n| $\\nabla$ | operador gradiente | calcula derivadas respecto a todos los parámetros |\n| $\\nabla\\ell_i(\\theta)$ | gradiente aportado por el ejemplo $i$ | dirección que sugiere ese ejemplo |\n| $S_t$ | conjunto de índices elegidos en el paso $t$ | mini-batch actual |\n| $m=|S_t|$ | cantidad de ejemplos del mini-batch | `batch_size` |\n| $g_t$ | gradiente calculado con el mini-batch | estimación del gradiente completo |\n| $\\eta$ | tasa de aprendizaje | tamaño del paso de actualización |\n| $\\mathbb E[\\cdot]$ | esperanza o promedio teórico | media obtenida al repetir el muestreo muchas veces |\n\nexplica mejor esta tabla escribelo en mi nota",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/07 Mini-batch y SGD como estimador.md"
+        },
+        "editorSelection": {
+          "notePath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/07 Mini-batch y SGD como estimador.md",
+          "mode": "selection",
+          "selectedText": ". Qué significa cada símbolo\n\n| Símbolo | Qué es | Lectura intuitiva |\n|---|---|---|\n| $N$ | número total de ejemplos del dataset | cuántos datos existen |\n| $i$ | índice de un ejemplo, desde $1$ hasta $N$ | qué dato estamos mirando |\n| $\\theta$ | todos los parámetros entrenables del modelo | pesos y sesgos que queremos aprender |\n| $\\theta_t$ | valor de los parámetros en el paso $t$ | estado actual del modelo |\n| $\\ell_i(\\theta)$ | pérdida del ejemplo $i$ | qué tan mal funciona el modelo en ese ejemplo |\n| $L(\\theta)$ | pérdida media de todo el dataset | error global que queremos minimizar |\n| $\\nabla$ | operador gradiente | calcula derivadas respecto a todos los parámetros |\n| $\\nabla\\ell_i(\\theta)$ | gradiente aportado por el ejemplo $i$ | dirección que sugiere ese ejemplo |\n| $S_t$ | conjunto de índices elegidos en el paso $t$ | mini-batch actual |\n| $m=|S_t|$ | cantidad de ejemplos del mini-batch | `batch_size` |\n| $g_t$ | gradiente calculado con el mini-batch | estimación del gradiente completo |\n| $\\eta$ | tasa de aprendizaje | tamaño del paso de actualización |\n| $\\mathbb E[\\cdot]$ | esperanza o promedio teórico | media obtenida al repetir el muestreo muchas veces |",
+          "lineCount": 17,
+          "startLine": 19
+        }
+      },
+      "images": [],
+      "contentDigest": "68ae9efdddb743ff15ec3f97f2d22f492227f3aa6946065d5318058131531550",
+      "providerUserMessageId": "01a0749d-5b15-7131-84e3-0c3e564600d6",
+      "providerAssistantMessageId": "msg_01153733d2fbce65016a9cd49b9ab087d2a94499cc33f0dfe1"
+    }
+  ]
+}

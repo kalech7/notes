@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788663223082-tyed7bvgh",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788663223122-jqxcq0k",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788663223079-fyv3bq4",
+      "timestamp": 1788663223079,
+      "rawDisplayText": "aqui coloca que esun logts explicame a detalle",
+      "canonicalText": "aqui coloca que esun logts explicame a detalle",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/machine learning clasico y generalizacion/02 Regresión lineal y logística desde la pérdida.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "beb937934d6df4d07d3ba572932019eeb5fcaed22a098885d88a895ce55f1430",
+      "providerUserMessageId": "01a074a2-e24d-7552-bd2c-e7c3f73626ef",
+      "providerAssistantMessageId": "msg_089b3a8a56a2c99e016a9cd5e247ac87d28d74741f81c8b953"
+    }
+  ]
+}
