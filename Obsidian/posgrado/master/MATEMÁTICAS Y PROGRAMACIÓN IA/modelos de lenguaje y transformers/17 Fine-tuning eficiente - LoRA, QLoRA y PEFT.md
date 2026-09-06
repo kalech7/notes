@@ -89,12 +89,34 @@ La cuantización introduce aproximación y requisitos de kernels; los gradientes
 
 ## Autoevaluación
 
-1. ¿Qué rango tiene $BA$ como máximo?
-2. ¿Qué memoria ahorra LoRA?
-3. ¿Qué añade QLoRA?
-4. ¿Por qué RAG suele ser mejor para documentos cambiantes?
+Responde primero sin abrir los bloques.
+
+> [!question]- 1. ¿Qué rango tiene $BA$ como máximo?
+> Si $A\in\mathbb R^{r\times d_{in}}$ y $B\in\mathbb R^{d_{out}\times r}$, entonces:
+>
+> $$
+> \operatorname{rank}(BA)
+> \le \min(\operatorname{rank}(B),\operatorname{rank}(A))
+> \le r.
+> $$
+>
+> LoRA no afirma que el peso original tenga rango bajo; restringe a rango como máximo $r$ la **actualización** $\Delta W=BA$. Si $r\ll\min(d_{in},d_{out})$, se entrenan muchos menos parámetros.
+
+> [!question]- 2. ¿Qué memoria ahorra LoRA?
+> Ahorra sobre todo memoria de parámetros **entrenables**, sus gradientes y sus estados del optimizador: solo A y B reciben actualizaciones. El peso base congelado todavía debe almacenarse y usarse en el forward; las activaciones necesarias para backprop tampoco desaparecen automáticamente.
+>
+> Por eso “entrena pocos parámetros” no significa “todo el entrenamiento ocupa poco”. El ahorro total depende de dtype del modelo base, módulos adaptados, checkpointing, secuencia y lote.
+
+> [!question]- 3. ¿Qué añade QLoRA?
+> Mantiene el modelo base congelado en una representación cuantizada —habitualmente 4 bits— y entrena adaptadores LoRA en mayor precisión. Durante el cálculo se usan kernels/decuantización adecuados para propagar señal hasta los adaptadores sin actualizar los pesos base.
+>
+> Así reduce mucho la memoria del modelo congelado además del ahorro de estados entrenables de LoRA. La cuantización puede introducir degradación y no todos los kernels o dispositivos obtienen la misma aceleración.
+
+> [!question]- 4. ¿Por qué RAG suele ser mejor para documentos cambiantes?
+> Porque el conocimiento vive en un índice que puede actualizarse, versionarse, citarse y filtrarse por permisos sin reentrenar los pesos. Si cambia una política, se reemplaza el documento y se reindexa; con fine-tuning habría que preparar datos, entrenar y comprobar que el modelo dejó de repetir la versión antigua.
+>
+> RAG no es gratis: puede fallar al recuperar o construir el contexto. Se prefiere cuando la respuesta debe apoyarse en evidencia externa mutable; fine-tuning suele encajar mejor para comportamiento, estilo o formato repetido.
 
 ---
 
 Anterior: [[16 Tokenización práctica - BPE, WordPiece y SentencePiece]] · Siguiente: [[18 RAG - chunking, embeddings, recuperación y reranking]]
-

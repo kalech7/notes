@@ -205,7 +205,10 @@ Completa:
 
 > Un token ID selecciona una fila de ___. El Transformer produce un estado de tamaño ___. La proyección final produce ___, softmax los convierte en ___ y la CE de un objetivo one-hot es el ___ negativo del token correcto.
 
-Respuesta: la matriz de embeddings; $D$; logits; probabilidades; logaritmo.
+> [!question]- Ver respuesta razonada
+> Un token ID selecciona una fila de **la matriz de embeddings**. El Transformer produce, por posición, un estado de tamaño **$D$**. La proyección final produce **logits**, softmax los convierte en **probabilidades** y la CE de un objetivo one-hot es el **logaritmo negativo** de la probabilidad asignada al token correcto: $-\log p_t$.
+>
+> El orden es importante: el ID no es un vector semántico, el logit todavía no es una probabilidad y la pérdida no usa solo “acertó/falló”; penaliza cuánto apoyo probabilístico recibió la respuesta correcta.
 
 ---
 

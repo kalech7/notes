@@ -189,10 +189,35 @@ Salida esperada:
 
 ## Autoevaluación breve
 
-1. ¿Por qué $QK^\top$ termina con forma $(T,S)$ por cabeza?
-2. ¿Por qué $AV$ elimina el eje $S$?
-3. ¿Qué reduce GQA exactamente?
-4. ¿Por qué la máscara debe actuar antes de softmax?
+Responde primero sin abrir los bloques.
+
+> [!question]- 1. ¿Por qué $QK^\top$ termina con forma $(T,S)$ por cabeza?
+> Porque $Q\in\mathbb R^{T\times H}$ y $K^\top\in\mathbb R^{H\times S}$. La multiplicación contrae $H$ —las características usadas para comparar— y conserva $T$ consultas y $S$ claves:
+>
+> $$
+> (T,H)@(H,S)\to(T,S).
+> $$
+>
+> La celda $(t,s)$ responde cuánto coincide la consulta de la posición $t$ con la clave de la posición $s$.
+
+> [!question]- 2. ¿Por qué $AV$ elimina el eje $S$?
+> $A\in\mathbb R^{T\times S}$ contiene, para cada consulta, un peso por posición del contexto; $V\in\mathbb R^{S\times H}$ contiene un vector de contenido por posición. En $AV$, el eje $S$ se contrae porque se calcula una suma ponderada sobre todas las posiciones:
+>
+> $$
+> (T,S)@(S,H)\to(T,H).
+> $$
+>
+> El eje desaparece como índice explícito, pero su información no se borra: queda resumida dentro de cada vector de salida.
+
+> [!question]- 3. ¿Qué reduce GQA exactamente?
+> Mantiene $N$ cabezas de consulta, pero usa solo $K<N$ cabezas distintas de claves y valores. Varias consultas comparten cada par K/V. Esto reduce los parámetros de las proyecciones K/V, el tamaño del KV cache y el ancho de banda asociado durante decode.
+>
+> No reduce directamente el número de cabezas de salida ni convierte la atención densa en atención lineal; cada cabeza de consulta sigue produciendo sus propios puntajes.
+
+> [!question]- 4. ¿Por qué la máscara debe actuar antes de softmax?
+> Porque queremos normalizar **solo entre claves permitidas**. Asignar $-\infty$ al futuro antes de softmax hace que $e^{-\infty}=0$ y que los pesos válidos sumen 1.
+>
+> Si se pusieran los puntajes futuros en cero antes de softmax, recibirían masa porque $e^0=1$. Si se anularan probabilidades después, la fila dejaría de sumar 1 salvo que se renormalizara, y se estaría implementando un algoritmo distinto.
 
 ---
 

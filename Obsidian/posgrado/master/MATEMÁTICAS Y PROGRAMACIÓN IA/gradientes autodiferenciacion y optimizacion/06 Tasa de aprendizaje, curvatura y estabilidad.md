@@ -52,6 +52,43 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
 #                                      tasa de aprendizaje
 ```
 
+## Schedulers: warmup y decaimiento
+
+Una tasa no tiene que ser constante. Un **scheduler** define $\eta_t$ como función del paso. En modelos grandes es común separar dos fases:
+
+1. **warmup:** la tasa comienza pequeña y crece hasta un máximo;
+2. **decay:** después disminuye para hacer ajustes progresivamente más finos.
+
+Un warmup lineal de $W$ pasos puede escribirse como:
+
+$$
+\eta_t=\eta_{\max}\frac{t}{W},
+\qquad 0\le t\le W.
+$$
+
+Después puede usarse, por ejemplo, decaimiento coseno hasta $\eta_{\min}$ durante un total de $T$ pasos:
+
+$$
+\eta_t
+=\eta_{\min}
++\frac12(\eta_{\max}-\eta_{\min})
+\left[1+\cos\left(\pi\frac{t-W}{T-W}\right)\right],
+\qquad W<t\le T.
+$$
+
+### Por qué ayuda el warmup
+
+Al inicio, representaciones, gradientes y momentos del optimizador todavía atraviesan un transitorio. Aplicar inmediatamente la tasa máxima puede producir una actualización grande basada en estadísticas poco estabilizadas. Warmup limita cuánto pueden mover los primeros lotes y facilita alcanzar el régimen de entrenamiento previsto.
+
+Esto puede reducir la influencia desproporcionada de los primeros ejemplos, pero **no corrige por sí solo el orden de los datos**: siguen siendo necesarios muestreo, mezcla y lotes representativos. Tampoco rescata una $\eta_{\max}$ absurda, una inicialización defectuosa o una pérdida mal escalada.
+
+### Para qué sirve el decaimiento
+
+Al principio conviene recorrer distancia; cerca de una región útil conviene reducir el ruido de las actualizaciones y evitar rebotar alrededor de soluciones. El decay cambia esa escala temporalmente, pero no decide la dirección: esa sigue viniendo del gradiente y del estado del optimizador.
+
+> [!question]- ¿Warmup es lo mismo que usar siempre una tasa pequeña?
+> No. Warmup protege una fase inicial y luego permite llegar a una tasa pico capaz de avanzar con rapidez. Una tasa pequeña constante puede permanecer segura pero avanzar demasiado lento durante todo el entrenamiento. Lo importante es interpretar la **curva completa $\eta_t$**, su unidad —pasos o tokens— y cómo interactúa con batch, optimizador y duración total.
+
 ## Cómo interpretar un valor como $\eta=0.1$
 
 $\eta=0.1$ **no significa** “aprender el $10\%$”, “reducir la pérdida un $10\%$” ni “moverse un $10\%$ hacia el mínimo”. Significa: **multiplicar el gradiente por $0.1$ para construir el paso**.

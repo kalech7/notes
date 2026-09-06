@@ -70,6 +70,7 @@ FAR es impostores aceptados; FRR es legítimos rechazados.
 
 ```text
 notebook/
+├── 01_proyecto_dinamica_mouse.ipynb  # Notebook interactivo paso a paso
 ├── pyproject.toml
 ├── uv.lock
 ├── src/mouse_auth/
@@ -78,8 +79,8 @@ notebook/
 │   └── pipeline.py
 ├── tests/test_core.py
 ├── run_baseline.py
-├── data/                 # ignorado en Git
-└── reports/              # resultados reproducibles
+├── data/                             # ignorado en Git
+└── reports/                          # resultados reproducibles
 ```
 
 ## Comandos

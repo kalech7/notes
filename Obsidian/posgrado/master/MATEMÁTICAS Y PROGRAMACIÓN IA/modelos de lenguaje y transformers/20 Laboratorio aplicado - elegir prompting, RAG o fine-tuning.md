@@ -84,5 +84,4 @@ No pretende sustituir embeddings neuronales; hace visible la interfaz de recuper
 
 ---
 
-Anterior: [[19 Evaluación, alucinaciones, seguridad y prompt injection]] · Volver al [[00 Índice - Modelos de lenguaje y transformers]]
-
+Anterior: [[19 Evaluación, alucinaciones, seguridad y prompt injection]] · Siguiente: [[21 Muestreo diferenciable - Gumbel-Max, Gumbel-Softmax y straight-through]] · Volver al [[00 Índice - Modelos de lenguaje y transformers]]

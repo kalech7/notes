@@ -174,11 +174,12 @@ Reparte posiciones entre dispositivos. No elimina el coste total, pero distribuy
 
 ## Prueba conceptual
 
-Si el primer bloque tiene máximo 5 y denominador reescalado 1.4, y un bloque posterior introduce máximo 7, la contribución anterior se multiplica por:
-
-$$e^{5-7}=e^{-2}.$$
-
-No se descarta: se expresa respecto del nuevo máximo.
+> [!question]- Si el máximo pasa de 5 a 7, ¿qué ocurre con el denominador acumulado?
+> Si el primer bloque tiene máximo 5 y denominador reescalado 1.4, la contribución anterior se multiplica por:
+>
+> $$e^{5-7}=e^{-2}.$$
+>
+> Por tanto, su nueva contribución es $1.4e^{-2}\approx0.1895$, antes de sumar los términos del bloque nuevo. No se descarta: se vuelve a expresar respecto del máximo global actualizado. Este reescalado es lo que permite combinar bloques sin perder equivalencia con el softmax estable calculado sobre toda la fila.
 
 ---
 

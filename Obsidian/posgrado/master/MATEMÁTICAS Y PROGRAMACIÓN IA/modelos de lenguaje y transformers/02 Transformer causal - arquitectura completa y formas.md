@@ -179,10 +179,10 @@ Entonces:
 - $AV$: $(2,3,5,4)$;
 - concatenación: $(2,5,12)$.
 
-> [!question] Comprobación
+> [!question]- Comprobación — haz clic para ver la respuesta
 > ¿Por qué no se pueden sumar residual y atención si olvidaste transponer y la salida quedó $(B,N,S,H)$?
-
-Porque el residual es $(B,S,D)$. Primero hay que volver a $(B,S,N,H)$ y aplanar $N\times H=D$.
+>
+> Porque el residual es $(B,S,D)$ y los ejes no representan lo mismo. Primero hay que transponer la salida a $(B,S,N,H)$ y después aplanar $N\times H=D$ para recuperar $(B,S,D)$. Que $NH=D$ no autoriza a sumar mientras `N` siga siendo un eje separado y esté antes de `S`.
 
 ## Errores frecuentes
 

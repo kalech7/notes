@@ -14,25 +14,41 @@ related: "[[00 Índice - Gradientes, autodiferenciación y optimización]]"
 > El **gradiente completo** indica cómo cambiarían los parámetros si consultáramos todos los ejemplos del dataset. Un **mini-batch** consulta solo una muestra y produce una aproximación más barata. Si la muestra se elige uniformemente, esa aproximación es correcta **en promedio**, aunque un mini-batch concreto no coincida con el gradiente completo.
 
 > [!tip] Ruta visual de esta nota
-> Los tres gráficos aparecen en orden durante la explicación: primero muestran **qué significa una pendiente**, después **cómo se convierte en movimiento** y finalmente **por qué la pendiente estimada cambia entre lotes**. No interpretes el ruido del mini-batch antes de distinguir gradiente, paso y pérdida.
+> Los cuatro recursos visuales aparecen en orden durante la explicación: muestran **qué significa una pendiente**, **cómo se convierte en movimiento**, **cómo las pérdidas de un lote convergen en un solo backward** y **por qué la pendiente estimada cambia entre lotes**. No interpretes el ruido del mini-batch antes de distinguir gradiente, paso y pérdida.
 
 ## 1. Qué significa cada símbolo
 
-| Símbolo | Qué es | Lectura intuitiva |
-|---|---|---|
-| $N$ | número total de ejemplos del dataset | cuántos datos existen |
-| $i$ | índice de un ejemplo, desde $1$ hasta $N$ | qué dato estamos mirando |
-| $\theta$ | todos los parámetros entrenables del modelo | pesos y sesgos que queremos aprender |
-| $\theta_t$ | valor de los parámetros en el paso $t$ | estado actual del modelo |
-| $\ell_i(\theta)$ | pérdida del ejemplo $i$ | qué tan mal funciona el modelo en ese ejemplo |
-| $L(\theta)$ | pérdida media de todo el dataset | error global que queremos minimizar |
-| $\nabla$ | operador gradiente | calcula derivadas respecto a todos los parámetros |
-| $\nabla\ell_i(\theta)$ | gradiente aportado por el ejemplo $i$ | dirección que sugiere ese ejemplo |
-| $S_t$ | conjunto de índices elegidos en el paso $t$ | mini-batch actual |
-| $m=|S_t|$ | cantidad de ejemplos del mini-batch | `batch_size` |
-| $g_t$ | gradiente calculado con el mini-batch | estimación del gradiente completo |
-| $\eta$ | tasa de aprendizaje | tamaño del paso de actualización |
-| $\mathbb E[\cdot]$ | esperanza o promedio teórico | media obtenida al repetir el muestreo muchas veces |
+La notación distingue tres cosas: **los datos** que se usan, **el estado del modelo** y **las cantidades que miden cómo corregirlo**. Una pérdida es un número que mide el error; un gradiente es un vector que indica cómo cambia ese error al modificar cada parámetro.
+
+| Símbolo | Significado preciso | Cómo se lee | Idea intuitiva |
+|---|---|---|---|
+| $N$ | Número total de ejemplos del dataset. | «ene» | Tamaño de la colección completa. Si hay 10 000 pares entrada–respuesta, entonces $N=10\,000$. |
+| $i$ | Índice que identifica un ejemplo: $i\in\{1,\dots,N\}$. | «índice i» | Es la etiqueta numérica de un dato concreto; no es el dato mismo. |
+| $t$ | Número de la iteración o paso de entrenamiento. | «paso te» | Permite distinguir el estado del modelo antes y después de cada actualización. |
+| $\theta$ | Vector que reúne **todos** los parámetros entrenables, por ejemplo $\theta=(w_1,w_2,b)$. | «theta» | Es todo lo que el modelo puede ajustar para aprender: pesos, sesgos, etc. |
+| $\theta_t$ | Valor concreto de $\theta$ al comenzar el paso $t$. | «theta en el paso te» | Es la versión actual del modelo, antes de procesar el mini-batch de ese paso. |
+| $\ell_i(\theta)$ | Pérdida producida por el ejemplo $i$ cuando el modelo usa los parámetros $\theta$. Es un **escalar**. | «pérdida del ejemplo i» | Responde: «con estos parámetros, ¿qué tan mal salió este ejemplo?». |
+| $L(\theta)$ | Pérdida media de todo el dataset: $L(\theta)=\frac1N\sum_{i=1}^N\ell_i(\theta)$. | «pérdida media» o «función objetivo» | Resume en un solo número el desempeño global que queremos mejorar. |
+| $\nabla$ | Operador que calcula una derivada respecto a cada componente de $\theta$ y las reúne en un vector. | «gradiente de» | Convierte una pérdida en un mapa de pendientes: una por cada parámetro. |
+| $\nabla\ell_i(\theta)$ | Vector de derivadas de la pérdida del ejemplo $i$ respecto a todos los parámetros. | «gradiente de la pérdida i» | Indica cómo **aumentaría** el error de ese ejemplo al cambiar los parámetros; para reducirlo nos movemos en la dirección contraria. |
+| $S_t$ | Conjunto de índices seleccionados aleatoriamente en el paso $t$, por ejemplo $S_t=\{4,12,29\}$. | «ese sub te» | Identifica qué ejemplos forman el mini-batch actual. Contiene índices, no gradientes. |
+| $i\in S_t$ | El índice $i$ pertenece al conjunto $S_t$. | «i pertenece a ese sub te» | En una suma, indica que solo recorremos los ejemplos elegidos para el mini-batch. |
+| $m=\lvert S_t\rvert$ | Número de elementos de $S_t$. Las barras indican la **cardinalidad** del conjunto. | «eme igual al tamaño de ese sub te» | Es el número de ejemplos del mini-batch, es decir, el `batch_size`. |
+| $g_t$ | Promedio de los gradientes del mini-batch: $g_t=\frac1m\sum_{i\in S_t}\nabla\ell_i(\theta_t)$. | «ge sub te» | Es una estimación barata del gradiente completo en el paso $t$; cambia si cambia el mini-batch. |
+| $\eta$ | Tasa de aprendizaje, normalmente un número positivo pequeño. | «eta» | Controla cuánto avanzamos en la dirección propuesta por el gradiente. Muy grande puede volver inestable el entrenamiento; muy pequeña puede hacerlo lento. |
+| $\mathbb E[\cdot]$ | Esperanza matemática respecto al muestreo aleatorio del mini-batch. | «esperanza de» | Es el promedio que obtendríamos al repetir el sorteo del mini-batch muchísimas veces manteniendo fijo el modelo. No describe necesariamente un solo paso. |
+
+> [!example] Cómo se conectan los símbolos
+> Supón que $N=1000$ y estamos en el paso $t=20$. El modelo actual es $\theta_{20}$. Si se elige $S_{20}=\{8,34,205,901\}$, entonces $m=4$. Calculamos el gradiente de cada uno de esos cuatro ejemplos en $\theta_{20}$, los promediamos para obtener $g_{20}$ y actualizamos el modelo:
+> $$
+> \theta_{21}=\theta_{20}-\eta g_{20}.
+> $$
+> En palabras: **estado nuevo = estado actual − tamaño del paso × dirección estimada de aumento del error**. Restamos porque queremos disminuir la pérdida.
+
+> [!important] Distinciones que conviene recordar
+> - $\ell_i(\theta)$ y $L(\theta)$ son **pérdidas**: devuelven un número.
+> - $\nabla\ell_i(\theta)$, $\nabla L(\theta)$ y $g_t$ son **gradientes**: devuelven un vector con una componente por parámetro.
+> - $\nabla L(\theta_t)$ usa todo el dataset; $g_t$ usa solo $S_t$ y lo aproxima.
 
 > [!note] Por qué usamos $N$ y $m$
 > $N$ representa el tamaño **total** del dataset y $m$ el tamaño del **mini-batch**. Así evitamos usar la misma letra para dos cantidades diferentes.
@@ -194,6 +210,83 @@ flowchart LR
 | $m=N$ | full-batch gradient descent | se usa el gradiente completo |
 
 En aprendizaje profundo, se suele decir **SGD** también cuando se usan mini-batches.
+
+### Caso AND: un lote, cuatro ramas y una sola actualización
+
+La compuerta AND permite ver el ciclo completo con solo cuatro ejemplos. Organizamos las entradas como **filas** y las características como **columnas**:
+
+$$
+X=
+\begin{bmatrix}
+0&0\\
+0&1\\
+1&0\\
+1&1
+\end{bmatrix}
+\in\mathbb R^{4\times2},
+\qquad
+y=
+\begin{bmatrix}
+0\\0\\0\\1
+\end{bmatrix}
+\in\mathbb R^4.
+$$
+
+Un único modelo comparte los parámetros $w=(w_1,w_2)^\top$ y $b$ entre los cuatro casos:
+
+$$
+z=Xw+b\mathbf 1_4
+=
+\begin{bmatrix}
+b\\
+w_2+b\\
+w_1+b\\
+w_1+w_2+b
+\end{bmatrix},
+\qquad
+\hat y=\sigma(z)\in\mathbb R^4.
+$$
+
+![[assets/24-flujo-lote-iteracion-and.png|1200]]
+
+*Figura — Las cuatro filas de AND generan cuatro predicciones y cuatro pérdidas con los mismos parámetros; al promediarlas se ejecutan un solo `backward()` y una sola actualización. Todo el diagrama representa una iteración full-batch, no cuatro iteraciones.*
+
+La parte superior de la imagen escribe el forward de forma vectorizada. La parte inferior muestra qué ocurre si un motor de autodiferenciación escalar —por ejemplo, uno inspirado en micrograd— no tiene una operación matricial: construye **cuatro ramas del mismo grafo**, una por fila, pero todas apuntan a los mismos objetos $w_1$, $w_2$ y $b$.
+
+Cada rama produce una predicción y una pérdida:
+
+$$
+L_1,L_2,L_3,L_4,
+\qquad
+L=\frac{L_1+L_2+L_3+L_4}{4}.
+$$
+
+Al llamar una sola vez a `L.backward()`, la regla de la cadena lleva el aporte de las cuatro rutas hasta los parámetros compartidos:
+
+$$
+\frac{\partial L}{\partial\theta}
+=\frac14\sum_{i=1}^{4}
+\frac{\partial L_i}{\partial\theta},
+\qquad
+\theta=(w_1,w_2,b).
+$$
+
+Por eso el orden correcto de **una iteración** es:
+
+1. limpiar una vez los gradientes anteriores;
+2. calcular las cuatro predicciones con el mismo estado $\theta_t$;
+3. reducir las cuatro pérdidas a un solo escalar $L$;
+4. ejecutar un solo backward, que acumula los cuatro aportes;
+5. actualizar una sola vez $w_1,w_2,b$;
+6. comenzar el siguiente forward con $\theta_{t+1}$.
+
+> [!important] Qué caso de la tabla representa
+> Aquí $N=4$ y se usan los cuatro ejemplos, así que $m=N=4$: es **full-batch gradient descent**. El hecho de que el motor construya cuatro ramas escalares no lo convierte en cuatro mini-batches ni en cuatro iteraciones. La definición depende de cuándo se actualizan los parámetros.
+
+> [!question]- ¿Qué cambiaría si actualizáramos después de cada caso?
+> Ya no calcularíamos el gradiente de la media de las cuatro pérdidas evaluadas en un mismo $\theta_t$. Tendríamos cuatro actualizaciones de tamaño uno: el caso 2 usaría parámetros modificados por el caso 1, el caso 3 usaría otra versión y así sucesivamente. Eso es SGD online con $m=1$, depende del orden y describe otra trayectoria de optimización.
+>
+> **Regla de lectura:** cuatro `forward` escalares pueden representar un solo forward de lote; lo decisivo es que comparten parámetros, sus pérdidas se reducen y `step()` ocurre una sola vez.
 
 ## 5. Por qué $g_t$ es un estimador
 

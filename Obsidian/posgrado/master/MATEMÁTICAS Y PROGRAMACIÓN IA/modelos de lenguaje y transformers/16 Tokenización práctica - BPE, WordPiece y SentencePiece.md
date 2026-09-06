@@ -103,12 +103,28 @@ Compara por idioma/dominio:
 
 ## Autoevaluación
 
-1. ¿Por qué no usar palabras completas solamente?
-2. ¿Qué diferencia conceptual hay entre BPE y Unigram?
-3. ¿Por qué cambiar tokenizador invalida la tabla de embeddings?
-4. ¿Qué medirías para comparar idiomas?
+Responde primero sin abrir los bloques.
+
+> [!question]- 1. ¿Por qué no usar solamente palabras completas?
+> El vocabulario crecería enormemente con flexiones, errores, nombres, números, términos técnicos y palabras nuevas. Cualquier palabra no incluida necesitaría un token desconocido o un mecanismo alternativo, y variantes relacionadas no compartirían piezas.
+>
+> Los subwords ofrecen un compromiso: vocabulario finito, cobertura abierta y secuencias más cortas que con caracteres o bytes. No existe una segmentación universalmente óptima; depende de idiomas, dominio, tamaño de vocabulario y presupuesto de contexto.
+
+> [!question]- 2. ¿Qué diferencia conceptual hay entre BPE y Unigram?
+> BPE comienza con unidades pequeñas y **fusiona repetidamente** los pares frecuentes; aprende una historia de merges que luego determina la segmentación. Unigram suele comenzar con un conjunto grande de piezas candidatas, asigna probabilidades a las piezas y **elimina** las menos útiles según la probabilidad del corpus.
+>
+> En Unigram puede haber varias segmentaciones posibles de una cadena y se elige —o se muestrea— una de alta probabilidad. En BPE, la aplicación ordenada de merges suele producir una segmentación determinista para un vocabulario dado.
+
+> [!question]- 3. ¿Por qué cambiar el tokenizador invalida la tabla de embeddings?
+> La fila $i$ del embedding fue aprendida para el token que el vocabulario original asignaba al ID $i$. Un tokenizador nuevo cambia piezas, IDs o ambos; entonces la misma fila pasaría a representar otro objeto sin haber sido entrenada para él.
+>
+> También cambia la proyección de salida, porque cada logit corresponde al mismo vocabulario. No basta conservar el tamaño $V$: hay que preservar el mapeo exacto o volver a entrenar/adaptar de forma explícita embeddings y salida.
+
+> [!question]- 4. ¿Qué medirías para comparar idiomas?
+> Mediría caracteres y palabras por token, longitud de secuencias para textos equivalentes, fragmentación de nombres/números/código, frecuencia de fallback a bytes, reversibilidad y cobertura. Después evaluaría calidad downstream, latencia y coste, porque una buena métrica de segmentación no garantiza por sí sola mejor tarea.
+>
+> La comparación debe usar contenidos equivalentes y reportar el tokenizador: un idioma con mayor fertilidad consume más posiciones de contexto y más cómputo para expresar la misma información.
 
 ---
 
 Anterior: [[15 Resumen, mapa mental y autoevaluación]] · Siguiente: [[17 Fine-tuning eficiente - LoRA, QLoRA y PEFT]]
-

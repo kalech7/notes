@@ -104,10 +104,27 @@ El índice debe filtrar por permisos antes de entregar chunks. RAG no debe conve
 
 ## Autoevaluación
 
-1. ¿Qué compromiso controla chunking?
-2. ¿Cuándo ayuda recuperación híbrida?
-3. ¿Qué aporta reranking?
-4. ¿Cómo separas error de retrieval y de generation?
+Responde primero sin abrir los bloques.
+
+> [!question]- 1. ¿Qué compromiso controla chunking?
+> Un chunk pequeño ofrece coincidencias precisas y cabe con facilidad en el contexto, pero puede separar una afirmación de su definición, tabla o excepción. Un chunk grande conserva más contexto local, pero diluye la señal de recuperación, consume más tokens y puede mezclar temas distintos.
+>
+> La unidad correcta suele respetar estructura semántica —sección, párrafo, página o registro— y se valida por recuperación y respuesta, no por una longitud elegida de forma aislada.
+
+> [!question]- 2. ¿Cuándo ayuda la recuperación híbrida?
+> Cuando las consultas contienen tanto coincidencias exactas como equivalencias semánticas. La búsqueda léxica destaca códigos, nombres raros, cifras y frases literales; la búsqueda densa recupera paráfrasis y conceptos relacionados aunque no compartan palabras.
+>
+> Combinar y fusionar ambos rankings suele mejorar recall en colecciones heterogéneas. Si una modalidad ya resuelve todas las consultas o la fusión está mal calibrada, la complejidad añadida puede no compensar.
+
+> [!question]- 3. ¿Qué aporta reranking?
+> Un retriever barato obtiene un conjunto candidato con alto recall; el reranker evalúa con más profundidad cada par consulta–chunk y mejora el orden antes de construir el contexto. Puede usar interacción cruzada entre todos los tokens, por lo que capta relaciones que un simple producto de embeddings pierde.
+>
+> A cambio añade latencia y coste. No puede rescatar un documento que nunca entró en el conjunto candidato, así que retrieval y reranking deben medirse por separado.
+
+> [!question]- 4. ¿Cómo separas error de retrieval y de generation?
+> Conserva para cada caso la evidencia esperada y registra los chunks recuperados. Si la evidencia necesaria no aparece en top-k, el fallo primario es de ingesta, chunking, índice, consulta, filtros o ranking. Si sí aparece y el modelo responde mal, contradice la fuente o cita otro fragmento, el fallo está en construcción del contexto o generación.
+>
+> Esta separación exige métricas por etapa: Recall@k/MRR/nDCG para recuperación y exactitud, fidelidad, citas y abstención para la respuesta final.
 
 ---
 

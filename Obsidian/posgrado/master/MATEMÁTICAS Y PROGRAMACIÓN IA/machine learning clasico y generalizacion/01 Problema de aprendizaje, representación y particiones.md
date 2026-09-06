@@ -15,9 +15,24 @@ tags:
 Completa estas frases:
 
 1. Una fila representa ___
+
+> [!success]- Ver respuesta
+> Una sesión de interacción con el mouse o, si se trabaja por ventanas, una ventana perteneciente a una sesión y a un usuario concretos.
+
 2. Las características están disponibles en el momento de decidir ___
+
+> [!success]- Ver respuesta
+> Si la sesión pertenece a un usuario legítimo o a un posible impostor, sin utilizar información registrada después de esa decisión.
+
 3. La etiqueta representa ___
+
+> [!success]- Ver respuesta
+> La clase real de la observación; por ejemplo, **usuario legítimo** o **impostor**.
+
 4. La unidad nueva que quiero generalizar es ___
+
+> [!success]- Ver respuesta
+> Una sesión futura si se evaluarán usuarios conocidos, o un usuario nuevo si el sistema debe funcionar con personas no vistas durante el entrenamiento.
 
 Para dinámica de mouse, una fila puede ser una sesión. Si se crean ventanas, varias filas comparten sesión y usuario; no son independientes para dividir al azar.
 
@@ -110,9 +125,24 @@ Un baseline responde si la complejidad aporta valor. Ejemplos:
 ## Autoevaluación
 
 1. ¿Por qué separar ventanas al azar puede filtrar identidad?
+
+> [!success]- Ver respuesta
+> Porque varias ventanas pueden provenir de la misma sesión o del mismo usuario. Si unas quedan en train y otras en validation/test, el modelo puede reconocer patrones particulares de esa identidad en vez de aprender a generalizar.
+
 2. ¿Por qué un scaler tiene parámetros?
+
+> [!success]- Ver respuesta
+> Porque usa valores aprendidos de los datos de train, como la media $\mu_j$ y la desviación estándar $\sigma_j$. Esos valores deben conservarse y aplicarse sin recalcularlos en validation/test.
+
 3. ¿Qué afirmación cambia entre separar por sesión y por usuario?
+
+> [!success]- Ver respuesta
+> Separar por sesión evalúa la generalización a sesiones nuevas, posiblemente de usuarios ya conocidos. Separar por usuario evalúa la generalización a personas completamente nuevas.
+
 4. ¿Por qué siempre conviene un baseline?
+
+> [!success]- Ver respuesta
+> Porque establece un punto de comparación simple. Permite comprobar si el modelo complejo aporta una mejora real y ayuda a detectar errores en los datos, la métrica o el pipeline.
 
 ---
 

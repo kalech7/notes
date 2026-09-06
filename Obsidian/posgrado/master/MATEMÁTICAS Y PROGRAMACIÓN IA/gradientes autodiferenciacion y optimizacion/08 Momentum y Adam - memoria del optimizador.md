@@ -240,6 +240,35 @@ print(state["exp_avg_sq"])  # aproximadamente 0.004
 
 Antes de <code>step()</code>, el gradiente ya existe. Después aparecen o cambian los estados del optimizador.
 
+## AdamW: decaimiento de pesos desacoplado
+
+AdamW combina la actualización adaptativa de Adam con una contracción directa de ciertos parámetros hacia cero:
+
+$$
+\theta_t
+=(1-\eta\lambda)\theta_{t-1}
+-\eta\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon}.
+$$
+
+$\lambda$ es la intensidad de `weight_decay`. La palabra **desacoplado** importa: el término $\lambda\theta$ no se mezcla con el gradiente antes de pasar por los momentos y el precondicionamiento de Adam.
+
+Si se implementara regularización L2 añadiendo $\lambda\theta$ a $g_t$, ese término también alteraría $m_t$, $v_t$ y la escala adaptativa por coordenada. En SGD simple ambas formulaciones pueden ser equivalentes bajo condiciones habituales; en Adam, en general, no lo son.
+
+```python
+optimizer = torch.optim.AdamW(
+    [
+        {"params": decay_params, "weight_decay": 0.1},
+        {"params": no_decay_params, "weight_decay": 0.0},
+    ],
+    lr=3e-4,
+)
+```
+
+Es frecuente excluir sesgos y parámetros de normalización del decaimiento, pero es una decisión de receta que debe declararse y evaluarse, no una regla matemática universal.
+
+> [!question]- ¿`parameter.grad` contiene el weight decay de AdamW?
+> En la implementación desacoplada habitual, no. `backward()` calcula el gradiente de la pérdida definida por el grafo; `optimizer.step()` aplica además la contracción de AdamW. Por eso el cambio del parámetro después de `step()` no se explica únicamente con el tensor guardado en `.grad`.
+
 ## Comparación
 
 | Método | Entrada actual | Estado persistente | Idea |
@@ -247,6 +276,7 @@ Antes de <code>step()</code>, el gradiente ya existe. Después aparecen o cambia
 | GD | $g_t$ | ninguno adicional | paso proporcional al gradiente |
 | Momentum | $g_t$ | velocidad $v_t$ | memoria de dirección |
 | Adam | $g_t$ | $m_t$, $v_t$, contador | dirección y escala por coordenada |
+| AdamW | $g_t$ | $m_t$, $v_t$, contador | Adam más decaimiento desacoplado de parámetros seleccionados |
 
 > [!warning] No hay superioridad universal
 > Adam no reemplaza la formulación correcta, una tasa razonable, la evaluación ni el diagnóstico. El mejor optimizador depende del problema y debe compararse con un protocolo controlado.

@@ -200,10 +200,37 @@ flowchart LR
 
 ## Autoevaluación
 
-1. ¿Qué información destruye RMSNorm y cómo la recupera $\gamma$?
-2. ¿Por qué residual facilita que una capa aprenda una corrección?
-3. ¿Qué diferencia conceptual hay entre la compuerta y el contenido de SwiGLU?
-4. Demuestra en dos líneas por qué $R_m^\top R_n=R_{n-m}$.
+Responde primero sin abrir los bloques.
+
+> [!question]- 1. ¿Qué información elimina RMSNorm y qué hace realmente $\gamma$?
+> RMSNorm divide el vector por su RMS y, por tanto, elimina de la rama normalizada su **escala global dependiente de ese ejemplo**. Conserva la dirección relativa de las componentes, salvo el pequeño efecto de $\epsilon$.
+>
+> El vector aprendido $\gamma$ no puede reconstruir el RMS particular que se eliminó: aplica una escala fija, aprendida y distinta por característica. En una arquitectura residual, la ruta de identidad también conserva el estado sin normalizar. Decir que $\gamma$ “recupera toda la información” sería demasiado fuerte.
+
+> [!question]- 2. ¿Por qué residual facilita que una capa aprenda una corrección?
+> Con $y=x+F(x)$, si la transformación útil es pequeña basta aprender $F(x)$ como una corrección, incluso cercana a cero; la capa no tiene que reconstruir $x$. En backward:
+>
+> $$
+> \frac{\partial y}{\partial x}=I+J_F,
+> $$
+>
+> de modo que existe una ruta de gradiente identidad además de la que atraviesa $F$. Esto ayuda al flujo en redes profundas, aunque no sustituye una buena normalización e inicialización.
+
+> [!question]- 3. ¿Qué diferencia conceptual hay entre compuerta y contenido en SwiGLU?
+> La proyección `up` propone características de **contenido** $U=xW_u$. La proyección `gate` produce señales $G=xW_g$ que, tras SiLU, modulan elemento a elemento cuánto y con qué signo pasa de ese contenido:
+>
+> $$H=\operatorname{SiLU}(G)\odot U.$$
+>
+> Ambas rutas se aprenden. La compuerta no es una probabilidad —SiLU no está restringida a $[0,1]$— y no mezcla posiciones; decide cómo transformar canales dentro de cada posición.
+
+> [!question]- 4. Demuestra en dos líneas por qué $R_m^\top R_n=R_{n-m}$.
+> Una rotación es ortogonal, así que $R_m^\top=R_m^{-1}=R_{-m}$. Las rotaciones del mismo plano suman sus ángulos al componerse:
+>
+> $$
+> R_m^\top R_n=R_{-m}R_n=R_{n-m}.
+> $$
+>
+> La igualdad se aplica por bloques a cada par de dimensiones y explica por qué el producto entre query y key puede depender de la distancia relativa $n-m$.
 
 ---
 
