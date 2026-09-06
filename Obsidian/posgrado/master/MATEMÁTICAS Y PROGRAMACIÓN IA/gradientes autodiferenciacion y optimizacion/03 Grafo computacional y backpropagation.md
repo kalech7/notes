@@ -45,6 +45,31 @@ El forward hace dos cosas:
 1. calcula el valor de cada nodo;
 2. conserva qué nodos y qué operación lo produjeron.
 
+## Vista conjunta de forward y backward
+
+### Animación paso a paso
+
+![[assets/03-forward-backpropagation-animado.gif|1000]]
+
+> [!tip] Sigue el recorrido por colores
+> El **morado** muestra el forward de izquierda a derecha: calcula y guarda valores. El **verde** muestra el backward de derecha a izquierda: parte de la semilla $\partial L/\partial L=1$, multiplica por cada derivada local y finalmente obtiene $\partial L/\partial w=-6$ y $\partial L/\partial b=-3$.
+
+### Vista estática
+
+![[assets/09-forward-backward-valores.png|1000]]
+
+### Cómo interpretar el gráfico
+
+- La fila superior se recorre de **izquierda a derecha** y contiene valores calculados: $2$, $-3$, $9$ y $4.5$.
+- La fila inferior se recorre de **derecha a izquierda** y contiene sensibilidades: no vuelve a calcular el forward.
+- La semilla $\partial L/\partial L=1$ solo significa que la salida cambia una unidad respecto de sí misma.
+- Cada operación multiplica la sensibilidad recibida por su derivada local.
+- Para llegar a $w$, la última operación es $u=wx$, cuya derivada respecto de $w$ vale $x=2$; por eso $-3$ se convierte en $-6$.
+- Para llegar a $b$, la suma aporta un factor $1$; por eso el gradiente de $b$ permanece en $-3$.
+
+> [!important] Valores frente a sensibilidades
+> $r=-3$ es un **valor del forward**. $\partial L/\partial r=-3$ es una **sensibilidad del backward**. En este ejemplo coinciden numéricamente por la forma de $L=\frac12r^2$, pero representan cosas distintas.
+
 ## Derivadas locales de las aristas
 
 | Operación | Derivada local en el caso conductor |
@@ -214,6 +239,18 @@ Intenta completar sin mirar:
 > El forward conserva ___ y ___. El backward empieza con ___, multiplica ___ a lo largo de cada ruta y ___ las contribuciones cuando una variable participa en varias ramas.
 
 Respuesta: valores, dependencias, una semilla igual a 1, derivadas locales, suma.
+
+## Ejemplo animado en una red neuronal pequeña
+
+La siguiente red tiene dos entradas, una capa oculta con dos neuronas ReLU y una salida. En el **forward** calcula $h_1$, $h_2$, la predicción $\hat y$ y la pérdida. En el **backward**, la sensibilidad regresa por todas las conexiones hasta obtener el gradiente de cada peso.
+
+![[assets/03-red-neuronal-forward-backpropagation-v2.gif|1000]]
+
+> [!note] Qué debes observar
+> - **Morado:** los valores avanzan desde $x_1,x_2$ hasta $L$.
+> - **Verde:** el gradiente vuelve desde $L$ hacia las capas anteriores.
+> - **Amarillo:** pesos entrenables de cada conexión.
+> - Una neurona con varias salidas recibe y acumula las contribuciones de todas sus rutas.
 
 ---
 

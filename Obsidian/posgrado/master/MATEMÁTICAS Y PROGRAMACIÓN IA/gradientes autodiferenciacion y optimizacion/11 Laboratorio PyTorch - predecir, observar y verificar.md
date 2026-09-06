@@ -33,6 +33,22 @@ Para cada experimento registra:
 > **Qué prueba el resultado:** ___.<br>
 > **Qué no prueba:** ___.
 
+## Plantilla visual del método
+
+![[assets/16-protocolo-laboratorio.png|1000]]
+
+### Cómo usarla en cada experimento
+
+1. **Formula:** escribe la función, las formas y las variables antes del código.
+2. **Predice:** comprométete con un signo, valor o patrón observable.
+3. **Ejecuta:** usa semilla fija y aserciones; evita depender solo de impresiones visuales.
+4. **Registra:** conserva los valores relevantes, no únicamente la salida final.
+5. **Contrasta:** compara la observación con la predicción anterior.
+6. **Explica:** declara la causa apoyada por la evidencia y también lo que el experimento no demuestra.
+
+> [!example] Diferencia entre observación y conclusión
+> Observar <code>w.grad == -6</code> es un dato. Concluir que el signo coincide porque $r<0$ y $x>0$ es una explicación. Afirmar que “el entrenamiento siempre convergerá” excedería la evidencia de ese experimento.
+
 ## Preparación
 
 ```python

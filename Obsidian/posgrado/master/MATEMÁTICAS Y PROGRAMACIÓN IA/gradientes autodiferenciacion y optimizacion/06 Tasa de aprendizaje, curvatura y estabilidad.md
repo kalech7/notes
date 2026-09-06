@@ -12,13 +12,87 @@ related:
 
 # Tasa de aprendizaje, curvatura y estabilidad
 
-## La tasa no controla solo la velocidad
+## Qué es la tasa de aprendizaje
+
+La **tasa de aprendizaje**, representada por $\eta$ (*eta*), es un número positivo que determina cuánto se escala el gradiente antes de cambiar los parámetros.
 
 En descenso de gradiente:
 
-$$\theta_{t+1}=\theta_t-\eta\nabla L(\theta_t),$$
+$$
+\underbrace{g_t=\nabla L(\theta_t)}_{\text{sensibilidad}},
+\qquad
+\underbrace{\Delta\theta_t=-\eta g_t}_{\text{paso}},
+\qquad
+\underbrace{\theta_{t+1}=\theta_t+\Delta\theta_t}_{\text{nuevo estado}}.
+$$
 
-$\eta$ es la tasa de aprendizaje. Es tentador pensar que aumentarla solo produce pasos más grandes. En realidad puede cambiar la dinámica de monótona a oscilatoria y de convergente a divergente.
+El gradiente y la tasa tienen responsabilidades diferentes:
+
+- el **signo y la dirección del gradiente** indican hacia dónde cambia la pérdida;
+- la **tasa de aprendizaje** indica qué tan grande será el movimiento;
+- el producto $-\eta g_t$ es el paso que realmente se suma a los parámetros.
+
+> [!tip] Analogía
+> El gradiente es una señal que dice “la bajada está hacia ese lado”. La tasa de aprendizaje es la longitud de la zancada. Una zancada diminuta avanza lentamente; una enorme puede saltar al otro lado del valle.
+
+## Para qué sirve
+
+La tasa sirve para controlar el compromiso entre:
+
+1. **velocidad:** cuánto avanzan los parámetros en cada actualización;
+2. **estabilidad:** si los pasos permanecen cerca de una trayectoria de descenso;
+3. **precisión local:** el gradiente describe bien el entorno cercano, pero un paso enorme puede abandonar ese entorno;
+4. **capacidad de aprendizaje:** con $\eta=0$ los parámetros no cambian; con una tasa extremadamente pequeña el entrenamiento puede parecer detenido.
+
+Normalmente $\eta$ es un **[[00 Glosario visual - términos del entrenamiento#Hiperparámetro|hiperparámetro]]**: no lo calcula <code>backward()</code>. Lo eliges al configurar el optimizador y puede modificarse durante el entrenamiento mediante un *scheduler*.
+
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+#                                              ^^^^^^
+#                                      tasa de aprendizaje
+```
+
+## Cómo interpretar un valor como $\eta=0.1$
+
+$\eta=0.1$ **no significa** “aprender el $10\%$”, “reducir la pérdida un $10\%$” ni “moverse un $10\%$ hacia el mínimo”. Significa: **multiplicar el gradiente por $0.1$ para construir el paso**.
+
+Si el parámetro actual es $w=1$ y el gradiente es $g=-2$:
+
+$$
+\Delta w=-\eta g=-0.1(-2)=+0.2,
+$$
+
+$$
+w_{\text{nuevo}}=1+0.2=1.2.
+$$
+
+El signo negativo del gradiente hizo que el paso fuera positivo. La tasa solo escaló su tamaño.
+
+| Tasa | Gradiente | Paso $-\eta g$ | Interpretación inmediata |
+|---:|---:|---:|---|
+| $0$ | $-2$ | $0$ | no hay aprendizaje porque el parámetro no se mueve |
+| $0.01$ | $-2$ | $+0.02$ | paso muy pequeño |
+| $0.1$ | $-2$ | $+0.2$ | paso diez veces mayor que con $0.01$ |
+| $0.8$ | $-2$ | $+1.6$ | paso grande; puede ser útil si la curvatura lo permite |
+| $2.2$ | $-2$ | $+4.4$ | en el ejemplo visual se pasa del mínimo y la pérdida aumenta |
+
+![[assets/17-tasa-aprendizaje-intuicion.png|1000]]
+
+### Cómo leer el gráfico
+
+- Los tres paneles comienzan exactamente en $w=1$, con pérdida $L=2$ y gradiente $g=-2$.
+- El punto naranja es el estado inicial y la estrella es el mínimo.
+- Solo cambia $\eta$; por eso las flechas tienen la misma dirección pero longitudes diferentes.
+- Con $\eta=0.1$, la pérdida baja poco: el paso es seguro pero lento.
+- Con $\eta=0.8$, el paso queda cerca del mínimo en una sola iteración.
+- Con $\eta=2.2$, el parámetro salta demasiado lejos y la pérdida sube de $2$ a $2.88$.
+
+> [!warning] No existe una tasa universal
+> $0.1$ puede ser pequeña en un problema y enorme en otro. Su efecto depende de la escala de los datos, la definición de la pérdida, la curvatura, el optimizador y el tamaño del lote. Compara tasas solo dentro de un protocolo controlado.
+
+## Por qué no controla solamente la velocidad
+
+Es tentador pensar que aumentar $\eta$ solo produce pasos más grandes y rápidos. En realidad puede cambiar la dinámica de monótona a oscilatoria y de convergente a divergente. Para entender por qué, necesitamos estudiar cómo interactúa con la curvatura.
 
 ## Caso cuadrático unidimensional
 
@@ -61,6 +135,17 @@ Entonces:
 $$e_t=\rho^t e_0.$$
 
 Toda la estabilidad está contenida en el signo y el módulo de $\rho$.
+
+### Cómo interpretar $a$, $\eta$, $e_t$ y $\rho$
+
+| Símbolo | Qué mide | Si aumenta |
+|---|---|---|
+| $a$ | curvatura de la pérdida | la pendiente cambia más rápido y la tasa estable máxima $2/a$ disminuye |
+| $\eta$ | escala aplicada al gradiente | el paso crece, pero también aumenta el riesgo de cruzar repetidamente el mínimo o divergir |
+| $e_t=\theta_t-\theta^*$ | distancia **firmada** al mínimo | el signo indica el lado; $|e_t|$ indica la distancia |
+| $\rho=1-\eta a$ | factor que transforma un error en el siguiente | no se interpreta por ser “mayor”, sino por su signo y por si $|\rho|$ es menor, igual o mayor que $1$ |
+
+Ejemplo: con $a=4$ y $\eta=0.4$, $\rho=1-4(0.4)=-0.6$. El signo negativo hace que el error cambie de lado; el módulo $0.6$ hace que conserve solo el $60\%$ de su tamaño anterior. Por eso oscila y converge.
 
 ## Los cinco regímenes
 
@@ -173,6 +258,14 @@ $$
 La dirección suave conserva el signo; la dirección curva lo alterna. Ambas reducen magnitud, así que la trayectoria converge mientras zigzaguea.
 
 ![[assets/02-valle-curvatura-gd.png|950]]
+
+### Cómo leer el valle
+
+- Cada óvalo es una curva de igual pérdida.
+- La dirección vertical tiene curvatura $6$: el gradiente cambia con mayor intensidad y el paso cruza el valle.
+- El factor $-0.68$ indica cambio de lado y contracción al $68\%$ en esa dirección.
+- La dirección horizontal tiene factor $0.72$: conserva el lado y avanza más lentamente.
+- El zigzag no significa por sí mismo divergencia; importa si la distancia al mínimo disminuye.
 
 > [!warning] Alcance
 > La recurrencia y la cota anterior son exactas para una cuadrática con $H\succ0$. En funciones no cuadráticas, la curvatura cambia con la posición; el gráfico ofrece intuición local, no una ley universal.

@@ -87,6 +87,29 @@ $$|g_2|<|g_1|,\qquad |\Delta\theta_2|>|\Delta\theta_1|.$$
 
 El paso crece porque la memoria conserva la dirección anterior. En el paso 3, el gradiente cambia de signo y supera la memoria acumulada.
 
+## Lectura visual de la memoria de momentum
+
+![[assets/12-momentum-gradiente-memoria-paso.png|1000]]
+
+### Cómo interpretar cada panel
+
+1. **Gradiente $g_t$:** es la información nueva producida por autograd en ese paso. Un valor negativo propone aumentar el parámetro bajo la regla de descenso.
+2. **Velocidad $v_t$:** mezcla el gradiente nuevo con el $90\%$ de la memoria anterior. Por eso $v_2=-3.7$ aunque $g_2=-1$.
+3. **Parámetro $\theta_t$:** cambia usando $-\eta v_t$, no usando directamente $-\eta g_t$.
+
+En $t=2$:
+
+$$
+v_2=0.9(-3)+(-1)=-3.7,
+\qquad
+\Delta\theta_2=-0.1(-3.7)=+0.37.
+$$
+
+El valor $-3.7$ no es una pérdida ni un gradiente nuevo: es el **estado acumulado** del optimizador. En $t=3$, el gradiente $+4$ se opone a la memoria negativa y produce $v_3=0.67$; el paso finalmente cambia de sentido.
+
+> [!warning] Cuatro columnas, cuatro significados
+> $g_t$ = sensibilidad actual; $v_t$ = memoria; $-\eta v_t$ = paso; $\theta_t$ = posición del parámetro. Comparar sus magnitudes como si fueran la misma cantidad conduce a conclusiones incorrectas.
+
 ## Ver el estado real en PyTorch
 
 ```python

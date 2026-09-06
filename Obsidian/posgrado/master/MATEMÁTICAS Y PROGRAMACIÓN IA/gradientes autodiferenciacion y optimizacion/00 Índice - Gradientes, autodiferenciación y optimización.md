@@ -44,6 +44,24 @@ Cada flecha responde una pregunta distinta:
 | optimizador | ¿cómo se transforma el gradiente en un paso? |
 | evaluación | ¿cómo se comporta el modelo sin añadir historia de entrenamiento? |
 
+## Mapa visual del módulo
+
+![[assets/15-mapa-visual-modulo.png|1000]]
+
+### Cómo leerlo
+
+El mapa se recorre de izquierda a derecha, pero el entrenamiento real repite el ciclo muchas veces:
+
+1. **Objetivo:** transforma predicciones y objetivos en una pérdida escalar.
+2. **Sensibilidad:** calcula cuánto influye cada parámetro en esa pérdida.
+3. **Datos:** decide si el gradiente usa todo el dataset o una estimación mini-batch.
+4. **Dinámica:** combina tasa y curvatura; determina si el error disminuye, oscila o crece.
+5. **Optimizador:** convierte gradiente e historial en un cambio de parámetros.
+6. **Ejecución:** comprueba formas, modos, gradientes y cambios reales.
+
+> [!important] Cuatro cantidades que no son intercambiables
+> La **pérdida** mide el objetivo, el **gradiente** mide sensibilidad, el **paso** es el cambio aplicado y el **estado del optimizador** es memoria entre iteraciones.
+
 ## Caso conductor
 
 La primera mitad usa una regresión lineal de una sola observación:
@@ -100,6 +118,8 @@ Si los términos todavía se mezclan, empieza por [[00 Glosario visual - términ
 10. [[10 Ciclo de entrenamiento reproducible y diagnóstico]]
 11. [[11 Laboratorio PyTorch - predecir, observar y verificar]]
 12. [[12 Resumen, mapa mental y autoevaluación]]
+13. [[13 Verificación de gradientes con diferencias finitas]] (lectura previa del Control 3)
+14. [[14 Control de lectura 3 - el experimento resuelto y explicado]]
 
 ## Cobertura de la presentación
 
@@ -114,12 +134,13 @@ Si los términos todavía se mezclan, empieza por [[00 Glosario visual - términ
 | 26–30 | momentum y Adam | [[08 Momentum y Adam - memoria del optimizador]] |
 | 31–37 | modos y registro de autograd | [[09 train, eval, grad y no_grad]] |
 | 38–43 | ciclo, evidencia y diagnóstico | [[10 Ciclo de entrenamiento reproducible y diagnóstico]] y [[11 Laboratorio PyTorch - predecir, observar y verificar]] |
+| Lectura previa del Control 3 | verificación numérica del gradiente con diferencias finitas | [[13 Verificación de gradientes con diferencias finitas]] |
 
 ## El gráfico que conviene entender primero
 
-![[assets/01-regimenes-tasa-aprendizaje.png|1100]]
+![[assets/17-tasa-aprendizaje-intuicion.png|1000]]
 
-Este gráfico no dice que una tasa concreta siempre funcione. Demuestra algo más preciso: en una cuadrática con curvatura $a=4$, la tasa controla el multiplicador exacto del error. La nota [[06 Tasa de aprendizaje, curvatura y estabilidad]] deriva por qué aparecen esos cinco comportamientos.
+Los tres paneles usan el mismo punto y el mismo gradiente. Solo cambia la tasa de aprendizaje: el gradiente decide el sentido y la tasa decide la longitud del paso. El ejemplo no afirma que una tasa concreta siempre funcione; prepara la derivación completa de [[06 Tasa de aprendizaje, curvatura y estabilidad]].
 
 ## Cómo estudiar
 
@@ -140,6 +161,9 @@ Al ver una fórmula, contesta siempre:
 
 - Presentación completa: ![[assets/module_08.pdf]]
 - Gráficos reproducibles: [[assets/generar_graficos_m08.py]]
+- Lectura previa del Control 3: ![[assets/Control_Lectura_3_Lectura_Previa.pdf]]
+- Gráficos y GIFs de la verificación numérica: [[assets/generar_graficos_control3.py]]
+- Control de lectura 3 resuelto (enunciado, notebook ejecutado y CSV): [[14 Control de lectura 3 - el experimento resuelto y explicado]]
 
 ---
 

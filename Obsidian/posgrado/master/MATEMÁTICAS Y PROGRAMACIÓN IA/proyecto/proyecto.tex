@@ -35,8 +35,8 @@
 }
 
 % --- Interlineado y espaciado de párrafos ---
-\setstretch{1.13}
-\setlength{\parskip}{3pt}
+\setstretch{1.10}
+\setlength{\parskip}{2.5pt}
 \setlength{\parindent}{0pt}
 
 % --- Formato formal de títulos de sección ---
@@ -70,7 +70,7 @@
 % =========================================================================
 \section{Tema}
 % =========================================================================
-\textbf{Detección de suplantación de identidad frente a variaciones naturales del comportamiento mediante biometría conductual, Feature Engineering y Machine Learning.}
+\textbf{Detección de suplantación de identidad mediante dinámica de mouse y detección de anomalías.}
 
 % =========================================================================
 \section{Descripción de la Propuesta}
@@ -80,38 +80,41 @@
 Los mecanismos tradicionales de autenticación permiten verificar la identidad del usuario
 principalmente al inicio de una sesión, pero no garantizan que la misma persona continúe
 utilizando el sistema posteriormente.
-Esta limitación cobra mayor relevancia ante posibles suplantaciones realizadas tanto por
-terceros como por herramientas automatizadas o agentes basados en Inteligencia Artificial.
-Frente a este problema, el proyecto propone desarrollar un sistema de
-\textbf{autenticación continua} basado en \textbf{biometría conductual}, analizando en segundo
-plano los patrones de interacción del usuario mediante teclado y mouse a lo largo de la sesión.
+Frente a este problema, el proyecto propone desarrollar, durante dos semanas, una
+\textbf{prueba de concepto de autenticación continua} basada exclusivamente en la
+\textbf{dinámica de mouse}. El sistema analizará los patrones de movimiento y clic del
+usuario para asignar a cada sesión un puntaje de anomalía que permita distinguir entre:
 
 \begin{enumerate}
-    \item \textbf{Comportamiento habitual del usuario legítimo.}
-    \item \textbf{Variaciones naturales del comportamiento} del mismo usuario entre diferentes sesiones temporales.
-    \item \textbf{Comportamiento de suplantación} ejecutado por un tercero o mediante herramientas automatizadas (bots).
+    \item \textbf{Sesiones legítimas}, incluidas las variaciones naturales del propietario de la cuenta.
+    \item \textbf{Sesiones de suplantación simulada}, formadas con interacciones de otros usuarios.
 \end{enumerate}
 
-\textbf{Pregunta de investigación:} \textit{¿Qué características obtenidas mediante Feature Engineering permiten distinguir variaciones naturales del usuario legítimo frente a una suplantación de identidad?}
+\textbf{Pregunta de investigación:} \textit{¿En qué medida las características temporales y cinemáticas extraídas de la dinámica de mouse permiten detectar sesiones de suplantación sin confundirlas con variaciones naturales del usuario legítimo?}
 
-\textbf{Datasets públicos y gratuitos a utilizar:}
+\textbf{Dataset público y gratuito seleccionado:}
 \begin{itemize}
     \item \textbf{Balabit Mouse Dynamics Challenge Dataset:} Benchmark público con sesiones de interacción de múltiples usuarios en entornos reales, capturando coordenadas $(x, y, t)$, acciones de clic y vectores de trayectoria.\\
     Enlace de descarga: \url{https://github.com/balabit/Mouse-Dynamics-Challenge}
-    \item \textbf{Keystroke and Mouse Dynamics for UEBA Dataset (Mendeley Data):} Dataset público de biometría conductual que contiene más de 142\,000 registros de interacción de 11 usuarios, incluyendo eventos de teclado y dinámicas de mouse recopilados mediante una aplicación web.\\
-    Enlace de descarga: \url{https://data.mendeley.com/datasets/f78jsh6zp9/2}
 \end{itemize}
+El conjunto contiene diez cuentas. Para cada una existen sesiones de entrenamiento
+realizadas por su propietario y sesiones de prueba etiquetadas como legítimas o ilegítimas.
+Las suplantaciones son simuladas con datos de otros usuarios; por tanto, el proyecto no
+afirmará detectar actividad maliciosa real ni interacciones generadas por bots.
 
-\textbf{Definición de clases y escenario de evaluación:}
+\textbf{Formulación del producto mínimo viable:}
 \begin{itemize}
-    \item \textbf{Clasificación Binaria Supervisada:} Clase 0 (Usuario Legítimo, integrando sesiones base y de variación natural) vs. Clase 1 (Impostor, conformado por sesiones de usuarios ajenos y patrones anómalos).
-    \item \textbf{Detección de Anomalías (One-Class):} Perfilado entrenado exclusivamente con el comportamiento del usuario legítimo para evaluar umbrales dinámicos frente a variaciones legítimas vs. ataques.
+    \item \textbf{Detección de anomalías de una clase:} se entrenará un perfil por cuenta exclusivamente con sesiones legítimas de enrolamiento. El modelo principal será \textit{Isolation Forest} y producirá un puntaje de anomalía para sesiones no vistas.
+    \item \textbf{Decisión binaria para evaluar:} un umbral, fijado con datos de validación y sin consultar la prueba final, convertirá el puntaje en \textit{legítimo} o \textit{impostor}.
 \end{itemize}
 
-\clearpage
+\textbf{Fuera del alcance mínimo:} la clasificación binaria supervisada y el análisis con
+SHAP se realizarán únicamente como extensiones si el producto mínimo está terminado y validado.
 
 \subsection{Descripción Técnica}
-El proyecto será desarrollado en Python, empleando las librerías: \textbf{Pandas, NumPy y SciPy} (procesamiento de datos y series temporales), \textbf{Scikit-learn} (modelado, validación y métricas), \textbf{Matplotlib y Seaborn} (visualización) y \textbf{SHAP} (interpretabilidad de características).
+El proyecto será desarrollado en Python, empleando \textbf{Pandas, NumPy y SciPy}
+para el procesamiento de datos, \textbf{Scikit-learn} para el modelado y la evaluación,
+y \textbf{Matplotlib y Seaborn} para la visualización de resultados.
 
 % --- Diagrama de Arquitectura / Pipeline del Proyecto ---
 \vspace{2pt}
@@ -136,33 +139,33 @@ El proyecto será desarrollado en Python, empleando las librerías: \textbf{Pand
         % Fila Superior: Fases 1 a 3
         \node[block] (b1) {
             \textbf{1. Ingesta de Datos}\\[1pt]
-            Eventos de teclado (\textit{KeyDown/KeyUp}) y dinámicas de mouse $(x, y, t)$ y clics
+            Sesiones de Balabit con tiempo, coordenadas $(x,y)$, estado y clics
         };
 
         \node[block, right=of b1] (b2) {
-            \textbf{2. Preprocesamiento}\\[1pt]
-            Limpieza, filtrado de ruido y normalización de los datos
+            \textbf{2. Partición Agrupada}\\[1pt]
+            Separación por usuario y sesión antes de crear ventanas
         };
 
         \node[block, right=of b2] (b3) {
             \textbf{3. Feature Engineering}\\[1pt]
-            Extracción de \textit{Hold/Flight Time}, velocidad, aceleración, curvatura y pausas
+            Velocidad, aceleración, distancia, curvatura, clics y pausas
         };
 
         % Fila Inferior: Fases 6 a 4
         \node[block, below=0.38cm of b3] (b4) {
-            \textbf{4. Modelado Comparativo}\\[1pt]
-            Comparación de modelos \textit{Baseline} y modelos con características obtenidas mediante \textit{Feature Engineering}
+            \textbf{4. Modelado de una Clase}\\[1pt]
+            Perfil estadístico base e \textit{Isolation Forest} entrenados solo con sesiones legítimas
         };
 
         \node[block, left=of b4] (b5) {
-            \textbf{5. Validación por Sesión}\\[1pt]
-            Entrenamiento y evaluación con sesiones diferentes para comprobar la capacidad de generalización
+            \textbf{5. Umbral y Validación}\\[1pt]
+            Calibración sin utilizar las etiquetas de la prueba final
         };
 
         \node[block, left=of b5] (b6) {
-            \textbf{6. Evaluación e Interpretabilidad}\\[1pt]
-            Clasificación Legítimo vs. Impostor y análisis de las características más relevantes mediante SHAP
+            \textbf{6. Evaluación Final}\\[1pt]
+            F1, \textit{recall} de impostor y matriz de confusión
         };
 
         % Flechas de conexión del flujo
@@ -178,38 +181,41 @@ El proyecto será desarrollado en Python, empleando las librerías: \textbf{Pand
 
 \textbf{Pipeline y Arquitectura de Implementación:}
 \begin{enumerate}
-    \item \textbf{Ingesta y Preprocesamiento:} Limpieza de datos y filtrado de ruido.
-    \item \textbf{Feature Engineering:} Extracción de descriptores cinemáticos y temporales (tiempos de vuelo, pulsación, velocidad de tipeo, aceleración de cursor, curvatura de trayectorias, cambio angular y pausas cognitivas).
-    \item \textbf{Análisis Estadístico y Selección:} Analizar qué características se mantienen relativamente estables para un mismo usuario y cuáles permiten diferenciarlo de otros usuarios.
-    \item \textbf{Entrenamiento y Comparación de Modelos:} Entrenar modelos utilizando variables base y características obtenidas mediante \textit{Feature Engineering}, comparando su rendimiento con \textbf{Random Forest} para clasificación y \textbf{Isolation Forest} para detección de anomalías.
-    \item \textbf{Validación por Sesión:} Entrenar y evaluar el modelo usando sesiones diferentes del usuario para comprobar su capacidad de generalización.
-    \item \textbf{Métricas de Evaluación:} \textit{Accuracy}, \textit{Precision}, \textit{Recall} y \textit{F1-Score}.
+    \item \textbf{Ingesta y preprocesamiento:} verificar identificadores de cuenta y sesión, ordenar eventos por tiempo, eliminar duplicados y tratar desplazamientos o intervalos inválidos.
+    \item \textbf{Partición sin fuga de información:} separar primero los usuarios destinados al desarrollo de los usuarios de evaluación mediante validación externa tipo \textit{leave-one-user-out}. Dentro de cada cuenta, las sesiones de enrolamiento, validación y prueba serán disjuntas. Las ventanas se crearán después de esta separación y todas las interacciones de un grupo $(\texttt{usuario\_id},\texttt{sesion\_id})$ permanecerán en una sola partición.
+    \item \textbf{Feature Engineering:} resumir cada ventana o sesión mediante velocidad, aceleración, distancia recorrida, cambios angulares, curvatura, pausas y frecuencia de clics.
+    \item \textbf{Modelado:} construir un perfil estadístico sencillo como referencia y entrenar \textit{Isolation Forest} únicamente con sesiones legítimas de enrolamiento. Los hiperparámetros se fijarán con usuarios de desarrollo, sin usar sesiones de la evaluación final.
+    \item \textbf{Calibración:} seleccionar el umbral de decisión con sesiones de validación, documentando el criterio utilizado y manteniendo intacta la prueba final.
+    \item \textbf{Evaluación:} priorizar el \textbf{F1-Score de la clase impostor}, el \textbf{recall de impostor} y la \textbf{matriz de confusión}. Se reportarán también la precisión y la tasa de falsos positivos; la \textit{accuracy} quedará como métrica secundaria por el posible desbalance entre clases.
 \end{enumerate}
 
-\textbf{Tema de investigación complementario (fuera del alcance del curso):}\\
-Se investigarán los fundamentos teóricos de la Biometría Conductual Continua,
-el fenómeno de Behavioral Drift, las limitaciones de confiabilidad de los mecanismos
-CAPTCHA y el uso de técnicas de interpretabilidad como SHAP,
-con el objetivo de comprender cómo estas herramientas pueden ayudar a explicar qué
-características conductuales influyen en la detección de suplantaciones.
+\textbf{Plan de trabajo de dos semanas:}
+\begin{itemize}
+    \item \textbf{Semana 1:} descarga y auditoría del dataset, partición agrupada, limpieza, análisis exploratorio y construcción reproducible de características.
+    \item \textbf{Semana 2:} entrenamiento del perfil base y de \textit{Isolation Forest}, calibración del umbral, evaluación final y redacción de resultados y limitaciones.
+\end{itemize}
+
+\textbf{Extensiones condicionadas al tiempo disponible:} comparar el enfoque de una clase
+con una clasificación binaria supervisada y aplicar SHAP al modelo supervisado. Estas
+actividades no forman parte de los criterios de finalización del producto mínimo.
 % =========================================================================
 \section{Objetivos}
 % =========================================================================
 
 \subsection{Objetivo General}
-Desarrollar y evaluar un sistema de Machine Learning fundamentado en Feature Engineering para la autenticación continua mediante biometría conductual de teclado y mouse, capaz de superar las limitaciones de confiabilidad de los métodos tradicionales y discriminar de forma robusta entre variaciones naturales del usuario legítimo y suplantaciones de identidad.
+Desarrollar y evaluar una prueba de concepto de autenticación continua basada en dinámica de mouse y detección de anomalías, capaz de diferenciar sesiones legítimas de suplantaciones simuladas en el dataset Balabit, utilizando una evaluación agrupada por usuario y sesión.
 
 \subsection{Objetivos Específicos}
 \begin{enumerate}
-    \item \textbf{Obtener y preparar} datasets públicos de biometría conductual de teclado y mouse.
+    \item \textbf{Obtener, auditar y preparar} el dataset Balabit Mouse Dynamics Challenge, conservando los identificadores de usuario y sesión.
 
-    \item \textbf{Extraer características} temporales y de movimiento mediante técnicas de \textit{Feature Engineering}.
+    \item \textbf{Construir una partición agrupada} que mantenga separados los usuarios de desarrollo y evaluación, y que impida que una misma sesión aporte interacciones a más de una partición.
 
-    \item \textbf{Analizar} qué características permiten diferenciar el comportamiento de un usuario legítimo frente al de un impostor.
+    \item \textbf{Extraer y analizar características} temporales y cinemáticas de la interacción con el mouse mediante técnicas de \textit{Feature Engineering}.
 
-    \item \textbf{Entrenar y comparar} modelos de clasificación y detección de anomalías utilizando datos base y características obtenidas mediante \textit{Feature Engineering}.
+    \item \textbf{Entrenar y calibrar} un modelo \textit{Isolation Forest} con sesiones legítimas, comparándolo con un perfil estadístico base dentro de la misma formulación de detección de anomalías.
 
-    \item \textbf{Evaluar} el rendimiento de los modelos mediante métricas de evaluación (\textit{Accuracy}, \textit{Precision}, \textit{Recall} y \textit{F1-Score}).
+    \item \textbf{Evaluar} el desempeño sobre sesiones no vistas mediante F1-Score, \textit{recall} de impostor y matriz de confusión, documentando falsos positivos, falsos negativos y limitaciones del experimento.
 \end{enumerate}
 
 \end{document}

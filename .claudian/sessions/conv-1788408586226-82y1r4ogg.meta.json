@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788408586226-82y1r4ogg",
+  "providerId": "codex",
+  "title": "agrega que es un gradiente con grafcio para que me...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1788408586236,
+  "lastActivityAt": 1788410766545,
+  "sessionId": "01a06575-608d-7480-8023-4d2e7c624674",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a06575-608d-7480-8023-4d2e7c624674",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/02/rollout-2026-09-02T23-09-46-01a06575-608d-7480-8023-4d2e7c624674.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/00 Glosario visual - términos del entrenamiento.md",
+  "usage": {
+    "inputTokens": 173519,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 173056,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 173519,
+    "percentage": 67,
+    "model": "gpt-5.6-sol"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788441525619-azx655ie8",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788441525778-n2cepcb",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788441525613-0hsmasu",
+      "timestamp": 1788441525613,
+      "rawDisplayText": "esto explica mejor## Por qué se llama aproximación local\n\nUna recta tangente se parece a una curva solo cerca del punto de contacto. El término omitido contiene curvatura y crece al agrandar el paso. Por eso:\n\n> [!warning] Límite\n> El gradiente predice bien cambios suficientemente pequeños. No garantiza el resultado de un paso grande, el mejor paso finito ni el mínimo global.",
+      "canonicalText": "esto explica mejor## Por qué se llama aproximación local\n\nUna recta tangente se parece a una curva solo cerca del punto de contacto. El término omitido contiene curvatura y crece al agrandar el paso. Por eso:\n\n> [!warning] Límite\n> El gradiente predice bien cambios suficientemente pequeños. No garantiza el resultado de un paso grande, el mejor paso finito ni el mínimo global.",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/02 Gradiente, aproximación local y dirección de descenso.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "8ad0acea317eaaa8daa5a3962a2a0b9c4f1c7ff0bfa4b48773e16cb5b357f182",
+      "providerUserMessageId": "01a0676c-139e-7930-859e-ccbaec612be4",
+      "providerAssistantMessageId": "msg_0e95ecaaf82f2027016a9973ea5d0487d2924c05bd600aa392"
+    }
+  ]
+}

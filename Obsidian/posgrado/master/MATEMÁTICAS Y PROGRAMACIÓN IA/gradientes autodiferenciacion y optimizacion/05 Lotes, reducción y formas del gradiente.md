@@ -13,6 +13,173 @@ related:
 
 # Lotes, reducción y formas del gradiente
 
+## Antes de empezar: ¿qué es un lote?
+
+Un **lote** (*batch*) es un grupo de ejemplos que el modelo procesa juntos antes de actualizar sus parámetros.
+
+Por ejemplo, supongamos que tenemos estos datos:
+
+| Entrada $x$ | Resultado esperado $y$ |
+|---:|---:|
+| 1 | 3 |
+| 2 | 5 |
+| 3 | 7 |
+
+Aquí hay tres ejemplos, por lo que el tamaño del lote es:
+
+$$B=3.$$
+
+Cada ejemplo tiene una sola característica, de modo que:
+
+$$d=1.$$
+
+Al reunir los ejemplos en una matriz obtenemos:
+
+$$
+X=
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+\in\mathbb R^{3\times1}.
+$$
+
+> [!important] Cómo leer $X:(B,d)$
+> - Cada **fila** representa un ejemplo.
+> - Cada **columna** representa una característica.
+> - $B$ es la cantidad de ejemplos.
+> - $d$ es la cantidad de características de cada ejemplo.
+
+Si procesáramos los datos individualmente, ejecutaríamos el modelo tres veces. Al utilizar un lote, PyTorch puede realizar las tres predicciones mediante una sola operación matricial.
+
+### Recorrido completo del lote
+
+El entrenamiento sigue este recorrido:
+
+```text
+Lote de B ejemplos
+        ↓
+B predicciones
+        ↓
+B residuos o errores
+        ↓
+Reducción con mean()
+        ↓
+Una pérdida escalar
+        ↓
+backward()
+        ↓
+Un gradiente para cada parámetro
+```
+
+Usamos el modelo lineal:
+
+$$\hat y=Xw+b.$$
+
+Con los valores iniciales $w=1$ y $b=0$ obtenemos:
+
+$$
+\hat y=
+\begin{bmatrix}1\\2\\3\end{bmatrix}.
+$$
+
+El modelo produce **una predicción por cada ejemplo del lote**. Al compararlas con los resultados correctos:
+
+$$
+y=
+\begin{bmatrix}3\\5\\7\end{bmatrix},
+$$
+
+obtenemos un residuo por ejemplo:
+
+$$
+r=\hat y-y
+=
+\begin{bmatrix}
+1-3\\
+2-5\\
+3-7
+\end{bmatrix}
+=
+\begin{bmatrix}-2\\-3\\-4\end{bmatrix}.
+$$
+
+Los residuos son negativos porque todas las predicciones son menores que sus objetivos.
+
+### ¿Qué es la reducción?
+
+En este punto tenemos tres errores, pero para entrenar normalmente queremos un solo número que resuma qué tan mal funcionó el modelo en todo el lote. Convertir varios valores en uno se llama **reducción**.
+
+En este caso usamos la media de los errores al cuadrado:
+
+$$
+L=\frac1{2B}\sum_{i=1}^{B}r_i^2.
+$$
+
+Para nuestro lote:
+
+$$
+L
+=\frac1{2\cdot3}\left((-2)^2+(-3)^2+(-4)^2\right)
+=\frac{29}{6}
+\approx4.8333.
+$$
+
+- Elevar al cuadrado evita que los errores positivos y negativos se cancelen.
+- Dividir por $B$ calcula el error promedio del lote.
+- El factor $1/2$ simplifica la derivada del cuadrado.
+
+> [!note] Una precisión
+> La pérdida no tiene que ser escalar en todos los casos matemáticos. Sin embargo, durante el entrenamiento normalmente se reduce a un escalar para poder llamar `loss.backward()` directamente y obtener una medida global del error del lote.
+
+### Intuición de los gradientes
+
+La reducción produce una sola pérdida, pero `backward()` calcula cuánta responsabilidad tiene cada parámetro en esa pérdida.
+
+Para el peso:
+
+$$
+\nabla_wL=\frac1B X^\mathsf{T}r
+=\frac1B\sum_{i=1}^{B}x_i r_i.
+$$
+
+Cada residuo se multiplica por la entrada que lo produjo. Por eso los ejemplos con un valor de $x_i$ mayor influyen más en el gradiente de $w$.
+
+En nuestro ejemplo:
+
+$$
+\nabla_wL
+=\frac13\left(1(-2)+2(-3)+3(-4)\right)
+=-\frac{20}{3}.
+$$
+
+Para el sesgo:
+
+$$
+\frac{\partial L}{\partial b}
+=\frac1B\sum_{i=1}^{B}r_i
+=\frac{-2-3-4}{3}
+=-3.
+$$
+
+El gradiente de $b$ es el residuo promedio porque el mismo sesgo se suma por igual a todas las predicciones.
+
+Con una tasa de aprendizaje $\eta=0.1$:
+
+$$
+w_1=w_0-\eta\nabla_wL=1.6667,
+\qquad
+b_1=b_0-\eta\frac{\partial L}{\partial b}=0.3.
+$$
+
+Los dos parámetros aumentan porque el modelo estaba prediciendo valores demasiado pequeños.
+
+> [!summary] Idea esencial
+> Un lote permite procesar varios ejemplos juntos. Cada ejemplo produce una predicción y un residuo; la reducción resume esos residuos en una pérdida escalar, y `backward()` calcula un gradiente con la forma de cada parámetro.
+
+La siguiente sección expresa esta misma idea de manera más formal y deriva las fórmulas de los gradientes.
+
 ## Qué cambia al introducir un lote
 
 El forward pasa de una predicción a $B$ predicciones, pero la reducción final mantiene una pérdida escalar.
@@ -152,6 +319,36 @@ Es decir, el gradiente del sesgo es el residuo promedio.
 
 > [!important] Invariante
 > Cada gradiente debe heredar la forma de su parámetro. Si no coincide, revisa la derivación o el broadcasting.
+
+## Mapa visual de formas y broadcasting
+
+![[assets/11-formas-y-broadcasting.png|1000]]
+
+### Cómo interpretar las formas
+
+- $X:(B,d)$ significa **$B$ ejemplos por $d$ características**. En el dibujo, $(3,1)$ son tres ejemplos con una característica cada uno.
+- $w:(d,)$ contiene un peso por característica. El producto $Xw$ elimina la dimensión $d$ y deja una predicción por ejemplo: $(B,)$.
+- El objetivo $y$ debe tener la misma forma semántica que $\hat y$. Entonces la resta genera exactamente $B$ residuos emparejados.
+- <code>mean</code> reduce esos $B$ valores a una pérdida escalar; eso permite iniciar backward con una semilla natural igual a $1$.
+- El gradiente de $w$ vuelve a tener forma $(d,)$ y el de $b$ vuelve a ser escalar.
+
+### Cómo leer la matriz roja y azul
+
+Si se resta $(3,)$ menos $(3,1)$, broadcasting combina cada predicción con cada objetivo y crea una matriz $(3,3)$:
+
+$$
+\begin{bmatrix}1&2&3\end{bmatrix}
+-
+\begin{bmatrix}1\\2\\3\end{bmatrix}
+=
+\begin{bmatrix}
+0&1&2\\
+-1&0&1\\
+-2&-1&0
+\end{bmatrix}.
+$$
+
+La diagonal contiene comparaciones emparejadas, pero las otras seis celdas son cruces no deseados. El programa ejecuta sin error porque las formas son compatibles para broadcasting; el error es **semántico**.
 
 En el caso numérico:
 

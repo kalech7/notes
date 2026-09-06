@@ -28,6 +28,22 @@ PyTorch separa dos preguntas:
 
 No son dos nombres para lo mismo.
 
+## Matriz visual de las cuatro combinaciones
+
+![[assets/13-matriz-train-eval-grad.png|1000]]
+
+### Cómo leer la matriz
+
+- Muévete **verticalmente** para cambiar la conducta del módulo: arriba <code>train()</code>, abajo <code>eval()</code>.
+- Muévete **horizontalmente** para cambiar el registro de operaciones: izquierda con gradientes, derecha con <code>no_grad()</code>.
+- Dropout depende de la fila, no de la columna.
+- <code>requires_grad</code> y la construcción del historial dependen de la columna, no de la fila.
+
+Por eso la celda inferior izquierda es totalmente válida: <code>model.eval()</code> con gradientes habilitados permite calcular saliencia o sensibilidad sin activar Dropout. La celda superior derecha también es posible: <code>model.train()</code> dentro de <code>no_grad()</code> mantiene Dropout aleatorio, pero no construye un grafo derivable.
+
+> [!tip] Pregunta de diagnóstico
+> Si los **valores** cambian entre ejecuciones, inspecciona <code>train/eval</code>. Si falta <code>grad_fn</code> o <code>requires_grad</code>, inspecciona el contexto grad/<code>no_grad</code>.
+
 ## Qué cambia con <code>train()</code> y <code>eval()</code>
 
 Módulos como Dropout y BatchNorm consultan <code>module.training</code>.

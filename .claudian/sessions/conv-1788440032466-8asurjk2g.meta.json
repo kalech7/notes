@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788440032466-8asurjk2g",
+  "providerId": "codex",
+  "title": "Understanding paso and its values",
+  "titleGenerationStatus": "success",
+  "createdAt": 1788440032498,
+  "lastActivityAt": 1788440626354,
+  "sessionId": "01a06755-3849-7822-a1a6-80dd98026d4e",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a06755-3849-7822-a1a6-80dd98026d4e",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/03/rollout-2026-09-03T07-53-53-01a06755-3849-7822-a1a6-80dd98026d4e.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/01 Pérdida escalar, residuo y predicción de signos.md",
+  "usage": {
+    "inputTokens": 54758,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 54016,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 54758,
+    "percentage": 21,
+    "model": "gpt-5.6-sol"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788440032466-8asurjk2g",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788440032576-xkn7wo3",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788440032455-lyubq76",
+      "timestamp": 1788440032455,
+      "rawDisplayText": "explicame mejor que es el paso y como interpretar esos valores",
+      "canonicalText": "explicame mejor que es el paso y como interpretar esos valores",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/01 Pérdida escalar, residuo y predicción de signos.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "98d449c8428ff5d1059675122008b4c6c85ac7d92528590c55c1e5e9ec4bc4de",
+      "providerUserMessageId": "01a06755-4dee-7ef1-8547-84f2ca2fe85b",
+      "providerAssistantMessageId": "msg_0ee54d6730c844a5016a996df9572087d2bdf1347dc94801ba"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788440327257-0m2dmq1",
+      "userTurnOrdinal": 2,
+      "state": "accepted",
+      "localMessageId": "msg-1788440327246-3nxf8hi",
+      "timestamp": 1788440327246,
+      "rawDisplayText": "pero revisa que compile mi nota correctamente ya que esta vacia una tabla",
+      "canonicalText": "pero revisa que compile mi nota correctamente ya que esta vacia una tabla",
+      "images": [],
+      "contentDigest": "1e4d417e7ce119faa5b6e2500da0f0f1e6ec8a40454311600004d29154cd8cf9",
+      "providerUserMessageId": "01a06759-b5cc-7103-8e9c-ba972e952c65",
+      "providerAssistantMessageId": "msg_0ee54d6730c844a5016a996fc034ac87d2b95d4be69f818aeb"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788440515214-x371id2",
+      "userTurnOrdinal": 3,
+      "state": "accepted",
+      "localMessageId": "msg-1788440515212-81ynd24",
+      "timestamp": 1788440515212,
+      "rawDisplayText": "agrega esa info a mi nota pero verifica que este todo bien",
+      "canonicalText": "agrega esa info a mi nota pero verifica que este todo bien",
+      "images": [],
+      "contentDigest": "88f989226713c998dd68b01050d9ce6fc7003367381d89df84cdf81acf6145c9",
+      "providerUserMessageId": "01a0675c-9351-7292-af0d-3a5146575fe8",
+      "providerAssistantMessageId": "msg_0ee54d6730c844a5016a99702e9b9c87d2827528ee391dd176"
+    }
+  ]
+}

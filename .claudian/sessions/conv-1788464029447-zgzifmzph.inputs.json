@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788464029447-zgzifmzph",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788464029588-gtgqyiv",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788464029442-ii0k2ne",
+      "timestamp": 1788464029442,
+      "rawDisplayText": "explicamejor esta nota que es un late para emprezar",
+      "canonicalText": "explicamejor esta nota que es un late para emprezar",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/05 Lotes, reducción y formas del gradiente.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "ab5f32d0957a4510cdb6f151c0de40339bda4f11d6b502b48b0d00ee89ab153f",
+      "providerUserMessageId": "01a068c3-6fb2-7aa2-aa02-1216be690819",
+      "providerAssistantMessageId": "msg_08661d126017747a016a99cbb27b5c87d2a48476829e6def31"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788464163718-67s9cqe",
+      "userTurnOrdinal": 2,
+      "state": "accepted",
+      "localMessageId": "msg-1788464163708-j699vu8",
+      "timestamp": 1788464163708,
+      "rawDisplayText": "pero escribelo en mi nota para poder leerlo de nuevo",
+      "canonicalText": "pero escribelo en mi nota para poder leerlo de nuevo",
+      "images": [],
+      "contentDigest": "0127f9abf7c744fa827a9ce66465aacaa5f7c26b6ffd6b965c964c0e80e12710",
+      "providerUserMessageId": "01a068c5-6c5a-73f2-870e-e8c5b651d75a",
+      "providerAssistantMessageId": "msg_08661d126017747a016a99cc560d3487d2891d05bc8a17804a"
+    }
+  ]
+}

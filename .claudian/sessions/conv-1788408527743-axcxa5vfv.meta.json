@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788408527743-axcxa5vfv",
+  "providerId": "codex",
+  "title": "como se que es entrenamiento y que es solo clasifi...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1788408527783,
+  "lastActivityAt": 1788408549210,
+  "sessionId": "01a06574-7def-7a52-a79b-139505cb8bd3",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a06574-7def-7a52-a79b-139505cb8bd3",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/02/rollout-2026-09-02T23-08-48-01a06574-7def-7a52-a79b-139505cb8bd3.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/00 Glosario visual - términos del entrenamiento.md",
+  "usage": {
+    "inputTokens": 18580,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 16640,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 18580,
+    "percentage": 7,
+    "model": "gpt-5.6-sol"
+  }
+}

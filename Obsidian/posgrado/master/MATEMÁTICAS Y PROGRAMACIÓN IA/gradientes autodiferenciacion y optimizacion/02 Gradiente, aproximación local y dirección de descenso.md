@@ -42,6 +42,71 @@ predice el cambio de pérdida:
 - negativo: descenso local;
 - cero: sin cambio de primer orden en esa dirección.
 
+## Mapa visual: gradiente frente a paso
+
+![[assets/06-gradiente-direcciones.png|1000]]
+
+El gráfico usa la función didáctica:
+
+$$
+L(w,b)=(w-2)^2+2(b-1)^2.
+$$
+
+En $\theta=(0,2)$, la pérdida vale $6$ y el gradiente es $(-4,4)$.
+
+- La **flecha roja** muestra la dirección del gradiente: hacia allí la pérdida aumenta más rápido localmente.
+- El primer valor, $-4$, significa que aumentar un poco $w$ tiende a bajar $L$.
+- El segundo valor, $+4$, significa que aumentar un poco $b$ tiende a subir $L$.
+- La **flecha verde** ya incluye la tasa $\eta=0.2$: es el cambio real $-\eta\nabla L=(0.8,-0.8)$.
+- El nuevo estado $(0.8,1.2)$ tiene pérdida $1.52$; por eso este paso concreto mejoró el objetivo.
+
+### Cómo se calcula el paso
+
+En descenso de gradiente, el **paso** es el cambio que aplicamos a los parámetros:
+
+$$
+\Delta\theta=-\eta\nabla L(\theta),
+\qquad
+\theta_{\text{nuevo}}=\theta+\Delta\theta.
+$$
+
+Conviene no confundir estas tres ideas:
+
+- $-\nabla L(\theta)$ indica la **dirección de descenso**;
+- $\eta$ controla cuánto avanzamos y se llama **tasa de aprendizaje**;
+- $\Delta\theta=-\eta\nabla L(\theta)$ es el **paso completo**, es decir, el cambio real de los parámetros.
+
+En el ejemplo, $\theta=(0,2)$, $\nabla L=(-4,4)$ y se elige $\eta=0.2$. Entonces:
+
+$$
+\Delta\theta=-0.2(-4,4)=(0.8,-0.8),
+$$
+
+$$
+\theta_{\text{nuevo}}=(0,2)+(0.8,-0.8)=(0.8,1.2).
+$$
+
+### Qué es un hiperparámetro
+
+Un **parámetro** es un valor que el modelo aprende durante el entrenamiento, como $w$ y $b$. Un **hiperparámetro** es una configuración del proceso de aprendizaje que fijamos desde fuera; el modelo no la aprende directamente mediante el gradiente.
+
+La tasa de aprendizaje $\eta$ es un hiperparámetro. En este ejemplo, el valor $\eta=0.2$ **no se obtiene del gradiente**: se escoge para decidir el tamaño del movimiento.
+
+- Si $\eta$ es demasiado pequeño, la pérdida puede bajar muy lentamente.
+- Si $\eta$ es demasiado grande, el paso puede sobrepasar el mínimo o incluso aumentar la pérdida.
+- Normalmente se prueban distintos valores, se usa un conjunto de validación o se aplica una estrategia que modifica $\eta$ durante el entrenamiento.
+
+> [!example] Parámetros frente a hiperparámetros
+> En una regresión lineal, $w$ y $b$ son **parámetros** porque el algoritmo los actualiza. La tasa de aprendizaje $\eta$, el número de iteraciones y el tamaño del lote son **hiperparámetros** porque configuran cómo se realiza el entrenamiento.
+
+En esta nota, los símbolos $\eta$ y $\alpha$ cumplen el mismo papel: ambos representan la tasa de aprendizaje.
+
+> [!note] Por qué las curvas son óvalos
+> Cada curva une puntos con el mismo valor de $L$. El factor $2$ delante de $(b-1)^2$ hace que la pérdida sea más sensible a cambios en $b$; por eso las curvas se comprimen más en esa dirección.
+
+> [!warning] Dos ejemplos distintos
+> Este mapa usa una cuadrática bidimensional para mostrar la geometría. El “caso conductor” de la sección numérica usa la regresión lineal de la nota anterior. Los principios son los mismos, pero no debes mezclar sus valores.
+
 ```mermaid
 flowchart LR
     G[Gradiente en el punto actual] --> P[Producto interno con el cambio]
@@ -54,10 +119,39 @@ flowchart LR
 
 ## Por qué se llama aproximación local
 
-Una recta tangente se parece a una curva solo cerca del punto de contacto. El término omitido contiene curvatura y crece al agrandar el paso. Por eso:
+La fórmula
+
+$$
+L(\theta+\Delta\theta)
+\approx
+L(\theta)+\nabla L(\theta)^\mathsf{T}\Delta\theta
+$$
+
+reemplaza temporalmente la superficie curva de $L$ por su **plano tangente** en el punto actual $\theta$. En ese punto, ambos tienen el mismo valor y la misma pendiente, pero el plano no reproduce la curvatura de la función.
+
+La expansión de Taylor permite ver qué se está omitiendo:
+
+$$
+L(\theta+\Delta\theta)
+=
+L(\theta)
++\nabla L(\theta)^\mathsf{T}\Delta\theta
++\underbrace{\frac12\Delta\theta^\mathsf{T}
+H(\tilde\theta)\Delta\theta}_{\text{efecto de la curvatura}},
+$$
+
+donde $H$ es la matriz Hessiana y $\tilde\theta$ es un punto intermedio. El término lineal crece con el tamaño del paso, mientras que el error debido a la curvatura es, localmente, de orden $\lVert\Delta\theta\rVert^2$. Por eso, al reducir suficientemente el paso, el error se vuelve pequeño mucho más rápido.
+
+Un ejemplo en una dimensión lo hace visible. Para $L(x)=x^2$, alrededor de $x=1$:
+
+$$
+L(1+h)=1+2h+h^2.
+$$
+
+La aproximación lineal predice $1+2h$ y omite $h^2$. Si $h=0.1$, predice $1.20$ y el valor exacto es $1.21$; si $h=1$, predice $3$ y el valor exacto es $4$. La recta tangente no cambió: lo que cambió fue la distancia al punto donde era una buena aproximación.
 
 > [!warning] Límite
-> El gradiente predice bien cambios suficientemente pequeños. No garantiza el resultado de un paso grande, el mejor paso finito ni el mínimo global.
+> El gradiente describe la pendiente **en el punto actual**. Puede predecir bien el efecto de pasos suficientemente pequeños, pero por sí solo no garantiza el resultado de un paso grande, el mejor tamaño de paso ni la llegada al mínimo global.
 
 ## Por qué la dirección opuesta produce el máximo descenso lineal
 

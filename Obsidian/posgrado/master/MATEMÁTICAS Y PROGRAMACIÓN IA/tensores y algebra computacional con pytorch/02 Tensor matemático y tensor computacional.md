@@ -197,11 +197,80 @@ Si no puedes completarla, conocer `.shape` todavía no basta para razonar sobre 
 
 Para un tensor `imagenes` con forma `(32, 28, 28, 3)` y ejes `(imagen, alto, ancho, color)`:
 
-1. ¿Cuántos ejes tiene? **4**.
-2. ¿Cuántas imágenes contiene? **32**.
-3. ¿Qué representa `imagenes[0]`? **Una imagen completa**, forma `(28, 28, 3)`.
-4. ¿Qué representa `imagenes[0, 10, 20]`? **Los tres canales de color de un píxel**, forma `(3,)`.
-5. ¿Qué representa `imagenes[0, 10, 20, 1]`? **Un solo valor de color**, un escalar.
+```text
+shape = (32,      28,    28,     3)
+         imagen   alto   ancho   color
+```
+
+La forma se lee como una descripción jerárquica:
+
+- hay **32 imágenes** en el lote;
+- cada imagen tiene **28 filas** de píxeles;
+- cada fila tiene **28 columnas** de píxeles;
+- cada píxel se describe mediante **3 valores de color**, normalmente rojo, verde y azul (RGB).
+
+Por tanto, el tensor tiene **4 ejes**. No hay que confundir el número de ejes (`4`) con el tamaño de cada eje (`32`, `28`, `28` y `3`).
+
+> [!tip] Regla para predecir la forma al indexar
+> Cada índice entero selecciona una posición concreta de un eje y hace que ese eje desaparezca del resultado. Los ejes que todavía no se han fijado permanecen.
+
+### `imagenes[0]`
+
+El `0` fija solamente el eje **imagen**: selecciona la primera imagen del lote. Los otros tres ejes permanecen.
+
+```text
+imagenes[0]
+         │
+         └─ primera imagen
+
+forma restante: (28, 28, 3)
+                 alto, ancho, color
+```
+
+El resultado es **una imagen completa** de 28 × 28 píxeles con 3 canales de color.
+
+### `imagenes[0, 10, 20]`
+
+Aquí se fijan tres ejes:
+
+```text
+imagenes[0,       10,     20]
+         imagen   fila    columna
+```
+
+- `0`: primera imagen;
+- `10`: una fila concreta de esa imagen;
+- `20`: una columna concreta de esa fila.
+
+Ya hemos localizado **un píxel**, pero no hemos elegido ningún canal. Por eso permanece el eje `color`, de tamaño 3:
+
+```python
+imagenes[0, 10, 20].shape  # (3,)
+```
+
+El resultado podría verse como `[rojo, verde, azul]`.
+
+### `imagenes[0, 10, 20, 1]`
+
+Ahora también se fija el último eje:
+
+```text
+imagenes[0,       10,     20,       1]
+         imagen   fila    columna   canal
+```
+
+No queda ningún eje libre, así que el resultado es **un escalar**: un único número. Si los canales están ordenados como RGB, el índice `1` selecciona el canal verde de ese píxel.
+
+> [!note] Los índices empiezan en cero
+> `0` indica el primer elemento, `10` el undécimo y `20` el vigésimo primero. Además, interpretar el canal `1` como verde solo es correcto si el contrato de los datos especifica el orden RGB.
+
+| expresión | ejes fijados | significado | forma resultante |
+|---|---|---|---|
+| `imagenes` | ninguno | lote completo | `(32, 28, 28, 3)` |
+| `imagenes[0]` | imagen | primera imagen completa | `(28, 28, 3)` |
+| `imagenes[0, 10]` | imagen, alto | una fila de la primera imagen | `(28, 3)` |
+| `imagenes[0, 10, 20]` | imagen, alto, ancho | un píxel con sus tres canales | `(3,)` |
+| `imagenes[0, 10, 20, 1]` | todos | un valor de color del píxel | `()` (escalar) |
 
 ---
 

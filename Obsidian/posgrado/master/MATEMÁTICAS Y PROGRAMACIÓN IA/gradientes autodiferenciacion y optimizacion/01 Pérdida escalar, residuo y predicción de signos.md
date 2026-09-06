@@ -64,6 +64,109 @@ $$L=\frac12(-3)^2=4.5.$$
 
 El cuadrado hace positiva la penalización y castiga más los errores grandes. El factor $1/2$ no cambia el mínimo; simplifica la derivada porque cancela el $2$.
 
+## Lectura visual del caso completo
+
+![[assets/08-caso-conductor-entrenamiento.png|1000]]
+
+### Qué significa cada valor
+
+| Valor | Pregunta que responde | Interpretación |
+|---|---|---|
+| $\hat y=2$ | ¿qué predijo el modelo? | Predijo 2 cuando el objetivo era 5. |
+| $r=-3$ | ¿en qué dirección y cuánto se equivocó? | El signo negativo indica “por debajo”; $\lvert r\rvert=3$ indica que faltaron 3 unidades. |
+| $L=4.5$ | ¿cuánto penaliza la función ese error? | Es $\frac12(-3)^2$; no conserva la dirección del error. |
+| $\nabla L=(-6,-3)$ | ¿cómo responde $L$ a $w$ y $b$? | Aumentar ligeramente cualquiera de los dos reduce la pérdida, porque ambas componentes son negativas. |
+| $\eta=0.1$ | ¿qué escala tendrá el paso? | Multiplica el gradiente antes de actualizar. No es una pérdida ni una probabilidad. |
+| $-\eta\nabla L=(0.6,0.3)$ | ¿cuánto cambian los parámetros? | $w$ aumenta $0.6$ y $b$ aumenta $0.3$. |
+| $L^+=1.125$ | ¿funcionó este paso concreto? | Sí: la pérdida bajó de $4.5$ a $1.125$, una reducción del $75\%$. |
+
+> [!tip] Orden de interpretación
+> Lee siempre **predicción → residuo → pérdida → gradiente → paso → nueva pérdida**. Saltar directamente de $L$ a los pesos suele mezclar cantidades con significados distintos.
+
+## Qué es exactamente el paso
+
+El **paso** es el cambio concreto que se aplica a todos los parámetros durante una iteración de entrenamiento. Si agrupamos los parámetros como
+
+$$
+\theta=(w,b),
+$$
+
+el gradiente, la tasa de aprendizaje y el paso cumplen funciones diferentes:
+
+- **Gradiente:** $\nabla L=(-6,-3)$ describe la sensibilidad local de la pérdida respecto de $w$ y $b$.
+- **Tasa de aprendizaje:** $\eta=0.1$ controla la escala del movimiento.
+- **Paso:** $\Delta\theta=-\eta\nabla L$ es el cambio que finalmente se suma a los parámetros.
+
+En este caso:
+
+$$
+\Delta\theta
+=-0.1(-6,-3)
+=(0.6,0.3).
+$$
+
+Por tanto, la actualización simultánea es:
+
+$$
+\theta^+=\theta+\Delta\theta,
+$$
+
+$$
+(w^+,b^+)=(1,0)+(0.6,0.3)=(1.6,0.3).
+$$
+
+> [!important] Qué no significa $\eta=0.1$
+> No significa reducir la pérdida un $10\%$, cambiar cada parámetro un $10\%$ ni tener una probabilidad del $10\%$. Significa multiplicar por $0.1$ el gradiente antes de cambiar los parámetros.
+
+### Cómo leer los valores del gradiente
+
+La componente
+
+$$
+\frac{\partial L}{\partial w}=-6
+$$
+
+significa que, manteniendo $b$ fijo, un aumento pequeño de $w$ reduce localmente la pérdida. Por ejemplo, si $\Delta w=0.01$:
+
+$$
+\Delta L\approx -6(0.01)=-0.06.
+$$
+
+De manera análoga,
+
+$$
+\frac{\partial L}{\partial b}=-3
+$$
+
+indica que, manteniendo $w$ fijo, un aumento pequeño de $b$ también reduce la pérdida. Si $\Delta b=0.01$:
+
+$$
+\Delta L\approx -3(0.01)=-0.03.
+$$
+
+Estas son aproximaciones **locales**: describen lo que ocurre con cambios suficientemente pequeños cerca del punto actual. El gradiente apunta hacia el aumento más rápido de $L$; por eso el descenso utiliza el signo contrario, $-\nabla L$.
+
+### Efecto del paso sobre la predicción
+
+El paso cambia $w$ en $0.6$ y $b$ en $0.3$. Como $x=2$, el cambio de la predicción es:
+
+$$
+\Delta\hat y=x\,\Delta w+\Delta b
+=2(0.6)+0.3
+=1.5.
+$$
+
+Entonces:
+
+$$
+\hat y^+=\hat y+\Delta\hat y=2+1.5=3.5.
+$$
+
+La predicción se acercó al objetivo $5$, el residuo cambió de $-3$ a $-1.5$ y la pérdida bajó de $4.5$ a $1.125$.
+
+> [!example] Analogía de la montaña
+> El **gradiente** indica hacia dónde sube la montaña, el signo negativo hace que caminemos hacia abajo, $\eta$ determina el tamaño de la zancada y el **paso** es la zancada concreta que finalmente damos.
+
 ## Predecir el signo antes de derivar
 
 Aquí $x>0$ y la predicción está baja.

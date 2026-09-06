@@ -63,25 +63,138 @@ Ejemplo cotidiano: si `cantidad[i,j]` indica cuántos productos se vendieron y `
 
 ## 2. Producto exterior
 
-$$O_{ij}=u_iv_j.$$
+El producto exterior toma **dos vectores** y construye una tabla con **todas las combinaciones posibles** entre sus elementos.
 
-Si $u\in\mathbb R^m$ y $v\in\mathbb R^n$, crea todas las parejas $(i,j)$ y produce $(m,n)$.
+Si $u\in\mathbb R^m$ y $v\in\mathbb R^n$, se define como:
+
+$$O_{ij}=u_i v_j.$$
+
+Los índices $i$ y $j$ son independientes:
+
+- $i$ elige un elemento de $u$ y determina la **fila**;
+- $j$ elige un elemento de $v$ y determina la **columna**;
+- no aparece $\sum$, por lo que no se elimina ningún índice.
+
+Por eso, el resultado tiene forma $(m,n)$. Cada casilla $(i,j)$ responde: **“¿cuánto vale el elemento $i$ de $u$ multiplicado por el elemento $j$ de $v$?”**
+
+### Ejemplo paso a paso
+
+Sean:
 
 $$
-u=\begin{bmatrix}1\\2\end{bmatrix},\quad
-v=\begin{bmatrix}3&-1&4\end{bmatrix}
-\Rightarrow
+u=\begin{bmatrix}1\\2\end{bmatrix},\qquad
+v=\begin{bmatrix}3\\-1\\4\end{bmatrix}.
+$$
+
+Como $u$ tiene 2 elementos y $v$ tiene 3, el resultado tendrá forma $(2,3)$:
+
+$$
 uv^{\mathsf T}=
+\begin{bmatrix}
+u_1v_1 & u_1v_2 & u_1v_3\\
+u_2v_1 & u_2v_2 & u_2v_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\cdot3 & 1\cdot(-1) & 1\cdot4\\
+2\cdot3 & 2\cdot(-1) & 2\cdot4
+\end{bmatrix}
+=
 \begin{bmatrix}3&-1&4\\6&-2&8\end{bmatrix}.
 $$
 
+Otra forma de verlo: cada fila es el vector $v$ multiplicado por el elemento correspondiente de $u$:
+
+- primera fila: $1v=[3,-1,4]$;
+- segunda fila: $2v=[6,-2,8]$.
+
+> [!tip] Modelo mental
+> Imagina que colocas $u$ en vertical y $v$ en horizontal. En cada cruce multiplicas el valor de la fila por el valor de la columna.
+
+### En PyTorch
+
 ```python
-outer = torch.outer(u, v)
+u = torch.tensor([1, 2])
+v = torch.tensor([3, -1, 4])
+
+outer = torch.outer(u, v)       # shape: (2, 3)
+
+# La misma operación escrita con broadcasting:
+outer_2 = u[:, None] * v[None, :]
 ```
 
-Hadamard y exterior pueden producir una matriz, pero Hadamard empareja índices ya existentes; el exterior crea el par libre.
+`u[:, None]` tiene forma $(2,1)$ y `v[None, :]` forma $(1,3)$. El broadcasting extiende ambos hasta $(2,3)$ y genera todas las parejas.
 
-Ejemplo cotidiano: si `u_i` representa horas trabajadas por persona y `v_j` una tarifa por tipo de tarea, el exterior construye el pago posible para **cada combinación** persona–tarea.
+### Diferencia clave: Hadamard empareja; exterior cruza
+
+Supongamos ahora que ambos vectores tienen dos elementos:
+
+$$u=[2,5],\qquad v=[10,20].$$
+
+El **producto de Hadamard** utiliza la misma posición en ambos vectores:
+
+$$
+u\odot v=[u_1v_1,\;u_2v_2]
+=[2\cdot10,\;5\cdot20]
+=[20,100].
+$$
+
+Solo hace dos parejas:
+
+- primera posición con primera posición;
+- segunda posición con segunda posición.
+
+En cambio, el **producto exterior** cruza cada elemento de $u$ con **todos** los elementos de $v$:
+
+$$
+uv^{\mathsf T}=
+\begin{bmatrix}
+2\cdot10 & 2\cdot20\\
+5\cdot10 & 5\cdot20
+\end{bmatrix}
+=
+\begin{bmatrix}
+20 & 40\\
+50 & 100
+\end{bmatrix}.
+$$
+
+Hace cuatro parejas: $(u_1,v_1)$, $(u_1,v_2)$, $(u_2,v_1)$ y $(u_2,v_2)$.
+
+| Operación | Regla | Con vectores de longitud 2 |
+|---|---|---|
+| Hadamard | **misma posición con misma posición** | 2 productos → vector de forma $(2,)$ |
+| exterior | **cada posición con todas las posiciones** | 4 productos → matriz de forma $(2,2)$ |
+
+> [!important] Pregunta para distinguirlos
+> - Si cada dato ya tiene una pareja definida, usa Hadamard.
+> - Si quieres construir una tabla con todas las parejas posibles, usa el producto exterior.
+
+### Ejemplo cotidiano aclarado
+
+Imagina estas horas trabajadas:
+
+- Ana trabajó 2 horas;
+- Luis trabajó 5 horas.
+
+Por tanto, $u=[2,5]$. También existen dos tarifas según el tipo de tarea:
+
+- tarea básica: 10 dólares por hora;
+- tarea especializada: 20 dólares por hora.
+
+Por tanto, $v=[10,20]$. El producto exterior construye una **tabla de pagos posibles**:
+
+| | Tarea básica: $10/h$ | Tarea especializada: $20/h$ |
+|---|---:|---:|
+| Ana: $2h$ | $2\cdot10=20$ | $2\cdot20=40$ |
+| Luis: $5h$ | $5\cdot10=50$ | $5\cdot20=100$ |
+
+Aquí $O_{ij}$ significa: **pago de la persona $i$ si sus horas se cobran con la tarifa de la tarea $j$**. Por ejemplo:
+
+- $O_{1,2}=40$: Ana recibiría 40 dólares si sus 2 horas fueran de tarea especializada;
+- $O_{2,1}=50$: Luis recibiría 50 dólares si sus 5 horas fueran de tarea básica.
+
+El producto exterior no afirma que todas esas situaciones ocurrieron; muestra todas las combinaciones. Si ya sabemos que Ana hizo la tarea básica y Luis la especializada, solo necesitamos las parejas elegidas $(2\cdot10)$ y $(5\cdot20)$: ese emparejamiento corresponde a Hadamard y produce $[20,100]$.
 
 ## 3. Permutación
 

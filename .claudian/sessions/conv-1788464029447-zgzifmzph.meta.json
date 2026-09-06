@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788464029447-zgzifmzph",
+  "providerId": "codex",
+  "title": "Clarify late submission policy",
+  "titleGenerationStatus": "success",
+  "createdAt": 1788464029461,
+  "lastActivityAt": 1788464216332,
+  "sessionId": "01a068c3-6008-71a1-afcf-de044d8d8209",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a068c3-6008-71a1-afcf-de044d8d8209",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/03/rollout-2026-09-03T14-33-49-01a068c3-6008-71a1-afcf-de044d8d8209.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/05 Lotes, reducción y formas del gradiente.md",
+  "usage": {
+    "inputTokens": 28473,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 26496,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 28473,
+    "percentage": 11,
+    "model": "gpt-5.6-sol"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788385565960-959w4ne8t",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788385566052-nkn0ji3",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788385565949-qwcn5r5",
+      "timestamp": 1788385565949,
+      "rawDisplayText": "explica mejor esta nota dime que es cada cosa",
+      "canonicalText": "explica mejor esta nota dime que es cada cosa",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/07 Mini-batch y SGD como estimador.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "edb222f36a4d468eaf1752aba96c1af3b660b1e2b0f50ba07f19fb9fbf4f1f94",
+      "providerUserMessageId": "01a06416-3198-78f2-8954-e6656eabced8",
+      "providerAssistantMessageId": "msg_06ca77f9a11d3c98016a989a1843b487d293db22ad85a3d8ba"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788387047767-mna7dh9",
+      "userTurnOrdinal": 2,
+      "state": "accepted",
+      "localMessageId": "msg-1788387047749-q1r6xy5",
+      "timestamp": 1788387047749,
+      "rawDisplayText": "no me queda calr oque quiere decir la dericada usa graficos para poder entender esto",
+      "canonicalText": "no me queda calr oque quiere decir la dericada usa graficos para poder entender esto",
+      "images": [],
+      "contentDigest": "e0de2901192c030d3c13cea6139b5ca5dbf280ccd3888515e11f2948dff2eebf",
+      "providerUserMessageId": "01a0642c-ba95-7222-a8ea-f5ac92c08ae6",
+      "providerAssistantMessageId": "msg_06ca77f9a11d3c98016a989fc0bb5c87d29edaf58da708666a"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788409468482-cglpcjb",
+      "userTurnOrdinal": 3,
+      "state": "accepted",
+      "localMessageId": "msg-1788409468442-qm0rupz",
+      "timestamp": 1788409468442,
+      "rawDisplayText": "explica mejor esto **La dirección de $\\nabla L$** apunta hacia el aumento local más rápido de la pérdida.\n- **La dirección de $-\\nabla L$** apunta hacia el descenso local más rápido. \n\nque es el aumento local y decnso local\n\ny \n\nexplica mejor este parrafo no entendi En el panel izquierdo, $L'(1)=-2$ significa que un cambio pequeño $\\Delta w=+0.1$ predice $\\Delta L\\approx(-2)(0.1)=-0.2$. En el derecho, $L'(5)=+2$ predice $\\Delta L\\approx+0.2$. La derivada no es la pérdida: es su **tasa local de cambio**.",
+      "canonicalText": "explica mejor esto **La dirección de $\\nabla L$** apunta hacia el aumento local más rápido de la pérdida.\n- **La dirección de $-\\nabla L$** apunta hacia el descenso local más rápido. \n\nque es el aumento local y decnso local\n\ny \n\nexplica mejor este parrafo no entendi En el panel izquierdo, $L'(1)=-2$ significa que un cambio pequeño $\\Delta w=+0.1$ predice $\\Delta L\\approx(-2)(0.1)=-0.2$. En el derecho, $L'(5)=+2$ predice $\\Delta L\\approx+0.2$. La derivada no es la pérdida: es su **tasa local de cambio**.",
+      "context": {
+        "editorSelection": {
+          "notePath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/gradientes autodiferenciacion y optimizacion/00 Glosario visual - términos del entrenamiento.md",
+          "mode": "selection",
+          "selectedText": "En el panel izquierdo, $L'(1)=-2$ significa que un cambio pequeño $\\Delta w=+0.1$ predice $\\Delta L\\approx(-2)(0.1)=-0.2$. En el derecho, $L'(5)=+2$ predice $\\Delta L\\approx+0.2$. La derivada no es la pérdida: es su **tasa local de cambio**.",
+          "lineCount": 1,
+          "startLine": 116
+        }
+      },
+      "images": [],
+      "contentDigest": "02542eee0984a6301258e3672a6849ce5ca0009d73323734f44a0526c57782d2",
+      "providerUserMessageId": "01a06582-d850-74c2-a1e6-8ff16b0e0de0",
+      "providerAssistantMessageId": "msg_06ca77f9a11d3c98016a98f6c1989087d28e0cd7292ccdb99b"
+    }
+  ]
+}

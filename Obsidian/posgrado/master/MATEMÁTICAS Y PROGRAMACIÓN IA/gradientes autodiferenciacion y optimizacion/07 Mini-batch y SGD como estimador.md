@@ -10,63 +10,255 @@ related: "[[00 Índice - Gradientes, autodiferenciación y optimización]]"
 
 # Mini-batch y SGD como estimador
 
-## Gradiente completo
+> [!summary] Idea central
+> El **gradiente completo** indica cómo cambiarían los parámetros si consultáramos todos los ejemplos del dataset. Un **mini-batch** consulta solo una muestra y produce una aproximación más barata. Si la muestra se elige uniformemente, esa aproximación es correcta **en promedio**, aunque un mini-batch concreto no coincida con el gradiente completo.
 
-Si el conjunto tiene $B$ ejemplos:
+> [!tip] Ruta visual de esta nota
+> Los tres gráficos aparecen en orden durante la explicación: primero muestran **qué significa una pendiente**, después **cómo se convierte en movimiento** y finalmente **por qué la pendiente estimada cambia entre lotes**. No interpretes el ruido del mini-batch antes de distinguir gradiente, paso y pérdida.
+
+## 1. Qué significa cada símbolo
+
+| Símbolo | Qué es | Lectura intuitiva |
+|---|---|---|
+| $N$ | número total de ejemplos del dataset | cuántos datos existen |
+| $i$ | índice de un ejemplo, desde $1$ hasta $N$ | qué dato estamos mirando |
+| $\theta$ | todos los parámetros entrenables del modelo | pesos y sesgos que queremos aprender |
+| $\theta_t$ | valor de los parámetros en el paso $t$ | estado actual del modelo |
+| $\ell_i(\theta)$ | pérdida del ejemplo $i$ | qué tan mal funciona el modelo en ese ejemplo |
+| $L(\theta)$ | pérdida media de todo el dataset | error global que queremos minimizar |
+| $\nabla$ | operador gradiente | calcula derivadas respecto a todos los parámetros |
+| $\nabla\ell_i(\theta)$ | gradiente aportado por el ejemplo $i$ | dirección que sugiere ese ejemplo |
+| $S_t$ | conjunto de índices elegidos en el paso $t$ | mini-batch actual |
+| $m=|S_t|$ | cantidad de ejemplos del mini-batch | `batch_size` |
+| $g_t$ | gradiente calculado con el mini-batch | estimación del gradiente completo |
+| $\eta$ | tasa de aprendizaje | tamaño del paso de actualización |
+| $\mathbb E[\cdot]$ | esperanza o promedio teórico | media obtenida al repetir el muestreo muchas veces |
+
+> [!note] Por qué usamos $N$ y $m$
+> $N$ representa el tamaño **total** del dataset y $m$ el tamaño del **mini-batch**. Así evitamos usar la misma letra para dos cantidades diferentes.
+
+## 2. Antes de hablar de SGD: qué es una derivada
+
+La **derivada** responde a esta pregunta:
+
+> Si cambio un parámetro una cantidad muy pequeña, ¿la pérdida sube o baja y con qué intensidad?
+
+Imagina que la pérdida $L(w)$ es una montaña y que $w$ indica tu posición horizontal. La derivada $L'(w)$ es la **pendiente del suelo justo donde estás**.
 
 $$
-L(\theta)=\frac1B\sum_{i=1}^{B}\ell_i(\theta),
+L'(w)
+=\frac{dL}{dw}
+\approx
+\frac{\text{cambio de la pérdida}}{\text{cambio del parámetro}}
+=\frac{\Delta L}{\Delta w}.
 $$
 
-entonces:
+La aproximación funciona para un cambio $\Delta w$ pequeño:
+
+$$
+\Delta L\approx L'(w)\,\Delta w.
+$$
+
+### Cómo interpretar el signo
+
+| Valor de $L'(w)$ | Qué sucede al aumentar un poco $w$ | Para bajar la pérdida conviene |
+|---:|---|---|
+| negativo | la pérdida baja | aumentar $w$, moverse a la derecha |
+| cero | la pérdida casi no cambia | estamos en una zona plana |
+| positivo | la pérdida sube | disminuir $w$, moverse a la izquierda |
+
+![[assets/04-derivada-como-pendiente.png|1000]]
+
+La línea oscura es la función de pérdida completa. La línea de color es la **recta tangente**, es decir, la mejor aproximación recta de la curva cerca del punto marcado:
+
+- tangente inclinada hacia abajo: derivada negativa;
+- tangente horizontal: derivada cero;
+- tangente inclinada hacia arriba: derivada positiva.
+
+### Ejemplo de lectura numérica
+
+Si en $w=1$ tenemos $L'(1)=-2$ y aumentamos el parámetro en $\Delta w=0.1$, entonces:
+
+$$
+\Delta L\approx(-2)(0.1)=-0.2.
+$$
+
+El signo negativo predice que la pérdida bajará aproximadamente $0.2$. La derivada no entrega el nuevo valor exacto de la pérdida: hace una predicción **local**, válida para pasos pequeños.
+
+### Por qué el descenso por gradiente resta la derivada
+
+La actualización para un solo parámetro es:
+
+$$
+w_{t+1}=w_t-\eta L'(w_t).
+$$
+
+- Si $L'(w_t)>0$, restamos un positivo y $w$ se mueve a la izquierda.
+- Si $L'(w_t)<0$, restamos un negativo y $w$ se mueve a la derecha.
+- En ambos casos intentamos movernos cuesta abajo.
+- $\eta$ controla qué tan grande es el movimiento.
+
+![[assets/05-restar-derivada.png|1000]]
+
+> [!tip] Frase para recordarlo
+> **La derivada describe la cuesta; el negativo de la derivada señala hacia abajo.**
+
+### De una derivada a un gradiente
+
+Si el modelo tiene un solo parámetro $w$, usamos una derivada: $L'(w)$. Si tiene muchos parámetros, calculamos una derivada para cada uno y las reunimos en un vector llamado **gradiente**:
+
+$$
+\theta=(w,b),
+\qquad
+\nabla L(\theta)=
+\begin{bmatrix}
+\frac{\partial L}{\partial w}\\[4pt]
+\frac{\partial L}{\partial b}
+\end{bmatrix}.
+$$
+
+Por tanto, una expresión como $\nabla\ell_i(\theta)$ significa: «todas las pendientes que el ejemplo $i$ propone para los parámetros del modelo».
+
+El mini-batch no hace aparecer una derivada distinta. Simplemente **promedia las pendientes propuestas por varios ejemplos**.
+
+## 3. Pérdida y gradiente completos
+
+Cada ejemplo genera su propia pérdida $\ell_i(\theta)$. La función objetivo del entrenamiento es la media de todas esas pérdidas:
+
+$$
+L(\theta)=\frac1N\sum_{i=1}^{N}\ell_i(\theta).
+$$
+
+Esta expresión dice:
+
+1. calcular el error de cada uno de los $N$ ejemplos;
+2. sumar los errores;
+3. dividir entre $N$ para obtener el error medio.
+
+Al derivar la media, obtenemos el **gradiente completo**:
 
 $$
 \nabla L(\theta)
-=\frac1B\sum_{i=1}^{B}\nabla\ell_i(\theta).
+=\frac1N\sum_{i=1}^{N}\nabla\ell_i(\theta).
 $$
 
-El full-batch promedia todas las contribuciones en el estado actual $\theta_t$.
+El gradiente es un vector con una derivada por cada componente de $\theta$. Indica la dirección de mayor aumento de la pérdida; por eso el descenso por gradiente se mueve en la dirección contraria.
 
-## Qué hace un mini-batch
+Usando todos los datos, una actualización sería:
 
-Elegimos un subconjunto $S_t$ de tamaño $m$:
+$$
+\theta_{t+1}=\theta_t-\eta\nabla L(\theta_t).
+$$
+
+**Ventaja:** la dirección es estable y representa exactamente al dataset completo.
+**Desventaja:** calcularla puede ser lento o no caber en memoria cuando $N$ es grande.
+
+## 4. Qué hace un mini-batch
+
+En el paso $t$ elegimos un subconjunto $S_t$ con $m$ ejemplos y promediamos solo sus gradientes:
 
 $$
 g_t
 =\frac1m\sum_{i\in S_t}\nabla\ell_i(\theta_t).
 $$
 
+Aquí:
+
+- $i\in S_t$ significa «el índice $i$ pertenece al mini-batch actual»;
+- $g_t$ no es una pérdida: es el gradiente estimado con ese mini-batch;
+- todos los gradientes se evalúan en el mismo estado actual $\theta_t$;
+- el modelo se actualiza usando $g_t$ en lugar del gradiente completo.
+
+La actualización de SGD queda:
+
+$$
+\boxed{\theta_{t+1}=\theta_t-\eta g_t}.
+$$
+
 ```mermaid
 flowchart LR
-    A[Contribuciones de B ejemplos] --> F[Full-batch: promedio de todas]
-    A --> S[Muestrear subconjunto S_t]
-    S --> M[Mini-batch: promedio de m]
-    F --> G[Gradiente completo]
-    M --> E[Estimación g_t]
+    D[Dataset con N ejemplos] --> F[Usar los N]
+    D --> S[Muestrear S_t con m ejemplos]
+    F --> GF[Gradiente completo]
+    S --> GM[Estimación g_t]
+    GF --> U[Actualizar parámetros]
+    GM --> U
 ```
 
-Con muestreo uniforme, condicionado al estado actual:
+### Tres casos posibles
+
+| Tamaño usado | Nombre | Qué ocurre |
+|---:|---|---|
+| $m=1$ | SGD en sentido estricto | un ejemplo genera cada actualización |
+| $1<m<N$ | mini-batch SGD | varios ejemplos generan cada actualización |
+| $m=N$ | full-batch gradient descent | se usa el gradiente completo |
+
+En aprendizaje profundo, se suele decir **SGD** también cuando se usan mini-batches.
+
+## 5. Por qué $g_t$ es un estimador
+
+Un **estimador** es una cantidad calculada con una muestra para aproximar una cantidad de toda la población.
+
+- población: los $N$ ejemplos;
+- muestra: el mini-batch $S_t$;
+- cantidad que queremos conocer: $\nabla L(\theta_t)$;
+- estimación obtenida: $g_t$.
+
+Es la misma idea de una encuesta: no se pregunta a toda la población, sino a una muestra. Distintas muestras producen resultados distintos.
+
+Si los ejemplos del mini-batch se eligen uniformemente, entonces:
 
 $$
 \mathbb E[g_t\mid\theta_t]=\nabla L(\theta_t).
 $$
 
-Esto significa **no sesgado en promedio**, no igualdad paso a paso.
+### Cómo leer esta igualdad
 
-Condicionar en $\theta_t$ significa imaginar que congelamos los parámetros actuales y repetimos únicamente el sorteo del mini-batch. La única fuente de variación examinada en esa igualdad es qué índices entran en $S_t$. En la ejecución real, $\theta_t$ también depende de todos los sorteos y pasos anteriores.
+- $\mathbb E$ significa «promedio sobre todos los mini-batches que podrían salir».
+- La barra vertical $\mid\theta_t$ significa «manteniendo fijos los parámetros actuales».
+- Congelamos $\theta_t$, repetimos únicamente el sorteo de $S_t$ muchas veces y promediamos los $g_t$ obtenidos.
+- Ese promedio coincide con el gradiente completo.
 
-> [!important] Distinción
-> Un mini-batch concreto es una realización del estimador. Puede diferir del gradiente completo y seguir siendo parte de un procedimiento correcto.
+Por eso se dice que $g_t$ es un estimador **no sesgado**.
 
-## Ejemplo con tres contribuciones
+> [!important] No sesgado no significa exacto
+> La igualdad se cumple en promedio, no en cada paso. Un mini-batch concreto puede dar un gradiente mayor, menor o incluso con alguna componente en sentido contrario al gradiente completo.
 
-En el caso lineal de [[05 Lotes, reducción y formas del gradiente]]:
+Podemos escribir la estimación como:
 
 $$
-g_1=-2,\qquad g_2=-6,\qquad g_3=-12.
+g_t=\nabla L(\theta_t)+\varepsilon_t,
+\qquad
+\mathbb E[\varepsilon_t\mid\theta_t]=0.
 $$
 
-Gradiente completo:
+$\varepsilon_t$ es el **ruido de muestreo**: la diferencia entre el gradiente del mini-batch y el completo. Su media es cero, pero su valor en un paso concreto normalmente no lo es.
+
+## 6. Ejemplo numérico paso a paso
+
+En el modelo lineal de [[05 Lotes, reducción y formas del gradiente]], para el parámetro escalar $w$ tenemos:
+
+$$
+x=(1,2,3),\qquad r=(-2,-3,-4).
+$$
+
+Para la pérdida cuadrática $\ell_i=\tfrac12r_i^2$, la contribución de cada ejemplo al gradiente de $w$ es:
+
+$$
+g_i=\frac{\partial\ell_i}{\partial w}=x_i r_i.
+$$
+
+Por tanto:
+
+$$
+g_1=1(-2)=-2,\qquad
+g_2=2(-3)=-6,\qquad
+g_3=3(-4)=-12.
+$$
+
+### Gradiente completo
+
+Promediamos las tres contribuciones:
 
 $$
 g_{\text{full}}
@@ -75,71 +267,108 @@ g_{\text{full}}
 \approx-6.67.
 $$
 
-Para mini-batches de tamaño $2$:
+### Mini-batches de tamaño $m=2$
 
-| Subconjunto | Gradiente |
-|---|---:|
-| $\{1,2\}$ | $(-2-6)/2=-4$ |
-| $\{2,3\}$ | $(-6-12)/2=-9$ |
-| $\{1,3\}$ | $(-2-12)/2=-7$ |
+Hay tres subconjuntos posibles:
 
-Ninguno tiene que ser exactamente $-20/3$. Sin embargo:
+| $S_t$ | Cálculo | $g_t$ |
+|---|---:|---:|
+| $\{1,2\}$ | $(-2-6)/2$ | $-4$ |
+| $\{2,3\}$ | $(-6-12)/2$ | $-9$ |
+| $\{1,3\}$ | $(-2-12)/2$ | $-7$ |
 
-$$\frac{-4-9-7}{3}=-\frac{20}{3}.$$
+Si los tres subconjuntos son igual de probables, cada uno tiene probabilidad $1/3$. La esperanza es:
 
-La media sobre todos los subconjuntos posibles recupera el gradiente completo.
+$$
+\mathbb E[g_t]
+=\frac13(-4)+\frac13(-9)+\frac13(-7)
+=-\frac{20}{3}.
+$$
+
+La media de las estimaciones recupera el gradiente completo, aunque ninguna estimación individual sea exactamente $-20/3$.
+
+### Qué pasa en una actualización concreta
+
+Si sale $S_t=\{2,3\}$, entonces $g_t=-9$. Con $\eta=0.1$:
+
+$$
+w_{t+1}=w_t-0.1(-9)=w_t+0.9.
+$$
+
+Con el gradiente completo, el cambio habría sido aproximadamente $+0.667$. La diferencia no implica un error de implementación: es la variabilidad normal del muestreo.
 
 ![[assets/03-variabilidad-mini-batch.png|950]]
 
-## Qué muestra el gráfico
+## 7. Qué muestra el gráfico
 
-- Con $m=1$ existen tres estimaciones muy separadas.
-- Con $m=2$ el intervalo se estrecha.
-- Con $m=3$ queda una sola estimación: el gradiente completo.
-- Los diamantes representan la media de las realizaciones y caen sobre la línea discontinua.
+- Con $m=1$, cada estimación usa una sola contribución: $-2$, $-6$ o $-12$. Hay mucha dispersión.
+- Con $m=2$, se promedian dos contribuciones y las estimaciones quedan menos separadas.
+- Con $m=3=N$, solo existe una posibilidad: el gradiente completo.
+- Los diamantes representan la media de todas las estimaciones para cada $m$.
+- La línea discontinua representa el gradiente completo, aproximadamente $-6.67$.
 
-Este ejemplo ilustra el intercambio:
+> [!example] Interpretar un punto concreto
+> El punto $-9$ cuando $m=2$ significa que ese mini-batch propone aumentar $w$ en $0.9$ si $\eta=0.1$, porque $-\eta g_t=-0.1(-9)=+0.9$. No significa que la pérdida valga $-9$: es un **gradiente estimado**, no el objetivo.
 
-| Lote menor | Lote mayor |
+En general, aumentar $m$ reduce el ruido de muestreo, porque cada valor extremo se compensa con más ejemplos. No elimina otras fuentes de aleatoriedad, como *dropout* o aumentación de datos.
+
+## 8. Lote pequeño frente a lote grande
+
+| Mini-batch pequeño | Mini-batch grande |
 |---|---|
-| menos cálculo por paso | más cálculo por paso |
-| más variabilidad | menos variabilidad |
-| más actualizaciones por recorrido | menos actualizaciones |
-| puede explorar con ruido | dirección más estable |
+| menos memoria | más memoria |
+| menos cálculo por actualización | más cálculo por actualización |
+| gradiente más variable | gradiente más estable |
+| más actualizaciones por época | menos actualizaciones por época |
+| el ruido puede ayudar a explorar | aprovecha mejor cierto hardware paralelo |
 
-No existe un ganador universal: depende de memoria, hardware, geometría, datos y objetivo.
+Una **actualización** o **paso** ocurre cada vez que se ejecuta `optimizer.step()`.
+Una **época** termina cuando el entrenamiento ha recorrido una vez todos los ejemplos. Con $N$ ejemplos y mini-batches de tamaño $m$, hay aproximadamente $\lceil N/m\rceil$ actualizaciones por época.
 
-## Por qué se llama estocástico
+No hay un tamaño universalmente mejor: depende de la memoria, el hardware, los datos, la tasa de aprendizaje y la geometría de la función de pérdida.
 
-Lo aleatorio normalmente está en la selección de $S_t$, no en la fórmula de <code>optimizer.step()</code>. El mismo optimizador SGD puede recibir:
+## 9. Por qué se llama estocástico
 
-- un ejemplo: SGD en sentido estricto;
-- un mini-batch: uso habitual;
-- todo el conjunto: descenso full-batch.
+**Estocástico** significa que interviene azar. Aquí, el azar está principalmente en qué índices entran en $S_t$ y en qué orden se procesan.
 
-## Contraste en Python
+`optimizer.step()` no sortea normalmente los ejemplos. Su función es usar el gradiente que ya está almacenado en cada parámetro para actualizarlo. Dados el mismo gradiente y el mismo estado interno del optimizador, el resultado del paso es determinista.
+
+## 10. Comprobación en Python
+
+Este código enumera todos los mini-batches posibles del ejemplo:
 
 ```python
 from itertools import combinations
 import numpy as np
 
+# Gradiente aportado por cada ejemplo.
 individual = np.array([-2.0, -6.0, -12.0])
+
+# Gradiente del dataset completo.
 full = individual.mean()
 
 for m in (1, 2, 3):
+    # combinations devuelve todos los subconjuntos de tamaño m.
     estimates = [
         individual[list(indices)].mean()
         for indices in combinations(range(3), m)
     ]
+
     print("m =", m, "estimaciones =", estimates)
+
+    # La media de todas las estimaciones coincide con el gradiente completo.
     assert np.isclose(np.mean(estimates), full)
 ```
 
-## Mini-batch correcto en un ciclo
+## 11. Mini-batch en un ciclo de PyTorch
 
 ```python
+import torch
+
+# Hace reproducible el orden aleatorio de los ejemplos.
 generator = torch.Generator().manual_seed(8)
 
+# Divide el dataset en mini-batches de hasta 32 ejemplos.
 loader = torch.utils.data.DataLoader(
     dataset,
     batch_size=32,
@@ -148,33 +377,60 @@ loader = torch.utils.data.DataLoader(
 )
 
 for X_batch, y_batch in loader:
+    # Borra gradientes del paso anterior; PyTorch los acumula por defecto.
     optimizer.zero_grad(set_to_none=True)
+
+    # Forward: calcula predicciones para el mini-batch actual.
     prediction = model(X_batch)
     assert prediction.shape == y_batch.shape
+
+    # Produce una pérdida escalar, normalmente promediada en el mini-batch.
     loss = loss_fn(prediction, y_batch)
+
+    # Calcula g_t mediante autodiferenciación y lo guarda en .grad.
     loss.backward()
+
+    # Aplica theta <- theta - eta * g_t, o la regla del optimizador usado.
     optimizer.step()
 ```
 
-La semilla ayuda a reproducir el orden de muestreo. No convierte cada mini-batch en una copia del gradiente completo.
+### Qué hace cada parte
 
-## Errores frecuentes
+1. `DataLoader` forma los conjuntos $S_t$.
+2. `shuffle=True` cambia aleatoriamente el orden de los ejemplos.
+3. `zero_grad()` evita sumar por accidente el gradiente actual con los anteriores.
+4. `model(X_batch)` calcula las predicciones del mini-batch.
+5. `loss_fn(...)` reúne las pérdidas individuales en una pérdida escalar.
+6. `loss.backward()` calcula el gradiente estimado $g_t$.
+7. `optimizer.step()` actualiza los parámetros.
 
-- Concluir que dos ejecuciones son incorrectas porque sus primeros pasos difieren.
-- Llamar “ruido” a cualquier error de implementación.
-- Comparar mini-batches sin registrar sus índices.
-- Cambiar tamaño de lote, tasa y semilla al mismo tiempo.
-- Confundir promedio por ejemplo con suma y cambiar la escala efectiva del gradiente.
+La semilla permite repetir el mismo orden de muestreo. No hace que cada mini-batch sea igual al dataset completo ni elimina la variabilidad entre mini-batches dentro de la ejecución.
 
-## Para qué sirve comprender el estimador
+## 12. Errores frecuentes
 
-Permite distinguir variabilidad esperada de:
+- **Esperar el mismo gradiente en cada mini-batch:** solo la media teórica coincide con el gradiente completo.
+- **No usar muestreo representativo:** si ciertos ejemplos aparecen con mayor probabilidad sin corregir los pesos, el estimador puede quedar sesgado.
+- **Olvidar `zero_grad()`:** se acumulan gradientes de pasos distintos.
+- **Confundir suma con promedio:** `sum` hace que la escala del gradiente crezca con $m$; `mean` mantiene una escala comparable.
+- **Comparar ejecuciones sin controlar la semilla y los índices:** no se sabe si la diferencia viene del código o del muestreo.
+- **Confundir ruido estadístico con un bug:** el ruido esperado cambia entre mini-batches; un error de formas o *broadcasting* cambia la función que se está optimizando.
+- **Cambiar lote y tasa de aprendizaje al mismo tiempo:** dificulta saber qué cambio causó el resultado.
 
-- gradientes acumulados accidentalmente;
-- broadcasting incorrecto;
-- muestreo sesgado;
-- cambios no reproducibles del pipeline;
-- diferencias genuinas entre optimizadores.
+## 13. Resumen mental
+
+$$
+\underbrace{\nabla L(\theta_t)}_{\text{gradiente exacto}}
+\approx
+\underbrace{g_t}_{\text{gradiente del mini-batch}}
+\quad\Longrightarrow\quad
+\underbrace{\theta_{t+1}=\theta_t-\eta g_t}_{\text{actualización}}.
+$$
+
+1. El dataset completo define el objetivo real de entrenamiento.
+2. El mini-batch ofrece una estimación más barata de su gradiente.
+3. La estimación cambia según los ejemplos sorteados.
+4. Con muestreo uniforme es correcta en promedio.
+5. Un lote mayor suele reducir la variabilidad, pero cuesta más por paso.
 
 ---
 

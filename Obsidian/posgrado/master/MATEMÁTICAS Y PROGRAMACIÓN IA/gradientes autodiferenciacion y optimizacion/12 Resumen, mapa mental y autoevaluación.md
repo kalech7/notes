@@ -29,6 +29,23 @@ related: "[[00 Índice - Gradientes, autodiferenciación y optimización]]"
 > [!summary] Frase que debes recordar
 > Forward calcula el objetivo; backward calcula sensibilidad; el optimizador decide el paso; la evaluación mide sin confundir modo con historial.
 
+## Mapa visual integrador
+
+![[assets/15-mapa-visual-modulo.png|1000]]
+
+### Cómo reconstruir el tema desde el mapa
+
+Haz una pregunta por bloque:
+
+1. **Objetivo:** ¿qué predijo el modelo y cómo se convirtió el error en un escalar?
+2. **Sensibilidad:** ¿qué significa cada componente del gradiente y qué rutas recorrió backward?
+3. **Datos:** ¿el gradiente usa todos los ejemplos o es una estimación mini-batch?
+4. **Dinámica:** ¿la tasa y la curvatura producen contracción, oscilación o divergencia?
+5. **Optimizador:** ¿el paso usa solo el gradiente actual o también memoria?
+6. **Ejecución:** ¿qué valores observables demuestran que cada etapa ocurrió correctamente?
+
+Si no puedes responder un bloque, vuelve a la nota indicada bajo su tarjeta en el gráfico.
+
 ## Mapa mental
 
 ```mermaid
@@ -176,9 +193,18 @@ Intenta responder antes de desplegar cada solución.
 
 ## Ruta visual de repaso
 
-1. Regímenes de tasa: ![[assets/01-regimenes-tasa-aprendizaje.png|700]]
-2. Curvatura y zigzag: ![[assets/02-valle-curvatura-gd.png|700]]
-3. Variabilidad de mini-batch: ![[assets/03-variabilidad-mini-batch.png|700]]
+1. Caso completo, del residuo al nuevo parámetro: ![[assets/08-caso-conductor-entrenamiento.png|700]]
+2. Dirección y componentes del gradiente: ![[assets/06-gradiente-direcciones.png|700]]
+3. Forward y backward: ![[assets/09-forward-backward-valores.png|700]]
+4. Formas y broadcasting: ![[assets/11-formas-y-broadcasting.png|700]]
+5. Intuición de la tasa de aprendizaje: ![[assets/17-tasa-aprendizaje-intuicion.png|700]]
+6. Regímenes de tasa: ![[assets/01-regimenes-tasa-aprendizaje.png|700]]
+7. Curvatura y zigzag: ![[assets/02-valle-curvatura-gd.png|700]]
+8. Variabilidad de mini-batch: ![[assets/03-variabilidad-mini-batch.png|700]]
+9. Momentum y memoria: ![[assets/12-momentum-gradiente-memoria-paso.png|700]]
+10. Modos y autograd: ![[assets/13-matriz-train-eval-grad.png|700]]
+11. Ciclo y evidencia: ![[assets/14-ciclo-entrenamiento-evidencia.png|700]]
+12. Verificación numérica del gradiente y elección de $h$: ![[assets/20-error-vs-h-curva.png|700]]
 
 ## Criterio de dominio
 
@@ -199,4 +225,4 @@ Practica todo el recorrido en [[11 Laboratorio PyTorch - predecir, observar y ve
 
 ---
 
-Volver al [[00 Índice - Gradientes, autodiferenciación y optimización]]
+Siguiente: [[13 Verificación de gradientes con diferencias finitas]] · Volver al [[00 Índice - Gradientes, autodiferenciación y optimización]]

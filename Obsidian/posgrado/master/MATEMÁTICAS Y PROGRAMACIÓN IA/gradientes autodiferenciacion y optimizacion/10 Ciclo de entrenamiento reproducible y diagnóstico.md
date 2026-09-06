@@ -34,6 +34,26 @@ flowchart LR
 | <code>step()</code> | consume gradientes y estado | no recalcula gradientes |
 | evaluación | mide con conducta de evaluación | no limpia gradientes previos |
 
+## Vista visual del ciclo y sus evidencias
+
+![[assets/14-ciclo-entrenamiento-evidencia.png|1000]]
+
+### Cómo interpretar las tres mediciones
+
+- <code>loss</code> responde **cuánto vale el objetivo actual**. Puede bajar aunque exista un problema de evaluación o de generalización.
+- <code>grad_norm</code> responde **si llegó sensibilidad a las hojas**. Un valor cero puede ser correcto en un punto estacionario; <code>None</code> puede indicar desconexión o ausencia de backward.
+- <code>change_norm</code> responde **si los parámetros se movieron realmente**. Se mide comparando valores antes y después de <code>step()</code>.
+
+| Patrón observado | Primera interpretación que debes comprobar |
+|---|---|
+| <code>loss</code> existe, <code>grad_norm</code> no existe | la ruta entre pérdida y parámetros puede estar cortada |
+| <code>grad_norm &gt; 0</code>, <code>change_norm = 0</code> | falta <code>step()</code>, la tasa es cero o el optimizador tiene otros parámetros |
+| el segundo gradiente es exactamente el doble | probablemente se acumularon dos backward sin reinicio |
+| la forma de <code>loss</code> o del residuo es inesperada | revisa reducción y broadcasting antes de tocar el optimizador |
+
+> [!important] Diagnosticar por etapas
+> Encuentra primero la primera evidencia que contradice lo esperado. Cambiar varias cosas a la vez puede esconder el síntoma sin corregir la causa.
+
 ## Ciclo mínimo anotado
 
 ```python
