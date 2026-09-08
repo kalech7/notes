@@ -1,0 +1,22 @@
+SQLite 3.53.4
+Datos sintéticos; base en memoria.
+OK Puntos y ranking: [('Ecuador', 4, 1, 1), ('Senegal', 2, 0, 2), ('Qatar', 1, -1, 3)]
+OK Top 2: [('Ecuador',), ('Senegal',)]
+OK Dos participaciones por partido: [(6,)]
+OK Conservacion de diferencia: [(0,)]
+OK Ranking empates: [('Ana', 1, 1, 1), ('Luis', 1, 1, 2), ('Pedro', 3, 2, 3), ('Carla', 4, 3, 4)]
+OK Percent rank: [('Ana', 0.0), ('Luis', 0.0), ('Pedro', 0.6666666666666666), ('Carla', 1.0)]
+OK NTILE 23 filas: [(1, 5), (2, 5), (3, 5), (4, 4), (5, 4)]
+OK Anti join robusto: [(2,), (3,)]
+OK NOT IN con NULL: []
+OK UNION ALL conserva: [(1,), (1,)]
+OK UNION deduplica: [(1,)]
+OK EXCEPT: [(1,)]
+OK INTERSECT: [(1,)]
+OK CAST no valida: [(0, 3)]
+OK NBSP explicito: [('ECUADOR',)]
+OK Parser flecha: [('Juan', 'Maria'), ('Pedro', 'Ana'), ('Lucía', 'Carlos')]
+OK Solo entradas validas: [(1,), (2,), (3,)]
+OK Rechazos identificados: [(4,), (5,), (6,), (7,), (8,), (9,), (10,), (11,)]
+Regla didactica del parser: goles de uno o dos digitos, sin signo; no es una regla universal.
+Total: 18 comprobaciones correctas.

@@ -184,6 +184,34 @@ Toda la estabilidad está contenida en el signo y el módulo de $\rho$.
 
 Ejemplo: con $a=4$ y $\eta=0.4$, $\rho=1-4(0.4)=-0.6$. El signo negativo hace que el error cambie de lado; el módulo $0.6$ hace que conserve solo el $60\%$ de su tamaño anterior. Por eso oscila y converge.
 
+## Tu imagen de $e_t$: separar posición, distancia y altura
+
+![[assets/26-error-firmado-referencia.png|1100]]
+
+### Léela en tres pasos
+
+1. $\theta_t$ indica dónde estás en el eje horizontal; $\theta^*$ indica dónde está el mínimo.
+2. $e_t=\theta_t-\theta^*$ dice cuánto y hacia qué lado te separas. A la izquierda es negativo; a la derecha es positivo. La distancia sin signo es $|e_t|$.
+3. La altura es $L(\theta_t)=\frac a2e_t^2$. Dos errores $+3$ y $-3$ tienen la misma altura aunque estén en lados opuestos.
+
+### Ejemplo que puedes seguir con el dedo
+
+Usa $a=4$, $\theta^*=2$, $\theta_0=7$ y $\eta=0.4$. Entonces $e_0=5$ y $\rho=1-4(0.4)=-0.6$.
+
+| Iteración $t$ | Error $e_t$ | Parámetro $\theta_t=2+e_t$ | Pérdida $2e_t^2$ |
+|---:|---:|---:|---:|
+| 0 | 5 | 7 | 50 |
+| 1 | -3 | -1 | 18 |
+| 2 | 1.8 | 3.8 | 6.48 |
+| 3 | -1.08 | 0.92 | 2.3328 |
+
+La posición salta a ambos lados, pero la distancia se reduce. La pérdida **no alterna de signo**: es no negativa y, en este ejemplo, se multiplica por $\rho^2=0.36$ en cada paso.
+
+> [!note] Cómo interpretar el recuadro de divergencia de la referencia
+> La imagen también muestra $\rho>1$ como caso general de una recurrencia. Para esta cuadrática con $a>0$ y descenso con $\eta>0$, siempre $\rho=1-\eta a<1$: la divergencia por una tasa positiva excesiva ocurre con $\rho<-1$. Con $\eta=0$, $\rho=1$ y no hay movimiento. Con $\rho=-1$ hay oscilación sin acercamiento; con $\rho=0$ se llega al mínimo en un paso exacto.
+
+Fuente: [[assets/guia_estudiante_m08_gradientes_autodiferenciacion_optimizacion.pdf#page=21|Guía M08, páginas 21–24]].
+
 ## Los cinco regímenes
 
 | Tasa | Factor $\rho$ | Dinámica |
@@ -307,6 +335,31 @@ La dirección suave conserva el signo; la dirección curva lo alterna. Ambas red
 > [!warning] Alcance
 > La recurrencia y la cota anterior son exactas para una cuadrática con $H\succ0$. En funciones no cuadráticas, la curvatura cambia con la posición; el gráfico ofrece intuición local, no una ley universal.
 
+## Tu imagen de curvatura: la misma tasa no da el mismo comportamiento
+
+![[assets/25-curvatura-referencia.png|1100]]
+
+### Qué mirar en cada panel
+
+El panel izquierdo muestra un valle con dos direcciones principales. La sección azul es ancha: su curvatura $\lambda_1$ es pequeña. La roja es estrecha: su curvatura $\lambda_2$ es mayor. Los paneles de la derecha cortan ese valle para estudiar una dirección a la vez.
+
+En esos ejes principales:
+
+$$L(z_1,z_2)=\frac12(\lambda_1z_1^2+\lambda_2z_2^2),\qquad z_{i,t+1}=(1-\eta\lambda_i)z_{i,t}.$$
+
+$z_i$ es la componente de la posición respecto al mínimo en una dirección propia del Hessiano; no es la altura de la superficie. Los autovalores $\lambda_i$ miden la curvatura en esas direcciones.
+
+Prueba $\lambda_1=1$, $\lambda_2=6$, $\eta=0.28$, empezando en $(z_1,z_2)=(1,1)$:
+
+- En azul, el factor es $0.72$: $1\to0.72\to0.5184$. Se acerca sin cruzar el cero.
+- En rojo, el factor es $-0.68$: $1\to-0.68\to0.4624$. Cruza de lado, pero cada vez está más cerca.
+
+**«Misma zancada» en el dibujo significa misma tasa $\eta$, no igual distancia recorrida.** El paso real en cada dirección es $-\eta\lambda_i z_i$; depende también de la pendiente. Una curva más cerrada cambia antes de signo su factor al aumentar la tasa.
+
+El límite conjunto es $\eta<2/6\approx0.3333$. Si subes a $\eta=0.4$, la dirección suave aún tiene factor $0.6$, pero la estrecha tiene $-1.4$ y se aleja. Para garantizar convergencia desde cualquier posición inicial, todas las direcciones deben contraerse. Si una componente inicial es exactamente cero, esa dirección no se excita en la recurrencia ideal, pero la cota general sigue protegiendo frente a perturbaciones en ella.
+
+Fuente: [[assets/guia_estudiante_m08_gradientes_autodiferenciacion_optimizacion.pdf#page=23|Guía M08, página 23]]. Imagen de referencia aportada por ti.
+
 ## Consecuencias prácticas
 
 - Escalar características puede reducir diferencias extremas de curvatura.
@@ -322,6 +375,23 @@ La dirección suave conserva el signo; la dirección curva lo alterna. Ambas red
 | ¿por qué importa? | determina el multiplicador efectivo del error |
 | ¿cómo se analiza? | recurrencia del error y curvatura |
 | ¿para qué? | anticipar convergencia, oscilación o divergencia |
+
+
+## Preguntas con respuesta desplegable
+
+Haz clic en cada pregunta después de intentar responder.
+
+> [!question]- Con $\rho=-0.6$, ¿diverge porque cambia de signo?
+> No. Cambia de lado porque $\rho<0$, pero se acerca porque $|\rho|=0.6<1$.
+
+> [!question]- Si $e_t=-3$ y $a=4$, ¿cuánto vale la pérdida?
+> $L=\frac42(-3)^2=18$. El error es negativo; la pérdida no.
+
+> [!question]- Con curvaturas 1 y 6, ¿es estable $\eta=0.4$ desde cualquier inicio?
+> No. El factor de la dirección de curvatura 6 es $1-0.4(6)=-1.4$, cuya magnitud supera uno.
+
+> [!question]- ¿Misma tasa significa mismo tamaño de paso?
+> No. El paso es tasa por gradiente; la pendiente puede ser diferente por dirección y posición.
 
 ---
 

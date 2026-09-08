@@ -112,9 +112,24 @@ Esto verifica una derivada, pero no es un método práctico para entrenar millon
 ## Autoevaluación
 
 1. ¿Qué mantiene fijo una derivada parcial?
+
+> [!faq]- Ver respuesta
+> Mantiene fijas todas las variables excepto aquella respecto de la cual se deriva. Solo se permite variar esa coordenada.
+
 2. ¿Por qué $-\nabla f$ desciende?
+
+> [!faq]- Ver respuesta
+> Porque el gradiente $\nabla f$ apunta hacia la dirección de mayor aumento local. Por tanto, su opuesto $-\nabla f$ apunta hacia el descenso local más pronunciado bajo la norma euclídea.
+
 3. ¿Qué añade Taylor de segundo orden?
+
+> [!faq]- Ver respuesta
+> Añade el término cuadrático $\frac12\Delta^T H(x)\Delta$, que incorpora la curvatura descrita por el Hessiano y mejora la aproximación local.
+
 4. ¿Por qué una tasa de aprendizaje grande puede invalidar el modelo local?
+
+> [!faq]- Ver respuesta
+> Porque las aproximaciones de Taylor son fiables solo cerca del punto actual. Una tasa grande produce un paso que puede salir de esa región, donde la pendiente y la curvatura pueden ser muy diferentes.
 
 ---
 

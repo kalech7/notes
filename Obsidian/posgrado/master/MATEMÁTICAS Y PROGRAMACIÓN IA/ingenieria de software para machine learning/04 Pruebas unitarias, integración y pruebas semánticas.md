@@ -77,3 +77,6 @@ Fija semilla y prueba propiedades robustas, no una secuencia incidental cuando l
 
 Anterior: [[03 Validación, excepciones, assert y tipos]] · Siguiente: [[05 Logging, artefactos, serialización y laboratorio]]
 
+## Aplicación en Data Engineering freelance
+
+- [[Obsidian/freelance/Data Engineering/Testing/02 Regresión y pruebas de datos|02 Regresión y pruebas de datos]] — Invariantes y regresión en transformaciones SQL y Spark.

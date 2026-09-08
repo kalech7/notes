@@ -170,7 +170,8 @@ Completa verbalmente:
 
 > $X^\mathsf{T}r$ suma ___ ponderados por cada ___. Su resultado tiene forma ___, igual que ___.
 
-Respuesta: residuos, característica, $(d,)$, $w$.
+> [!question]- Mostrar la frase completa
+> Residuos, característica, $(d,)$, $w$.
 
 ## Experimento 5: hacer visible el broadcasting erróneo
 
@@ -355,7 +356,9 @@ assert z.grad_fn is None
 ```
 
 Completa: <code>eval()</code> controla ___; <code>no_grad()</code> controla ___.<br>
-Respuesta: comportamiento del módulo; registro de operaciones.
+
+> [!question]- Mostrar la diferencia
+> `eval()` controla el comportamiento del módulo; `no_grad()` controla el registro de operaciones.
 
 ## Experimento 11: ciclo pequeño con evidencia
 
@@ -414,18 +417,37 @@ with torch.no_grad():
 
 ## Informe final del laboratorio
 
-Responde:
+Responde antes de abrir cada solución. Las respuestas distinguen los experimentos manuales del ciclo final.
 
-1. ¿Qué función escalar se optimizó?
-2. ¿Qué formas se comprobaron?
-3. ¿Qué signo esperabas en el primer gradiente?
-4. ¿Qué hojas recibieron gradiente?
-5. ¿Dónde se reinició el acumulador?
-6. ¿Qué estado mantuvo el optimizador?
-7. ¿Qué evidencia confirmó un cambio real?
-8. ¿Cómo se separó evaluación de entrenamiento?
-9. ¿Qué conclusión permite la pérdida?
-10. ¿Qué conclusión todavía exigiría datos no usados para entrenar?
+> [!question]- ¿Qué función escalar se optimizó?
+> En el ciclo final, $L=\frac1{2B}\sum_i(\hat y_i-y_i)^2$, con tres observaciones. Los experimentos anteriores también incluyen pérdidas escalares de una sola observación.
+
+> [!question]- ¿Qué formas se comprobaron?
+> En el ciclo final, prediction y y tienen forma (3,1) y la pérdida es escalar. En el experimento 4 se usa (3,) para predicciones y objetivos; ambas convenciones son válidas si el emparejamiento coincide.
+
+> [!question]- ¿Qué signo esperabas en el primer gradiente?
+> En el caso manual w=1, b=0, ambos gradientes son negativos porque la predicción queda por debajo y las entradas son positivas. En el ciclo con nn.Linear debes observar su inicialización y reconstruir los residuos antes de justificar el signo.
+
+> [!question]- ¿Qué hojas recibieron gradiente?
+> w y b en los casos manuales; weight y bias de nn.Linear en el ciclo final. Los intermedios no conservan .grad de forma predeterminada.
+
+> [!question]- ¿Dónde se reinició el acumulador?
+> Al inicio de cada iteración mediante optimizer.zero_grad(set_to_none=True), antes de backward.
+
+> [!question]- ¿Qué estado mantuvo el optimizador?
+> El SGD sin momentum del ciclo final no añade memoria de dirección. El experimento 8 usa momentum_buffer; el de Adam usa exp_avg, exp_avg_sq y contador de pasos.
+
+> [!question]- ¿Qué evidencia confirma un cambio real?
+> change_norm compara copias de los parámetros antes y después de step. Un gradiente no nulo por sí solo no prueba que se hayan actualizado.
+
+> [!question]- ¿Cómo se separó evaluación de entrenamiento?
+> Con model.eval() y torch.no_grad(), sin backward ni step. El código evalúa sobre X del entrenamiento: separa el modo de ejecución, pero no aporta un conjunto independiente de generalización.
+
+> [!question]- ¿Qué conclusión permite la pérdida?
+> Describe el valor del objetivo definido sobre esos datos. Si disminuye, demuestra mejora de ese objetivo bajo las comprobaciones realizadas.
+
+> [!question]- ¿Qué conclusión exige datos no usados para entrenar?
+> El desempeño en ejemplos nuevos. Este pequeño ciclo reutiliza X y por ello no mide por sí solo generalización.
 
 ---
 

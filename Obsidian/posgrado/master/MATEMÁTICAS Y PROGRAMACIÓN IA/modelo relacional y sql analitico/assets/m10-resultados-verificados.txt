@@ -1,0 +1,9 @@
+RANKING (dataset, config, media, semillas, puesto)
+('d1', 'A', 0.85, 2, 1)
+('d1', 'B', 0.85, 2, 1)
+('d1', 'D', 0.75, 2, 3)
+MÉTRICA AUSENTE [('c22', 'C', 22)]
+COBERTURA INCOMPLETA (config, observadas, esperadas) [('C', 1, 2), ('E', 0, 2)]
+JOIN sin identidad: 132 filas; JOIN con identidad: 11
+AL AÑADIR LA MÉTRICA FALTANTE: [('d1', 'C', 0.86, 2, 1), ('d1', 'A', 0.85, 2, 2), ('d1', 'B', 0.85, 2, 2), ('d1', 'D', 0.75, 2, 4)]
+Verificaciones correctas: población, empates, ausencia, cobertura cero, JOIN, rango y claves.

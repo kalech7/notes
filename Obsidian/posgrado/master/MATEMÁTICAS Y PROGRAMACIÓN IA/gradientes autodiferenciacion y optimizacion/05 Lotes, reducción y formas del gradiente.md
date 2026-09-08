@@ -431,12 +431,23 @@ assert prediction.shape == target.shape
 
 Consulta también [[tensores y algebra computacional con pytorch/05 Broadcasting con significado|Broadcasting con significado]].
 
-## Preguntas de control
 
-1. ¿Por qué la pérdida debe reducir los $B$ residuos?
-2. ¿Por qué $X^\mathsf{T}r$ tiene la forma de $w$?
-3. ¿Qué significa que el gradiente de $b$ sea el residuo promedio?
-4. ¿Por qué una resta que ejecuta puede representar un objetivo incorrecto?
+
+## Preguntas con respuesta desplegable
+
+Haz clic en cada pregunta después de intentar responder.
+
+> [!question]- ¿Por qué la pérdida debe reducir los $B$ residuos?
+> Para definir un objetivo escalar común a partir de los errores del lote. En este caso se promedian sus cuadrados y se multiplica por 1/2; el residuo sigue siendo vector antes de reducir.
+
+> [!question]- ¿Por qué $X^\mathsf{T}r$ tiene la forma de $w$?
+> Si $X$ tiene forma $(B,d)$, su transpuesta tiene $(d,B)$ y $r$ tiene $(B,)$. El producto tiene $(d,)$, una sensibilidad por peso.
+
+> [!question]- ¿Qué significa que el gradiente de b sea el residuo promedio?
+> El mismo sesgo se suma a todas las predicciones. Cada ejemplo aporta su residuo y la reducción media divide la suma por B.
+
+> [!question]- ¿Por qué una resta que ejecuta puede representar otro objetivo?
+> El broadcasting puede convertir (B,) menos (B,1) en (B,B), comparando predicciones con objetivos de otras observaciones.
 
 ---
 

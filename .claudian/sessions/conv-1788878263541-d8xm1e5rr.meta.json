@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788878263541-d8xm1e5rr",
+  "providerId": "codex",
+  "title": "Clarify code section",
+  "titleGenerationStatus": "success",
+  "createdAt": 1788878263572,
+  "lastActivityAt": 1788878492274,
+  "sessionId": "01a08174-199d-7a72-8d5d-38c41626f2ac",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a08174-199d-7a72-8d5d-38c41626f2ac",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/08/rollout-2026-09-08T09-37-44-01a08174-199d-7a72-8d5d-38c41626f2ac.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/calculo multivariable y matricial/02 Jacobianos, regla de la cadena y VJP.md",
+  "usage": {
+    "inputTokens": 24221,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 23680,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 24221,
+    "percentage": 9,
+    "model": "gpt-5.6-sol"
+  }
+}

@@ -1,0 +1,10 @@
+Verificación de las notas de estudio — 2026-09-07
+
+28 notas Markdown; frontmatter YAML válido.
+136 enlaces internos comprobados sin destinos ausentes.
+17 flujos Mermaid analizados con el parser de Mermaid sin errores.
+Canvas JSON: IDs únicos, aristas válidas, archivos existentes y tarjetas sin solapamiento.
+Gráfico del centroide renderizado e inspeccionado visualmente. SVG editable y PNG incluidos.
+Laboratorio SQLite: 18 comprobaciones correctas; resultados_sql.txt conserva la salida.
+Laboratorio PySpark: sintaxis Python válida; no ejecutado por ausencia de PySpark.
+Ejemplos sintéticos: no se ejecutó ni se recibió el notebook original descrito en el spec.

@@ -238,7 +238,8 @@ Intenta completar sin mirar:
 
 > El forward conserva ___ y ___. El backward empieza con ___, multiplica ___ a lo largo de cada ruta y ___ las contribuciones cuando una variable participa en varias ramas.
 
-Respuesta: valores, dependencias, una semilla igual a 1, derivadas locales, suma.
+> [!question]- Mostrar la frase completa
+> El forward conserva **valores** y **dependencias**. El backward empieza con **una semilla igual a 1**, multiplica **derivadas locales** a lo largo de cada ruta y **suma** las contribuciones cuando una variable participa en varias ramas.
 
 ## Ejemplo animado en una red neuronal pequeña
 

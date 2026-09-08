@@ -157,7 +157,16 @@ Al ver una fórmula, contesta siempre:
 - **para qué** sirve dentro del entrenamiento;
 - **hasta dónde** es válida la conclusión.
 
+## Ampliación con la guía del estudiante
+
+- [[15 Guía de comprensión - del ejemplo a todo el entrenamiento|Empieza aquí si necesitas reconstruir la explicación paso a paso]].
+- Tus imágenes explicadas: [[02 Gradiente, aproximación local y dirección de descenso#Tu imagen 3D: dónde están los parámetros y dónde está la pérdida|Gradiente en 3D]] y [[06 Tasa de aprendizaje, curvatura y estabilidad|Error con signo y curvatura]].
+- Las preguntas de repaso se abren al hacer clic en su encabezado en vista de lectura o Live Preview de Obsidian.
+- Después: [[../contenedores y ejecucion reproducible con docker/00 Índice - M09 Docker y ejecución reproducible|M09 Docker]] y [[../modelo relacional y sql analitico/00 Índice - M10 Modelo relacional y SQL analítico|M10 SQL]].
+
 ## Material fuente
+
+- [[assets/guia_estudiante_m08_gradientes_autodiferenciacion_optimizacion.pdf|Guía del estudiante M08, 45 páginas]].
 
 - Presentación completa: ![[assets/module_08.pdf]]
 - Gráficos reproducibles: [[assets/generar_graficos_m08.py]]

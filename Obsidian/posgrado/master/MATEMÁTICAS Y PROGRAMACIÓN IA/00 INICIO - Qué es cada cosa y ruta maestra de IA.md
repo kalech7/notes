@@ -93,6 +93,16 @@ $$x=[\text{velocidad media},\text{pausas},\text{curvatura}]=[420,7,0.31].$$
 15. [[proyecto/README - Proyecto de dinámica de mouse|Proyecto integrador]].
 16. [[proyecto/Resultados - Baseline de dinámica de mouse|Interpretación del baseline real]].
 
+## Nuevos módulos del material de clase
+
+Estos números corresponden a los PDF del curso, no a la numeración de la ruta recomendada de arriba.
+
+- [[gradientes autodiferenciacion y optimizacion/15 Guía de comprensión - del ejemplo a todo el entrenamiento|M08 ampliado: guía del estudiante e imágenes explicadas]].
+- [[contenedores y ejecucion reproducible con docker/00 Índice - M09 Docker y ejecución reproducible|M09: contenedores y ejecución reproducible con Docker]].
+- [[modelo relacional y sql analitico/00 Índice - M10 Modelo relacional y SQL analítico|M10: modelo relacional y SQL analítico]].
+
+En las nuevas notas, haz clic sobre cada pregunta al final para desplegar la respuesta.
+
 ## Método de estudio: cinco pruebas de dominio
 
 Para afirmar que entiendes un concepto debes poder:

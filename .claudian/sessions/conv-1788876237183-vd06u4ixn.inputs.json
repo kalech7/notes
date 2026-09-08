@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788876237183-vd06u4ixn",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788876237269-7o0x6jf",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788876237157-8j33wyk",
+      "timestamp": 1788876237157,
+      "rawDisplayText": "## Hessiano y convexidad\n\nUna función es convexa si, para cualesquiera $x$, $y$ de su dominio y $\\lambda\\in[0,1]$,\n\n$$\nf(\\lambda x+(1-\\lambda)y)\n\\leq\n\\lambda f(x)+(1-\\lambda)f(y).\n$$\n\nGeométricamente, el segmento que une dos puntos del gráfico queda por encima del gráfico de la función.\n\nPara una función dos veces diferenciable sobre un dominio convexo:\n\n- si $H_f(x)\\succeq0$ para todo $x$, entonces $f$ es convexa;\n- si $H_f(x)\\succ0$ para todo $x$, entonces $f$ es estrictamente convexa;\n- si el Hessiano es indefinido en algún punto, la función no es convexa en todo el dominio.\n\nno entendi correctamente explicalo mejor si es posible con un grafico y esribelo en mi nota",
+      "canonicalText": "## Hessiano y convexidad\n\nUna función es convexa si, para cualesquiera $x$, $y$ de su dominio y $\\lambda\\in[0,1]$,\n\n$$\nf(\\lambda x+(1-\\lambda)y)\n\\leq\n\\lambda f(x)+(1-\\lambda)f(y).\n$$\n\nGeométricamente, el segmento que une dos puntos del gráfico queda por encima del gráfico de la función.\n\nPara una función dos veces diferenciable sobre un dominio convexo:\n\n- si $H_f(x)\\succeq0$ para todo $x$, entonces $f$ es convexa;\n- si $H_f(x)\\succ0$ para todo $x$, entonces $f$ es estrictamente convexa;\n- si el Hessiano es indefinido en algún punto, la función no es convexa en todo el dominio.\n\nno entendi correctamente explicalo mejor si es posible con un grafico y esribelo en mi nota",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/calculo multivariable y matricial/03 Hessiano, convexidad y cálculo matricial.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "ecbeafa9f7e6449b61217212aed5f07d815e60ccfc939663f6f8b67d6feafc0c",
+      "providerUserMessageId": "01a08155-434d-79e1-8d41-c1c1656ca9bd"
+    }
+  ]
+}

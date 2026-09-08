@@ -1,0 +1,28 @@
+{
+  "id": "conv-1788876237183-vd06u4ixn",
+  "providerId": "codex",
+  "title": "Hessian and convexity",
+  "titleGenerationStatus": "success",
+  "createdAt": 1788876237216,
+  "lastActivityAt": 1788876237216,
+  "sessionId": "01a08155-2c3e-7953-bbe9-6eeca026b813",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "01a08155-2c3e-7953-bbe9-6eeca026b813",
+    "nativeConversationContextEstablished": true,
+    "sessionFilePath": "/Users/alech/.codex/sessions/2026/09/08/rollout-2026-09-08T09-03-57-01a08155-2c3e-7953-bbe9-6eeca026b813.jsonl",
+    "transcriptRootPath": "/Users/alech/.codex/sessions",
+    "workspaceDependencyToolVersion": 1
+  },
+  "linkedContentPath": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/calculo multivariable y matricial/03 Hessiano, convexidad y cálculo matricial.md",
+  "usage": {
+    "inputTokens": 30837,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 28928,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 30837,
+    "percentage": 12,
+    "model": "gpt-5.6-sol"
+  }
+}

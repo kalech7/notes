@@ -1,0 +1,4105 @@
+# Spec de estudio — SQL, DevOps, Testing, Data Quality y Apache Spark
+
+## 1. Objetivo
+
+Crear un conjunto de notas de estudio que permita **comprender**, no solo memorizar, los conceptos evaluados en las preguntas del cuestionario.
+
+Las notas deben ayudar a responder preguntas conceptuales y también a razonar ante escenarios prácticos.
+
+El material debe cubrir cuatro bloques principales:
+
+1. **SQL y optimización de consultas**
+2. **DevOps, DataOps y Git**
+3. **Testing y calidad de datos**
+4. **Apache Spark y procesamiento distribuido**
+
+---
+
+# 2. Reglas para generar las notas
+
+Para cada tema se debe usar esta estructura:
+
+## Nombre del concepto
+
+### ¿Qué es?
+Explicación breve y clara.
+
+### ¿Para qué sirve?
+Explicar el problema que resuelve.
+
+### ¿Cómo funciona?
+Explicación técnica con suficiente profundidad.
+
+### Ejemplo
+Incluir SQL, pseudocódigo, Git o PySpark cuando corresponda.
+
+### Error común
+Mostrar una confusión típica que podría aparecer en un examen.
+
+### Regla rápida para recordar
+Una frase corta para memorizar el concepto.
+
+### Comparación
+Cuando existan conceptos parecidos, incluir una tabla comparativa.
+
+### Mini pregunta
+Crear una pregunta estilo examen y explicar la respuesta.
+
+---
+
+# 3. Nivel de profundidad
+
+Las notas deben ser entendibles para alguien que conoce programación y bases de datos a nivel universitario, pero que todavía está aprendiendo optimización, DevOps y Spark.
+
+Evitar definiciones puramente de memoria.
+
+Siempre explicar:
+
+- **por qué**
+- **cuándo**
+- **qué impacto tiene**
+- **qué alternativa conviene**
+- **qué error se intenta evitar**
+
+---
+
+# 4. BLOQUE I — SQL Y OPTIMIZACIÓN
+
+---
+
+## 4.1 Optimización de búsquedas en SQL
+
+### Temas a estudiar
+
+- SARGability
+- uso de índices
+- funciones en `WHERE`
+- conversiones de tipos
+- operadores negativos
+- filtros selectivos
+- scans vs seeks
+
+### Aprender
+
+Explicar por qué una condición como:
+
+```sql
+WHERE YEAR(fecha) = 2026
+```
+
+puede impedir un uso eficiente de un índice.
+
+Compararla con:
+
+```sql
+WHERE fecha >= '2026-01-01'
+  AND fecha < '2027-01-01'
+```
+
+Explicar también el problema de:
+
+```sql
+WHERE CAST(cliente_id AS VARCHAR) = '123'
+```
+
+frente a una comparación usando el mismo tipo de dato.
+
+### Concepto clave
+
+Una consulta es más eficiente cuando el motor puede utilizar directamente un índice para localizar las filas necesarias.
+
+### Incluir
+
+- Index Seek
+- Index Scan
+- Table Scan
+- predicates
+- selectividad
+- estadísticas
+
+---
+
+## 4.2 Operadores negativos
+
+Estudiar:
+
+```sql
+<>
+NOT
+NOT IN
+NOT EXISTS
+```
+
+Explicar por qué los predicados negativos pueden ser menos amigables para índices.
+
+Aclarar que no significa que estén "prohibidos".
+
+Lo importante es entender:
+
+- selectividad
+- índices disponibles
+- cardinalidad
+- estadísticas
+- plan de ejecución
+
+---
+
+## 4.3 Funciones analíticas de ranking
+
+Estudiar:
+
+```sql
+ROW_NUMBER()
+RANK()
+DENSE_RANK()
+PERCENT_RANK()
+```
+
+### Comparación obligatoria
+
+Usar un ejemplo como:
+
+| Empleado | Salario |
+|---|---:|
+| Ana | 1000 |
+| Luis | 1000 |
+| Pedro | 900 |
+| Carla | 800 |
+
+Explicar el resultado de:
+
+```sql
+ROW_NUMBER() OVER (ORDER BY salario DESC)
+```
+
+```sql
+RANK() OVER (ORDER BY salario DESC)
+```
+
+```sql
+DENSE_RANK() OVER (ORDER BY salario DESC)
+```
+
+### Regla rápida
+
+- `ROW_NUMBER`: siempre asigna un número distinto.
+- `RANK`: empates reciben el mismo rango y deja saltos.
+- `DENSE_RANK`: empates reciben el mismo rango sin dejar saltos.
+- `PERCENT_RANK`: expresa la posición relativa entre 0 y 1.
+
+---
+
+## 4.4 Índices clustered y nonclustered
+
+Estudiar:
+
+- clustered index
+- nonclustered index
+- primary key
+- key lookup
+- covering index
+- heap
+
+### Explicar
+
+Un índice clustered determina cómo se organizan las filas en la estructura de almacenamiento del índice.
+
+Un índice nonclustered mantiene una estructura separada con:
+
+- clave indexada
+- referencia/localizador hacia la fila
+
+### Comparar
+
+| Característica | Clustered | Nonclustered |
+|---|---|---|
+| Cantidad típica por tabla | 1 | varios |
+| Organización principal de filas | Sí | No |
+| Estructura separada | No de la misma forma | Sí |
+| Bueno para rangos | Muy bueno | También puede serlo |
+| Puede incluir columnas | depende del motor | Sí, normalmente |
+
+### Aclaración
+
+No afirmar que un índice siempre mejora una consulta.
+
+Los índices tienen costo en:
+
+- `INSERT`
+- `UPDATE`
+- `DELETE`
+- almacenamiento
+- mantenimiento
+
+---
+
+## 4.5 UNION vs UNION ALL
+
+Estudiar:
+
+```sql
+UNION
+UNION ALL
+```
+
+### Explicar
+
+`UNION` elimina duplicados.
+
+Conceptualmente equivale a:
+
+```text
+combinar resultados
++
+eliminar duplicados
+```
+
+Esto suele exigir trabajo adicional como:
+
+- sort
+- hash
+- distinct
+
+`UNION ALL` simplemente concatena los resultados.
+
+### Regla rápida
+
+Si sabes que los datos ya son únicos y **no necesitas eliminar duplicados**, normalmente:
+
+```sql
+UNION ALL
+```
+
+es más eficiente.
+
+---
+
+## 4.6 EXCEPT e INTERSECT
+
+Estudiar:
+
+```sql
+EXCEPT
+INTERSECT
+```
+
+### Aprender
+
+- `EXCEPT`: filas del primer conjunto que no aparecen en el segundo.
+- `INTERSECT`: filas presentes en ambos conjuntos.
+
+Compararlos con:
+
+- `NOT EXISTS`
+- `INNER JOIN`
+
+---
+
+## 4.7 Particionamiento de tablas
+
+Estudiar:
+
+- table partitioning
+- partition key
+- partition pruning / elimination
+- particiones por fecha
+- mantenimiento de particiones
+
+### Explicar
+
+El particionamiento **no mejora automáticamente todas las consultas**.
+
+Es útil cuando los filtros coinciden con la estrategia de partición.
+
+Ejemplo:
+
+Tabla de ventas de miles de millones de registros particionada por año.
+
+```sql
+WHERE fecha >= '2026-01-01'
+  AND fecha < '2027-01-01'
+```
+
+El motor podría leer solo la partición relevante.
+
+### Analizar cuándo puede NO ayudar
+
+- tablas pequeñas
+- queries que leen todas las particiones
+- mala elección de partition key
+- exceso de particiones
+- filtros que no usan la columna de partición
+
+---
+
+## 4.8 Encontrar registros sin correspondencia
+
+Problema:
+
+> encontrar clientes que no tienen transacciones.
+
+Estudiar:
+
+```sql
+NOT EXISTS
+NOT IN
+LEFT JOIN ... IS NULL
+```
+
+### Ejemplo
+
+```sql
+SELECT c.*
+FROM clientes c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM movimientos m
+    WHERE m.cliente_id = c.cliente_id
+);
+```
+
+### Explicar especialmente
+
+El problema de `NOT IN` cuando la subconsulta puede contener `NULL`.
+
+Ejemplo:
+
+```sql
+WHERE cliente_id NOT IN (
+    SELECT cliente_id
+    FROM movimientos
+)
+```
+
+Si existen `NULL`, la semántica SQL de tres valores puede producir resultados inesperados.
+
+### Regla rápida
+
+Para anti-joins, `NOT EXISTS` suele ser una opción muy robusta y expresiva.
+
+---
+
+## 4.9 Planes de ejecución
+
+Estudiar:
+
+- execution plan
+- estimated execution plan
+- actual execution plan
+- optimizer
+- cost estimation
+- cardinality estimation
+- statistics
+
+### Explicar
+
+El optimizador utiliza estadísticas para estimar:
+
+- número de filas
+- selectividad
+- costo de operadores
+- estrategia de joins
+- uso de índices
+
+### Concepto crítico
+
+Las estadísticas desactualizadas pueden provocar malas estimaciones de cardinalidad y planes subóptimos.
+
+### Comparar
+
+| Plan | Ejecuta query | Datos reales de ejecución |
+|---|---|---|
+| Estimado | No | No |
+| Actual | Sí | Sí |
+
+---
+
+## 4.10 Estadísticas de tablas
+
+Estudiar:
+
+- histograms
+- cardinality
+- selectivity
+- auto statistics
+- update statistics
+
+Explicar por qué mantener estadísticas actualizadas ayuda al optimizador.
+
+---
+
+## 4.11 DDL, DML y DCL
+
+Crear tabla:
+
+| Tipo | Propósito | Comandos |
+|---|---|---|
+| DDL | estructura | `CREATE`, `ALTER`, `DROP`, `TRUNCATE` |
+| DML | manipulación de datos | `INSERT`, `UPDATE`, `DELETE`, `MERGE` |
+| DQL | consulta | `SELECT` |
+| DCL | permisos | `GRANT`, `REVOKE` |
+
+Aclarar que la clasificación exacta puede variar ligeramente según literatura o motor.
+
+---
+
+## 4.12 CTE
+
+Estudiar:
+
+```sql
+WITH nombre_cte AS (...)
+SELECT ...
+FROM nombre_cte;
+```
+
+### Ejemplo
+
+```sql
+WITH ventas_cliente AS (
+    SELECT
+        cliente_id,
+        SUM(total) AS total_compras
+    FROM ventas
+    GROUP BY cliente_id
+)
+SELECT *
+FROM ventas_cliente
+WHERE total_compras > 1000;
+```
+
+### Aprender
+
+Los CTE permiten:
+
+- hacer queries más legibles
+- separar pasos lógicos
+- reutilizar una expresión dentro de una sentencia
+- construir CTE recursivos
+
+### Importante
+
+Un CTE no implica necesariamente que se materialice físicamente como una tabla temporal.
+
+El optimizador puede integrarlo en el plan.
+
+---
+
+# 5. BLOQUE II — DEVOPS, DATAOPS Y GIT
+
+---
+
+## 5.1 ¿Qué es DevOps?
+
+Estudiar DevOps como combinación de:
+
+- cultura
+- prácticas
+- automatización
+- colaboración
+- entrega continua
+- observabilidad
+- feedback
+
+Evitar definir DevOps simplemente como una herramienta.
+
+---
+
+## 5.2 Objetivos de DevOps
+
+Explicar cómo DevOps busca mejorar:
+
+- velocidad de entrega
+- calidad
+- confiabilidad
+- colaboración
+- automatización
+- reducción del lead time
+- recuperación ante fallos
+
+Relacionar con:
+
+```text
+Development + Operations
+```
+
+---
+
+## 5.3 Pilares de DevOps
+
+Usar el modelo:
+
+### CALMS
+
+- **C**ulture
+- **A**utomation
+- **L**ean
+- **M**easurement
+- **S**haring
+
+También relacionarlo con conceptos del cuestionario:
+
+- colaboración
+- automatización
+- retroalimentación
+- aprendizaje
+- experimentación continua
+
+---
+
+## 5.4 Azure Repos
+
+Estudiar:
+
+- Azure DevOps
+- Azure Repos
+- Git
+- repositorios
+- branches
+- pull requests
+
+### Diferencia clave
+
+`Azure DevOps` es la plataforma.
+
+`Azure Repos` es el servicio específico para repositorios de código.
+
+---
+
+## 5.5 Estrategias de branching
+
+Estudiar:
+
+- `main`
+- `develop`
+- `feature/*`
+- `hotfix/*`
+- `release/*`
+
+### Hotfix
+
+Explicar que un hotfix normalmente nace desde la rama de producción estable:
+
+```text
+main
+  └── hotfix/fix-critical-error
+```
+
+Luego se integra nuevamente donde corresponda.
+
+### Ejemplo
+
+```bash
+git checkout main
+git pull
+git checkout -b hotfix/payment-error
+```
+
+Después:
+
+```text
+hotfix -> main
+hotfix -> develop
+```
+
+si se utiliza Git Flow.
+
+---
+
+## 5.6 Pull Request
+
+Explicar:
+
+Un pull request es una solicitud para integrar cambios de una rama a otra, permitiendo:
+
+- code review
+- comentarios
+- validación
+- CI
+- aprobación
+- merge
+
+### No confundir con
+
+- commit
+- tag
+- branch
+
+---
+
+## 5.7 Commit, tag, branch y PR
+
+Crear tabla:
+
+| Concepto | Significado |
+|---|---|
+| Commit | cambio guardado en el historial |
+| Branch | línea de desarrollo |
+| Tag | marcador sobre un commit |
+| Pull Request | propuesta para integrar cambios |
+
+---
+
+# 6. BLOQUE III — TESTING Y CALIDAD
+
+---
+
+## 6.1 Pruebas de regresión
+
+Estudiar diferencia entre:
+
+### Confirmation / Retesting
+
+Comprueba que un defecto específico fue corregido.
+
+### Regression Testing
+
+Comprueba que un cambio no rompió funcionalidades que antes funcionaban.
+
+### Ejemplo
+
+Se corrige el módulo de login.
+
+- Retesting: comprobar específicamente el bug corregido.
+- Regresión: probar además registro, recuperación de contraseña, sesiones, permisos, etc.
+
+---
+
+## 6.2 Pruebas unitarias
+
+Características:
+
+- prueban unidades pequeñas
+- son rápidas
+- deben ser aisladas
+- no deberían depender de servicios externos
+- facilitan detectar errores temprano
+
+### Ejemplo
+
+```python
+def sumar(a, b):
+    return a + b
+
+def test_sumar():
+    assert sumar(2, 3) == 5
+```
+
+---
+
+## 6.3 Functional vs Non-functional Testing
+
+### Funcional
+
+Pregunta:
+
+> ¿Hace el sistema lo que debe hacer?
+
+Ejemplos:
+
+- login
+- generar factura
+- registrar usuario
+- comprar producto
+
+### No funcional
+
+Pregunta:
+
+> ¿Qué tan bien funciona?
+
+Ejemplos:
+
+- rendimiento
+- seguridad
+- escalabilidad
+- disponibilidad
+- usabilidad
+
+### Regla rápida
+
+```text
+Functional = qué hace
+Non-functional = qué tan bien lo hace
+```
+
+---
+
+## 6.4 Pirámide de pruebas
+
+Estudiar la pirámide de Cohn:
+
+```text
+        UI / End-to-End
+       ---------------
+        Integration
+       ---------------
+          Unit
+```
+
+Más pruebas abajo, menos arriba.
+
+### Razón
+
+Las pruebas unitarias suelen ser:
+
+- rápidas
+- baratas
+- estables
+
+Las pruebas E2E suelen ser:
+
+- lentas
+- costosas
+- más frágiles
+
+---
+
+## 6.5 Niveles de pruebas
+
+Estudiar:
+
+- Unit
+- Component
+- Integration
+- System
+- Acceptance
+
+### Acceptance Testing
+
+Debe enfatizar:
+
+- validación de requisitos
+- necesidades de negocio
+- preparación para producción/despliegue
+
+---
+
+# 7. DATA QUALITY
+
+---
+
+## 7.1 Dimensiones de calidad de datos
+
+Estudiar principalmente:
+
+### Accuracy — Exactitud
+¿El dato representa correctamente la realidad?
+
+### Completeness — Completitud
+¿Faltan datos?
+
+### Consistency — Consistencia
+¿El dato es coherente entre sistemas?
+
+### Uniqueness — Singularidad
+¿Hay duplicados?
+
+### Timeliness — Oportunidad / Actualidad
+¿El dato está disponible cuando se necesita?
+
+### Validity
+¿Cumple reglas, formatos y dominios?
+
+### Metadata
+¿Existe suficiente contexto para interpretar los datos?
+
+---
+
+## 7.2 Ejemplo de calidad
+
+Tabla:
+
+| id | email | fecha_nacimiento |
+|---|---|---|
+| 1 | a@test.com | 2000-01-01 |
+| 2 | NULL | 2001-03-01 |
+| 2 | b@test.com | 99-99-9999 |
+
+Identificar:
+
+- falta de email → completitud
+- ID duplicado → singularidad
+- fecha inválida → validez
+- posible conflicto entre fuentes → consistencia
+
+---
+
+# 8. BLOQUE IV — APACHE SPARK
+
+---
+
+## 8.1 Arquitectura de un clúster Spark
+
+Estudiar:
+
+### Driver
+
+Proceso principal de la aplicación.
+
+Responsabilidades:
+
+- construir el DAG
+- planificar stages
+- solicitar recursos
+- distribuir tareas
+- recopilar resultados/metadatos
+
+### Executors
+
+Procesos ejecutados en worker nodes.
+
+Responsabilidades:
+
+- ejecutar tasks
+- almacenar datos en cache
+- devolver resultados al Driver
+
+### Cluster Manager
+
+Ejemplos:
+
+- Standalone
+- YARN
+- Kubernetes
+
+Se encarga de gestionar recursos del clúster.
+
+### Importante
+
+HDFS puede usarse como sistema de almacenamiento, pero **no es un componente obligatorio de la arquitectura de Spark**.
+
+---
+
+## 8.2 Procesamiento distribuido
+
+Ventajas:
+
+### Escalabilidad
+
+Añadir nodos para aumentar capacidad.
+
+### Paralelismo
+
+Dividir un problema en múltiples tareas.
+
+### Rendimiento
+
+Procesar varios fragmentos simultáneamente.
+
+### Tolerancia a fallos
+
+Spark puede reconstruir particiones utilizando lineage cuando determinadas tareas fallan.
+
+---
+
+## 8.3 Transformations y Actions
+
+### Transformations
+
+Ejemplos:
+
+```python
+df.filter(...)
+df.select(...)
+df.withColumn(...)
+df.groupBy(...)
+```
+
+Normalmente son lazy.
+
+Spark construye un plan antes de ejecutar.
+
+### Actions
+
+Ejemplos:
+
+```python
+df.count()
+df.collect()
+df.show()
+```
+
+Las acciones disparan la ejecución del plan.
+
+### Regla rápida
+
+```text
+Transformation = describe trabajo
+Action = dispara trabajo
+```
+
+---
+
+## 8.4 Lazy Evaluation
+
+Explicar por qué Spark espera antes de ejecutar:
+
+Permite al optimizador analizar varias operaciones juntas y mejorar el plan.
+
+Ejemplo:
+
+```python
+df2 = df.filter(...)
+df3 = df2.select(...)
+df4 = df3.groupBy(...)
+
+df4.show()
+```
+
+La ejecución real ocurre cuando se llama una acción como `show()`.
+
+---
+
+## 8.5 Narrow vs Wide Transformations
+
+### Narrow
+
+Una partición de salida depende de pocas particiones de entrada.
+
+Ejemplos:
+
+```text
+map
+filter
+select
+```
+
+Normalmente no requieren shuffle.
+
+### Wide
+
+Una partición de salida depende de varias particiones de entrada.
+
+Ejemplos:
+
+```text
+groupBy
+reduceByKey
+join
+distinct
+repartition
+```
+
+Normalmente requieren shuffle.
+
+---
+
+## 8.6 Shuffle
+
+Definir shuffle como redistribución de datos entre particiones o executors.
+
+Es costoso porque puede implicar:
+
+- red
+- serialización
+- memoria
+- disco
+- sorting
+- transferencia entre nodos
+
+### Ejemplo
+
+```python
+df.groupBy("country").count()
+```
+
+Para agrupar todos los registros de un mismo país, Spark puede tener que mover datos entre particiones.
+
+---
+
+## 8.7 DAG
+
+DAG significa:
+
+```text
+Directed Acyclic Graph
+```
+
+Representa dependencias entre operaciones.
+
+Estudiar:
+
+- jobs
+- stages
+- tasks
+- dependencies
+
+### Jerarquía
+
+```text
+Application
+   ↓
+Job
+   ↓
+Stage
+   ↓
+Task
+```
+
+---
+
+## 8.8 Stage boundaries
+
+Un nuevo stage suele aparecer alrededor de una dependencia que requiere shuffle.
+
+Ejemplo:
+
+```python
+df.filter(...)
+  .groupBy(...)
+  .count()
+```
+
+El `groupBy` puede generar un shuffle y separar stages.
+
+### Precisión importante
+
+Las acciones disparan un **job**.
+
+Los shuffles son los que típicamente marcan límites entre **stages** dentro del job.
+
+---
+
+## 8.9 Spark vs MapReduce/Hadoop
+
+Explicar que una de las razones principales de Spark para workloads iterativos es su capacidad para mantener datos intermedios en memoria.
+
+No simplificar diciendo que "Spark nunca usa disco".
+
+Spark puede usar:
+
+- RAM
+- disco
+- almacenamiento distribuido
+
+dependiendo de la operación y configuración.
+
+### Ventaja típica
+
+Reducir escrituras repetidas a disco puede acelerar algoritmos iterativos y pipelines analíticos.
+
+---
+
+## 8.10 Persistencia y caching
+
+Estudiar:
+
+```python
+df.cache()
+df.persist()
+```
+
+### `cache()`
+
+Usa un nivel de almacenamiento por defecto.
+
+### `persist()`
+
+Permite especificar una estrategia de almacenamiento.
+
+Puede utilizar:
+
+- memoria
+- disco
+- memoria + disco
+
+### Cuándo usar
+
+Cuando el mismo DataFrame será reutilizado varias veces.
+
+### Cuándo evitar
+
+Si se usa una sola vez.
+
+---
+
+## 8.11 Spark SQL functions vs UDF
+
+Comparar:
+
+```python
+from pyspark.sql import functions as F
+```
+
+Funciones nativas:
+
+```python
+df.withColumn("name_upper", F.upper("name"))
+```
+
+UDF:
+
+```python
+@udf(...)
+def custom_function(...):
+    ...
+```
+
+### Explicar
+
+Las funciones nativas permiten a Spark entender y optimizar la expresión.
+
+Pueden beneficiarse de:
+
+- Catalyst Optimizer
+- code generation
+- predicate pushdown
+- optimización del plan
+
+Las UDFs pueden introducir una "caja negra" para el optimizador.
+
+### Regla rápida
+
+Si Spark ya tiene una función nativa que resuelve el problema, preferirla antes de crear una UDF.
+
+---
+
+## 8.12 Cross Join
+
+Estudiar:
+
+```sql
+SELECT *
+FROM Tabla1
+CROSS JOIN Tabla2;
+```
+
+Si:
+
+```text
+Tabla1 = N filas
+Tabla2 = M filas
+```
+
+resultado:
+
+```text
+N × M filas
+```
+
+### Ejemplo
+
+1 millón de filas × 1 millón de filas:
+
+```text
+1,000,000,000,000
+```
+
+combinaciones potenciales.
+
+### Conclusión
+
+Un cross join accidental puede ser extremadamente costoso.
+
+---
+
+## 8.13 Buenas prácticas Spark SQL
+
+Estudiar:
+
+- filtrar temprano
+- seleccionar solo columnas necesarias
+- evitar `SELECT *`
+- evitar cross joins innecesarios
+- utilizar funciones nativas
+- reutilizar DataFrames mediante cache cuando tenga sentido
+- revisar particionamiento
+- reducir shuffles
+- broadcast joins para tablas pequeñas cuando sea apropiado
+- revisar planes con `explain()`
+
+Ejemplo:
+
+```python
+df.explain("formatted")
+```
+
+---
+
+# 9. ARQUITECTURA LAMBDA
+
+---
+
+## 9.1 Concepto
+
+Lambda Architecture combina normalmente:
+
+### Batch Layer / Cold Path
+
+Procesamiento histórico de grandes volúmenes.
+
+### Speed Layer / Hot Path
+
+Procesamiento de eventos recientes o streaming.
+
+### Serving Layer
+
+Expone los resultados para consultas o aplicaciones.
+
+Representación:
+
+```text
+                 ┌──────────────┐
+                 │ Data Source  │
+                 └──────┬───────┘
+                        │
+             ┌──────────┴──────────┐
+             │                     │
+        Cold / Batch           Hot / Stream
+             │                     │
+             └──────────┬──────────┘
+                        │
+                  Serving Layer
+                        │
+                      Views
+```
+
+---
+
+# 10. MAPA DE TEMAS DEL CUESTIONARIO
+
+Usar esta tabla como checklist de estudio.
+
+| Pregunta | Tema |
+|---:|---|
+| 4 | SQL performance, SARGability, índices |
+| 5 | `ROW_NUMBER`, `RANK` |
+| 6 | Clustered vs nonclustered indexes |
+| 7 | `UNION` vs `UNION ALL` |
+| 8 | Table partitioning |
+| 9 | Anti-joins, `NOT EXISTS` |
+| 10 | Costo de `UNION` y eliminación de duplicados |
+| 11 | Execution plans y estadísticas |
+| 12 | DDL |
+| 13 | CTE |
+| 14 | DevOps |
+| 15 | Pilares de DevOps |
+| 16 | Azure Repos |
+| 17 | Git branching / hotfix |
+| 18 | Pull Request |
+| 19 | Regression testing |
+| 20 | Unit testing |
+| 21 | Functional vs non-functional testing |
+| 22 | Pirámide y niveles de testing |
+| 23 | Data Quality |
+| 24 | Spark cluster architecture |
+| 25 | Distributed processing |
+| 26 | Transformations, Actions y Lazy Evaluation |
+| 27 | Wide vs Narrow transformations |
+| 28 | DAG, Jobs, Stages y Shuffle |
+| 29 | Spark vs Hadoop MapReduce |
+| 30 | Lambda Architecture |
+| 31 | Spark persistence |
+| 32 | Spark SQL native functions vs UDF |
+| 33 | Cross joins y Spark SQL optimization |
+
+---
+
+# 11. FORMATO DE CADA NOTA EN OBSIDIAN
+
+Para crear una nota individual usar:
+
+```markdown
+# Nombre del concepto
+
+## Definición
+
+## Intuición
+
+## Cómo funciona
+
+## Ejemplo
+
+## Cuándo usarlo
+
+## Cuándo evitarlo
+
+## Ventajas
+
+## Desventajas
+
+## Errores comunes
+
+## Comparación con conceptos similares
+
+## Regla para recordar
+
+## Preguntas de examen
+
+## Ejercicio práctico
+
+## Resumen en 3 líneas
+
+## Enlaces relacionados
+```
+
+---
+
+# 12. ESTRUCTURA RECOMENDADA DE CARPETAS
+
+```text
+Data-Engineering/
+│
+├── SQL/
+│   ├── 01-SARGability.md
+│   ├── 02-Indexes.md
+│   ├── 03-Window-Functions.md
+│   ├── 04-Set-Operations.md
+│   ├── 05-Partitioning.md
+│   ├── 06-Anti-Joins.md
+│   ├── 07-Execution-Plans.md
+│   ├── 08-Statistics.md
+│   ├── 09-DDL-DML-DCL.md
+│   └── 10-CTE.md
+│
+├── DevOps/
+│   ├── 01-DevOps.md
+│   ├── 02-CALMS.md
+│   ├── 03-Azure-Repos.md
+│   ├── 04-Git-Branching.md
+│   └── 05-Pull-Requests.md
+│
+├── Testing/
+│   ├── 01-Regression-Testing.md
+│   ├── 02-Unit-Testing.md
+│   ├── 03-Functional-Testing.md
+│   └── 04-Testing-Pyramid.md
+│
+├── Data-Quality/
+│   └── 01-Data-Quality-Dimensions.md
+│
+└── Spark/
+    ├── 01-Spark-Architecture.md
+    ├── 02-Distributed-Processing.md
+    ├── 03-Lazy-Evaluation.md
+    ├── 04-Narrow-Wide-Transformations.md
+    ├── 05-Shuffle.md
+    ├── 06-DAG-Jobs-Stages-Tasks.md
+    ├── 07-Persistence.md
+    ├── 08-Spark-SQL-UDF.md
+    ├── 09-Cross-Joins.md
+    └── 10-Lambda-Architecture.md
+```
+
+---
+
+# 13. RELACIONES ENTRE CONCEPTOS
+
+Crear enlaces de Obsidian entre temas relacionados.
+
+Ejemplos:
+
+```markdown
+[[SARGability]]
+[[Indexes]]
+[[Execution Plans]]
+[[Statistics]]
+```
+
+Relación:
+
+```text
+Statistics
+    ↓
+Cardinality estimation
+    ↓
+Query Optimizer
+    ↓
+Execution Plan
+    ↓
+Index Seek / Scan
+```
+
+Spark:
+
+```text
+Lazy Evaluation
+      ↓
+     DAG
+      ↓
+     Job
+      ↓
+    Stages
+      ↓
+    Shuffle
+      ↓
+     Tasks
+```
+
+DevOps:
+
+```text
+Git Branch
+    ↓
+Pull Request
+    ↓
+Code Review
+    ↓
+CI Pipeline
+    ↓
+Automated Tests
+    ↓
+Deployment
+```
+
+---
+
+# 14. EJERCICIOS PRÁCTICOS OBLIGATORIOS
+
+## SQL
+
+### Ejercicio 1 — SARGability
+
+Comparar planes de:
+
+```sql
+SELECT *
+FROM ventas
+WHERE YEAR(fecha) = 2026;
+```
+
+contra:
+
+```sql
+SELECT *
+FROM ventas
+WHERE fecha >= '2026-01-01'
+  AND fecha < '2027-01-01';
+```
+
+---
+
+### Ejercicio 2 — Window Functions
+
+Crear una tabla de empleados con salarios repetidos y ejecutar:
+
+```sql
+ROW_NUMBER()
+RANK()
+DENSE_RANK()
+```
+
+Comparar resultados.
+
+---
+
+### Ejercicio 3 — UNION
+
+Comparar:
+
+```sql
+SELECT id FROM a
+UNION
+SELECT id FROM b;
+```
+
+con:
+
+```sql
+SELECT id FROM a
+UNION ALL
+SELECT id FROM b;
+```
+
+Revisar plan de ejecución.
+
+---
+
+### Ejercicio 4 — Anti Join
+
+Implementar:
+
+```sql
+NOT EXISTS
+NOT IN
+LEFT JOIN ... IS NULL
+```
+
+y revisar comportamiento con valores `NULL`.
+
+---
+
+## Git / DevOps
+
+Crear flujo:
+
+```text
+main
+  ↓
+develop
+  ↓
+feature/test
+```
+
+Luego simular un error crítico en producción:
+
+```text
+main
+  ↓
+hotfix/error
+```
+
+Crear pull request y fusionarlo.
+
+---
+
+## Testing
+
+Implementar una función pequeña y escribir:
+
+- unit test
+- regression test
+- integration test conceptual
+
+Explicar qué valida cada uno.
+
+---
+
+## Spark
+
+Crear un DataFrame y ejecutar:
+
+```python
+df.filter(...)
+df.select(...)
+df.groupBy(...).count()
+```
+
+Después:
+
+```python
+df.explain("formatted")
+```
+
+Identificar:
+
+- scan
+- filter
+- exchange
+- shuffle
+- aggregation
+
+---
+
+# 15. PREGUNTAS QUE DEBES PODER RESPONDER SIN MEMORIZAR
+
+Al finalizar las notas deberías poder explicar:
+
+1. ¿Por qué aplicar una función sobre una columna indexada puede empeorar una consulta?
+2. ¿Cuándo usar `ROW_NUMBER` en lugar de `RANK`?
+3. ¿Por qué una tabla normalmente solo puede tener un clustered index?
+4. ¿Por qué `UNION ALL` suele ser más rápido que `UNION`?
+5. ¿Por qué particionar una tabla no garantiza mejor rendimiento?
+6. ¿Por qué `NOT EXISTS` suele preferirse para anti-joins?
+7. ¿Cómo influyen las estadísticas en un execution plan?
+8. ¿Cuál es la diferencia entre DDL, DML y DCL?
+9. ¿Qué problema resuelve un CTE?
+10. ¿Qué diferencia existe entre Azure DevOps y Azure Repos?
+11. ¿Desde qué rama debería crearse normalmente un hotfix?
+12. ¿Cuál es la diferencia entre commit, branch, tag y pull request?
+13. ¿Qué diferencia existe entre regression testing y retesting?
+14. ¿Qué diferencia hay entre pruebas funcionales y no funcionales?
+15. ¿Qué significa exactitud, completitud, consistencia y singularidad?
+16. ¿Cuál es la función del Driver en Spark?
+17. ¿Qué diferencia hay entre transformation y action?
+18. ¿Qué significa lazy evaluation?
+19. ¿Qué operación provoca un shuffle?
+20. ¿Cómo se relacionan DAG, Job, Stage y Task?
+21. ¿Por qué Spark puede ser más rápido que MapReduce en procesamiento iterativo?
+22. ¿Cuándo conviene cachear un DataFrame?
+23. ¿Por qué se prefieren funciones nativas de Spark SQL sobre UDFs?
+24. ¿Por qué un Cross Join puede destruir el rendimiento de una aplicación?
+25. ¿Cómo funciona una arquitectura Lambda?
+
+---
+
+# 16. FORMATO DE REPASO RÁPIDO
+
+Al final de cada nota generar una sección:
+
+```markdown
+## 🧠 En pocas palabras
+
+- Concepto:
+- Problema que resuelve:
+- Cuándo usar:
+- Cuándo evitar:
+- Palabra clave de examen:
+```
+
+Ejemplo:
+
+```markdown
+## 🧠 En pocas palabras
+
+- Concepto: UNION ALL
+- Problema que resuelve: combina resultados de dos queries
+- Cuándo usar: cuando no necesitamos eliminar duplicados
+- Cuándo evitar: cuando necesitamos resultados únicos
+- Palabra clave de examen: rendimiento
+```
+
+---
+
+# 17. FLASHCARDS
+
+Generar al menos 3 flashcards por nota.
+
+Formato:
+
+```markdown
+## Flashcards
+
+**Q:** ¿Qué diferencia hay entre `UNION` y `UNION ALL`?  
+**A:** `UNION` elimina duplicados; `UNION ALL` conserva todos los registros y normalmente requiere menos trabajo.
+
+**Q:** ¿Qué dispara la ejecución lazy en Spark?  
+**A:** Una acción.
+
+**Q:** ¿Qué tipo de transformación suele generar shuffle?  
+**A:** Una wide transformation.
+```
+
+---
+
+# 18. CRITERIO DE DOMINIO
+
+Un tema se considera aprendido cuando puedes:
+
+- explicarlo sin leer la definición
+- crear un ejemplo propio
+- reconocer un ejemplo incorrecto
+- compararlo con conceptos similares
+- identificar cuándo NO usarlo
+- responder una pregunta tipo examen
+- explicar su impacto en rendimiento o arquitectura
+
+---
+
+# 19. PRIORIDAD DE ESTUDIO
+
+## Prioridad alta
+
+1. SARGability
+2. Índices
+3. `ROW_NUMBER` vs `RANK`
+4. `UNION` vs `UNION ALL`
+5. `NOT EXISTS`
+6. Execution Plans
+7. DevOps y Git branching
+8. Regression vs Unit Testing
+9. Spark Transformations/Actions
+10. Shuffle
+11. DAG / Stage / Task
+12. Native Spark SQL vs UDF
+
+## Prioridad media
+
+13. Partitioning
+14. CTE
+15. Data Quality
+16. Spark persistence
+17. Lambda Architecture
+
+## Prioridad básica
+
+18. DDL / DML / DCL
+19. Azure Repos
+20. Pull Requests
+
+---
+
+# 20. RESULTADO ESPERADO
+
+Al completar este spec, el estudiante no debería limitarse a recordar respuestas del cuestionario.
+
+Debe poder razonar preguntas nuevas del tipo:
+
+> "Tengo una query lenta, ¿qué reviso?"
+
+> "¿Por qué Spark está haciendo un Exchange?"
+
+> "¿Por qué esta transformación genera un nuevo Stage?"
+
+> "¿Por qué una UDF puede degradar rendimiento?"
+
+> "¿Por qué no siempre conviene crear un índice?"
+
+> "¿Por qué una prueba de regresión no es igual a una prueba unitaria?"
+
+El objetivo final es construir un **modelo mental del sistema**, no una lista de respuestas memorizadas.
+
+
+---
+
+# 21. AMPLIACIÓN BASADA EN EL NOTEBOOK `Prueba_Técnica_DE_BP.ipynb`
+
+## 21.1 Objetivo de esta ampliación
+
+El notebook de prueba técnica añade una dimensión práctica al spec original.
+
+Además de conocer conceptos, se debe poder resolver problemas de ingeniería de datos donde la información llega:
+
+- como texto no normalizado,
+- con problemas de calidad,
+- sin un esquema relacional limpio,
+- con reglas de negocio que deben convertirse en SQL,
+- con transformaciones que requieren window functions,
+- y con procesamiento distribuido mediante PySpark.
+
+El notebook está dividido en:
+
+1. **SQL usando SQLite**
+2. **PySpark**
+
+Las notas nuevas deben conservar esa división.
+
+---
+
+# 22. BLOQUE V — SQL PRÁCTICO BASADO EN LA PRUEBA TÉCNICA
+
+---
+
+## 22.1 Datos no normalizados y parsing de strings
+
+### Problema del notebook
+
+La tabla `Partidos` almacena información como:
+
+```text
+partido  = "Qatar vs. Ecuador"
+resultado = "0,1"
+```
+
+En lugar de tener:
+
+```text
+equipo_1
+equipo_2
+goles_1
+goles_2
+```
+
+como columnas independientes.
+
+Por tanto, antes de analizar los datos se debe **parsear el texto**.
+
+### Conceptos que debes estudiar
+
+- datos estructurados vs semiestructurados
+- normalización
+- parsing
+- delimitadores
+- extracción de substrings
+- casting
+- limpieza de strings
+- calidad de datos de origen
+
+### Funciones SQLite utilizadas en el notebook
+
+```sql
+SUBSTR()
+INSTR()
+TRIM()
+REPLACE()
+UPPER()
+CAST()
+```
+
+### Ejemplo conceptual
+
+Dado:
+
+```text
+Qatar vs. Ecuador
+```
+
+localizar:
+
+```text
+" vs. "
+```
+
+y separar:
+
+```text
+Qatar
+Ecuador
+```
+
+### Patrón utilizado
+
+```sql
+SUBSTR(partido, 1, INSTR(partido, ' vs. ') - 1)
+```
+
+y:
+
+```sql
+SUBSTR(partido, INSTR(partido, ' vs. ') + 5)
+```
+
+### Debes entender
+
+No basta con copiar estas funciones.
+
+Debes poder responder:
+
+- ¿qué devuelve `INSTR`?
+- ¿por qué se resta 1?
+- ¿por qué se suma 5?
+- ¿qué ocurre si el delimitador no existe?
+- ¿qué ocurre si el formato cambia?
+- ¿por qué este diseño de tabla dificulta las consultas?
+
+### Error común
+
+Asumir que los datos de entrada ya vienen correctamente normalizados.
+
+### Regla rápida
+
+> Antes de agregar o rankear datos, primero hay que convertir el texto crudo en columnas confiables.
+
+---
+
+## 22.2 Calidad y normalización de nombres
+
+El notebook muestra nombres potencialmente inconsistentes, por ejemplo:
+
+```text
+Irán
+Iran
+Portugal.
+Uruguay.
+```
+
+La solución incluida aplica transformaciones como:
+
+```sql
+UPPER(...)
+REPLACE(...)
+TRIM(...)
+```
+
+### Temas a estudiar
+
+- case normalization
+- espacios iniciales y finales
+- puntuación residual
+- tildes
+- caracteres especiales
+- Unicode
+- claves naturales problemáticas
+- normalización previa a joins
+
+### Ejemplo
+
+```sql
+UPPER(TRIM(nombre))
+```
+
+### Pero debes ir más allá
+
+Comprender que:
+
+```text
+IRÁN
+IRAN
+Iran
+Iran.
+```
+
+pueden representar el mismo valor lógico.
+
+### Pregunta importante
+
+¿Por qué hacer un `JOIN` directamente por texto puede fallar?
+
+Porque dos cadenas que representan la misma entidad pueden no ser exactamente iguales.
+
+---
+
+## 22.3 Unicode y espacios no separables
+
+En la salida del notebook, algunos nombres de países todavía contienen:
+
+```text
+\xa0
+```
+
+antes del nombre.
+
+Esto representa un **non-breaking space (NBSP)**.
+
+Ejemplo conceptual:
+
+```text
+"\u00A0Alemania"
+```
+
+### Lección
+
+`TRIM()` no siempre elimina todos los caracteres de espacio Unicode.
+
+### Debes estudiar
+
+- ASCII space vs Unicode whitespace
+- `\u00A0`
+- limpieza explícita
+- `REPLACE`
+- validación después de limpiar
+
+### Ejemplo conceptual en PySpark
+
+```python
+F.trim(
+    F.regexp_replace("nombre_pais", "\u00A0", " ")
+)
+```
+
+### Regla rápida
+
+> Nunca supongas que "se ve como un espacio" significa que es el carácter ASCII `0x20`.
+
+---
+
+## 22.4 Convertir reglas de negocio en `CASE WHEN`
+
+La prueba define:
+
+```text
+Victoria = 3 puntos
+Empate = 1 punto
+Derrota = 0 puntos
+```
+
+Esto debe traducirse a SQL.
+
+### Patrón
+
+```sql
+CASE
+    WHEN goles_1 > goles_2 THEN 3
+    WHEN goles_1 = goles_2 THEN 1
+    ELSE 0
+END
+```
+
+### Temas a estudiar
+
+- `CASE WHEN`
+- reglas de negocio
+- condiciones mutuamente excluyentes
+- orden de evaluación
+- valores derivados
+
+### Ejercicio
+
+Crear una columna:
+
+```text
+resultado_partido
+```
+
+con valores:
+
+```text
+GANADO
+EMPATADO
+PERDIDO
+```
+
+sin modificar los datos originales.
+
+---
+
+## 22.5 Transformar una fila de partido en dos filas de equipo
+
+Una fila representa dos equipos:
+
+```text
+Qatar vs Ecuador
+```
+
+Pero para agregar estadísticas por equipo se necesita una estructura como:
+
+```text
+Qatar    puntos...
+Ecuador  puntos...
+```
+
+El notebook utiliza:
+
+```sql
+UNION ALL
+```
+
+para generar una fila desde la perspectiva de cada equipo.
+
+### Concepto
+
+Esto es una transformación de:
+
+```text
+match-centric
+```
+
+a:
+
+```text
+team-centric
+```
+
+### Debes entender
+
+Por qué se utiliza:
+
+```sql
+UNION ALL
+```
+
+y no:
+
+```sql
+UNION
+```
+
+No se busca eliminar duplicados; se busca conservar todas las contribuciones de cada partido.
+
+### Conexión con el spec original
+
+Relacionar con:
+
+```markdown
+[[UNION-vs-UNION-ALL]]
+[[Data-Normalization]]
+[[Aggregation]]
+```
+
+---
+
+## 22.6 Agregaciones con `GROUP BY`
+
+Después de convertir cada partido a filas por equipo, la prueba calcula:
+
+```sql
+SUM(puntos)
+SUM(gol_diferencia)
+```
+
+agrupando por:
+
+```sql
+equipo,
+grupo
+```
+
+### Estudiar
+
+- `GROUP BY`
+- `SUM`
+- granularidad
+- dimensiones
+- métricas
+- aggregate functions
+
+### Pregunta fundamental
+
+> ¿Cuál es la granularidad del resultado?
+
+Una fila por:
+
+```text
+equipo + grupo
+```
+
+### Error común
+
+Seleccionar columnas que no pertenecen al `GROUP BY` ni están dentro de una función de agregación.
+
+---
+
+## 22.7 CTE como pipeline de transformación
+
+La solución SQL del notebook divide el problema en pasos:
+
+```text
+partidos_parseados
+        ↓
+partidos_normalizados
+        ↓
+resumen_por_partido
+        ↓
+agregación final
+```
+
+### Concepto a aprender
+
+Un CTE puede actuar como una etapa lógica del pipeline.
+
+Ejemplo:
+
+```sql
+WITH paso_1 AS (...),
+paso_2 AS (...),
+paso_3 AS (...)
+SELECT ...
+```
+
+### Debes poder explicar
+
+- qué recibe cada CTE
+- qué transforma
+- qué columnas produce
+- por qué mejora la legibilidad
+- cómo depurar un CTE por separado
+
+### Ejercicio
+
+Ejecutar individualmente:
+
+```sql
+SELECT * FROM partidos_parseados;
+```
+
+y luego continuar al siguiente paso.
+
+---
+
+## 22.8 Window functions con `PARTITION BY`
+
+La segunda pregunta del notebook requiere encontrar:
+
+```text
+los dos mejores equipos de cada grupo
+```
+
+La solución utiliza:
+
+```sql
+ROW_NUMBER() OVER (
+    PARTITION BY grupo
+    ORDER BY puntos DESC,
+             gol_diferencia DESC,
+             equipo
+)
+```
+
+### Conceptos clave
+
+- window function
+- partition
+- ordering
+- ranking dentro de grupos
+- tie breaker
+
+### Modelo mental
+
+```text
+PARTITION BY grupo
+```
+
+significa:
+
+> reiniciar el ranking dentro de cada grupo.
+
+Mientras:
+
+```text
+ORDER BY puntos DESC
+```
+
+define quién queda primero.
+
+### Tie breakers del notebook
+
+1. puntos
+2. gol diferencia
+3. nombre del equipo
+
+### Debes comparar
+
+```sql
+ROW_NUMBER()
+RANK()
+DENSE_RANK()
+```
+
+### Pregunta tipo examen
+
+Si exactamente deben salir 2 registros por grupo aunque existan empates:
+
+¿Cuál función es más determinista si existe un criterio de desempate completo?
+
+```text
+ROW_NUMBER
+```
+
+---
+
+## 22.9 Top-N por grupo
+
+Patrón fundamental de Data Engineering:
+
+```sql
+WITH ranking AS (
+    SELECT
+        ...,
+        ROW_NUMBER() OVER (
+            PARTITION BY categoria
+            ORDER BY metrica DESC
+        ) AS rn
+    FROM tabla
+)
+SELECT *
+FROM ranking
+WHERE rn <= N;
+```
+
+### Debes dominar este patrón para
+
+- top 2 equipos por grupo
+- top 3 ventas por tienda
+- último evento por usuario
+- producto más vendido por categoría
+- transacción más reciente por cliente
+
+---
+
+## 22.10 Joins con reglas derivadas de texto
+
+La tabla `Clasificados` no contiene directamente:
+
+```text
+grupo = A
+puesto = 1
+```
+
+sino descripciones como:
+
+```text
+1º del grupo A vs. 2º del grupo B
+```
+
+La solución del notebook construye un join utilizando:
+
+```sql
+LOWER()
+LIKE
+SUBSTR()
+||
+```
+
+### Estudiar
+
+- concatenación en SQLite con `||`
+- matching textual
+- `LIKE`
+- joins con reglas
+- joins no basados en una clave limpia
+
+### Lección de modelado
+
+Este join funciona como ejercicio, pero revela un problema de diseño:
+
+La información útil está embebida en texto.
+
+En un modelo relacional más limpio existirían columnas como:
+
+```text
+grupo_origen
+puesto_origen
+grupo_rival
+puesto_rival
+```
+
+### Regla rápida
+
+> Si debes interpretar texto para poder hacer un JOIN, probablemente el modelo de datos puede mejorarse.
+
+---
+
+## 22.11 `LEFT JOIN`
+
+La prueba utiliza `LEFT JOIN` para enriquecer los equipos clasificados con información del siguiente partido.
+
+### Debes poder explicar
+
+```text
+LEFT JOIN
+```
+
+conserva todas las filas de la tabla izquierda.
+
+### Comparar
+
+| Join | Resultado |
+|---|---|
+| `INNER JOIN` | solo coincidencias |
+| `LEFT JOIN` | todo izquierda + coincidencias |
+| `RIGHT JOIN` | todo derecha + coincidencias |
+| `FULL OUTER JOIN` | todas las filas de ambas |
+
+### Nota SQLite
+
+La disponibilidad exacta de algunos tipos de join depende de la versión de SQLite.
+
+Para la prueba debes priorizar las construcciones realmente utilizadas en el notebook.
+
+---
+
+## 22.12 Concatenación en SQLite
+
+La solución utiliza:
+
+```sql
+c.fecha || ' ' || c.hora
+```
+
+### Estudiar
+
+En SQLite:
+
+```text
+||
+```
+
+es el operador de concatenación.
+
+Ejemplo:
+
+```sql
+nombre || ' ' || apellido
+```
+
+---
+
+## 22.13 Quintiles con `NTILE`
+
+La tercera pregunta define equipos élite como los que se encuentran en el:
+
+```text
+quintil más alto
+```
+
+La solución utiliza:
+
+```sql
+NTILE(5) OVER (
+    ORDER BY puntos DESC,
+             gol_diferencia DESC,
+             equipo
+)
+```
+
+y selecciona:
+
+```sql
+WHERE quintil = 1
+```
+
+### Estudiar
+
+```sql
+NTILE(n)
+```
+
+divide las filas ordenadas en aproximadamente `n` grupos de tamaño similar.
+
+### Para quintiles
+
+```text
+n = 5
+```
+
+Cada bucket representa aproximadamente:
+
+```text
+20 %
+```
+
+de las filas.
+
+### Comparar
+
+- `NTILE`
+- `PERCENT_RANK`
+- `CUME_DIST`
+- percentiles estadísticos
+
+### Precisión conceptual
+
+`NTILE(5)` divide **filas ordenadas** en cinco buckets.
+
+No significa necesariamente que existan cinco intervalos iguales de valores de puntos.
+
+### Pregunta
+
+¿Qué pasa si existen 23 equipos?
+
+Los cinco grupos no tendrán exactamente el mismo número de filas.
+
+---
+
+## 22.14 SQL dialects: SQLite no es SQL Server
+
+El notebook indica explícitamente que la sección SQL se ejecuta en SQLite.
+
+### Debes estudiar
+
+Que la sintaxis SQL cambia entre motores:
+
+- SQLite
+- PostgreSQL
+- SQL Server
+- Oracle
+- MySQL
+- Spark SQL
+
+### Ejemplos específicos de SQLite en la prueba
+
+```sql
+INSTR()
+SUBSTR()
+||
+```
+
+### Regla
+
+Antes de resolver una prueba técnica:
+
+> identifica primero qué motor SQL se está utilizando.
+
+---
+
+# 23. BLOQUE VI — PYSPARK PRÁCTICO BASADO EN LA PRUEBA
+
+---
+
+## 23.1 Crear `SparkSession`
+
+Patrón mostrado:
+
+```python
+spark = (
+    SparkSession.builder
+    .master("local")
+    .appName("Colab")
+    .config("spark.ui.port", "4050")
+    .getOrCreate()
+)
+```
+
+### Estudiar
+
+- `SparkSession`
+- aplicación Spark
+- master
+- local mode
+- configuración
+- lifecycle de una aplicación
+
+### Importante
+
+```text
+local
+```
+
+no equivale a ejecutar en un clúster distribuido real.
+
+Sirve para desarrollo y pruebas locales.
+
+---
+
+## 23.2 Definir schemas explícitos
+
+El notebook crea schemas mediante:
+
+```python
+StructType
+StructField
+StringType
+```
+
+### Ejemplo
+
+```python
+schema = StructType([
+    StructField("ranking", StringType(), True),
+    StructField("nombre_jugador", StringType(), True)
+])
+```
+
+### Estudiar
+
+- schema inference
+- explicit schema
+- nullable
+- tipos Spark SQL
+- data contracts
+
+### ¿Por qué usar schema explícito?
+
+- mayor control
+- menor ambigüedad
+- tipos predecibles
+- detección temprana de problemas
+- mejor documentación
+
+---
+
+## 23.3 Crear DataFrames desde listas Python
+
+Patrón:
+
+```python
+spark.createDataFrame(datos, schema)
+```
+
+### Estudiar
+
+- rows
+- schema
+- DataFrame
+- inferencia
+- casting posterior
+
+---
+
+## 23.4 Casting de tipos
+
+Los datos de jugadores llegan como strings:
+
+```text
+"115"
+"184"
+```
+
+El notebook los convierte mediante:
+
+```sql
+CAST(numero_goles AS INT)
+```
+
+### Debes estudiar
+
+- string → integer
+- string → double
+- cast failures
+- nulls generados por conversiones inválidas
+- validación de tipos
+
+### Regla
+
+> Nunca calcules métricas numéricas importantes sobre columnas que todavía son strings.
+
+---
+
+## 23.5 Temporary Views
+
+El notebook usa:
+
+```python
+df.createOrReplaceTempView("jugador")
+```
+
+y luego:
+
+```python
+spark.sql(...)
+```
+
+### Estudiar
+
+- DataFrame API
+- Spark SQL
+- temp views
+- session scope
+
+### Comparar
+
+```python
+df.select(...)
+```
+
+frente a:
+
+```python
+spark.sql("SELECT ...")
+```
+
+### Objetivo
+
+Poder resolver el mismo problema con ambos estilos.
+
+---
+
+## 23.6 Joins en PySpark
+
+El notebook consolida:
+
+```text
+jugadores
++
+países
+```
+
+por:
+
+```text
+codigo_pais
+```
+
+### Estudiar
+
+```python
+df.join(...)
+```
+
+y SQL:
+
+```sql
+LEFT JOIN
+```
+
+### Conceptos
+
+- join key
+- cardinalidad
+- duplicados
+- broadcast join
+- shuffle join
+- data skew
+
+---
+
+## 23.7 Mejor jugador por país usando window functions
+
+El notebook crea una marca:
+
+```text
+marca_mejor_rank_pais
+```
+
+utilizando:
+
+```sql
+ROW_NUMBER() OVER (
+    PARTITION BY codigo_pais
+    ORDER BY ranking ASC
+)
+```
+
+### Patrón
+
+```text
+mejor registro dentro de cada grupo
+```
+
+Este patrón aparece constantemente en Data Engineering.
+
+### Casos equivalentes
+
+- último pedido por cliente
+- mejor producto por categoría
+- evento más reciente por dispositivo
+- salario máximo por departamento
+
+---
+
+## 23.8 Feature engineering simple: tasa de goles por partido
+
+La prueba solicita proponer un nuevo ranking que considere:
+
+```text
+goles
++
+partidos jugados
+```
+
+La solución crea:
+
+```text
+tasa_goles_por_partido =
+numero_goles / numero_partidos_jugados
+```
+
+### Conceptos a estudiar
+
+- ratio
+- KPI
+- normalización por exposición
+- métricas derivadas
+- ranking multicriterio
+
+### Ejemplo
+
+Jugador A:
+
+```text
+100 goles / 200 partidos = 0.50
+```
+
+Jugador B:
+
+```text
+80 goles / 80 partidos = 1.00
+```
+
+Aunque A tiene más goles absolutos, B tiene una tasa superior.
+
+### Lección
+
+Una métrica absoluta y una métrica normalizada responden preguntas diferentes.
+
+---
+
+## 23.9 Ranking multicriterio
+
+El notebook ordena el ranking nuevo por:
+
+1. tasa goles/partido descendente
+2. goles descendente
+3. ranking original ascendente
+
+### Estudiar
+
+- primary metric
+- secondary criterion
+- deterministic tie-breaking
+- reproducibilidad
+
+### Regla
+
+Todo ranking de producción debería definir qué hacer ante empates.
+
+---
+
+## 23.10 Funciones Spark SQL avanzadas para datos anidados
+
+Para construir el JSON de salida, el notebook utiliza:
+
+```sql
+LPAD
+COLLECT_LIST
+NAMED_STRUCT
+SORT_ARRAY
+TRANSFORM
+```
+
+### Estudiar individualmente
+
+#### `LPAD`
+
+```sql
+LPAD('1', 2, '0')
+```
+
+resultado:
+
+```text
+01
+```
+
+#### `COLLECT_LIST`
+
+Agrupa múltiples valores dentro de un array.
+
+#### `NAMED_STRUCT`
+
+Construye una estructura con campos nombrados.
+
+#### `SORT_ARRAY`
+
+Ordena un array.
+
+#### `TRANSFORM`
+
+Aplica una expresión a cada elemento de un array.
+
+### Modelo mental
+
+Datos planos:
+
+```text
+pais | jugador
+pais | jugador
+pais | jugador
+```
+
+se convierten en:
+
+```json
+{
+  "codigo_pais": "01",
+  "nombre_pais": "Alemania",
+  "jugadores": [
+    {
+      "nombre_jugador": "...",
+      "ranking_anterior": 18,
+      "ranking_actual": 37
+    }
+  ]
+}
+```
+
+---
+
+## 23.11 Datos anidados
+
+Estudiar:
+
+- arrays
+- structs
+- nested schema
+- JSON nested
+- `ArrayType`
+- `StructType`
+
+### Pregunta
+
+¿Por qué un esquema anidado puede ser conveniente para exportar una entidad con sus hijos?
+
+Porque permite representar una relación jerárquica directamente.
+
+---
+
+## 23.12 `toJSON().collect()` y memoria del Driver
+
+El notebook genera el archivo final mediante:
+
+```python
+df_salida.toJSON().collect()
+```
+
+### Debes entender qué ocurre
+
+```text
+collect()
+```
+
+mueve todos los resultados al Driver.
+
+### Adecuado cuando
+
+El resultado es pequeño.
+
+### Riesgoso cuando
+
+El resultado tiene millones de filas.
+
+Puede provocar:
+
+```text
+Driver Out Of Memory
+```
+
+### Para grandes volúmenes
+
+Preferir operaciones distribuidas como:
+
+```python
+df.write.json(...)
+```
+
+### Importante
+
+Esto es una ampliación conceptual del ejercicio.
+
+La solución del notebook utiliza `collect()` porque el resultado generado es pequeño y busca escribir un JSON con formato de array específico.
+
+---
+
+## 23.13 Leer JSON con PySpark
+
+La pregunta de centros educativos utiliza:
+
+```python
+spark.read.option("multiline", "true").json(ruta)
+```
+
+### Estudiar
+
+- `spark.read`
+- JSON
+- multiline JSON
+- schema inference
+- explicit schema
+- malformed records
+
+### Pregunta
+
+¿Cuándo necesitas:
+
+```text
+multiline=true
+```
+
+Cuando un objeto o arreglo JSON puede ocupar múltiples líneas físicas.
+
+---
+
+## 23.14 Selección y casting de columnas
+
+La solución crea:
+
+```python
+col("direccion_coor_x").cast("double").alias("x")
+```
+
+### Estudiar
+
+- `col`
+- `cast`
+- `alias`
+- proyección de columnas
+
+### Buena práctica
+
+Seleccionar únicamente las columnas necesarias.
+
+Esto conecta con:
+
+```markdown
+[[Spark-SQL-Optimization]]
+```
+
+---
+
+## 23.15 Filtrado de `NULL`
+
+El notebook elimina registros sin:
+
+- titularidad
+- coordenada X
+- coordenada Y
+
+mediante:
+
+```python
+.where(
+    col("centro_titularidad").isNotNull()
+    & col("x").isNotNull()
+    & col("y").isNotNull()
+)
+```
+
+### Estudiar
+
+- `NULL`
+- `isNull`
+- `isNotNull`
+- calidad de datos
+- filtros tempranos
+
+### Regla
+
+> No calcules una distancia con coordenadas incompletas.
+
+---
+
+## 23.16 Agrupación y centroides
+
+La prueba solicita encontrar el centro educativo más céntrico de cada:
+
+```text
+centro_titularidad
+```
+
+Primero calcula:
+
+```text
+promedio X
+promedio Y
+```
+
+por grupo.
+
+### PySpark
+
+```python
+groupBy("centro_titularidad").agg(
+    avg("x"),
+    avg("y")
+)
+```
+
+### Concepto matemático
+
+Para un grupo de puntos:
+
+```text
+(x1, y1)
+(x2, y2)
+...
+(xn, yn)
+```
+
+el centro promedio es:
+
+```text
+prom_x = Σx / n
+prom_y = Σy / n
+```
+
+### Estudiar
+
+- groupBy
+- aggregate
+- centroid
+- average
+- geometría básica aplicada a datos
+
+---
+
+## 23.17 Reincorporar una agregación al detalle
+
+Después de calcular el promedio por grupo, el notebook hace un:
+
+```text
+JOIN
+```
+
+entre:
+
+```text
+centros_df
+```
+
+y:
+
+```text
+promedio_df
+```
+
+para que cada centro tenga:
+
+```text
+x
+y
+prom_x
+prom_y
+```
+
+### Patrón general
+
+```text
+aggregate → join back
+```
+
+Muy común en Data Engineering y Feature Engineering.
+
+Ejemplos:
+
+- media del cliente → cada transacción
+- promedio de categoría → cada producto
+- máximo por grupo → cada registro
+- benchmark de región → cada tienda
+
+---
+
+## 23.18 Distancia euclidiana
+
+La función de la prueba calcula:
+
+```text
+d = sqrt((x - prom_x)^2 + (y - prom_y)^2)
+```
+
+### Implementación del notebook
+
+```python
+def distancia_euclideana(x, y, prom_x, prom_y):
+    return sqrt(
+        (x - prom_x) * (x - prom_x)
+        +
+        (y - prom_y) * (y - prom_y)
+    )
+```
+
+### Estudiar
+
+- distancia euclidiana
+- coordenadas
+- métricas espaciales
+- nearest point
+
+### Interpretación
+
+El centro con menor distancia al promedio de su grupo se considera el más céntrico según la regla de la prueba.
+
+---
+
+## 23.19 Python UDF en Spark
+
+La prueba solicita explícitamente crear una UDF:
+
+```python
+distancia_udf = udf(
+    distancia_euclideana,
+    DoubleType()
+)
+```
+
+### Debes conocer
+
+- qué es una UDF
+- cuándo se usa
+- tipo de retorno
+- limitaciones de optimización
+- serialización Python ↔ JVM
+
+### Conexión con el spec original
+
+El notebook exige una UDF para el ejercicio.
+
+Sin embargo, como regla de optimización general:
+
+> si la expresión puede implementarse con funciones nativas de Spark SQL, normalmente es preferible usar funciones nativas.
+
+Por ejemplo, conceptualmente:
+
+```python
+F.sqrt(
+    F.pow(F.col("x") - F.col("prom_x"), 2)
+    +
+    F.pow(F.col("y") - F.col("prom_y"), 2)
+)
+```
+
+### Debes aprender ambas cosas
+
+1. cómo crear una UDF porque la prueba lo solicita;
+2. por qué una función nativa suele integrarse mejor con el optimizador.
+
+---
+
+## 23.20 Seleccionar el mínimo por grupo usando ventanas
+
+Después de calcular distancias, se necesita seleccionar:
+
+```text
+el centro más cercano al promedio
+```
+
+por cada titularidad.
+
+El notebook crea:
+
+```python
+Window.partitionBy("centro_titularidad").orderBy(
+    asc("distancia_al_promedio"),
+    asc("centro_codigo")
+)
+```
+
+y luego aplica ranking.
+
+### Estudiar
+
+- `Window.partitionBy`
+- `orderBy`
+- `rank`
+- `row_number`
+- tie-breaker
+
+### Discusión importante
+
+El notebook utiliza:
+
+```python
+rank()
+```
+
+pero también ordena por:
+
+```text
+distancia
+centro_codigo
+```
+
+Al incluir `centro_codigo` como segundo criterio, dos centros con la misma distancia normalmente dejarán de empatar si sus códigos son distintos.
+
+Para seleccionar **exactamente una fila de manera determinista**, también debes estudiar:
+
+```python
+row_number()
+```
+
+No reemplaces la solución del notebook; comprende la diferencia semántica entre ambas funciones.
+
+---
+
+## 23.21 Redondeo
+
+La salida utiliza:
+
+```python
+round(col("x"), 2)
+round(col("distancia_al_promedio"), 4)
+```
+
+### Estudiar
+
+- precisión
+- presentación vs cálculo
+- cuándo redondear
+
+### Buena práctica
+
+Mantener precisión completa durante los cálculos y redondear principalmente al presentar el resultado, salvo que la regla de negocio indique lo contrario.
+
+---
+
+# 24. FORMATOS DE DATOS DEL NOTEBOOK
+
+---
+
+## 24.1 Escritura en Parquet
+
+```python
+df.write.mode("overwrite").parquet(ruta)
+```
+
+### Estudiar
+
+- formato columnar
+- compresión
+- schema
+- predicate pushdown
+- column pruning
+- analytics workloads
+
+---
+
+## 24.2 Escritura en JSON
+
+```python
+df.write.mode("overwrite").json(ruta)
+```
+
+### Ventajas
+
+- legible
+- flexible
+- ampliamente interoperable
+- soporta estructuras anidadas
+
+### Desventajas para analítica masiva
+
+- textual
+- mayor costo de parsing
+- mayor volumen
+- menor eficiencia para leer columnas específicas
+
+---
+
+## 24.3 Escritura en CSV
+
+La prueba exige:
+
+```python
+.option("sep", "|")
+.option("header", "true")
+.csv(ruta)
+```
+
+### Estudiar
+
+- delimitador
+- header
+- escaping
+- quoting
+- tipos
+- schema-on-read
+
+### Problemas frecuentes
+
+- delimitador dentro del texto
+- columnas con saltos de línea
+- tipos no preservados
+- fechas ambiguas
+- nulls
+- encoding
+
+---
+
+## 24.4 Parquet vs JSON vs CSV
+
+Crear una nota comparativa obligatoria:
+
+| Característica | Parquet | JSON | CSV |
+|---|---|---|---|
+| Tipo | columnar binario | texto semiestructurado | texto tabular |
+| Schema | sí | parcial/inferido | no fuerte |
+| Tipos | preservados | parcialmente | normalmente texto |
+| Compresión | eficiente | menor | menor |
+| Lectura por columnas | excelente | no | no |
+| Datos anidados | sí | sí | pobre |
+| Lectura humana | no directa | sí | sí |
+| Analítica masiva | excelente | limitada | limitada |
+
+### Respuesta dentro del contexto del notebook
+
+Entre los tres formatos propuestos, estudiar por qué:
+
+```text
+Parquet
+```
+
+es normalmente el más apropiado para procesamiento analítico de grandes volúmenes.
+
+### Razones que aparecen en la solución
+
+- reduce I/O al ser columnar
+- puede leer solo columnas necesarias
+- mejor compresión que formatos de texto
+- evita parte del costo de parsing de JSON
+- conserva mejor los tipos que CSV
+
+---
+
+## 24.5 Nota adicional para Databricks
+
+Esta sección es una **ampliación conceptual**, no una sustitución de la respuesta del notebook.
+
+El notebook compara únicamente:
+
+```text
+Parquet
+JSON
+CSV
+```
+
+Por eso la respuesta estudiada para ese ejercicio debe ser:
+
+```text
+Parquet
+```
+
+En una arquitectura moderna de Databricks también conviene estudiar posteriormente:
+
+```text
+Delta Lake
+```
+
+como capa de tabla construida sobre archivos Parquet con capacidades transaccionales y de gestión adicionales.
+
+Crear una nota separada:
+
+```text
+Spark/11-Parquet-vs-Delta-Lake.md
+```
+
+---
+
+# 25. SALIDAS DE SPARK: ARCHIVO VS DIRECTORIO
+
+Un detalle que debes dominar:
+
+```python
+df.write.parquet("/tmp/salida")
+```
+
+normalmente crea un **directorio** que contiene uno o varios:
+
+```text
+part-xxxxx.parquet
+```
+
+y archivos de control.
+
+Lo mismo ocurre con:
+
+```python
+write.json()
+write.csv()
+```
+
+### Esto sucede porque
+
+Spark escribe en paralelo desde múltiples particiones.
+
+### Estudiar
+
+- output partitions
+- `part-*`
+- `coalesce(1)`
+- `repartition`
+- costo de reducir a una sola partición
+
+### Error común
+
+Pensar que:
+
+```python
+df.write.csv("/tmp/reporte.csv")
+```
+
+siempre produce un único archivo llamado `reporte.csv`.
+
+---
+
+# 26. INCONSISTENCIAS Y DETALLES DEL NOTEBOOK QUE DEBES DETECTAR
+
+Esta sección existe para practicar revisión técnica, no solo ejecución.
+
+---
+
+## 26.1 Nombre de archivo de centros
+
+El enunciado menciona:
+
+```text
+CENTROS_EDUCACION_MADRID.json
+```
+
+mientras que el código utiliza:
+
+```text
+CENTROS_EDUCATIVOS_MADRID.json
+```
+
+### Lección
+
+En una prueba técnica debes comprobar:
+
+- nombre exacto
+- ruta
+- extensión
+- mayúsculas/minúsculas
+
+No asumir que el enunciado y el código coinciden.
+
+---
+
+## 26.2 `TRIM` y el NBSP
+
+Aunque el código ejecuta:
+
+```sql
+TRIM(nombre_pais)
+```
+
+la salida mostrada todavía contiene un espacio Unicode `\xa0`.
+
+### Lección
+
+Validar el resultado de la limpieza.
+
+No basta con haber escrito una función llamada:
+
+```text
+trim
+```
+
+---
+
+## 26.3 `collect()` puede romper escalabilidad
+
+El notebook usa:
+
+```python
+toJSON().collect()
+```
+
+para un resultado pequeño.
+
+### Lección
+
+Una solución que funciona con 39 países no necesariamente funciona con 500 millones de registros.
+
+---
+
+## 26.4 UDF requerida vs UDF óptima
+
+El ejercicio pide explícitamente una UDF.
+
+La nota debe distinguir:
+
+```text
+"lo que pide el ejercicio"
+```
+
+de:
+
+```text
+"lo que normalmente optimizaríamos en producción"
+```
+
+---
+
+## 26.5 `RANK` vs `ROW_NUMBER`
+
+La prueba de centros utiliza `rank()`.
+
+Debes poder explicar qué cambiaría utilizando:
+
+```python
+row_number()
+```
+
+y qué ocurriría con empates.
+
+---
+
+## 26.6 `NTILE(5)` no equivale a cinco rangos iguales de puntos
+
+`NTILE` reparte filas.
+
+No construye intervalos estadísticos equidistantes sobre el valor de `puntos`.
+
+---
+
+## 26.7 Fechas del dataset
+
+El dataset de partidos contiene fechas con distintos años dentro de una simulación descrita como Qatar 2022.
+
+### Lección
+
+Las pruebas de Data Engineering pueden incluir datos inconsistentes deliberadamente.
+
+Antes de corregirlos, debes determinar:
+
+- si la fecha participa en el cálculo solicitado,
+- si existe una regla de validación,
+- si debes excluir,
+- corregir,
+- marcar,
+- o simplemente reportar el problema.
+
+---
+
+# 27. NUEVAS NOTAS QUE DEBEN AGREGARSE A OBSIDIAN
+
+Actualizar la estructura con:
+
+```text
+Data-Engineering/
+│
+├── SQL/
+│   ├── 11-String-Parsing-SQLite.md
+│   ├── 12-Data-Normalization-SQL.md
+│   ├── 13-CASE-WHEN.md
+│   ├── 14-Top-N-Per-Group.md
+│   ├── 15-NTILE-Percentiles.md
+│   ├── 16-SQLite-Functions.md
+│   └── 17-Text-Based-Joins.md
+│
+├── Data-Quality/
+│   ├── 02-String-Normalization.md
+│   ├── 03-Unicode-Whitespace.md
+│   └── 04-Data-Validation.md
+│
+└── Spark/
+    ├── 11-Parquet-vs-Delta-Lake.md
+    ├── 12-Spark-Schemas.md
+    ├── 13-Temporary-Views.md
+    ├── 14-Nested-Data.md
+    ├── 15-Collect-List-Named-Struct.md
+    ├── 16-Spark-JSON.md
+    ├── 17-Euclidean-Distance.md
+    ├── 18-Spark-UDFs.md
+    ├── 19-Output-Partitions.md
+    └── 20-Parquet-JSON-CSV.md
+```
+
+---
+
+# 28. MAPA COMPLETO DEL NOTEBOOK → CONCEPTOS
+
+| Pregunta notebook | Conceptos principales |
+|---|---|
+| SQL 1 | parsing, limpieza, `CASE`, `UNION ALL`, `GROUP BY`, `SUM`, CTE |
+| SQL 2 | `ROW_NUMBER`, `PARTITION BY`, Top-N, tie-breakers, `LEFT JOIN`, `LIKE`, concatenación |
+| SQL 3 | `NTILE(5)`, quintiles, ranking global |
+| PySpark 4.1 | schemas, `StructType`, DataFrames, casting |
+| PySpark 4.2 | joins, window functions, mejor registro por grupo |
+| PySpark 4.3 | KPI, ratio goles/partidos, ranking multicriterio |
+| PySpark 4.4 | nested data, arrays, structs, `COLLECT_LIST`, JSON |
+| PySpark 5.1 | lectura JSON, multiline |
+| PySpark 5.2.1 | `groupBy`, `avg`, centroides |
+| PySpark 5.2.2 | UDF, distancia euclidiana |
+| PySpark 5.2.3 | window, ranking, mínimo por grupo |
+| PySpark 5.3 | escritura Parquet/JSON/CSV |
+| PySpark 5.4 | formatos analíticos, columnar storage, compresión, I/O |
+
+---
+
+# 29. PREGUNTAS DE COMPRENSIÓN BASADAS EN EL NOTEBOOK
+
+Debes poder responder sin abrir la solución:
+
+1. ¿Cómo separarías `"Qatar vs. Ecuador"` en dos columnas usando SQLite?
+2. ¿Cómo separarías `"3,2"` en goles de local y visitante?
+3. ¿Por qué se usa `CAST` después de extraer goles?
+4. ¿Qué problema intenta resolver `UPPER + TRIM + REPLACE`?
+5. ¿Por qué el primer ejercicio usa `UNION ALL`?
+6. ¿Cuál es la granularidad antes y después del `GROUP BY`?
+7. ¿Cómo conviertes una regla de puntuación deportiva en `CASE WHEN`?
+8. ¿Cómo obtienes los dos mejores registros de cada grupo?
+9. ¿Qué diferencia habría si usaras `RANK` en lugar de `ROW_NUMBER`?
+10. ¿Qué hace `PARTITION BY grupo`?
+11. ¿Qué función usarías para dividir un ranking en quintiles?
+12. ¿Qué diferencia existe entre `NTILE(5)` y `PERCENT_RANK()`?
+13. ¿Por qué un join basado en `LIKE` suele indicar problemas de modelado?
+14. ¿Cómo crear un DataFrame con schema explícito?
+15. ¿Por qué conviene convertir goles y partidos a enteros?
+16. ¿Qué es una temporary view?
+17. ¿Cómo marcas el mejor jugador de cada país?
+18. ¿Por qué goles/partidos puede ser más informativo que goles totales?
+19. ¿Cómo construyes un array de structs en Spark SQL?
+20. ¿Por qué `collect()` es peligroso con resultados grandes?
+21. ¿Cuándo usar `multiline=true` para JSON?
+22. ¿Cómo calculas un promedio X/Y por grupo?
+23. ¿Qué significa distancia euclidiana?
+24. ¿Cómo seleccionarías el punto más cercano al centro de cada grupo?
+25. ¿Por qué una UDF Python puede ser más lenta que una función Spark nativa?
+26. ¿Por qué Parquet es más apropiado que CSV para analítica masiva?
+27. ¿Por qué Spark genera directorios `part-*`?
+28. ¿Qué problema representa `\u00A0` en limpieza de strings?
+29. ¿Por qué debes revisar el nombre exacto del archivo antes de ejecutar un pipeline?
+30. ¿Cómo comprobarías que una limpieza realmente funcionó?
+
+---
+
+# 30. EJERCICIOS PRÁCTICOS NUEVOS
+
+---
+
+## Ejercicio A — Parsing robusto
+
+Crear una tabla:
+
+```text
+evento
+--------------------------------
+"Juan -> Maria"
+"Pedro -> Ana "
+"Lucía->Carlos"
+```
+
+Diseñar una estrategia para extraer origen y destino.
+
+Después analizar qué ocurre cuando el delimitador no es consistente.
+
+---
+
+## Ejercicio B — Normalización
+
+Normalizar:
+
+```text
+" Ecuador "
+"ECUADOR"
+"ecuador"
+"ECUADOR."
+"\u00A0Ecuador"
+```
+
+hasta obtener una representación uniforme.
+
+---
+
+## Ejercicio C — Top N por grupo
+
+Crear:
+
+```text
+producto | categoria | ventas
+```
+
+y obtener los 3 productos con mayores ventas por categoría.
+
+Usar:
+
+```sql
+ROW_NUMBER
+```
+
+y luego repetir con:
+
+```sql
+RANK
+```
+
+Comparar.
+
+---
+
+## Ejercicio D — Quintiles
+
+Crear 23 registros con diferentes scores.
+
+Ejecutar:
+
+```sql
+NTILE(5)
+```
+
+y contar cuántos elementos quedan en cada bucket.
+
+---
+
+## Ejercicio E — PySpark Schema
+
+Crear un DataFrame a partir de strings:
+
+```text
+id
+edad
+salario
+```
+
+Convertir:
+
+```text
+edad -> INT
+salario -> DOUBLE
+```
+
+y detectar registros inválidos.
+
+---
+
+## Ejercicio F — Aggregate + Join Back
+
+Para transacciones:
+
+```text
+cliente_id
+monto
+```
+
+calcular el promedio de compra por cliente.
+
+Luego añadir ese promedio a cada transacción mediante un join.
+
+---
+
+## Ejercicio G — Distancia
+
+Crear puntos:
+
+```text
+grupo | x | y
+```
+
+calcular el centro promedio de cada grupo y encontrar el punto más cercano.
+
+Resolver primero con UDF y después con funciones nativas.
+
+Comparar el plan.
+
+---
+
+## Ejercicio H — Nested JSON
+
+Transformar:
+
+```text
+cliente | producto | precio
+```
+
+en:
+
+```json
+{
+  "cliente": "...",
+  "productos": [
+    {
+      "producto": "...",
+      "precio": 10
+    }
+  ]
+}
+```
+
+utilizando funciones nativas de Spark.
+
+---
+
+## Ejercicio I — Formatos
+
+Guardar el mismo DataFrame como:
+
+```text
+CSV
+JSON
+Parquet
+```
+
+Comparar:
+
+- tamaño
+- schema
+- tiempo de lectura
+- lectura de una sola columna
+- facilidad de inspección manual
+
+---
+
+# 31. CHECKLIST DE DOMINIO PARA LA PRUEBA TÉCNICA
+
+## SQL
+
+- [ ] Puedo parsear strings con `SUBSTR` e `INSTR`.
+- [ ] Puedo convertir texto a entero con `CAST`.
+- [ ] Sé limpiar espacios, puntuación y mayúsculas.
+- [ ] Entiendo problemas Unicode como `NBSP`.
+- [ ] Puedo escribir reglas con `CASE WHEN`.
+- [ ] Sé cuándo usar `UNION ALL`.
+- [ ] Puedo agregar con `GROUP BY`.
+- [ ] Puedo crear pipelines con varios CTE.
+- [ ] Domino `ROW_NUMBER`, `RANK`, `DENSE_RANK`.
+- [ ] Puedo obtener Top-N por grupo.
+- [ ] Entiendo `NTILE`.
+- [ ] Puedo hacer `LEFT JOIN`.
+- [ ] Entiendo concatenación `||` en SQLite.
+- [ ] Sé reconocer un join frágil basado en texto.
+
+## PySpark
+
+- [ ] Puedo iniciar una `SparkSession`.
+- [ ] Puedo definir `StructType`.
+- [ ] Puedo crear DataFrames.
+- [ ] Puedo hacer casts.
+- [ ] Puedo usar temporary views.
+- [ ] Puedo hacer joins.
+- [ ] Puedo usar windows.
+- [ ] Puedo diseñar una métrica derivada.
+- [ ] Puedo crear arrays y structs.
+- [ ] Entiendo `collect_list`.
+- [ ] Puedo leer JSON multiline.
+- [ ] Puedo filtrar nulls.
+- [ ] Puedo hacer `groupBy + avg`.
+- [ ] Puedo implementar una UDF.
+- [ ] Entiendo distancia euclidiana.
+- [ ] Puedo seleccionar el mínimo por grupo.
+- [ ] Puedo escribir Parquet, JSON y CSV.
+- [ ] Entiendo por qué Parquet es columnar.
+- [ ] Sé que `collect()` mueve datos al Driver.
+- [ ] Sé que Spark normalmente escribe múltiples archivos `part-*`.
+
+---
+
+# 32. PRIORIDAD DE ESTUDIO ACTUALIZADA
+
+## Prioridad crítica
+
+1. Window functions:
+   - `ROW_NUMBER`
+   - `RANK`
+   - `NTILE`
+   - `PARTITION BY`
+
+2. SQL transformations:
+   - CTE
+   - `CASE`
+   - `UNION ALL`
+   - `GROUP BY`
+   - parsing
+
+3. Data quality:
+   - strings
+   - Unicode
+   - tipos
+   - nulls
+
+4. PySpark DataFrames:
+   - schema
+   - select
+   - cast
+   - join
+   - groupBy
+
+5. Spark windows y ranking.
+
+6. Spark native functions vs UDF.
+
+7. Parquet vs JSON vs CSV.
+
+8. Shuffle, stages y ejecución distribuida.
+
+## Prioridad alta
+
+9. Nested data:
+   - struct
+   - array
+   - `COLLECT_LIST`
+   - `NAMED_STRUCT`
+   - `TRANSFORM`
+
+10. `collect()` y Driver memory.
+
+11. JSON multiline.
+
+12. Aggregate + join back.
+
+13. Top-N per group.
+
+14. Distancia euclidiana.
+
+## Prioridad media
+
+15. SQLite-specific functions.
+
+16. Spark output partitions.
+
+17. Delta Lake como ampliación posterior.
+
+---
+
+# 33. RUTA DE ESTUDIO RECOMENDADA CON ESTA PRUEBA
+
+## Fase 1 — Resolver el SQL sin mirar código
+
+Rehacer:
+
+```text
+Pregunta SQL 1
+Pregunta SQL 2
+Pregunta SQL 3
+```
+
+desde cero.
+
+Objetivo:
+
+```text
+entender la transformación
+```
+
+no memorizar la consulta.
+
+---
+
+## Fase 2 — Explicar cada función SQL
+
+Ser capaz de explicar:
+
+```text
+SUBSTR
+INSTR
+TRIM
+REPLACE
+UPPER
+CAST
+CASE
+UNION ALL
+SUM
+GROUP BY
+ROW_NUMBER
+PARTITION BY
+LIKE
+NTILE
+```
+
+en una frase y con un ejemplo propio.
+
+---
+
+## Fase 3 — Rehacer PySpark con DataFrame API
+
+Aunque algunas partes del notebook usan:
+
+```python
+spark.sql(...)
+```
+
+rehacerlas también con:
+
+```python
+select
+withColumn
+join
+groupBy
+Window
+```
+
+Objetivo:
+
+dominar ambos estilos.
+
+---
+
+## Fase 4 — Revisar planes
+
+Para operaciones relevantes usar:
+
+```python
+df.explain("formatted")
+```
+
+Buscar:
+
+```text
+Exchange
+Sort
+HashAggregate
+Window
+Scan
+Filter
+Project
+```
+
+Relacionarlo con:
+
+```markdown
+[[DAG-Jobs-Stages-Tasks]]
+[[Shuffle]]
+[[Spark-SQL-Optimization]]
+```
+
+---
+
+## Fase 5 — Escalabilidad
+
+Para cada solución preguntarte:
+
+> ¿Funcionaría igual con 500 millones de filas?
+
+Revisar especialmente:
+
+```text
+collect()
+UDF
+join
+groupBy
+window
+sort
+JSON
+CSV
+```
+
+---
+
+# 34. RESULTADO ESPERADO ACTUALIZADO
+
+Después de estudiar el spec completo y el notebook, debes poder recibir un dataset desconocido y seguir este proceso mental:
+
+```text
+1. Inspeccionar schema y calidad
+        ↓
+2. Limpiar y tipar
+        ↓
+3. Definir granularidad
+        ↓
+4. Transformar
+        ↓
+5. Aplicar reglas de negocio
+        ↓
+6. Agregar / rankear
+        ↓
+7. Enriquecer mediante joins
+        ↓
+8. Validar resultados
+        ↓
+9. Revisar escalabilidad
+        ↓
+10. Elegir formato de salida
+```
+
+Ese flujo resume gran parte de lo que realmente está evaluando la prueba técnica de Data Engineering.
+

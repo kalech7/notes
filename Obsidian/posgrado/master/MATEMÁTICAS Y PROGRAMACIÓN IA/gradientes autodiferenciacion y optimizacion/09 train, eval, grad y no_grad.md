@@ -219,12 +219,23 @@ No se añade historia nueva y tampoco se borra <code>.grad</code>. Si había gra
 
 No uses <code>.data</code> para expresar estas intenciones. Los contextos explícitos son más claros y seguros.
 
-## Preguntas de control
 
-1. ¿Por qué <code>model.eval()</code> no impide <code>backward()</code>?
-2. ¿Por qué <code>torch.no_grad()</code> no desactiva Dropout por sí mismo?
-3. ¿Qué significa que Dropout conserve la expectativa?
-4. ¿La evaluación borra gradientes calculados anteriormente?
+
+## Preguntas con respuesta desplegable
+
+Haz clic en cada pregunta después de intentar responder.
+
+> [!question]- ¿Por qué model.eval() no impide backward()?
+> Cambia el comportamiento de módulos sensibles, pero no deshabilita el registro de operaciones. Si hay un grafo diferenciable conectado, puede calcularse backward.
+
+> [!question]- ¿Por qué no_grad() no desactiva Dropout por sí mismo?
+> Dropout consulta el modo training del módulo. no_grad controla el registro para autograd; no cambia ese modo.
+
+> [!question]- ¿Qué significa conservar la expectativa en Dropout?
+> El reescalamiento de las activaciones que sobreviven conserva su promedio teórico sobre máscaras. No conserva cada muestra, su varianza ni necesariamente la salida media de una red no lineal.
+
+> [!question]- ¿La evaluación borra gradientes anteriores?
+> No. eval y no_grad no limpian .grad. Un valor allí puede proceder del entrenamiento anterior.
 
 ---
 

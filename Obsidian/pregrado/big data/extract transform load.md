@@ -30,3 +30,7 @@ Las transformaciones típicas incluyen agregadores, enmascaramiento de datos, ex
 # Carga
 es cargar los conjuntos de datos transformados en la base de datos de destinopara su almacenamiento y analisis.
 para cargar los datos se lo realiza mediante una rutina de insercion SQL donde la insercion de los datos se lleva a cabo de manera manual (este proceso toma mucho tiempo peor tiene mejor control de calidad ) otra forma es de manera masica(mucho mas rapido y reduce la posibilidad de errores sin embargo no realiza controles de calidad para cada registro lo que puede porvar problemas de integridad de los datos )
+
+## Aplicación en Data Engineering freelance
+
+- [[Obsidian/freelance/Data Engineering/Calidad/02 Validación Unicode y contratos|02 Validación Unicode y contratos]] — Contratos, validación de entrada y trazabilidad de rechazos.

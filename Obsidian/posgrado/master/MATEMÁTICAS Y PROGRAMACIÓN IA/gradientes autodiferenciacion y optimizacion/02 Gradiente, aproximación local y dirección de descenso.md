@@ -241,6 +241,32 @@ $$
 
 La predicción lineal no coincide exactamente con el cambio real porque la pérdida es curva, pero acierta el signo para este paso pequeño.
 
+## Tu imagen 3D: dónde están los parámetros y dónde está la pérdida
+
+![[assets/27-gradiente-3d-referencia.png|1100]]
+
+Esta imagen se interpreta con el caso de la guía del estudiante, páginas 3–7:
+
+$$L(w,b)=\frac12(2w+b-5)^2.$$
+
+**Lee primero los ejes:** $w$ y $b$ son los dos parámetros del suelo; la altura es $L(w,b)$. El punto naranja $(1,0,4.5)$ dice «peso 1, sesgo 0 y pérdida 4.5». El 4.5 no es un tercer parámetro entrenable.
+
+**Después lee las flechas:** en $(w,b)=(1,0)$ el residuo es $-3$ y el gradiente es $(-6,-3)$. El gradiente apunta hacia aumento local de la pérdida; al restarlo aumentamos ambos parámetros. Con $\eta=0.05$, el paso es $(0.30,0.15)$, el nuevo punto en el suelo es $(1.30,0.15)$ y su altura es $2.53125$.
+
+Las flechas dibujadas sobre la superficie son una representación ilustrativa. Matemáticamente $\nabla L$ tiene **dos componentes en el espacio de parámetros**; no es un vector de tres parámetros $(w,b,L)$ ni debemos deducir sus signos solo de la perspectiva del dibujo.
+
+### Por qué el fondo es una línea
+
+La pérdida es cero siempre que $2w+b=5$. Por ejemplo, $(w,b)=(1,3)$, $(2,1)$ y $(0,5)$ ajustan exactamente la única observación. Hay una línea de soluciones: una observación no identifica de forma única dos parámetros.
+
+Esto distingue esta superficie del cuenco positivo definido de la nota de curvatura. Aquí el Hessiano es
+
+$$H=\begin{pmatrix}4&2\\2&1\end{pmatrix},$$
+
+con autovalores $5$ y $0$. El cero corresponde a moverse por la dirección plana $(1,-2)$: cambiar $w$ en $1$ y $b$ en $-2$ deja $2w+b$ igual. No apliques la afirmación «todas las direcciones del error se contraen» a esa dirección plana.
+
+Fuente: [[assets/guia_estudiante_m08_gradientes_autodiferenciacion_optimizacion.pdf#page=3|Guía M08, páginas 3–7]]. La imagen es la referencia aportada; la explicación de la línea de mínimos amplía ese ejemplo.
+
 ## Gradiente nulo no equivale siempre a mínimo
 
 Si $\nabla L(\theta)=0$, todas las derivadas direccionales de primer orden son cero. El punto podría ser:
@@ -262,13 +288,20 @@ Hace falta información de orden superior o del contexto para clasificarlo.
 | ¿para qué? | evaluar direcciones y construir reglas de actualización |
 | ¿límite? | información local de primer orden |
 
-## Pregunta de control
 
-Si $\nabla L=(3,-4)$ y propones $\Delta\theta=(-0.2,0.1)$:
 
-$$\Delta L_{\text{lin}}=3(-0.2)+(-4)(0.1)=-1.$$
+## Preguntas con respuesta desplegable
 
-La pérdida debería bajar aproximadamente una unidad si el paso es suficientemente pequeño.
+Haz clic en cada pregunta después de intentar responder.
+
+> [!question]- Si $\nabla L=(3,-4)$ y $\Delta\theta=(-0.2,0.1)$, ¿qué cambio predice Taylor?
+> $\Delta L_{\mathrm{lin}}=3(-0.2)+(-4)(0.1)=-1$. Predice una disminución aproximada de una unidad; la curvatura decide cuánto se aparta el valor real.
+
+> [!question]- ¿El 4.5 del punto naranja es un parámetro?
+> No. Es el valor de la pérdida para w=1 y b=0.
+
+> [!question]- ¿Por qué la imagen tiene una línea de mínimos?
+> Porque todos los pares que cumplen 2w+b=5 predicen correctamente la única observación. Hay una dirección plana.
 
 ---
 

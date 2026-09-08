@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1788844064822-n9yk1a7yr",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1788844064989-olcn52g",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1788844064815-otaukt5",
+      "timestamp": 1788844064815,
+      "rawDisplayText": "aqui coloca las respuestas para hacer clic y que me muestre la repsueta",
+      "canonicalText": "aqui coloca las respuestas para hacer clic y que me muestre la repsueta",
+      "context": {
+        "linkedContent": {
+          "path": "Obsidian/posgrado/master/MATEMÁTICAS Y PROGRAMACIÓN IA/calculo multivariable y matricial/01 Derivadas parciales, gradiente, dirección y Taylor.md"
+        }
+      },
+      "images": [],
+      "contentDigest": "a932fc3627f81abe118bf128303ac165c5e2e24b6a1f83dcb138f6390d114866",
+      "providerUserMessageId": "01a07f6a-58bd-7eb0-9a96-24f4e741d2f3",
+      "providerAssistantMessageId": "msg_0575d3d24f687112016a9f9856492c87d29c8507c54815ce53"
+    }
+  ]
+}

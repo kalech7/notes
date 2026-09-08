@@ -37,4 +37,8 @@ cliente telnet
 
 public key infrastruture 
 wsl 
-segmentation fault 
+segmentation fault
+
+## Aplicación en Data Engineering freelance
+
+- [[Obsidian/freelance/Data Engineering/Spark/01 Arquitectura y procesamiento distribuido|01 Arquitectura y procesamiento distribuido]] — Arquitectura Spark y relación entre procesos, tareas y particiones.
