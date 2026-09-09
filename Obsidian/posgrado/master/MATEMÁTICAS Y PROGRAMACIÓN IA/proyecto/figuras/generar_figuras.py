@@ -174,10 +174,53 @@ def plot_session_stability() -> None:
     plt.close(figure)
 
 
+def plot_multiuser_performance() -> None:
+    """Compara separabilidad y errores de Isolation Forest entre las diez cuentas."""
+    users = ["user7", "user9", "user12", "user15", "user16", "user20", "user21", "user23", "user29", "user35"]
+    auc = np.array([0.861486, 0.754803, 0.551931, 0.678254, 0.497291,
+                    0.650000, 0.611179, 0.420654, 0.576163, 0.506849])
+    far = 100 * np.array([0.000000, 0.000000, 0.040816, 0.057143, 0.263158,
+                          0.950000, 1.000000, 0.212121, 0.900000, 0.000000])
+    frr = 100 * np.array([0.638889, 1.000000, 0.928571, 0.888889, 0.735294,
+                          0.000000, 0.000000, 0.842105, 0.069767, 1.000000])
+    positions = np.arange(len(users))
+
+    figure, axes = plt.subplots(2, 1, figsize=(8.2, 5.8), sharex=True, constrained_layout=True)
+
+    auc_axis = axes[0]
+    colors = [ORANGE if value >= 0.80 else BLUE for value in auc]
+    auc_axis.bar(positions, auc, color=colors, width=0.68)
+    auc_axis.axhline(0.50, color=GRAY, linestyle=":", linewidth=1.1, label="Azar: 0.50")
+    auc_axis.axhline(0.80, color=GRAY, linestyle="--", linewidth=1.1, label="Referencia: 0.80")
+    auc_axis.set_ylim(0.35, 0.92)
+    auc_axis.set_ylabel("AUC")
+    auc_axis.set_title("(a) Separabilidad de Isolation Forest por usuario")
+    auc_axis.legend(frameon=False, loc="upper right", fontsize=8, ncol=2)
+    finish_axis(auc_axis, "y")
+
+    error_axis = axes[1]
+    width = 0.36
+    error_axis.bar(positions - width / 2, far, width=width, color=ORANGE, label="FAR")
+    error_axis.bar(positions + width / 2, frr, width=width, color=GREEN, label="FRR")
+    error_axis.axhline(10, color=GRAY, linestyle="--", linewidth=1.1, label="Referencia: 10 %")
+    error_axis.set_ylim(0, 108)
+    error_axis.set_ylabel("Tasa")
+    error_axis.set_xlabel("Cuenta evaluada")
+    error_axis.set_title("(b) Errores con el umbral legítimo propio de cada usuario")
+    error_axis.set_xticks(positions, users, rotation=35, ha="right")
+    error_axis.yaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:.0f} %"))
+    error_axis.legend(frameon=False, loc="upper center", fontsize=8, ncol=3)
+    finish_axis(error_axis, "y")
+
+    figure.savefig(OUTPUT_DIR / "desempeno_por_usuario.png", dpi=300, bbox_inches="tight")
+    plt.close(figure)
+
+
 def main() -> None:
     plot_window_metrics()
     plot_feature_auc()
     plot_session_stability()
+    plot_multiuser_performance()
 
 
 if __name__ == "__main__":
