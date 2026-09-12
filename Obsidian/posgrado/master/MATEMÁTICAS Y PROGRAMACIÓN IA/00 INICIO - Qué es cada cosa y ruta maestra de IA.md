@@ -101,6 +101,8 @@ Estos números corresponden a los PDF del curso, no a la numeración de la ruta 
 - [[contenedores y ejecucion reproducible con docker/00 Índice - M09 Docker y ejecución reproducible|M09: contenedores y ejecución reproducible con Docker]].
 - [[modelo relacional y sql analitico/00 Índice - M10 Modelo relacional y SQL analítico|M10: modelo relacional y SQL analítico]].
 
+- [[pipeline de datos para un producto analitico/00 Índice - M11 Pipeline de datos para un producto analítico|M11: pipeline de datos, contratos, pruebas y reconstrucción]].
+
 En las nuevas notas, haz clic sobre cada pregunta al final para desplegar la respuesta.
 
 ## Método de estudio: cinco pruebas de dominio

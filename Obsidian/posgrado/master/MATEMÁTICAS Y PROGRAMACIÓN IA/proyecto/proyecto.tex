@@ -67,7 +67,7 @@ biometría conductual para detectar cambios de operador mientras la sesión perm
 independientes para las diez cuentas del conjunto Balabit y se evalúan 816 sesiones públicas: 411 legítimas y 405
 impostoras. Cada sesión se resume mediante 17 características temporales, espaciales y cinemáticas. Un baseline
 RMS-z y un \emph{Isolation Forest} se entrenan solo con sesiones legítimas y usan un umbral propio por cuenta. En el
-promedio macro, RMS-z obtuvo $\auc=0.627$ e \emph{Isolation Forest} $\auc=0.611$; este último alcanzó
+promedio general de las diez cuentas, RMS-z obtuvo $\auc=0.627$ e \emph{Isolation Forest} $\auc=0.611$; este último alcanzó
 $\far=34.2\%$ y $\frr=61.0\%$, lo que revela separación modesta e inestabilidad entre usuarios. Como análisis
 específico, \texttt{user12} se estudia con prefijos de 25 a 150 eventos. Su mejor AUC apareció con 100 eventos
 ($\auc=0.692$, $\far=69.4\%$ y $\frr=3.6\%$), pero ningún tamaño satisfizo el criterio operativo previo. Los
@@ -96,12 +96,22 @@ de una inteligencia artificial. Por esta razón, en una aplicación real, una an
 señal de riesgo que active mecanismos adicionales de verificación, en lugar de generar automáticamente una
 alerta.
 
-El estudio se organiza en dos análisis. La evaluación principal repite el protocolo de perfilado en las diez cuentas y
-resume el desempeño entre usuarios. Después se conserva \texttt{user12} como estudio de caso para examinar con mayor
-detalle cuántos eventos deben observarse, qué características discriminan y cuánto cambia el comportamiento legítimo
-entre sesiones. El caso no sustituye la evaluación general ni fue escogido por presentar el mejor resultado.
+El trabajo combina una evaluación general con un estudio de un usuario. Primero, el protocolo de perfilado se aplica de
+forma independiente a las diez cuentas para describir el desempeño promedio y su variación entre usuarios. Después,
+\texttt{user12} se analiza con mayor detalle para examinar cuántos eventos deben observarse antes de decidir, qué
+características aportan mayor discriminación y cuánto varía el comportamiento legítimo entre sesiones. Este caso
+complementa la evaluación general, pero no representa por sí solo al conjunto ni fue seleccionado por tener el mejor
+resultado.
 
-\subsection{Base científica del comportamiento}
+Para decidir si una sesión se parece al perfil legítimo se comparan dos detectores de una clase. RMS-z es un baseline
+simple e interpretable: calcula qué tan lejos están, en promedio, las características de una sesión respecto del
+perfil estandarizado del usuario; un valor alto indica una sesión más inusual. \emph{Isolation Forest}, en cambio,
+construye particiones aleatorias de los datos mediante varios árboles. Las observaciones anómalas suelen quedar
+aisladas con menos particiones que las legítimas, por lo que reciben un puntaje de anomalía mayor. Ambos métodos se
+entrenan únicamente con sesiones legítimas y permiten detectar desviaciones sin necesitar ejemplos de todos los tipos
+posibles de impostor.
+
+\subsection{Base científica del comportamiento humano}
 
 Cuando una persona mueve el mouse, el computador solo guarda una secuencia de datos: en qué momento ocurrió cada
 evento, dónde estaba el puntero y si hubo un clic. Sin embargo, detrás de esos datos existe una acción humana. La
@@ -217,7 +227,6 @@ Tabla~\ref{tab:cohorte} muestra la composición exacta del experimento.
 \begin{table}[htbp]
   \centering
 
-  \label{tab:cohorte}
   \small
   \begin{tabular}{lrrrrr}
     \toprule
@@ -238,6 +247,7 @@ Tabla~\ref{tab:cohorte} muestra la composición exacta del experimento.
     \bottomrule
   \end{tabular}
   \caption{Partición por cuenta y composición de la prueba pública.}
+  \label{tab:cohorte}
 \end{table}
 
 Dentro de esta cohorte, \texttt{user12} conserva un papel analítico específico. Sus cinco sesiones de enrolamiento,
@@ -306,7 +316,7 @@ la posibilidad de detectar una suplantación de manera temprana?
 La pregunta principal se descompone en cuatro preguntas específicas:
 
 \begin{enumerate}
-  \item ¿Cuál es el desempeño macro y micro de los modelos en las diez cuentas?
+  \item ¿Cuál es el desempeño promedio de los modelos en las diez cuentas?
   \item ¿Cuánto varían la separabilidad, la FAR y la FRR entre usuarios?
   \item En \texttt{user12}, ¿cómo cambia la detección al observar entre 25 y 150 eventos y existe un mínimo que
   satisfaga el criterio operativo?
@@ -326,7 +336,7 @@ intrausuario.
   \item Construir variables temporales, espaciales y cinemáticas a partir de eventos de mouse.
   \item Ajustar modelos y umbrales independientes por cuenta, sin mezclar identidades ni utilizar impostores durante
   el entrenamiento.
-  \item Comparar un baseline RMS-z y un \emph{Isolation Forest} mediante métricas macro, micro y por usuario.
+  \item Comparar un baseline RMS-z y un \emph{Isolation Forest} mediante promedios generales y resultados por usuario.
   \item Medir en \texttt{user12} el efecto de observar distintas cantidades de eventos antes de emitir una decisión.
   \item Identificar, en el estudio de caso, las variables con mayor discriminación y cuantificar el cambio del puntaje
   legítimo entre sesiones.
@@ -343,10 +353,18 @@ y prefijos para estudiar detección temprana. Una \textbf{interacción} es una f
 $(x,y)$, botón y estado, mientras que una \textbf{sesión} es la secuencia completa contenida en un archivo. La clase
 positiva es el impostor y una predicción positiva representa una alarma.
 
-Los eventos se ordenan de forma estable usando \texttt{client timestamp}. En una sesión inspeccionada, este reloj
-presentó 6.9\% de intervalos repetidos, frente a 71.4\% en \texttt{record timestamp}; por ello se utiliza el reloj del
-cliente para calcular derivadas. Los segmentos con $\Delta t\leq0$ se conservan para la geometría, pero se excluyen de
-velocidad y aceleración.
+Cada evento contiene dos marcas de tiempo. \texttt{client timestamp} indica el instante registrado por el cliente
+desde el que se produjo el movimiento, mientras que \texttt{record timestamp} corresponde al instante con el que el
+registro recibió o almacenó ese evento. Para ordenar los eventos y calcular las medidas temporales se utiliza
+\texttt{client timestamp}, porque conserva mejor la separación temporal entre movimientos consecutivos. En una sesión
+inspeccionada, solo 6.9\% de los intervalos fueron repetidos con este reloj, frente a 71.4\% con
+\texttt{record timestamp}.
+
+Un intervalo repetido significa que dos eventos distintos tienen la misma marca de tiempo: $\Delta t=0$. En ese caso
+no es posible calcular una velocidad fiable, pues la fórmula $v=d/\Delta t$ exigiría dividir la distancia recorrida
+entre cero. Por esta razón, cuando $\Delta t\leq0$, el segmento se conserva para describir la trayectoria y su
+distancia espacial, pero se excluye de los cálculos de velocidad y aceleración. Así se aprovecha la información sobre
+por dónde se movió el puntero sin crear velocidades indefinidas o artificialmente grandes.
 
 \subsection{Evaluación general de las diez cuentas}
 
@@ -356,28 +374,57 @@ velocidad; media y desviación de aceleración absoluta; cambio angular medio; f
 segmentos temporales válidos. La posición absoluta no se usa y se verificó que trasladar una trayectoria no modifica
 el vector resultante.
 
-En cada cuenta se reserva 25\% de las sesiones legítimas para validación y el resto para enrolamiento, de acuerdo con
-la Tabla~\ref{tab:cohorte}. El \texttt{StandardScaler} se ajusta solo con enrolamiento. Se comparan dos detectores de
-una clase: un baseline interpretable,
+Para cada cuenta, primero se separan sus sesiones que se conocen como legítimas. Aproximadamente 75\% se usa para
+\textbf{construir el perfil del usuario}; esta etapa se denomina \textbf{enrolamiento}. Por ejemplo, si una persona
+aporta cinco sesiones de enrolamiento, el sistema aprende con ellas qué valores de velocidad, pausas y aceleración son
+habituales para esa persona. El modelo no recibe sesiones impostoras durante este aprendizaje.
+
+El 25\% restante se reserva para \textbf{validación} y no participa en la construcción del perfil. Estas sesiones
+también son legítimas, pero se usan después para comprobar qué puntajes recibe un usuario real y para fijar el umbral
+de alarma. Así, la validación permite decidir cuánto puede alejarse una sesión del perfil antes de considerarla
+anómala, sin consultar las etiquetas de la prueba pública. La división concreta de cada cuenta se presenta en la
+Tabla~\ref{tab:cohorte}.
+
+El \texttt{StandardScaler} estima la media y la desviación estándar de cada característica exclusivamente a partir de
+las sesiones de enrolamiento. Estos parámetros se conservan sin cambios para transformar las sesiones de validación y
+prueba. Así, el perfil del usuario se construye sin incorporar información de las sesiones destinadas a evaluarlo.
+
+Se comparan dos detectores de una clase. El primero es un baseline interpretable, denominado RMS-z, que mide la
+distancia de una sesión respecto del perfil estandarizado. Para un vector estandarizado \(\mathbf{z}\) de 17
+características, su puntaje se define como:
 
 \begin{equation}
   s_{\mathrm{RMS}}(\mathbf{z})=
   \sqrt{\frac{1}{17}\sum_{j=1}^{17}z_j^2},
 \end{equation}
 
-y un \emph{Isolation Forest} de 200 árboles, \texttt{contamination=auto} y semilla 7. Para ambos, un puntaje mayor
-significa mayor anomalía. El umbral individual es el percentil 95 de los puntajes legítimos de validación. Las
-etiquetas públicas se consultan solo después de congelar transformación, modelo y umbral. Las métricas se reportan por
-usuario, macro y micro; el promedio macro es la referencia para la conclusión general.
+El segundo detector es un \emph{Isolation Forest} de 200 árboles, \texttt{contamination=auto} y una semilla fija\footnote{La semilla es el número
+que inicializa el generador de números pseudoaleatorios del algoritmo; en el código se configura mediante
+\texttt{random\_state=7}. \emph{Isolation Forest} usa aleatoriedad para seleccionar muestras y construir las
+particiones de sus árboles. Al fijar la semilla, esas elecciones se pueden repetir al ejecutar el experimento con los
+mismos datos, orden, parámetros y entorno de software.}, con valor 7. En ambos detectores, un puntaje mayor indica una mayor
+anomalía. Para cada usuario, el umbral de decisión se fija en el percentil 95 de los puntajes de sus sesiones legítimas
+de validación. Las etiquetas públicas se consultan únicamente después de congelar la transformación, el modelo y el
+umbral. Las métricas se reportan por usuario y como promedio general de las diez cuentas.
+
+El valor 7 se eligió únicamente como una constante fija de reproducibilidad. No tiene un significado matemático
+especial ni existe una razón teórica para esperar que produzca mejores resultados que otro entero. Se conserva el mismo
+valor en los modelos de las diez cuentas y en el estudio de caso para que todos utilicen el mismo punto de partida
+aleatorio. Esto no hace que los perfiles aprendidos sean iguales, porque cada modelo recibe sesiones de entrenamiento
+diferentes. Evaluar una sola semilla tampoco demuestra que los resultados sean estables frente a la aleatoriedad; para
+comprobarlo sería necesario repetir el protocolo con varias semillas y reportar la variación de las métricas, sin
+escoger la que mejor funcione en el test.
 
 \subsection{Estudio de caso: \texttt{user12} y decisión temprana}
 
-La separación se realiza por sesiones completas antes de formar ventanas. En las cinco sesiones de enrolamiento y las
-dos de validación se extraen ventanas no superpuestas; se conservan como máximo 300 por sesión para que una sesión
-extensa no domine el ajuste. De cada una de las 105 sesiones públicas de prueba se usa solo el prefijo formado por los
-primeros $N\in\{25,50,75,100,125,150\}$ eventos. Se entrena y calibra un \emph{Isolation Forest} independiente para
-cada $N$. El diseño produce una decisión por sesión y tamaño; las ventanas hermanas no se cuentan como sesiones
-independientes.
+La división se realiza a nivel de sesión, antes de formar las ventanas. De las cinco sesiones de enrolamiento y las dos
+de validación se extraen ventanas no superpuestas. Se conservan como máximo 300 ventanas por sesión, de modo que una
+sesión extensa no tenga más peso que las demás durante el ajuste.
+
+Para cada una de las 105 sesiones públicas de prueba se utiliza únicamente el prefijo formado por sus primeros
+$N\in\{25,50,75,100,125,150\}$ eventos. Se entrena y calibra un \emph{Isolation Forest} independiente para cada
+valor de $N$. Por tanto, cada combinación de sesión y tamaño de prefijo produce una sola decisión. Las ventanas
+procedentes de una misma sesión no se consideran sesiones independientes.
 
 \subsection{Construcción de características}
 
@@ -401,8 +448,7 @@ finito.
 
 \begin{table}[htbp]
   \centering
-  \caption{Características extraídas de cada ventana del estudio de caso.}
-  \label{tab:caracteristicas}
+
   \small
   \begin{tabularx}{\textwidth}{>{\bfseries}p{2.7cm}X}
     \toprule
@@ -417,6 +463,8 @@ finito.
     angular absoluto medio. \\
     \bottomrule
   \end{tabularx}
+  \caption{Características extraídas de cada ventana del estudio de caso.}
+  \label{tab:caracteristicas}
 \end{table}
 
 \subsection{Modelo y umbral del estudio de caso}
@@ -442,8 +490,8 @@ previamente declarado; por tanto, sus tasas no se comparan de forma directa con 
 
 \subsection{Métricas y criterio operativo}
 
-Se aplican las definiciones de la Sección~\ref{sec:metricas}. En el nivel general, primero se calculan las métricas de
-cada cuenta y luego los resúmenes macro y micro. En el caso, para cada $N$ los conteos se calculan sobre una sola
+Se aplican las definiciones de la Sección~\ref{sec:metricas}. En el nivel general, se calcula cada métrica para todas
+las cuentas y luego se obtiene su promedio para describir el comportamiento general. En el caso, para cada $N$ los conteos se calculan sobre una sola
 decisión por sesión pública. Las unidades de evaluación son sesiones, no las ventanas legítimas usadas para ajustar el
 modelo.
 
@@ -463,15 +511,13 @@ legítimas de cada sesión para comparar mediana, percentil 95 y tasa de alarma.
 
 \subsection{Desempeño general en las diez cuentas}
 
-La Tabla~\ref{tab:macro} resume el comportamiento dando el mismo peso a cada usuario. RMS-z obtuvo el mayor AUC macro
-($0.627$ frente a $0.611$), mientras que \emph{Isolation Forest} alcanzó mayor exactitud macro ($0.591$ frente a
+La Tabla~\ref{tab:general} resume el comportamiento promedio de las diez cuentas. RMS-z obtuvo el mayor AUC promedio
+($0.627$ frente a $0.611$), mientras que \emph{Isolation Forest} alcanzó mayor exactitud promedio ($0.591$ frente a
 $0.487$). Ninguno resolvió simultáneamente los dos tipos de error: el baseline aceptó menos impostores, pero rechazó
 más sesiones legítimas; el bosque redujo la FRR media a costa de elevar la FAR media.
 
 \begin{table}[htbp]
   \centering
-  \caption{Resultados macro: promedio de las métricas calculadas por usuario.}
-  \label{tab:macro}
   \small
   \begin{tabular}{lrrrrr}
     \toprule
@@ -481,26 +527,14 @@ más sesiones legítimas; el bosque redujo la FRR media a costa de elevar la FAR
     \emph{Isolation Forest} & 0.611 & 0.505 & 0.591 & 34.2\% & 61.0\% \\
     \bottomrule
   \end{tabular}
+  \caption{Resultados generales: promedio de las métricas de las diez cuentas.}
+  \label{tab:general}
 \end{table}
 
-La agregación micro confirma que el punto operativo sigue siendo insuficiente. En \emph{Isolation Forest}, de 405
-sesiones impostoras se detectaron 323 y se aceptaron 82; de 411 sesiones legítimas se aceptaron 153 y se enviaron 258
-a alarma. Esto equivale a $\auc=0.591$, $F_1=0.655$, exactitud de 58.3\%, $\far=20.2\%$ y $\frr=62.8\%$. RMS-z
-alcanzó $\auc=0.623$, exactitud de 48.2\%, $\far=28.1\%$ y $\frr=75.2\%$. La diferencia entre macro y micro se debe
-a que las cuentas aportan cantidades distintas de sesiones.
-
-\subsection{Heterogeneidad entre usuarios}
-
-El promedio oculta comportamientos muy distintos. En \emph{Isolation Forest}, el AUC varió entre 0.421 para
-\texttt{user23} y 0.861 para \texttt{user7}. Ocho de diez cuentas quedaron por encima de 0.5, pero solo
-\texttt{user7} superó 0.8. Ninguna cuenta obtuvo simultáneamente FAR y FRR de 10\% o menos con el umbral aprendido de
-validación. La Tabla~\ref{tab:usuarios-if} y la Figura~\ref{fig:usuarios-if} muestran que algunos perfiles aceptan casi
-todos los impostores, mientras otros rechazan casi toda la actividad legítima.
+\subsection{Variabilidad entre cuentas y transferencia del umbral}
 
 \begin{table}[htbp]
   \centering
-  \caption{Desempeño de \emph{Isolation Forest} por cuenta en sesiones completas.}
-  \label{tab:usuarios-if}
   \small
   \begin{tabular}{lrrrr}
     \toprule
@@ -518,15 +552,32 @@ todos los impostores, mientras otros rechazan casi toda la actividad legítima.
     \texttt{user35} & 0.507 & 0.807 & 0.0\%  & 100.0\% \\
     \bottomrule
   \end{tabular}
+  \caption{Desempeño de \emph{Isolation Forest} por cuenta en sesiones completas.}
+  \label{tab:usuarios-if}
 \end{table}
+
+La Tabla~\ref{tab:usuarios-if} muestra el desempeño de \emph{Isolation Forest} por cuenta. El AUC indica qué tan bien
+el modelo ordena las sesiones impostoras por encima de las legítimas, sin depender de un único umbral; la FAR y la FRR,
+en cambio, cuantifican los errores al aplicar el umbral individual obtenido en validación. Por esta razón, una cuenta
+puede mostrar un AUC aceptable y, aun así, tener un comportamiento operativo deficiente. Por ejemplo,
+\texttt{user7} logró el mayor AUC (0.861), pero rechazó 63.9\% de las sesiones legítimas; en \texttt{user9} y
+\texttt{user35}, la FAR fue 0\%, a costa de una FRR de 100\%. En el extremo opuesto, \texttt{user20} y
+\texttt{user21} no rechazaron sesiones legítimas (FRR de 0\%), pero aceptaron 95\% y 100\% de los impostores,
+respectivamente.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.98\textwidth]{desempeno_por_usuario.png}
-  \caption{Variación de AUC, FAR y FRR de \emph{Isolation Forest} entre cuentas. Los extremos opuestos de FAR y FRR
-  muestran que el umbral estimado con una o dos sesiones de validación no se transfiere de forma estable al test.}
+  \caption{Resultados de \emph{Isolation Forest} por cuenta.}
   \label{fig:usuarios-if}
 \end{figure}
+
+La Figura~\ref{fig:usuarios-if}  en el panel superior, el AUC varía
+entre 0.421 para \texttt{user23} y 0.861 para \texttt{user7}: ocho de las diez cuentas superan el nivel de azar
+(0.50), pero solo \texttt{user7} alcanza la referencia de 0.80. El panel inferior muestra que ninguna cuenta queda
+simultáneamente por debajo del límite de 10\% en FAR y FRR. Por tanto, aunque el modelo encuentra cierta señal
+discriminante en varias cuentas, los umbrales estimados con las sesiones de validación disponibles no se transfieren
+de manera estable a las sesiones públicas de prueba.
 
 \subsection{Estudio de caso \texttt{user12}: efecto del tamaño de observación}
 
@@ -537,8 +588,6 @@ elevada en todos los tamaños.
 
 \begin{table}[htbp]
   \centering
-  \caption{Desempeño por número de eventos observados.}
-  \label{tab:ventanas}
   \small
   \begin{tabular}{rrrrrrrc}
     \toprule
@@ -552,23 +601,22 @@ elevada en todos los tamaños.
     150 & 37.2 & 0.673 & 24.5\% & 75.5\% & 5.4\% & 0.375 & No \\
     \bottomrule
   \end{tabular}
+  \caption{Desempeño por número de eventos observados.}
+  \label{tab:ventanas}
 \end{table}
 
 El menor valor de la pérdida balanceada apareció con 100 eventos. Esa observación tomó una mediana de 23.1 segundos.
 No debe interpretarse como un mínimo confiable: ninguna ventana alcanzó a la vez AUC de 0.80, FAR y FRR de 10\% o
-menos
-y cobertura total.
-
-La Figura~\ref{fig:metricas-eventos} permite ver que el mejor AUC no coincide con una reducción suficiente de la FAR.
-Aunque la FRR permanece cerca o debajo del límite, la mayoría de los impostores continúa siendo aceptada.
+menos y cobertura total.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{metricas_por_eventos.png}
-  \caption{Evolución del AUC, la FAR y la FRR al aumentar la cantidad de eventos observados. Las líneas discontinuas
-  representan los límites establecidos antes de la evaluación.}
+  \caption{Evolución del AUC, la FAR y la FRR al aumentar la cantidad de eventos observados.}
   \label{fig:metricas-eventos}
 \end{figure}
+La Figura~\ref{fig:metricas-eventos} permite ver que el mejor AUC no coincide con una reducción suficiente de la FAR.
+Aunque la FRR permanece cerca o debajo del límite, la mayoría de los impostores continúa siendo aceptada.
 
 \subsection{Estudio de caso \texttt{user12}: características con mayor discriminación}
 
@@ -578,8 +626,6 @@ absoluta y la velocidad máxima. En las tres, la mediana fue mayor para las sesi
 
 \begin{table}[htbp]
   \centering
-  \caption{Principales características individuales a 100 eventos.}
-  \label{tab:ranking}
   \small
   \begin{tabularx}{\textwidth}{Xrrr}
     \toprule
@@ -592,6 +638,8 @@ absoluta y la velocidad máxima. En las tres, la mediana fue mayor para las sesi
     Fracción de movimientos & 0.626 & 0.890 & 0.860 \\
     \bottomrule
   \end{tabularx}
+  \caption{Principales características individuales a 100 eventos.}
+  \label{tab:ranking}
 \end{table}
 
 El ranking coincide en dirección general con el antecedente de Antal y Egyed-Zsigmond \cite{antal2019}, que
@@ -599,16 +647,15 @@ encontró información relevante en aceleración y \emph{jerk}. No obstante, los
 univariados de
 un solo usuario y no prueban que esas variables sean universales.
 
-La Figura~\ref{fig:caracteristicas} ordena las cinco variables principales. Las barras comienzan en 0.5, valor que
-representa una separación equivalente al azar, para destacar la señal adicional que aporta cada característica.
-
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.94\textwidth]{caracteristicas_discriminantes.png}
-  \caption{AUC individual orientado de las características con mayor discriminación a 100 eventos. La variación de
-  aceleración produjo la separación individual más alta.}
+  \caption{AUC individual orientado de las características con mayor discriminación a 100 eventos.}
   \label{fig:caracteristicas}
 \end{figure}
+
+La Figura~\ref{fig:caracteristicas} ordena las cinco variables principales. Las barras comienzan en 0.5, valor que
+representa una separación equivalente al azar, para destacar la señal adicional que aporta cada característica.
 
 \subsection{Estudio de caso \texttt{user12}: estabilidad entre sesiones}
 
@@ -619,8 +666,6 @@ perfil legítimo conserva heterogeneidad aun dentro de los datos disponibles.
 
 \begin{table}[htbp]
   \centering
-  \caption{Puntajes legítimos por sesión con ventanas de 100 eventos.}
-  \label{tab:estabilidad}
   \small
   \begin{tabular}{llrrr}
     \toprule
@@ -635,10 +680,9 @@ perfil legítimo conserva heterogeneidad aun dentro de los datos disponibles.
     9838420452 & Validación & 297 & 0.400 & 12.5\% \\
     \bottomrule
   \end{tabular}
+  \caption{Puntajes legítimos por sesión con ventanas de 100 eventos.}
+  \label{tab:estabilidad}
 \end{table}
-
-La Figura~\ref{fig:estabilidad} muestra que la tasa de alarma cambia incluso entre sesiones legítimas. Una sesión de
-enrolamiento llegó al 18.0\%, mientras otras permanecieron por debajo del límite del 10\%.
 
 \begin{figure}[H]
   \centering
@@ -648,84 +692,57 @@ enrolamiento llegó al 18.0\%, mientras otras permanecieron por debajo del lími
   \label{fig:estabilidad}
 \end{figure}
 
-\section{Discusión}
+La Figura~\ref{fig:estabilidad} muestra que la tasa de alarma cambia incluso entre sesiones legítimas. Una sesión de
+enrolamiento llegó al 18.0\%, mientras otras permanecieron por debajo del límite del 10\%.
 
-La evaluación de las diez cuentas cambia el alcance de la conclusión: ya no se describe únicamente una cuenta, sino la
-heterogeneidad observada dentro de la cohorte. Sin embargo, los AUC macro de 0.627 para RMS-z y 0.611 para
-\emph{Isolation Forest} indican una separación general modesta. El bosque obtuvo mayor exactitud macro, pero su FAR
-media de 34.2\% y su FRR media de 61.0\% quedan lejos de un autenticador autónomo. Además, ninguna cuenta mantuvo ambos
-errores en 10\% o menos.
+\section{Discusión, limitaciones e implicaciones}
 
-La variación por usuario permite separar dos problemas. Primero, la calidad del ranking cambia entre perfiles: el AUC
-del bosque va de 0.421 a 0.861. Segundo, incluso cuando existe separabilidad, el umbral puede fallar. Por ejemplo,
-\texttt{user7} alcanzó el mayor AUC, pero rechazó 63.9\% de sus sesiones legítimas. Una o dos sesiones de validación no
-bastan para estimar de forma estable el percentil 95; los resultados extremos de FAR y FRR son compatibles con esa
-inestabilidad.
-
-El caso de \texttt{user12} aporta detalle sin representar al conjunto. En sesiones completas, el bosque obtuvo
-$\auc=0.552$, $\far=4.1\%$ y $\frr=92.9\%$ con el percentil 95. En el experimento temprano, la representación por
-ventanas y el percentil 90 produjeron a 100 eventos $\auc=0.692$, $\far=69.4\%$ y $\frr=3.6\%$. El cambio de dirección
-del error no es una contradicción: son unidades, características y umbrales distintos. En conjunto, ambos resultados
-muestran que la decisión es muy sensible a la representación y a la calibración.
-
-Dentro del caso, las características de aceleración fueron las que mejor separaron individualmente las clases a 100
-eventos. Observar más interacciones ayudó hasta cierto punto, pero el efecto no fue monótono: el mejor AUC apareció en
-100 eventos y el menor FAR en 125. No existe un mínimo dentro del rango estudiado porque ninguna configuración
-satisfizo el criterio previo. El comportamiento legítimo tampoco fue completamente estable; la tasa de alarma cambió
-en 11.7 puntos porcentuales entre sus sesiones.
-
-La comparación con CAPTCHA también debe mantenerse dentro del alcance empírico. El conjunto de prueba contiene
-suplantaciones simuladas mediante sesiones de otras personas, no agentes de IA ni automatizaciones. Por ello, el
-método evalúa continuidad de un patrón personal y podría detectar un agente solo si su interacción resulta
-anómala.
-Comprobar
-esa capacidad exigiría un conjunto específico con distintos agentes, dispositivos, velocidades y estrategias de
-imitación.
-
-\subsection{Limitaciones}
+En conjunto, los resultados muestran que la dinámica de mouse contiene una señal útil, pero todavía insuficiente para
+funcionar como un autenticador autónomo. El desempeño cambia entre usuarios y depende de la representación, el umbral
+y las pocas sesiones disponibles para calibrarlo. A continuación se resumen los principales hallazgos, limitaciones e
+implicaciones para un uso responsable del método.
 
 \begin{itemize}
-  \item Diez cuentas permiten estudiar variación interna en Balabit, pero no representan otras poblaciones,
-  dispositivos o tareas.
-  \item Las suplantaciones son simuladas; una anomalía no equivale a intención maliciosa.
-  \item El análisis general entrena con solo cuatro o cinco vectores de sesión y fija el umbral con una o dos sesiones
-  legítimas; esta escasez vuelve inestable la cola de validación.
-  \item La selección de validación sigue el orden determinista de los nombres de archivo, que no necesariamente expresa
-  una cronología real.
-  \item El experimento general y el caso usan representaciones y percentiles distintos; sus cifras sirven para
-  preguntas complementarias y no para una comparación directa.
-  \item En \texttt{user12}, los primeros $N$ eventos producen una decisión temprana única, no vigilancia secuencial en
-  tiempo real; ese análisis todavía no se repitió en las otras nueve cuentas.
-  \item Cambios de dispositivo, resolución, fatiga, lesión, tarea o contexto pueden alterar el patrón legítimo.
-  \item El AUC individual describe asociación y no causalidad ni importancia dentro del modelo multivariado.
+  \item \textbf{Resultado general.} Los AUC promedio de RMS-z (0.627) e \emph{Isolation Forest} (0.611) muestran una
+  separación modesta. El bosque obtuvo mayor exactitud promedio, pero su FAR de 34.2\% y FRR de 61.0\% no permiten
+  utilizarlo como autenticador autónomo.
+  \item \textbf{Variación entre cuentas.} El AUC del bosque osciló entre 0.421 y 0.861. Incluso \texttt{user7}, con el
+  mayor AUC, rechazó 63.9\% de sus sesiones legítimas. Esto sugiere que una o dos sesiones de validación no bastan para
+  fijar de forma estable el umbral individual.
+  \item \textbf{Caso \texttt{user12}.} La evaluación por ventanas a 100 eventos mejoró el AUC a 0.692, pero mantuvo una
+  FAR de 69.4\%. Sus resultados no se comparan directamente con los de sesión completa, porque emplean ventanas y un
+  percentil distintos. Ningún tamaño de ventana cumplió el criterio operativo.
+  \item \textbf{Alcance de los datos.} Las diez cuentas describen solo la variación interna de Balabit. Las
+  suplantaciones provienen de otras personas, no de agentes de IA ni de automatizaciones; evaluar esos escenarios
+  requeriría datos específicos con distintos dispositivos, velocidades y estrategias de imitación.
+  \item \textbf{Otras limitaciones.} El análisis usa pocas sesiones para enrolamiento y validación, y la partición sigue
+  el orden de los archivos, que no asegura una cronología real. Además, cambios de dispositivo, tarea o contexto pueden
+  modificar el comportamiento legítimo, y el análisis temprano todavía no se repitió en las otras nueve cuentas.
+  \item \textbf{Uso responsable.} La dinámica de mouse es un dato biométrico conductual. Una aplicación real debe contar
+  con consentimiento, minimización y protección de datos, límites de retención, auditorías y mecanismos de
+  recuperación. El modelo debe servir como señal de riesgo para autenticación escalonada, nunca como decisión
+  irrevocable sobre identidad o culpabilidad.
 \end{itemize}
-
-\subsection{Implicaciones éticas y operativas}
-
-La dinámica de mouse debe tratarse como dato biométrico conductual. Una implementación real requiere
-consentimiento, minimización y protección de los registros, límites de retención, auditoría de desempeño y un
-mecanismo accesible de
-recuperación. La salida apropiada del modelo es una señal de riesgo para autenticación escalonada, no una decisión
-irrevocable sobre identidad o culpabilidad.
 
 \section{Conclusiones y trabajo futuro}
 
 La dinámica de mouse contiene una señal medible, pero su utilidad no es uniforme entre personas. En las diez cuentas,
-RMS-z logró el mayor AUC macro (0.627) y \emph{Isolation Forest} la mayor exactitud macro (0.591); ninguno produjo un
+RMS-z logró el mayor AUC promedio (0.627) y \emph{Isolation Forest} la mayor exactitud promedio (0.591); ninguno produjo un
 punto operativo aceptable por sus elevadas FAR o FRR y por la fuerte variación entre usuarios. Por tanto, la evidencia
 no valida un autenticador autónomo general, aunque sí justifica investigar perfiles personalizados y mejores métodos de
 calibración.
 
-El estudio de caso explica parte de esa dificultad. En \texttt{user12}, la aceleración aportó la señal individual más
+Este proyecto explica parte de esa dificultad. En \texttt{user12}, la aceleración aportó la señal individual más
 clara y 100 eventos ofrecieron el mejor AUC del rango, pero la FAR de 69.4\% impidió satisfacer el criterio operativo.
 Su función dentro del trabajo es mostrar con detalle el compromiso entre rapidez, detección y falsas alarmas, no
 generalizar desde una sola persona.
 
-El siguiente paso debe aplicar el análisis de prefijos a las diez cuentas, estimar incertidumbre mediante remuestreo
-por sesión y calibrar cada umbral mediante validación fuera de muestra, por ejemplo con rotación de sesiones legítimas.
-También conviene comparar ventanas definidas por tiempo, transformaciones robustas y actualizaciones controladas del
-perfil. Para estudiar específicamente suplantación por IA, será necesario recolectar datos de agentes que operen
-interfaces y evaluar ataques que intenten imitar al usuario.
+El siguiente paso consiste en recolectar datos conductuales propios durante sesiones prolongadas y representativas del
+uso cotidiano del computador. Con estos datos será posible repetir las comparaciones en condiciones más realistas y
+superar las principales limitaciones del conjunto Balabit: el número reducido de sesiones, la escasa diversidad de
+dispositivos y contextos, y la naturaleza simulada de las suplantaciones. Además, los agentes de IA capaces de
+controlar un computador permitirían recolectar interacciones automatizadas y evaluar de forma explícita si el método
+distingue entre el uso humano legítimo y una suplantación realizada por IA.
 
 \begin{thebibliography}{9}
 \raggedright

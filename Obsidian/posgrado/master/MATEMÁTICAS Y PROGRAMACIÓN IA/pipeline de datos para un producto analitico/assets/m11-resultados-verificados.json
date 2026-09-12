@@ -1,0 +1,96 @@
+{
+  "caso_correcto": {
+    "filas": 4,
+    "ejecuciones_distintas": 4,
+    "clave_metadatos_valida": true,
+    "not_null_pasa": true,
+    "cobertura_fallos": [],
+    "ranking": [
+      [
+        "B",
+        0.8,
+        2,
+        1
+      ],
+      [
+        "A",
+        0.7,
+        2,
+        2
+      ]
+    ]
+  },
+  "metrica_omitida": {
+    "filas": 3,
+    "ejecuciones_distintas": 3,
+    "clave_metadatos_valida": true,
+    "not_null_pasa": true,
+    "cobertura_fallos": [
+      [
+        "A",
+        22,
+        0
+      ]
+    ],
+    "ranking": null
+  },
+  "metadatos_duplicados": {
+    "filas": 8,
+    "ejecuciones_distintas": 4,
+    "clave_metadatos_valida": false,
+    "not_null_pasa": true,
+    "cobertura_fallos": [
+      [
+        "A",
+        11,
+        2
+      ],
+      [
+        "A",
+        22,
+        2
+      ],
+      [
+        "B",
+        11,
+        2
+      ],
+      [
+        "B",
+        22,
+        2
+      ]
+    ],
+    "ranking": null
+  },
+  "metricas_vacias": {
+    "filas": 0,
+    "ejecuciones_distintas": 0,
+    "clave_metadatos_valida": true,
+    "not_null_pasa": true,
+    "cobertura_fallos": [
+      [
+        "A",
+        11,
+        0
+      ],
+      [
+        "A",
+        22,
+        0
+      ],
+      [
+        "B",
+        11,
+        0
+      ],
+      [
+        "B",
+        22,
+        0
+      ]
+    ],
+    "ranking": null
+  },
+  "reconstrucciones_iguales": true
+}

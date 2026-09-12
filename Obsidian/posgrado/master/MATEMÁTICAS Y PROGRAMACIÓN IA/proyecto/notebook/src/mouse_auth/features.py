@@ -1,4 +1,4 @@
-"""Extracción robusta de características por sesión de mouse."""
+"""Extracción de características por sesión para entrenar los detectores."""
 
 from __future__ import annotations
 
@@ -28,6 +28,9 @@ FEATURE_NAMES = [
     "valid_segment_fraction",
 ]
 
+# Las derivadas cinemáticas se calculan con el reloj registrado por el cliente.
+TIME_COLUMN = "client timestamp"
+
 
 def _mean(values: list[float]) -> float:
     return statistics.fmean(values) if values else 0.0
@@ -42,16 +45,17 @@ def _wrapped_angle_difference(a: float, b: float) -> float:
 
 
 def extract_session_features(path: str | Path) -> dict[str, float]:
+    """Resume una sesión en 17 características sin usar etiquetas de test."""
     session_path = Path(path)
     events: list[tuple[float, float, float, str, str]] = []
     with session_path.open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
-        required = {"record timestamp", "button", "state", "x", "y"}
+        required = {TIME_COLUMN, "button", "state", "x", "y"}
         if not required.issubset(reader.fieldnames or []):
             raise ValueError(f"Columnas faltantes en {session_path}")
         for line_number, row in enumerate(reader, start=2):
             try:
-                t = float(row["record timestamp"])
+                t = float(row[TIME_COLUMN])
                 x = float(row["x"])
                 y = float(row["y"])
             except (TypeError, ValueError) as error:

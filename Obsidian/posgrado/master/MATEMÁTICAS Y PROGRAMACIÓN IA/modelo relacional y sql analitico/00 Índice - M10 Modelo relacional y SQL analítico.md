@@ -47,3 +47,8 @@ Haz clic en cada pregunta para mostrar u ocultar la respuesta. Intenta responder
 
 > [!question]- ¿Que una consulta ejecute demuestra que comparó bien?
 > No. Puede mezclar datasets, multiplicar filas, omitir métricas ausentes o promediar configuraciones con distinta cobertura de semillas.
+
+
+## Continuar con M11
+
+[[../pipeline de datos para un producto analitico/00 Índice - M11 Pipeline de datos para un producto analítico|M11: convertir esta comparación en un pipeline reconstruible y comprobado]].

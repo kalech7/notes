@@ -185,7 +185,8 @@ def plot_multiuser_performance() -> None:
                           0.000000, 0.000000, 0.842105, 0.069767, 1.000000])
     positions = np.arange(len(users))
 
-    figure, axes = plt.subplots(2, 1, figsize=(8.2, 5.8), sharex=True, constrained_layout=True)
+    figure, axes = plt.subplots(2, 1, figsize=(8.2, 6.4), sharex=True)
+    figure.subplots_adjust(left=0.10, right=0.98, bottom=0.13, top=0.89, hspace=0.62)
 
     auc_axis = axes[0]
     colors = [ORANGE if value >= 0.80 else BLUE for value in auc]
@@ -195,7 +196,9 @@ def plot_multiuser_performance() -> None:
     auc_axis.set_ylim(0.35, 0.92)
     auc_axis.set_ylabel("AUC")
     auc_axis.set_title("(a) Separabilidad de Isolation Forest por usuario")
-    auc_axis.legend(frameon=False, loc="upper right", fontsize=8, ncol=2)
+    auc_axis.legend(frameon=False, loc="lower right", bbox_to_anchor=(1, 1.02),
+                    fontsize=8, ncol=2, borderaxespad=0)
+    auc_axis.set_title("(a) Separabilidad de Isolation Forest por usuario", pad=37)
     finish_axis(auc_axis, "y")
 
     error_axis = axes[1]
@@ -209,7 +212,9 @@ def plot_multiuser_performance() -> None:
     error_axis.set_title("(b) Errores con el umbral legítimo propio de cada usuario")
     error_axis.set_xticks(positions, users, rotation=35, ha="right")
     error_axis.yaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:.0f} %"))
-    error_axis.legend(frameon=False, loc="upper center", fontsize=8, ncol=3)
+    error_axis.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.02),
+                      fontsize=8, ncol=3, borderaxespad=0)
+    error_axis.set_title("(b) Errores con el umbral legítimo propio de cada usuario", pad=37)
     finish_axis(error_axis, "y")
 
     figure.savefig(OUTPUT_DIR / "desempeno_por_usuario.png", dpi=300, bbox_inches="tight")

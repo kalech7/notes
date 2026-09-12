@@ -46,16 +46,26 @@ cells = [
 
         **Caso de estudio:** `user12` del conjunto Balabit.
 
-        > **Pregunta principal.** ¿En qué medida las características temporales y cinemáticas derivadas de la dinámica del mouse permiten detectar tempranamente una suplantación durante una sesión activa, manteniendo baja la tasa de falsas alarmas ante variaciones naturales del usuario legítimo?
+        > **Pregunta principal del proyecto.** ¿Qué tan bien las características temporales y cinemáticas del mouse permiten distinguir sesiones legítimas e impostoras en diez usuarios, y qué muestra el caso de `user12` sobre la posibilidad de detectar una suplantación de manera temprana?
 
-        Este notebook responde cuatro preguntas breves:
+        Este notebook desarrolla el estudio de caso de `user12` y responde las dos preguntas específicas correspondientes:
 
-        1. ¿Qué características discriminan mejor entre usuario legítimo e impostor?
-        2. ¿Cómo cambia la detección al aumentar la ventana de observación?
-        3. ¿Cuál es el mínimo de interacciones que satisface el criterio declarado?
-        4. ¿Qué tan estable es el comportamiento legítimo entre sesiones?
+        1. En `user12`, ¿cómo cambia la detección al observar entre 25 y 150 eventos y existe un mínimo que satisfaga el criterio operativo?
+        2. En ese caso, ¿qué características discriminan mejor y qué tan estable es el comportamiento legítimo entre sesiones?
 
         Una **interacción** significa aquí una fila registrada por el dataset: movimiento o evento de botón. Para simular detección temprana, cada sesión de test se observa solamente hasta sus primeros $N$ eventos.
+
+        ### Qué hace este notebook
+
+        Este notebook se limita a entrenar, calibrar y evaluar el modelo del estudio de caso; no identifica personas ni ajusta el modelo con ejemplos de impostores. El flujo se ejecuta siempre en el mismo orden:
+
+        1. separar sesiones completas legítimas en enrolamiento y validación;
+        2. extraer ventanas no superpuestas para aprender el perfil;
+        3. ajustar `StandardScaler` e `Isolation Forest` solo con enrolamiento;
+        4. fijar el umbral con las ventanas legítimas de validación; y
+        5. evaluar un único prefijo por sesión pública de test.
+
+        Las celdas Markdown explican el propósito de cada etapa y los comentarios del código describen las operaciones que la implementan.
         """
     ),
     code(
@@ -116,7 +126,9 @@ cells = [
         r"""
         ## 1. Sesiones utilizadas
 
-        Las sesiones de `training_files` son legítimas. Se reservan sesiones completas para validación; sus ventanas nunca entran en el ajuste. Las etiquetas públicas de test se usan únicamente para calcular las métricas finales.
+        Las sesiones de `training_files` son legítimas. En `user12`, cinco sesiones forman el enrolamiento y dos la validación. La separación se realiza antes de formar ventanas, por lo que las ventanas de una misma sesión nunca aparecen en ambos grupos.
+
+        Las etiquetas públicas de test se mantienen fuera del escalado, el entrenamiento y la calibración. Solo se consultan al final para calcular las métricas de una decisión por sesión.
         """
     ),
     code(
@@ -165,7 +177,9 @@ cells = [
         r"""
         ## 2. Características y ventanas
 
-        De cada ventana se extraen duración, frecuencia de eventos, movimientos, clics, distancia, eficiencia, velocidad, aceleración, cambios angulares y pausas. Para entrenar y calibrar se usan ventanas no superpuestas de sesiones legítimas; para test se usa únicamente el primer prefijo de $N$ eventos de cada sesión.
+        De cada ventana se extraen 15 características de duración, frecuencia de eventos, movimientos, clics, distancia, eficiencia, velocidad, aceleración, cambios angulares y pausas. Estas características resumen un número variable de eventos en un vector de longitud fija que el modelo puede procesar.
+
+        Para enrolamiento y validación se usan ventanas no superpuestas de sesiones legítimas, con un máximo de 300 por sesión para evitar que una sesión extensa domine el ajuste. Para test se usa únicamente el prefijo formado por los primeros $N$ eventos de cada sesión; así, cada combinación de sesión y tamaño produce una sola decisión.
         """
     ),
     code(
@@ -349,7 +363,7 @@ cells = [
         r"""
         ## 3. Evaluación según el número de interacciones
 
-        Para cada tamaño se ajusta un modelo nuevo. Una configuración se marca como **confiable dentro de este experimento** si alcanza simultáneamente AUC $\geq 0.80$, FAR $\leq 0.10$, FRR $\leq 0.10$ y cobertura total.
+        Para cada tamaño se ajusta y calibra un modelo nuevo. El procedimiento es: construir las ventanas legítimas, ajustar el escalador, entrenar el bosque, calcular el umbral con validación y, por último, puntuar los prefijos de test. Una configuración se marca como **confiable dentro de este experimento** si alcanza simultáneamente AUC $\geq 0.80$, FAR $\leq 0.10$, FRR $\leq 0.10$ y cobertura total.
 
         ### Razón del umbral escogido
 
