@@ -52,6 +52,12 @@ La máscara causal impide consultar posiciones posteriores a la posición actual
 
 Esta máscara no prueba causalidad entre fenómenos del mundo, como se aclara en [[04 S00 - Correlación causalidad y límites de las predicciones]].
 
+## El ciclo de generación, a la vista
+
+![Ciclo de generación del LLM](<Recursos visuales/08-llm-ciclo.png>)
+
+Sigue una vuelta: contexto → procesamiento → probabilidades → token elegido → contexto ampliado. Este ciclo describe generación; la actualización de pesos durante entrenamiento es una operación distinta.
+
 ## 5. De puntajes a probabilidades
 
 El modelo produce **logits**, puntajes sin normalizar para los tokens del vocabulario. Softmax los convierte en probabilidades no negativas que suman 1. Para calcular la pérdida se toma, en cada posición, la probabilidad asignada al token realmente observado.

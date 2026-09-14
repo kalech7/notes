@@ -80,6 +80,16 @@ Esto explica el propósito del suavizado en [[07 S01 - Naive Bayes con un ejempl
 
 **Fuente consultada directamente:** [[murphy-2022-pml-introduction.pdf#page=160|Murphy, §4.6.2, pp. impresas 130–134; PDF 160–164]]. El archivo tiene nombre «2022», pero sus páginas indican versión en línea del 18 de abril de 2025; las referencias corresponden a esa copia. Explicaciones, conteos y cálculos adaptados para estas notas.
 
+## Gráficos y diagramas para entender el tema
+
+### Ver una posterior en lugar de memorizar un número
+
+![Ver una posterior en lugar de memorizar un número](<Recursos visuales/09-bayes-incertidumbre.png>)
+
+**Cómo leerlo:** La línea gris es el prior uniforme. La curva azul incorpora 7 caras y 3 cruces; la naranja, 70 y 30. Las dos mantienen una proporción observada parecida, pero la segunda se concentra más. El eje vertical es densidad: puede superar 1, porque lo que debe sumar un área de 1 es cada curva. Más certeza sobre θ no elimina la aleatoriedad del siguiente lanzamiento.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Responde primero y haz clic para comprobar.

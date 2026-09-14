@@ -97,6 +97,22 @@ Una última distinción: separar todo el conjunto de entrenamiento no prueba que
 
 **Fuente:** [[bishop-2006-prml.pdf#page=213|Bishop, §4.1.7, pp. impresas 193–194; PDF 213–214]].
 
+## Gráficos y diagramas para entender el tema
+
+### Recorrido visual del perceptrón
+
+![Recorrido visual del perceptrón](<Recursos visuales/01-perceptron.png>)
+
+**Cómo leerlo:** Sigue las flechas de izquierda a derecha: cada entrada aporta un valor ponderado, el sesgo desplaza la suma y el umbral transforma el puntaje en una decisión. Prueba el recorrido con las entradas (1,1) y (1,0).
+
+### Por qué XOR necesita otra representación
+
+![Por qué XOR necesita otra representación](<Recursos visuales/02-and-xor.png>)
+
+**Cómo leerlo:** Los círculos azules tienen salida 0 y los cuadrados naranjas salida 1. En AND la recta separa las clases; en XOR las clases ocupan diagonales opuestas y ninguna recta separa las cuatro entradas. No confundas esta limitación geométrica con falta de tiempo de entrenamiento.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

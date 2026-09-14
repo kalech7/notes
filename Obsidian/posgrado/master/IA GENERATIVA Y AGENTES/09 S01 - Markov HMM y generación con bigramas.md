@@ -104,6 +104,16 @@ Para evaluar una secuencia completa, enumerar todos los caminos ocultos requerir
 
 **Fuente:** [[bishop-2006-prml.pdf#page=630|Bishop, §13.2, p. impresa 610; PDF 630]] y [[bishop-2006-prml.pdf#page=635|§13.2.1, pp. 615–616; PDF 635–636]]. Ejemplo de máquina propio.
 
+## Gráficos y diagramas para entender el tema
+
+### Distinguir lo oculto de lo observado
+
+![Distinguir lo oculto de lo observado](<Recursos visuales/06-hmm.png>)
+
+**Cómo leerlo:** Lee horizontalmente la evolución de los estados z y verticalmente la emisión de los datos x. Aunque cada estado dependa del anterior, la creencia sobre el estado actual incorpora el historial observado. Las flechas son dependencias del modelo probabilístico; no debes interpretarlas automáticamente como causas del mundo.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

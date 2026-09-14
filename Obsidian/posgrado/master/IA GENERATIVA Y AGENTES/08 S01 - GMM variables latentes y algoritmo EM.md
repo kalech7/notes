@@ -99,6 +99,22 @@ Una diferencia conceptual útil con K-means: en su formulación estándar, cada 
 
 **Fuente de las actualizaciones:** [[bishop-2006-prml.pdf#page=459|Bishop, §9.2.2, p. impresa 439; PDF 459]]. Números elegidos para esta nota.
 
+## Gráficos y diagramas para entender el tema
+
+### Cómo se ve una mezcla de gaussianas
+
+![Cómo se ve una mezcla de gaussianas](<Recursos visuales/04-gmm-componentes.png>)
+
+**Cómo leerlo:** Los puntos grises son observaciones sintéticas; las cruces marcan medias de componentes. Las elipses muestran contornos de las gaussianas, no fronteras de clasificación ni intervalos de confianza. Un dato puede recibir responsabilidad de ambos componentes. Esta figura ilustra la familia del modelo; no es el resultado de un ajuste al material del curso.
+
+### El ciclo de EM
+
+![El ciclo de EM](<Recursos visuales/05-em-ciclo.png>)
+
+**Cómo leerlo:** En E preguntas cuánto explica cada componente a cada dato. En M actualizas los parámetros con esas responsabilidades. La flecha de retorno recuerda que las nuevas medias y covarianzas cambian el siguiente paso E. El criterio de parada no demuestra que se alcanzó el mejor máximo global.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

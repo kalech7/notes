@@ -81,6 +81,16 @@ Para ver este recorrido con tablas y un cálculo de pérdida, sigue con [[16 AMP
 
 **Fuentes:** [[Hands-On_Large_Language_Models.pdf#page=48|Alammar y Grootendorst, p. impresa 26; PDF 48]] y [[Hands-On_Large_Language_Models.pdf#page=79|pp. 57–59; PDF 79–81]]; [[Build_a_Large_Language_Model_From_Scrat.pdf#page=59|Raschka, §2.6, pp. 37–38; PDF 59–60]] y [[Build_a_Large_Language_Model_From_Scrat.pdf#page=159|§5.1, pp. 137–139; PDF 159–161]].
 
+## Gráficos y diagramas para entender el tema
+
+### Seguir una vuelta de generación
+
+![Seguir una vuelta de generación](<Recursos visuales/08-llm-ciclo.png>)
+
+**Cómo leerlo:** El contexto se tokeniza, se representa con vectores y se procesa para obtener probabilidades del siguiente token. Después de elegirlo, se añade al contexto. Esa realimentación modifica la entrada, no los pesos en inferencia ordinaria. El dibujo omite detalles internos del transformer para resaltar el ciclo.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

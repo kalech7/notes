@@ -49,6 +49,10 @@ Los dos desarrollos más largos están separados para leerlos paso a paso:
 - [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números]]: después de la nota 05.
 - [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]]: después de la nota 11.
 
+## Aprende también con imágenes
+
+Las notas incluyen **10 gráficos y diagramas originales**, con una guía para leerlos: perceptrón, AND/XOR, Bayes por conteos, causalidad, GMM, EM, HMM, VAE, ciclo de LLM y posterior de Bayes. Están integrados junto al contenido en las notas 03, 04, 05, 08, 09, 10, 11, 15 y 16.
+
 ## Apoyo y práctica
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones]]

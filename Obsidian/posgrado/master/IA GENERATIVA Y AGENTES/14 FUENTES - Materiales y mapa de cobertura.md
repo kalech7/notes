@@ -70,3 +70,7 @@ Las rutas a notebooks, diapositivas fuente o notas teóricas citadas por los PDF
 Los apuntes distinguen causalidad general de la restricción de los grafos acíclicos; acotan la comparación entre generativos y discriminativos al resultado estudiado; diferencian el estado oculto del historial observado en HMM; y presentan las dificultades de VAE en texto como limitaciones, no imposibilidad.
 
 No se añadieron precios, rankings de modelos o afirmaciones de mercado que se desactualicen. Los ejemplos son didácticos y los textos son explicaciones propias del material, no reproducciones extensas de libros.
+
+## Figuras originales
+
+Los 10 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` permite reproducirlos; requiere Python con NumPy, Matplotlib y SciPy. Las nubes GMM son sintéticas, con semilla fija 6013; las curvas Beta y fronteras AND se calculan a partir de las fórmulas explicadas. Los diagramas son esquemas didácticos, no capturas de los libros ni resultados experimentales del curso.

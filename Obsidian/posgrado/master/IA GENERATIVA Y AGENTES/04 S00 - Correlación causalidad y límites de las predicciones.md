@@ -64,6 +64,16 @@ Esto no calcula $P(Y\mid\operatorname{do}(X))$ ni identifica qué intervención 
 
 **Fuente de la máscara:** [[Build_a_Large_Language_Model_From_Scrat.pdf#page=97|Raschka, §3.5.1, p. impresa 75; PDF 97]]. La comparación con la causalidad de la sesión 00 es una conexión didáctica.
 
+## Gráficos y diagramas para entender el tema
+
+### Comparar observación e intervención
+
+![Comparar observación e intervención](<Recursos visuales/10-causalidad.png>)
+
+**Cómo leerlo:** A la izquierda el calor influye en ventas y natación. A la derecha fijamos las ventas externamente y retiramos su flecha entrante. En este ejemplo no hay una flecha de ventas a natación: la asociación se explica por el calor. El dibujo representa un supuesto causal explícito, no una estructura descubierta solo por correlación.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

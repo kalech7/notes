@@ -86,6 +86,16 @@ Para seguir los cálculos sin alargar esta nota, tienes [[15 AMPLIACIÓN - Bayes
 
 **Fuente:** [[murphy-2022-pml-introduction.pdf#page=160|Murphy, §4.6.2, pp. impresas 130–134; PDF 160–164]]. Los conteos del ejemplo son propios.
 
+## Gráficos y diagramas para entender el tema
+
+### Ver Bayes como un cambio de grupo
+
+![Ver Bayes como un cambio de grupo](<Recursos visuales/03-bayes-conteos.png>)
+
+**Cómo leerlo:** Primero divide los 1 000 correos por clase. Después conserva los que contienen «oferta»: 120 spam y 80 normales. La posterior usa como denominador ese nuevo grupo de 200 correos. Así se ve por qué P(oferta dado spam) y P(spam dado oferta) responden preguntas diferentes.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

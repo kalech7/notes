@@ -85,6 +85,16 @@ Esto evita interpretar «reconstruye mejor» como sinónimo de «optimiza mejor 
 
 **Fuente:** [[murphy-2022-pml-introduction.pdf#page=713|Murphy, §20.3.5, pp. impresas 683–685; PDF 713–715]], especialmente la explicación de inferencia amortizada y las ecuaciones de ELBO en PDF 715.
 
+## Gráficos y diagramas para entender el tema
+
+### Dos recorridos en un VAE
+
+![Dos recorridos en un VAE](<Recursos visuales/07-vae.png>)
+
+**Cómo leerlo:** Arriba: un dato pasa por el codificador, se obtiene una distribución latente y se muestrea z para decodificar. Abajo: al generar, z viene directamente del prior. El decodificador produce una distribución sobre x; su salida puede usarse para reconstruir o muestrear según el modelo. La ruta inferior evita el codificador, pero utiliza el mismo decodificador entrenado.
+
+*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+
 ## Preguntas para comprobar que entendiste
 
 Intenta responder antes de desplegar cada respuesta.

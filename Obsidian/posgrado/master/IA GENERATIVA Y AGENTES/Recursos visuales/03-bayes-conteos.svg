@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="684pt" height="394.56pt" viewBox="0 0 684 394.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-14T12:11:26.070409</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 394.56 
+L 684 394.56 
+L 684 -0 
+L 0 -0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 23.94 256.5216 
+L 124.38 256.5216 
+Q 132.192 256.5216 132.192 248.76 
+L 132.192 193.32 
+Q 132.192 185.5584 124.38 185.5584 
+L 23.94 185.5584 
+Q 16.128 185.5584 16.128 193.32 
+L 16.128 248.76 
+Q 16.128 256.5216 23.94 256.5216 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 224.82 184.4496 
+L 330.84 184.4496 
+Q 338.652 184.4496 338.652 176.688 
+L 338.652 137.88 
+Q 338.652 130.1184 330.84 130.1184 
+L 224.82 130.1184 
+Q 217.008 130.1184 217.008 137.88 
+L 217.008 176.688 
+Q 217.008 184.4496 224.82 184.4496 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #ea580c; fill-opacity: 0.070588; stroke: #ea580c; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 224.82 317.5056 
+L 330.84 317.5056 
+Q 338.652 317.5056 338.652 309.744 
+L 338.652 270.936 
+Q 338.652 263.1744 330.84 263.1744 
+L 224.82 263.1744 
+Q 217.008 263.1744 217.008 270.936 
+L 217.008 309.744 
+Q 217.008 317.5056 224.82 317.5056 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 131.657432 214.44195 
+Q 174.600099 187.775938 215.928093 162.112587 
+" clip-path="url(#p28cd09e577)" style="fill: none; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 209.248287 162.729185 
+L 215.928093 162.112587 
+L 212.413487 167.826391 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 131.657432 233.18205 
+Q 174.600099 259.848062 215.928093 285.511413 
+" clip-path="url(#p28cd09e577)" style="fill: none; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 212.413487 279.797609 
+L 215.928093 285.511413 
+L 209.248287 284.894815 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 459.18 184.4496 
+L 637.74 184.4496 
+Q 645.552 184.4496 645.552 176.688 
+L 645.552 137.88 
+Q 645.552 130.1184 637.74 130.1184 
+L 459.18 130.1184 
+Q 451.368 130.1184 451.368 137.88 
+L 451.368 176.688 
+Q 451.368 184.4496 459.18 184.4496 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #ea580c; fill-opacity: 0.070588; stroke: #ea580c; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 459.18 317.5056 
+L 637.74 317.5056 
+Q 645.552 317.5056 645.552 309.744 
+L 645.552 270.936 
+Q 645.552 263.1744 637.74 263.1744 
+L 459.18 263.1744 
+Q 451.368 263.1744 451.368 270.936 
+L 451.368 309.744 
+Q 451.368 317.5056 459.18 317.5056 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 338.419012 160.056 
+Q 395.009476 160.056 449.699282 160.056 
+" clip-path="url(#p28cd09e577)" style="fill: none; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 443.699282 157.056 
+L 449.699282 160.056 
+L 443.699282 163.056 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 338.419012 287.568 
+Q 395.009476 287.568 449.699282 287.568 
+" clip-path="url(#p28cd09e577)" style="fill: none; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 443.699282 284.568 
+L 449.699282 287.568 
+L 443.699282 290.568 
+z
+" clip-path="url(#p28cd09e577)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="74.16" y="224.157187" transform="rotate(-0 74.16 224.157187)">1 000 correos</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="277.83" y="160.401187" transform="rotate(-0 277.83 160.401187)">200 spam</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="277.83" y="293.457656" transform="rotate(-0 277.83 293.457656)">800 normales</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="174.6" y="179.46" transform="rotate(-0 174.6 179.46)">20 %</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="174.6" y="251.532" transform="rotate(-0 174.6 251.532)">80 %</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="548.46" y="160.401656" transform="rotate(-0 548.46 160.401656)">120 con «oferta»</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="548.46" y="293.457656" transform="rotate(-0 548.46 293.457656)">80 con «oferta»</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="395.01" y="151.74" transform="rotate(-0 395.01 151.74)">60 % de los spam</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="395.01" y="279.252" transform="rotate(-0 395.01 279.252)">10 % de los normales</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="342" y="367.956" transform="rotate(-0 342 367.956)">P(spam | oferta) = 120 / (120 + 80) = 60 %</text>
+   </g>
+  </g>
+  <g id="text_11">
+   <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="331.2" y="22.396875" transform="rotate(-0 331.2 22.396875)">Bayes: cambiar el grupo sobre el que contamos</text>
+  </g>
+  <g id="text_12">
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="331.2" y="41.76" transform="rotate(-0 331.2 41.76)">De 1 000 correos, seleccionamos los 200 que contienen «oferta».</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p28cd09e577">
+   <rect x="7.2" y="54.72" width="669.6" height="332.64"/>
+  </clipPath>
+ </defs>
+</svg>
