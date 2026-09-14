@@ -9,86 +9,89 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Continúa:** [[05 S01 - Probabilidad y teorema de Bayes paso a paso]]. Este desarrollo explica las ideas necesarias aquí; abrir el libro es opcional.
+## 1. Saber una probabilidad y estar seguro de ella son cosas distintas
 
-## 1. Dos incertidumbres distintas
+Observas siete caras en diez lanzamientos. Una estimación sencilla dice que la probabilidad de cara es 0.7. Pero diez lanzamientos son pocos: otro grupo de diez podría dar una proporción diferente.
 
-Una moneda puede ser aleatoria aunque conozcas perfectamente su probabilidad de cara. Si esa probabilidad es 0.5, conocerla no te permite predecir con certeza el siguiente lanzamiento.
+Ahora imagina setenta caras en cien lanzamientos. La proporción también es 0.7, pero tienes más información. Queremos una forma de expresar esa diferencia de incertidumbre.
 
-Además, puedes no conocer esa probabilidad. Representamos el valor desconocido mediante $\theta$. Aprender sobre $\theta$ y predecir el siguiente lanzamiento son problemas relacionados, pero diferentes.
+Esta nota continúa [[05 S01 - Probabilidad y teorema de Bayes paso a paso|Bayes]]. No necesitas dominar la distribución Beta antes de leerla: la construiremos a partir del ejemplo.
 
-## 2. Una distribución sobre probabilidades
+## 2. Qué número desconocemos
 
-La distribución Beta describe valores entre 0 y 1, así que sirve como modelo de incertidumbre sobre $\theta$. Sus dos parámetros, $\alpha$ y $\beta$, controlan su forma:
+Llamamos $\theta$ a la probabilidad real de cara bajo nuestro modelo de moneda. Puede estar entre 0 y 1.
 
-$$p(\theta)=\frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta)},\qquad 0<\theta<1.$$
+Hay dos incertidumbres: no sabemos exactamente cuánto vale $\theta$ y, aunque lo supiéramos, un lanzamiento seguiría siendo aleatorio si ese valor está entre 0 y 1. Recoger datos ayuda con la primera; no elimina la segunda.
 
-No necesitas calcular $B$ para hacer este ejemplo: es la constante que hace que el área total sea 1. Beta(1,1) es uniforme; Beta(2,2) concentra más densidad hacia el centro. No son distribuciones sobre resultados «cara o cruz», sino sobre los posibles valores de su probabilidad.
+Para representar lo que creemos sobre $\theta$, usamos una distribución sobre sus valores posibles. Una opción es **Beta**.
 
-## 3. Actualizar significa sumar evidencia
+## 3. Qué significa Beta sin calcular todavía su fórmula
 
-Si el prior es Beta($\alpha,\beta$), observas h caras y c cruces, y supones lanzamientos independientes con el mismo $\theta$, la posterior es:
+Beta tiene dos números, $\alpha$ y $\beta$, que controlan su forma. Beta(1,1) es uniforme: da la misma densidad a los valores de $\theta$ entre 0 y 1. Beta(2,2) concentra más densidad alrededor del centro.
 
-$$p(\theta\mid D)=\operatorname{Beta}(\alpha+h,\beta+c).$$
+Estas curvas no describen directamente «cara o cruz». Describen cuánto peso asignamos a posibles valores de la **probabilidad de cara**.
 
-¿Por qué? La verosimilitud aporta $\theta^h(1-\theta)^c$. Multiplicarla por el prior suma exponentes. La forma Beta se conserva: por eso este prior se llama **conjugado** para la verosimilitud Bernoulli/binomial.
+Para el cálculo siguiente solo necesitas esta regla: si partes de Beta($\alpha,\beta$), sumas las caras a $\alpha$ y las cruces a $\beta$.
 
-Con Beta(1,1), siete caras y tres cruces:
+## 4. Actualiza la distribución paso a paso
 
-$$\operatorname{Beta}(1+7,1+3)=\operatorname{Beta}(8,4).$$
+Partimos de Beta(1,1) y vemos siete caras y tres cruces:
 
-No se eligió todavía un único valor: se obtuvo una distribución.
+$$\text{posterior}=\operatorname{Beta}(1+7,1+3)=\operatorname{Beta}(8,4).$$
 
-## 4. MLE, MAP y media posterior
+La distribución inicial es el **prior** y la actualizada es la **posterior**. Usamos lanzamientos independientes que comparten la misma probabilidad de cara.
 
-| Operación | Qué hace | Resultado del ejemplo |
+¿Por qué se pueden sumar los conteos? La verosimilitud contiene $\theta^7(1-\theta)^3$. Al multiplicarla por un prior Beta, se suman los exponentes y obtenemos otra Beta. Cuando la familia de distribuciones se conserva así, se llama **conjugación**.
+
+## 5. Tres formas de resumir los datos
+
+| Nombre | Pregunta que responde | Resultado aquí |
 | --- | --- | --- |
-| MLE | Maximiza la verosimilitud | 7/10 = 0.7 |
-| MAP | Maximiza la posterior | (8−1)/(8+4−2) = 0.7 |
-| Media posterior | Promedia valores según la posterior | 8/(8+4) ≈ 0.667 |
+| MLE | ¿Qué valor hace más probables los datos observados? | 7/10 = 0.7 |
+| MAP | ¿Dónde está el punto más alto de la posterior? | (8−1)/(8+4−2) = 0.7 |
+| Media posterior | ¿Cuál es el promedio según la posterior? | 8/12 ≈ 0.667 |
 
-La fórmula interior de la moda Beta utilizada aquí exige ambos parámetros mayores que 1; en casos de frontera no debes aplicarla mecánicamente. MAP coincide con MLE en este ejemplo porque el prior es uniforme, no porque sean siempre equivalentes.
+El pico y el promedio no tienen por qué coincidir. MLE y MAP coinciden aquí porque el prior es uniforme. Con prior Beta(2,2), los mismos datos dan Beta(9,5): MAP es 8/12 y la media 9/14.
 
-Con un prior Beta(2,2) y los mismos datos, la posterior sería Beta(9,5), MAP = 8/12 ≈ 0.667 y media = 9/14 ≈ 0.643. Los datos son iguales; cambió la información previa.
+La fórmula de la moda Beta utilizada aquí requiere ambos parámetros mayores que 1. Si están en la frontera, no debe aplicarse de forma automática.
 
-## 5. Predecir el siguiente resultado
+## 6. Qué predices para el siguiente lanzamiento
 
-La predicción bayesiana promedia la probabilidad de cara sobre los valores posibles de $\theta$:
+Para un lanzamiento nuevo, la predicción bayesiana promedia los posibles valores de $\theta$ según la posterior. En este modelo equivale a la media:
 
-$$P(\text{cara siguiente}\mid D)=\int_0^1\theta p(\theta\mid D)\,d\theta
-=\frac{\alpha+h}{\alpha+\beta+h+c}.$$
+$$P(\text{cara siguiente}\mid D)=\frac{\alpha+\text{caras}}{\alpha+\beta+\text{caras}+\text{cruces}}.$$
 
-En el primer ejemplo es 8/12. Con tres caras y cero cruces, usando Beta(1,1), es 4/5. La cruz conserva probabilidad 1/5.
+Con Beta(1,1), siete caras y tres cruces, da 8/12.
 
-El contraste con MLE es instructivo: el ajuste puntual 3/3=1 no deja espacio para una cruz. La actualización bayesiana refleja que tres observaciones no bastan para justificar esa certeza bajo el prior elegido.
+Observa un caso más extremo: tres caras y ninguna cruz. MLE da 3/3=1, por lo que el ajuste puntual no deja probabilidad para una cruz. La predicción bayesiana con Beta(1,1) da cara 4/5 y cruz 1/5. No haber observado una cruz no basta para declararla imposible.
 
-## 6. La incertidumbre cambia con la cantidad de datos
+Esta es la conexión con el suavizado de [[07 S01 - Naive Bayes con un ejemplo de spam|Naive Bayes]].
 
-Para una Beta con parámetros posteriores a y b:
+## 7. Mira cómo cambia la curva con más datos
+
+![Incertidumbre sobre la probabilidad de cara](<Recursos visuales/09-bayes-incertidumbre.png>)
+
+La línea gris es el prior uniforme. La azul incorpora 7 caras y 3 cruces. La naranja incorpora 70 y 30. La proporción observada es la misma, pero la curva naranja queda más concentrada.
+
+El eje horizontal contiene valores posibles de $\theta$. El vertical es densidad: puede superar 1. La probabilidad de un intervalo corresponde al área bajo la curva en ese intervalo, y el área total de cada curva es 1.
+
+## 8. Si necesitas expresar la concentración con una fórmula
+
+Para una posterior Beta(a,b), su varianza es:
 
 $$\operatorname{Var}(\theta\mid D)=\frac{ab}{(a+b)^2(a+b+1)}.$$
 
-Beta(8,4) tiene varianza aproximadamente 0.01709 y desviación estándar 0.1307. Si observas 70 caras y 30 cruces con el mismo prior, obtienes Beta(71,31), con desviación aproximadamente 0.0453. Hay más concentración sobre $\theta$.
+Su desviación estándar es la raíz cuadrada de esa cantidad. Para Beta(8,4) es aproximadamente 0.1307; para Beta(71,31), aproximadamente 0.0453. El número menor indica una distribución más concentrada sobre el parámetro.
 
-**Ese número no es la variabilidad de una cara o cruz**, sino la incertidumbre sobre el parámetro. Tampoco constituye automáticamente un intervalo de credibilidad: un intervalo requiere calcular cuantiles o masa posterior.
+No es la variabilidad de «cara o cruz» ni un intervalo de credibilidad por sí solo. Es una medida de la incertidumbre sobre $\theta$.
 
-## 7. Cómo conecta con Naive Bayes
+La expresión completa de la densidad Beta es proporcional a $\theta^{\alpha-1}(1-\theta)^{\beta-1}$. Una constante normaliza el área. No necesitas calcularla para aplicar las actualizaciones de esta nota.
 
-El suavizado de probabilidades tiene una interpretación como protección frente a estimaciones extremas con pocos datos. En el caso binario, el prior uniforme lleva a sumar uno a cada resultado para la predicción posterior.
+## Fuentes de esta explicación
 
-Esto explica el propósito del suavizado en [[07 S01 - Naive Bayes con un ejemplo de spam]]: dejar masa a eventos no observados. No agrega relaciones entre palabras ni elimina los supuestos de independencia.
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-**Fuente consultada directamente:** [[murphy-2022-pml-introduction.pdf#page=160|Murphy, §4.6.2, pp. impresas 130–134; PDF 160–164]]. El archivo tiene nombre «2022», pero sus páginas indican versión en línea del 18 de abril de 2025; las referencias corresponden a esa copia. Explicaciones, conteos y cálculos adaptados para estas notas.
-
-## Gráficos y diagramas para entender el tema
-
-### Ver una posterior en lugar de memorizar un número
-
-![Ver una posterior en lugar de memorizar un número](<Recursos visuales/09-bayes-incertidumbre.png>)
-
-**Cómo leerlo:** La línea gris es el prior uniforme. La curva azul incorpora 7 caras y 3 cruces; la naranja, 70 y 30. Las dos mantienen una proporción observada parecida, pero la segunda se concentra más. El eje vertical es densidad: puede superar 1, porque lo que debe sumar un área de 1 es cada curva. Más certeza sobre θ no elimina la aleatoriedad del siguiente lanzamiento.
-
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[murphy-2022-pml-introduction.pdf#page=160|Murphy, §4.6.2, pp. impresas 130–134; PDF 160–164]]
 
 ## Preguntas para comprobar que entendiste
 

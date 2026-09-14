@@ -11,6 +11,10 @@ tags:
 
 **Base:** [[glosario-mmia-6013.pdf|Glosario del curso, versión suministrada del 13 de septiembre de 2026]], secciones de notación y términos de sesiones 01–04. Selección comentada, no transcripción completa.
 
+## Cómo usar este glosario
+
+Busca aquí una palabra cuando te frene la lectura. Primero lee su explicación y el ejemplo; después vuelve a la nota. No necesitas memorizar todos los símbolos antes de empezar.
+
 ## Cómo leer las letras sin perderte
 
 | Símbolo | Significado en estas notas | Ejemplo |
@@ -34,63 +38,63 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 
 ## Probabilidad y aprendizaje
 
-**Prior:** distribución antes de incorporar la evidencia considerada. No significa obligatoriamente una opinión arbitraria; puede expresar información previa o un supuesto explícito.
+**Prior:** lo que asumimos sobre las posibilidades antes de incorporar el dato nuevo. Ejemplo: antes de leer un correo, el 20 % de los mensajes del conjunto es spam.
 
-**Verosimilitud:** evaluación de los datos observados como función de parámetros o hipótesis. No es la posterior.
+**Verosimilitud:** qué tan compatible es el dato observado con una explicación o un valor del parámetro. Ejemplo: qué tan frecuente es encontrar «oferta» entre los spam. No responde todavía cuántos correos con «oferta» son spam.
 
-**Posterior:** distribución después de condicionar en datos. Especifica si se refiere a clase, parámetros o latente.
+**Posterior:** las probabilidades que obtenemos después de usar la nueva información. Ejemplo: la probabilidad de spam después de leer «oferta». Indica siempre qué estamos intentando averiguar.
 
-**Evidencia:** denominador que normaliza en Bayes; suma o integra sobre alternativas.
+**Evidencia:** probabilidad del dato observado considerando todas las explicaciones. En el ejemplo, cuenta la presencia de «oferta» tanto en spam como en normales. Es el denominador de Bayes.
 
-**MLE:** máxima verosimilitud. Ajusta un valor de parámetros maximizando la verosimilitud.
+**MLE, máxima verosimilitud:** elegir el valor del parámetro que hace más probables los datos observados. Para siete caras en diez lanzamientos, la estimación de probabilidad de cara es 0.7.
 
-**Pérdida:** criterio numérico que se minimiza para entrenar. Una pérdida menor no garantiza por sí sola resolver todos los objetivos de uso.
+**Pérdida:** número que penaliza los errores según el criterio de entrenamiento. El ajuste intenta reducirlo. Su utilidad depende de que ese criterio se relacione con la tarea que nos importa.
 
-**Parámetro:** cantidad ajustada al entrenar. **Hiperparámetro:** decisión que configura el ajuste, como una tasa de aprendizaje o número de componentes.
+**Parámetro:** valor que se aprende al entrenar, como un peso. **Hiperparámetro:** configuración del aprendizaje o del modelo, como el tamaño de cada actualización o la cantidad de componentes de una mezcla.
 
-**Generalización:** funcionamiento en datos nuevos. **Sobreajuste:** capturar particularidades del entrenamiento que no se trasladan bien a esos datos.
+**Generalización:** funcionar bien con ejemplos nuevos. **Sobreajuste:** aprender también detalles o ruido del entrenamiento que hacen fallar en otros ejemplos; parecido a memorizar un examen sin entender cómo resolver preguntas nuevas.
 
-**Muestrear:** extraer un resultado aleatorio siguiendo una distribución. No equivale a elegir siempre el máximo.
+**Muestrear:** sortear un resultado respetando unas probabilidades. Si A tiene 80 % y B 20 %, ambos pueden salir. Elegir siempre A sería otra estrategia.
 
 ## Modelos y estructuras
 
-**Discriminativo:** en clasificación, aprende una posterior de etiquetas o una función de decisión.
+**Discriminativo:** en clasificación, aprende a decidir o calcular la etiqueta a partir de una entrada. Ejemplo: dado este correo, estimar si es spam.
 
-**Generativo:** modela una distribución de datos, posiblemente condicionada en información, y permite plantear generación. No significa automáticamente generación de lenguaje coherente.
+**Generativo:** aprende una distribución de datos con la que podemos plantear cómo producir ejemplos. Puede generar puntos o palabras; que genere no garantiza que el resultado sea bueno.
 
-**Latente:** variable no observada que el modelo utiliza para explicar datos. No es sinónimo de parámetro.
+**Latente:** algo que el modelo supone pero que no observamos directamente. En un GMM vemos el punto, pero no sabemos qué componente lo produjo.
 
-**GMM:** mezcla de gaussianas. Combina componentes y permite inferir responsabilidades.
+**GMM:** modelo que combina varias distribuciones gaussianas para describir datos. Es útil para representar varias concentraciones de puntos con centros y dispersiones diferentes.
 
-**Responsabilidad:** probabilidad posterior de que un componente explique una observación.
+**Responsabilidad:** probabilidad de que un componente explique un dato después de observarlo. Por ejemplo, 75 % para el primer componente y 25 % para el segundo.
 
-**EM:** esperanza–maximización. Alterna inferencia del latente y reestimación de parámetros.
+**EM:** algoritmo que repite dos pasos: calcula cuánto corresponde cada dato a cada componente y luego recalcula los parámetros usando esos aportes.
 
-**Markov de orden M:** representa el siguiente elemento usando los M anteriores como contexto.
+**Markov de orden M:** modelo que utiliza los M elementos anteriores para predecir el siguiente. Un bigrama usa solo uno.
 
-**HMM:** modelo oculto de Markov. Distingue estados ocultos de observaciones emitidas.
+**HMM:** modelo de una secuencia con estados que no vemos y observaciones que sí recibimos. Ejemplo: estado de una máquina y ruido que emite.
 
-**VAE:** autocodificador variacional. Aprende un modelo generativo latente con un codificador aproximado.
+**VAE:** modelo que aprende a generar datos a partir de códigos ocultos. Un codificador propone códigos para los datos conocidos y un decodificador aprende a producir datos desde esos códigos.
 
-**ELBO:** cota inferior de la log-evidencia que se maximiza en inferencia variacional.
+**ELBO:** objetivo que se maximiza al entrenar un VAE. Equilibra explicar bien el dato y mantener los códigos compatibles con un prior. Matemáticamente es una cota inferior de la log-probabilidad del dato.
 
-**KL:** divergencia entre distribuciones. No es simétrica.
+**KL:** medida de diferencia entre distribuciones. No es simétrica: comparar q con p puede dar un valor distinto de comparar p con q.
 
 ## Lenguaje y sistemas: vocabulario de transición
 
-**Representación vectorial o embedding:** vector numérico que representa una unidad como un token o texto. La utilidad de sus relaciones depende del entrenamiento.
+**Representación vectorial o embedding:** lista de números que representa un token o texto para que el modelo pueda calcular con él. Sus valores se aprenden o se calculan con un modelo entrenado.
 
-**Atención:** mecanismo que calcula combinaciones ponderadas de información del contexto. No es una intención consciente.
+**Atención:** cálculo que combina información de distintas posiciones y asigna diferente peso a cada una. El nombre no significa que la máquina tenga una intención consciente.
 
-**Ventana de contexto:** cantidad de tokens que un sistema puede considerar en una entrada o proceso definido. No es el número de parámetros ni la dimensión de los vectores.
+**Ventana de contexto:** límite de tokens que el sistema puede considerar en el contexto definido. No indica cuántos pesos tiene ni cuántos números contiene cada vector.
 
-**Prompt:** entrada que proporciona instrucciones, contexto o ejemplos al modelo.
+**Prompt:** la entrada con la que orientas al modelo: puede incluir una pregunta, instrucciones, documentos y ejemplos.
 
-**Aprendizaje en contexto:** usar ejemplos en el prompt sin actualizar pesos. Se distingue de **ajuste fino**, que sí entrena parámetros.
+**Aprendizaje en contexto:** dar ejemplos dentro del prompt para orientar la respuesta sin cambiar los pesos. **Ajuste fino:** entrenar parámetros para adaptar el comportamiento del modelo.
 
-**RAG:** recuperación de información seguida de generación con ese contexto.
+**RAG:** buscar información pertinente y entregarla al modelo para que responda con ese contexto. Ejemplo: recuperar un apartado de tu PDF antes de explicarlo.
 
-**Agente:** sistema que combina un modelo con decisiones, herramientas y observaciones para realizar una tarea.
+**Agente:** sistema que puede elegir acciones, usar herramientas y revisar sus resultados para avanzar en una tarea. Por ejemplo: buscar datos, ejecutar un cálculo y comprobar si resolvió la pregunta.
 
 ## Tres distinciones para repasar siempre
 

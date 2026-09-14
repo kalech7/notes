@@ -9,111 +9,107 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-01.pdf#page=13|Sesión 01, páginas 13]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Imagina una nube de puntos con dos grupos
 
-## El problema: una nube con varios grupos
+Cada punto del siguiente gráfico tiene dos características numéricas. Podrían ser tamaño y duración de un archivo. Vemos concentraciones de puntos en zonas distintas, pero los datos no incluyen una etiqueta que diga a qué grupo pertenece cada uno.
 
-Imagina puntos que describen duración y tamaño de archivos. Hay varios grupos, pero no tienes etiquetas que indiquen el grupo de cada archivo. Una sola campana gaussiana podría representar mal toda la nube.
+Queremos un modelo que describa esa distribución y que también pueda crear puntos nuevos parecidos.
 
-Un **modelo de mezcla de gaussianas (GMM)** combina varias distribuciones:
+![Dos componentes de una mezcla](<Recursos visuales/04-gmm-componentes.png>)
+
+Los puntos grises son datos sintéticos. Las cruces señalan centros de dos distribuciones propuestas por el modelo. Las elipses muestran cómo se extiende cada distribución alrededor de su centro; no son paredes que prohíban pertenecer a otra.
+
+## 2. Qué significa «mezcla de gaussianas»
+
+Una **gaussiana** es una distribución que concentra valores alrededor de un centro y describe cómo se dispersan. En una dimensión suele dibujarse como una campana. En dos dimensiones puede representarse mediante contornos elípticos como los del gráfico.
+
+Una sola gaussiana puede resultar insuficiente para dos concentraciones separadas. Un **GMM**, o modelo de mezcla de gaussianas, combina varias. Cada gaussiana se llama **componente**.
+
+Para describir cada componente necesitamos:
+
+- **Media:** dónde está su centro.
+- **Covarianza:** cuánto se dispersa y cómo se relacionan las direcciones de variación.
+- **Peso de mezcla:** qué proporción asigna el modelo a ese componente.
+
+Los pesos de todos los componentes suman 1. Un componente sirve para describir los datos; no necesariamente representa una categoría real del mundo.
+
+## 3. Qué está oculto
+
+Ves el punto x, pero no sabes qué componente lo produjo. El modelo llama z a esa identidad desconocida. Se llama **variable latente** porque no está observada en los datos.
+
+Imagina cómo generaría un punto el modelo: primero sortea un componente según sus pesos; después sortea un punto de esa gaussiana. Cuando solo vemos el punto final, intentamos razonar en sentido inverso: ¿qué componente pudo producirlo?
+
+## 4. Un punto puede tener dos explicaciones posibles
+
+En lugar de forzar una etiqueta, calculamos probabilidades sobre sus posibles componentes. Por ejemplo, 75 % para el primero y 25 % para el segundo.
+
+Estas probabilidades se llaman **responsabilidades**. No significan que el punto esté físicamente dividido; expresan nuestra incertidumbre sobre qué componente lo explica.
+
+Supón que los componentes tienen pesos 0.6 y 0.4. Para un punto concreto, sus densidades son 0.2 y 0.1. Hacemos lo siguiente:
+
+| Paso | Componente 1 | Componente 2 |
+| --- | --- | --- |
+| Peso por densidad | 0.6 × 0.2 = 0.12 | 0.4 × 0.1 = 0.04 |
+| Dividir por el total 0.16 | 0.12/0.16 = 0.75 | 0.04/0.16 = 0.25 |
+
+Eso es Bayes aplicado al componente oculto. La densidad 0.2 no equivale a 20 % de probabilidad de ese punto; las probabilidades del componente son las responsabilidades obtenidas al normalizar.
+
+## 5. Por qué se alternan dos pasos al entrenar
+
+Hay una dificultad: para calcular a qué grupo pertenece un punto necesitamos conocer los grupos, pero para describir los grupos necesitamos saber qué puntos les corresponden.
+
+El algoritmo **EM, esperanza–maximización**, comienza con una propuesta y la mejora alternando dos operaciones.
+
+![Ciclo de EM](<Recursos visuales/05-em-ciclo.png>)
+
+**Paso E:** con los centros, covarianzas y pesos actuales, calcula las responsabilidades de cada punto. Por ahora no cambia esos parámetros.
+
+**Paso M:** usa esas responsabilidades para calcular nuevos centros, covarianzas y pesos. Por ahora no cambia las responsabilidades.
+
+Después vuelve a E, porque los nuevos parámetros pueden cambiar qué componente explica mejor cada punto. Se repite hasta que se cumple un criterio de parada, como cambios suficientemente pequeños en el objetivo.
+
+## 6. Calculemos un centro nuevo
+
+Tenemos tres datos: 0, 2 y 10. El primer componente les asigna responsabilidades 0.9, 0.8 y 0.1. El dato 10 cuenta poco para ese componente porque su responsabilidad es baja.
+
+Multiplica cada dato por su responsabilidad:
+
+$$0(0.9)+2(0.8)+10(0.1)=0+1.6+1=2.6.$$
+
+Suma las responsabilidades: $0.9+0.8+0.1=1.8$. Divide para obtener el promedio ponderado:
+
+$$\text{centro nuevo}=2.6/1.8\approx1.444.$$
+
+El 1.8 es una cantidad efectiva de observaciones: suma aportes parciales. El nuevo peso del componente es $1.8/3=0.6$.
+
+Para el segundo componente, las responsabilidades son 0.1, 0.2 y 0.9. Su centro es $9.4/1.2\approx7.833$ y su peso 0.4.
+
+## 7. Cómo se escribe todo esto con símbolos
 
 $$p(x)=\sum_{k=1}^{K}\pi_k\mathcal N(x\mid\mu_k,\Sigma_k).$$
 
-- K: número de componentes de la mezcla.
-- $\pi_k$: peso del componente k; los pesos suman 1.
-- $\mu_k$: centro de su nube.
-- $\Sigma_k$: matriz de covarianza; controla dispersión y orientación.
-- $\mathcal N$: densidad gaussiana.
+La fórmula dice: suma lo que aporta cada componente al dato x. K es la cantidad de componentes; $\pi_k$ su peso; $\mu_k$ su centro; $\Sigma_k$ su covarianza. $\mathcal N$ representa la densidad gaussiana.
 
-Un componente no equivale necesariamente a una categoría real. Es una parte de la representación estadística.
+La responsabilidad se calcula dividiendo el aporte de un componente por la suma de todos:
 
-## Qué es la variable latente
+$$\gamma_{ik}=\frac{\pi_k\mathcal N(x_i\mid\mu_k,\Sigma_k)}{\sum_j\pi_j\mathcal N(x_i\mid\mu_j,\Sigma_j)}.$$
 
-Observas el punto x, pero no qué componente z lo produjo. Esa identidad es latente. El modelo supone un proceso: elegir componente y después generar un punto dentro de él.
+Es exactamente el procedimiento de la tabla. Sumar las posibilidades de una variable que no observamos se llama **marginalizar**.
 
-Para obtener $p(x)$ sumamos todas las explicaciones posibles:
+## 8. Qué puede y qué no puede hacer este modelo
 
-$$p(x)=\sum_z p(z)p(x\mid z).$$
+Una vez entrenado puede generar puntos: elegir componente y después generar dentro de él. En la actividad se usa `gmm.sample()` para ese fin.
 
-Esta operación es **marginalizar**. No escogemos obligatoriamente un único grupo para calcular la densidad de un punto.
+EM puede terminar en una solución local: mejora respecto de cambios cercanos sin ser necesariamente la mejor solución posible. También pueden aparecer covarianzas que se contraen demasiado alrededor de un dato. Por eso importa la inicialización y pueden imponerse restricciones o regularización.
 
-## Responsabilidades: Bayes vuelve a aparecer
+Este GMM no modela el orden de los puntos. Para representar una secuencia necesitamos otra estructura, como [[09 S01 - Markov HMM y generación con bigramas|un HMM]].
 
-La responsabilidad del componente k sobre el punto $x_i$ es:
+## Fuentes de esta explicación
 
-$$\gamma_{ik}=P(z_i=k\mid x_i)=
-\frac{\pi_k\mathcal N(x_i\mid\mu_k,\Sigma_k)}
-{\sum_j\pi_j\mathcal N(x_i\mid\mu_j,\Sigma_j)}.$$
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-Supón dos pesos 0.6 y 0.4, y densidades en un punto de 0.2 y 0.1. Las contribuciones son 0.12 y 0.04. Al normalizar: responsabilidades 0.75 y 0.25.
-
-La densidad 0.2 no es «20 % de probabilidad de ese punto». Lo que sí son probabilidades normalizadas son las responsabilidades del componente discreto.
-
-## Por qué se necesita EM
-
-Si supiéramos los grupos, estimaríamos centros y dispersiones. Si supiéramos centros y dispersiones, calcularíamos qué grupos explican cada punto. EM resuelve esa dependencia alternando pasos.
-
-1. **Inicialización:** proponer parámetros iniciales.
-2. **Paso E, esperanza:** mantener parámetros fijos y calcular responsabilidades.
-3. **Paso M, maximización:** mantener responsabilidades fijas y recalcular parámetros.
-4. Repetir hasta un criterio de parada.
-
-Por ejemplo, la nueva media es un promedio ponderado:
-
-$$N_k=\sum_{i=1}^{N}\gamma_{ik},\qquad
-\mu_k^{\mathrm{nuevo}}=\frac{\sum_i\gamma_{ik}x_i}{N_k},\qquad
-\pi_k^{\mathrm{nuevo}}=\frac{N_k}{N}.$$
-
-N representa aquí la cantidad de observaciones. Un punto contribuye más al centro del componente que mejor lo explica. La covarianza también se recalcula ponderando por esas responsabilidades.
-
-## Generar es distinto de asignar grupos
-
-Una vez entrenado:
-
-1. Muestrea z con probabilidades $\pi_1,\ldots,\pi_K$.
-2. Muestrea x de la gaussiana elegida.
-
-Así se obtienen puntos nuevos. No se limita a devolver observaciones del conjunto de entrenamiento. La función `gmm.sample()` mencionada en la sesión implementa este tipo de muestreo.
-
-## Límites que conviene recordar
-
-EM puede terminar en soluciones locales; la inicialización importa. En mezclas gaussianas sin restricciones puede haber degeneraciones cuando una covarianza colapsa alrededor de un dato. Regularizar covarianzas y comparar inicializaciones son medidas habituales.
-
-El GMM estándar de esta sesión modela puntos independientes, no el orden de una secuencia. Para incorporar evolución temporal pasamos a [[09 S01 - Markov HMM y generación con bigramas]].
-
-## Complemento del libro: hacer un paso M a mano
-
-Bishop presenta las medias de EM como promedios ponderados. Supón tres observaciones unidimensionales: 0, 2 y 10. Después del paso E, las responsabilidades del primer componente son 0.9, 0.8 y 0.1.
-
-Su cantidad efectiva de observaciones es $N_1=0.9+0.8+0.1=1.8$. La nueva media es:
-
-$$\mu_1=\frac{0.9(0)+0.8(2)+0.1(10)}{1.8}=\frac{2.6}{1.8}\approx1.444.$$
-
-El nuevo peso es $\pi_1=1.8/3=0.6$. Los puntos no se cuentan obligatoriamente como «dentro» o «fuera»: pueden contribuir parcialmente.
-
-Para el segundo componente, las responsabilidades complementarias son 0.1, 0.2 y 0.9. Su media es $9.4/1.2\approx7.833$ y su peso 0.4. Esto ilustra por qué se habla de asignaciones suaves.
-
-No has terminado de entrenar: ahora los centros, pesos y covarianzas actualizados cambian las responsabilidades del siguiente paso E. La repetición busca mejorar la verosimilitud, no fijar de una vez una etiqueta definitiva.
-
-Una diferencia conceptual útil con K-means: en su formulación estándar, cada punto se asigna a un centro; en un GMM se calcula cuánto lo explica cada componente, incorporando pesos y dispersiones.
-
-**Fuente de las actualizaciones:** [[bishop-2006-prml.pdf#page=459|Bishop, §9.2.2, p. impresa 439; PDF 459]]. Números elegidos para esta nota.
-
-## Gráficos y diagramas para entender el tema
-
-### Cómo se ve una mezcla de gaussianas
-
-![Cómo se ve una mezcla de gaussianas](<Recursos visuales/04-gmm-componentes.png>)
-
-**Cómo leerlo:** Los puntos grises son observaciones sintéticas; las cruces marcan medias de componentes. Las elipses muestran contornos de las gaussianas, no fronteras de clasificación ni intervalos de confianza. Un dato puede recibir responsabilidad de ambos componentes. Esta figura ilustra la familia del modelo; no es el resultado de un ajuste al material del curso.
-
-### El ciclo de EM
-
-![El ciclo de EM](<Recursos visuales/05-em-ciclo.png>)
-
-**Cómo leerlo:** En E preguntas cuánto explica cada componente a cada dato. En M actualizas los parámetros con esas responsabilidades. La flecha de retorno recuerda que las nuevas medias y covarianzas cambian el siguiente paso E. El criterio de parada no demuestra que se alcanzó el mejor máximo global.
-
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[sesion-01.pdf#page=13|Sesión 01, páginas 13]]
+- [[bishop-2006-prml.pdf#page=459|Bishop, §9.2.2, p. impresa 439; PDF 459]]
 
 ## Preguntas para comprobar que entendiste
 
@@ -126,7 +122,7 @@ Intenta responder antes de desplegar cada respuesta.
 > Se multiplican peso y densidad: 0.12 y 0.04. Se divide cada contribución por 0.16.
 
 > [!question]- ¿Qué mantiene fijo el paso E y qué mantiene fijo el M?
-> E fija parámetros para inferir responsabilidades. M fija responsabilidades para reestimar parámetros.
+> En E usas los centros, dispersiones y pesos actuales para calcular cuánto corresponde cada punto a cada componente. En M usas esos aportes para calcular nuevos parámetros. Solo después vuelves a E.
 
 > [!question]- ¿EM garantiza el mejor máximo global?
 > No. Puede llegar a máximos locales o soluciones degeneradas según el modelo y la inicialización.
@@ -139,4 +135,4 @@ Intenta responder antes de desplegar cada respuesta.
 > Sí. Es la suma de responsabilidades, no un conteo de personas u objetos indivisibles.
 
 > [!question]- ¿Cuánto vale la media del primer componente del ejemplo?
-> 2.6/1.8≈1.444. Cada dato se pondera por la responsabilidad del componente.
+> Primero: 0×0.9 + 2×0.8 + 10×0.1 = 2.6. Después suma los aportes: 0.9+0.8+0.1=1.8. La media es 2.6/1.8≈1.444. El punto 10 influye poco porque su responsabilidad es solo 0.1.

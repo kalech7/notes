@@ -4,70 +4,46 @@ tags:
   - maestria/ia-generativa
 ---
 
-# IA generativa y agentes
+# IA generativa y agentes: empieza aquí
 
-Apuntes para aprender las **sesiones 00 y 01**, con explicaciones progresivas, ejemplos resueltos y preguntas desplegables. Se omitieron de los apuntes la portada y la presentación personal del profesor de la sesión 00, incluidos sus datos de contacto. Los PDF originales se conservan íntegros como material de consulta.
+Estos apuntes explican las sesiones 00 y 01 desde lo básico. Cada tema comienza con una situación concreta, introduce los términos cuando hacen falta y después desarrolla las fórmulas. Los ejemplos de los libros están integrados en la explicación: no necesitas leerlos completos para seguirla.
 
-## Cómo estudiar
+## Cómo leer una nota
 
-1. Lee una nota y explica su idea principal sin mirar.
-2. Resuelve las preguntas del final antes de abrir las respuestas.
-3. **Haz clic en el título o en la flecha de cada pregunta** para desplegar la respuesta en Obsidian, en vista de lectura o vista previa en vivo. En modo fuente verás el código Markdown.
-4. Repite al día siguiente las preguntas que fallaste. Avanza cuando puedas explicar el mecanismo, no solo recordar el nombre.
+Lee el ejemplo inicial y trata de entender qué problema intenta resolver. Cuando aparezca un gráfico, sigue las instrucciones que están debajo. Después revisa la fórmula relacionando sus letras con los números del ejemplo.
 
-Los ejemplos numéricos y aclaraciones son elaboración didáctica. Las referencias al pie de cada introducción indican qué páginas del material sustentan el tema. Los números corresponden a las páginas del PDF.
+Al final encontrarás preguntas. **Haz clic en el título o en la flecha de cada pregunta para abrir la respuesta** en Obsidian, usando vista de lectura o vista previa en vivo. Intenta contestar primero sin desplegarla.
 
-## Sesión 00: entender de dónde viene la IA
+## Primera parte: entender qué hace una IA
 
-- [[01 S00 - Qué es la IA y cómo evaluar inteligencia]]
-- [[02 S00 - Reglas modelos y aprendizaje desde datos]]
-- [[03 S00 - Perceptrón redes neuronales y XOR]]
-- [[04 S00 - Correlación causalidad y límites de las predicciones]]
+Sigue este orden:
 
-**Al terminar:** deberías distinguir automatización, aprendizaje, evaluación de comportamiento y causalidad.
+1. [[01 S00 - Qué es la IA y cómo evaluar inteligencia|Qué es la IA y cómo comprobar una capacidad]].
+2. [[02 S00 - Reglas modelos y aprendizaje desde datos|Qué es un modelo y cómo aprende de ejemplos]].
+3. [[03 S00 - Perceptrón redes neuronales y XOR|Cómo una neurona artificial toma una decisión]].
+4. [[04 S00 - Correlación causalidad y límites de las predicciones|Por qué una predicción no demuestra una causa]].
 
-## Sesión 01: entender qué hace generativo a un modelo
+## Segunda parte: entender cómo se generan datos
 
-Conviene empezar por Bayes, aunque la presentación introduzca primero la clasificación de modelos.
+1. [[05 S01 - Probabilidad y teorema de Bayes paso a paso|Bayes: actualizar una probabilidad con información nueva]].
+2. [[06 S01 - Modelos discriminativos y generativos|Dos maneras de aprender a clasificar]].
+3. [[07 S01 - Naive Bayes con un ejemplo de spam|Naive Bayes: calcular y generar con palabras]].
+4. [[08 S01 - GMM variables latentes y algoritmo EM|GMM y EM: aprender grupos que no vienen etiquetados]].
+5. [[09 S01 - Markov HMM y generación con bigramas|Markov y HMM: aprender de secuencias]].
+6. [[10 S01 - VAE espacio latente y ELBO|VAE: generar desde una representación oculta]].
+7. [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes|Cómo se conectan estas ideas con los LLM]].
 
-- [[05 S01 - Probabilidad y teorema de Bayes paso a paso]]
-- [[06 S01 - Modelos discriminativos y generativos]]
-- [[07 S01 - Naive Bayes con un ejemplo de spam]]
-- [[08 S01 - GMM variables latentes y algoritmo EM]]
-- [[09 S01 - Markov HMM y generación con bigramas]]
-- [[10 S01 - VAE espacio latente y ELBO]]
-- [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]
+## Dos explicaciones para profundizar
 
-**Al terminar:** deberías explicar qué distribución modela cada familia, cómo genera y qué información pierde con sus supuestos.
+- Después de Bayes: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|Cómo representar incertidumbre, con una moneda]].
+- Después de LLM: [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto|Cómo una frase se convierte en ejemplos de entrenamiento]].
 
-## Complementos de los libros, explicados dentro de tus notas
+Puedes leerlas al llegar a su tema o volver después. Están separadas para que las notas principales no acumulen demasiados conceptos a la vez.
 
-Las notas 01–11 incorporan ahora explicaciones de secciones consultadas directamente en los cuatro libros. Incluyen ejemplos de evaluación, sobreajuste, convergencia, incertidumbre, decisiones, EM y modelos de lenguaje. Las referencias son opcionales para consultar: la explicación está desarrollada aquí.
+## Si te atascas o quieres practicar
 
-Los dos desarrollos más largos están separados para leerlos paso a paso:
+- [[12 GLOSARIO - Diccionario explicado para estas sesiones|Busca un término explicado con palabras sencillas]].
+- [[13 PRÁCTICA - Repaso integrado y ejercicios resueltos|Resuelve los ejercicios y comprueba tus respuestas]].
+- [[14 FUENTES - Materiales y mapa de cobertura|Consulta de dónde sale cada explicación]].
 
-- [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números]]: después de la nota 05.
-- [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]]: después de la nota 11.
-
-## Aprende también con imágenes
-
-Las notas incluyen **10 gráficos y diagramas originales**, con una guía para leerlos: perceptrón, AND/XOR, Bayes por conteos, causalidad, GMM, EM, HMM, VAE, ciclo de LLM y posterior de Bayes. Están integrados junto al contenido en las notas 03, 04, 05, 08, 09, 10, 11, 15 y 16.
-
-## Apoyo y práctica
-
-- [[12 GLOSARIO - Diccionario explicado para estas sesiones]]
-- [[13 PRÁCTICA - Repaso integrado y ejercicios resueltos]]
-- [[14 FUENTES - Materiales y mapa de cobertura]]
-
-## Ruta en bloques pequeños
-
-| Bloque | Notas | Resultado que debes poder explicar |
-| --- | --- | --- |
-| 1 | 01–02 | Qué se evalúa y de dónde viene el conocimiento |
-| 2 | 03–04 | Cómo decide una neurona y por qué predecir no prueba causas |
-| 3 | 05–06 | Cómo usar Bayes y distinguir los enfoques |
-| 4 | 07–08 | Cómo generar con Naive Bayes y GMM |
-| 5 | 09–10 | Qué aportan las secuencias y los latentes continuos |
-| 6 | 11–13 | Cómo conectar estas ideas con LLM y resolver ejercicios |
-
-No necesitas leer los libros completos para seguir estos apuntes. La nota de fuentes distingue los materiales base de las lecturas de ampliación. El tema de agentes aparece aquí como orientación inicial; no se presenta como una sesión desarrollada que no está entre los PDF aportados.
+Se conservan los 10 gráficos y diagramas, los PDF originales y las referencias a las páginas consultadas. Los apuntes no incluyen la presentación personal del profesor. El contenido de agentes es una introducción: estas dos sesiones todavía se centran en los fundamentos y modelos generativos.

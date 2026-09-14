@@ -9,69 +9,56 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-00.pdf#page=4|Sesión 00, páginas 4–9]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Empecemos con una pregunta concreta
 
-## Qué debes comprender
+Imagina que te ofrecen una aplicación que «entiende tus apuntes». ¿Cómo comprobarías esa afirmación? Podrías darle una nota que nunca haya visto, hacerle preguntas y verificar si responde correctamente usando el contenido.
 
-La pregunta «¿una máquina es inteligente?» necesita un criterio de evaluación. Una definición abstracta puede orientar la conversación, pero para experimentar debemos decidir qué tarea hará el sistema, bajo qué condiciones y cómo mediremos su desempeño.
+Este ejemplo muestra el primer problema de la inteligencia artificial: **decir que un sistema es inteligente no explica qué sabe hacer ni cómo vamos a evaluarlo**.
 
-**Inteligencia artificial (IA)** es el campo que estudia y construye sistemas capaces de realizar tareas asociadas con capacidades inteligentes: reconocer patrones, utilizar lenguaje, planificar o resolver problemas. Esa descripción no establece por sí sola una prueba universal de inteligencia.
+La inteligencia artificial, o IA, estudia cómo construir sistemas que realizan tareas como reconocer imágenes, utilizar lenguaje, aprender de ejemplos y resolver problemas. Para estudiar una capacidad concreta, debemos convertirla en una prueba.
 
-### De una palabra amplia a una prueba concreta
+## 2. Qué significa evaluar una capacidad
 
-Imagina que alguien afirma: «Mi sistema entiende documentos». Para evaluarlo, convierte esa frase en preguntas observables: ¿identifica la idea principal?, ¿responde con información del documento?, ¿reconoce que falta una respuesta?, ¿funciona con documentos que no vio durante el entrenamiento?
+Una prueba necesita una tarea, unas condiciones y una forma de medir el resultado. Por ejemplo:
 
-Un ejemplo de criterio sería evaluar 50 preguntas nuevas con una rúbrica de exactitud y respaldo documental. Ese número es un ejemplo de diseño, no una exigencia del curso. La idea es medir algo definido, en lugar de aceptar una demostración convincente como prueba suficiente.
+- **Tarea:** responder preguntas sobre un documento.
+- **Condición:** el documento no formó parte de los ejemplos de evaluación usados al desarrollar el sistema.
+- **Medida:** cuántas respuestas son correctas y están respaldadas por el documento.
 
-## Antes de la disciplina: mito, mecanismo y apariencia
+A esta manera de convertir una idea en algo comprobable se le llama **definición operativa**. No tienes que memorizar el nombre: recuerda que pasamos de «parece que entiende» a «vamos a comprobar si puede hacer esto».
 
-La sesión usa a Talos como ejemplo de una idea antigua de autonomía. Es un personaje mítico; sirve para mostrar una aspiración humana, no como evidencia de tecnología real. El mecanismo de Antikythera representa otro caso: un dispositivo físico que realizaba cálculos astronómicos. Automatizar un cálculo no implica aprender de ejemplos.
+La medida también debe tener sentido. Si 990 de 1 000 correos son normales, un programa que siempre diga «normal» obtiene 99 % de aciertos. Sin embargo, no identifica ninguno de los 10 spam. El porcentaje es verdadero, pero no demuestra que el programa detecte spam.
 
-El contraste entre el **Turco mecánico**, que ocultaba a una persona, y los autómatas de **Jaquet-Droz**, cuyo mecanismo ejecutaba movimientos, deja una pregunta vigente: ¿qué produce realmente la respuesta que vemos?
+## 3. Una máquina automática no necesariamente aprende
 
-Hay tres niveles que conviene separar:
+Un reloj puede funcionar sin intervención humana continua y no aprender nada. Ejecuta un mecanismo. Un sistema que aprende, en cambio, modifica alguna parte de su comportamiento a partir de datos o experiencia.
 
-| Nivel | Pregunta | Ejemplo |
-| --- | --- | --- |
-| Comportamiento | ¿Qué resultado produce? | Escribe una frase |
-| Mecanismo | ¿Cómo se obtiene? | Levas, programa o red neuronal |
-| Aprendizaje | ¿Qué cambia gracias a los datos? | Se ajustan los pesos |
+La sesión presenta ejemplos históricos para distinguir estas ideas. Talos representa la imaginación de una máquina autónoma, pero pertenece al mito. Antikythera era un dispositivo real para cálculos astronómicos. Los autómatas de Jaquet-Droz ejecutaban movimientos mediante un mecanismo. El Turco mecánico aparentaba jugar ajedrez automáticamente, pero ocultaba a una persona.
 
-Una máquina puede funcionar automáticamente sin aprender. Y un resultado que parece automático puede tener intervención humana. Para comprender un sistema debemos examinar tanto sus resultados como su funcionamiento.
+El punto de estos ejemplos es preguntar **qué produce el resultado**. Dos demostraciones parecidas pueden funcionar de maneras muy distintas. Después, las computadoras programables permitieron cambiar de tarea sin construir una máquina completamente nueva para cada problema.
 
-## La importancia de poder programar
+## 4. Qué propuso Turing
 
-La transición hacia computadoras programables hizo posible expresar una tarea de una forma separable de la máquina que la ejecuta. Esto permite reutilizar un mismo equipo para problemas diferentes, aunque la facilidad de reprogramación varió mucho entre las primeras computadoras.
+En la versión de la prueba explicada en clase, una persona conversa por texto con interlocutores que no puede ver y trata de identificar cuál es una máquina.
 
-Piensa en una calculadora especializada frente a una computadora en la que ejecutas hoy un editor y mañana un clasificador. Lo decisivo para este tema es la flexibilidad de la tarea, no memorizar el peso o la superficie de máquinas históricas.
+La idea importante es que Turing propuso un procedimiento observable. En vez de resolver primero qué significa «pensar», planteó una situación que se podía probar.
 
-## Turing: hacer comprobable una pregunta
+Esa prueba evalúa cómo se comporta la máquina en una conversación bajo ciertas condiciones. No comprueba automáticamente que tenga conciencia, que diga la verdad o que pueda resolver cualquier tarea.
 
-En 1950, Turing propuso el juego de imitación. En la versión simplificada presentada en clase, una persona conversa por texto con interlocutores ocultos y debe distinguir a una máquina de una persona.
+## 5. Por qué aparece Dartmouth en esta historia
 
-La aportación es **operacionalizar**: sustituir una pregunta difícil de delimitar por un procedimiento observable. Se controla el canal de comunicación para que la apariencia física no determine el juicio.
+En 1956, la reunión de Dartmouth ayudó a dar nombre y un programa de investigación a la IA. Se propuso estudiar cómo representar capacidades como aprendizaje, lenguaje y abstracción para implementarlas en máquinas.
 
-La prueba estudia la capacidad de imitar una conversación humana bajo determinadas condiciones. No demuestra por sí sola conciencia, veracidad, comprensión de todos los dominios o capacidad de actuar competentemente en el mundo. También depende de quién evalúa, cuánto dura la conversación y qué preguntas se permiten.
+Era una propuesta de investigación, no una demostración de que todos esos problemas estuvieran resueltos. Esa diferencia sigue siendo útil: resolver una tarea concreta no demuestra una capacidad ilimitada.
 
-## Dartmouth: un programa de investigación
+**Lo que debes poder explicar al terminar:** cómo distinguir una demostración convincente de una capacidad comprobada. La siguiente nota responde otra pregunta: [[02 S00 - Reglas modelos y aprendizaje desde datos|¿cómo construimos el conocimiento que usa el sistema?]]
 
-La reunión de Dartmouth de 1956 dio nombre y un programa de trabajo a la IA. La propuesta vinculaba lenguaje, aprendizaje, abstracción, redes neuronales y creatividad con la posibilidad de construir máquinas.
+## Fuentes de esta explicación
 
-Una **conjetura** es una idea que orienta la investigación; no es un resultado demostrado. Que una máquina resuelva una tarea concreta no demuestra automáticamente que todos los aspectos de la inteligencia sean simulables de la misma manera.
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-### Conexión con la IA generativa
-
-Un texto fluido puede impresionar igual que una demostración de un autómata. Para estudiarlo bien, pregunta qué aprende el modelo, cómo genera y cómo se verifica lo que afirma. Esas preguntas llevan a [[02 S00 - Reglas modelos y aprendizaje desde datos]].
-
-## Complemento del libro: una métrica puede engañarte
-
-Bishop explica que la proporción de clases afecta a la evaluación. Adaptemos la idea a correos: si 990 de 1 000 son normales, un sistema que siempre diga «normal» logra 99 % de aciertos, pero detecta cero de los 10 spam. El cálculo es correcto; la conclusión «detecta bien spam» sería incorrecta.
-
-Para tu criterio operativo, especifica qué error quieres detectar. **Exactitud global** pregunta qué proporción de decisiones acertó. **Sensibilidad de spam** pregunta cuántos spam reales encontró. Una prueba útil compara además el sistema con una alternativa simple, como predecir siempre la clase mayoritaria.
-
-La lección conecta con Turing: elegir un procedimiento observable es necesario, pero también hay que justificar que ese procedimiento mide la capacidad que nos importa. Un número alto sin contexto no lo demuestra.
-
-**Fuente del complemento:** [[bishop-2006-prml.pdf#page=65|Bishop, §1.5.4, p. impresa 45; PDF 65]]. Ejemplo de correos elaborado para estas notas.
+- [[sesion-00.pdf#page=4|Sesión 00, páginas 4–9]]
+- [[bishop-2006-prml.pdf#page=65|Bishop, §1.5.4, p. impresa 45; PDF 65]]
 
 ## Preguntas para comprobar que entendiste
 

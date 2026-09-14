@@ -9,91 +9,94 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-01.pdf#page=17|Sesión 01, páginas 17–18]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Qué problema intenta resolver un VAE
 
-## Intuición: generar a través de una representación oculta
+Imagina muchas imágenes de números escritos a mano. Hay distintos tamaños, inclinaciones y grosores de trazo. Quieres aprender de esas imágenes para producir otras nuevas que se parezcan a ellas.
 
-Un **autocodificador variacional (VAE)** propone que un dato puede generarse a partir de una variable latente continua z. En una imagen de un dígito, esa representación podría codificar variaciones de forma o trazo, aunque no se garantiza que cada dimensión tenga una interpretación humana clara.
+Un **VAE, autocodificador variacional**, aprende a generar datos usando una representación oculta llamada z. Puedes pensar en z como una lista de números que sirve de punto de partida para generar una imagen. No debes asumir que cada número tiene un significado claro, como «inclinación»: esa interpretación no está garantizada.
 
-El modelo generativo tiene un prior $p(z)$ y un decodificador probabilístico $p_\theta(x\mid z)$. Para aprender a partir de datos se añade un codificador $q_\phi(z\mid x)$ que aproxima la posterior del latente.
+## 2. Primero entiende las dos redes
 
-## Dos redes, dos funciones
+El **codificador** recibe una imagen y propone una distribución de códigos z que podrían servir para representarla.
 
-| Parte | Entrada y salida | Papel |
-| --- | --- | --- |
-| Codificador | De x a parámetros de una distribución sobre z | Inferir latentes plausibles |
-| Decodificador | De z a una distribución sobre x | Reconstruir o generar |
+El **decodificador** recibe un código z y produce una distribución sobre imágenes. Durante entrenamiento intentamos que pueda explicar bien las imágenes originales.
 
-En el caso gaussiano diagonal usual, el codificador produce una media $\mu$ y varianzas $\sigma^2$. No entrega solo un código fijo: define una distribución de códigos para esa entrada.
+![Los dos recorridos del VAE](<Recursos visuales/07-vae.png>)
 
-Los parámetros $\phi$ pertenecen al codificador y $\theta$ al decodificador. El latente z es diferente: se infiere o muestrea por ejemplo y no es el conjunto de pesos de las redes.
+En la ruta superior partes de una imagen conocida. En la inferior partes de un código sorteado. Ambas rutas utilizan el mismo decodificador.
 
-## Por qué aparece la ELBO
+## 3. Por qué el codificador entrega una distribución
 
-Queremos modelar:
+Un autocodificador determinista suele asignar un código concreto a una entrada. En el VAE gaussiano habitual, el codificador produce una media y una varianza para cada coordenada del código.
 
-$$p_\theta(x)=\int p_\theta(x\mid z)p(z)\,dz.$$
+La **media** indica alrededor de qué valor se concentra esa coordenada. La **varianza** describe cuánto se dispersan sus valores. Después sorteamos un código usando esa distribución. A sortear siguiendo probabilidades se le llama **muestrear**.
 
-La integral suele ser difícil de calcular exactamente. Se optimiza una cota inferior de la log-probabilidad, llamada **ELBO**:
+Por eso dos pasadas de la misma imagen pueden utilizar códigos distintos. No significa que los pesos de la red hayan cambiado.
 
-$$\mathcal L(x)=\mathbb E_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)]
--D_{KL}(q_\phi(z\mid x)\Vert p(z)).$$
+## 4. Reconstruir y generar tienen puntos de partida distintos
 
-El primer término recompensa que el decodificador explique bien x usando códigos del codificador. El segundo penaliza que la distribución codificada se aparte del prior. **Se maximiza la ELBO**; si el programa utiliza una pérdida para minimizar, suele emplear su negativo.
+**Reconstruir:** tomas una imagen, la codificas, sorteas z y la decodificas. Puedes comparar el resultado con la imagen original.
 
-Una forma de comprender ambos términos: no basta con reconstruir cada dato mediante códigos arbitrarios; también queremos que el espacio donde muestreamos produzca códigos útiles. El equilibrio es una propiedad del objetivo, no una promesa de que toda muestra será buena.
+**Generar una imagen nueva:** sorteas z de una distribución de referencia, llamada **prior**, y lo pasas al decodificador. No necesitas una imagen de entrada para esta ruta.
 
-La divergencia KL es no negativa y no es una distancia simétrica. En general, intercambiar sus dos distribuciones cambia el resultado.
+Un prior frecuente es $\mathcal N(0,I)$: coordenadas gaussianas con media cero y covarianza identidad. Es una distribución sencilla de la que podemos obtener códigos.
 
-## Reparametrización con números
+## 5. Qué debe aprender el modelo
 
-En lugar de escribir un muestreo cuya dependencia de los parámetros resulte difícil de derivar, se usa:
+No basta con reconstruir las imágenes conocidas mediante códigos arbitrarios. También queremos que los códigos sorteados del prior sean útiles para generar.
 
-$$\epsilon\sim\mathcal N(0,I),\qquad z=\mu+\sigma\odot\epsilon.$$
+El entrenamiento combina dos objetivos:
 
-$\odot$ indica multiplicación componente a componente. La aleatoriedad se concentra en $\epsilon$ y el resto se expresa como operaciones diferenciables respecto de $\mu$ y $\sigma$.
+1. Que el decodificador explique bien la imagen original a partir del código.
+2. Que la distribución de códigos propuesta por el codificador no se aleje demasiado del prior.
 
-En una dimensión, si $\mu=2$, $\sigma=0.5$ y se obtiene $\epsilon=-1$, entonces z=1.5. Multiplicamos por la desviación estándar $\sigma$, no por la varianza $\sigma^2$.
+El segundo se expresa mediante **divergencia KL**, una medida de diferencia entre distribuciones. No es simétrica: intercambiar las distribuciones puede cambiar el resultado.
 
-## Reconstruir y generar
+## 6. La ELBO explicada antes de memorizarla
 
-**Reconstruir:** partir de un dato x, codificarlo, muestrear z de $q_\phi(z\mid x)$ y decodificar.
+La **ELBO** es la cantidad que se maximiza al entrenar. Se puede leer como «qué tan bien explica el dato, menos una penalización por alejar el código del prior».
 
-**Generar:** muestrear z directamente del prior, por ejemplo $\mathcal N(0,I)$, y usar el decodificador. No hace falta una entrada observada para este paso.
+Supón que el primer término vale −5 y la penalización vale 2. ELBO = −5−2 = −7. Si otro ajuste obtiene −4 y penalización 5, ELBO = −9. Aunque mejoró la primera parte, empeoró el total. Como queremos maximizar, −7 es mejor que −9.
 
-## Matices de la diapositiva
+En símbolos:
 
-«El VAE falla en texto» resume dificultades, no una imposibilidad general. Hay modelos variacionales de texto. Sus problemas pueden incluir objetivos difíciles de equilibrar y colapso del posterior, donde el decodificador usa poco la información latente.
+$$\mathcal L(x)=\mathbb E_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)]-D_{KL}(q_\phi(z\mid x)\Vert p(z)).$$
 
-Tampoco todos los decodificadores VAE producen componentes de x de manera independiente o simultánea: depende de la arquitectura y de cómo se factorice $p_\theta(x\mid z)$. El ejemplo introductorio del curso usa el contraste con generación paso a paso para orientar la intuición.
+Lee cada parte con calma:
 
-**Apoyo consultado:** [[doersch-2016-tutorial-vae.pdf|Doersch, introducción a modelos generativos y variables latentes]]. La fórmula de ELBO y la reparametrización también aparecen en el glosario suministrado.
+- x es la imagen observada y z su código oculto.
+- $q_\phi(z\mid x)$ es la distribución de códigos que propone el codificador.
+- $p_\theta(x\mid z)$ es el modelo de imágenes del decodificador.
+- $\mathbb E$ significa tomar un promedio sobre los códigos posibles.
+- $\phi$ y $\theta$ son los pesos de las redes; no son el código z.
 
-## Complemento del libro: por qué el codificador es una aproximación útil
+ELBO significa una **cota inferior**: queda por debajo de la log-probabilidad del dato que querríamos optimizar. Se usa porque calcular esa probabilidad exacta normalmente exige una integral difícil. En programas que minimizan una pérdida se usa a menudo el negativo de ELBO.
 
-Murphy explica el codificador como una **red de inferencia**. Dado x, queremos averiguar qué z podría haberlo generado. Resolver esa búsqueda desde cero para cada dato puede ser costoso; el codificador aprende una función reutilizable que propone una distribución latente rápidamente. A esto se le llama inferencia amortizada.
+## 7. Cómo muestrear y seguir entrenando
 
-La dirección generativa sigue siendo $z\rightarrow x$. La dirección $x\rightarrow z$ del codificador ayuda a inferir y entrenar; no cambia el sentido de cómo el modelo dice que se producen los datos.
+Para calcular derivadas útiles se escribe el código como:
 
-Un autocodificador determinista puede aprender a comprimir y reconstruir, pero su objetivo de reconstrucción, por sí solo, no define un prior adecuado del que muestrear códigos nuevos. El VAE incorpora explícitamente ese componente probabilístico y un objetivo que lo conecta con la reconstrucción.
+$$z=\mu+\sigma\odot\epsilon,\qquad\epsilon\sim\mathcal N(0,I).$$
 
-### Una ELBO con números
+Primero sorteamos ruido $\epsilon$. Después lo escalamos con la desviación estándar $\sigma$ y sumamos la media $\mu$. $\odot$ significa multiplicar coordenada por coordenada.
 
-Supón que el término esperado de reconstrucción vale −5 y la KL vale 2. Entonces ELBO = −7 y su negativo, utilizado como pérdida, vale 7. En otro ajuste, la reconstrucción mejora a −4, pero la KL sube a 5: ELBO = −9. Mejoró una parte y empeoró el objetivo conjunto.
+En una dimensión, con media 2, desviación 0.5 y ruido −1, obtenemos $z=2+0.5(-1)=1.5$. Se usa la desviación, no la varianza. Este procedimiento se llama **reparametrización** y permite calcular cómo cambiar los parámetros aunque haya muestreo.
 
-Esto evita interpretar «reconstruye mejor» como sinónimo de «optimiza mejor el VAE». Hay que evaluar ambos términos. Los valores son inventados para entender signos y balance; no representan un experimento del libro.
+## 8. Por qué se aprende un codificador
 
-**Fuente:** [[murphy-2022-pml-introduction.pdf#page=713|Murphy, §20.3.5, pp. impresas 683–685; PDF 713–715]], especialmente la explicación de inferencia amortizada y las ecuaciones de ELBO en PDF 715.
+Averiguar qué código explica cada imagen mediante una búsqueda nueva puede ser costoso. El codificador aprende una función que reutilizamos para muchas imágenes. Murphy llama a esto **inferencia amortizada**: se invierte en aprender la función y luego se aplica a cada entrada.
 
-## Gráficos y diagramas para entender el tema
+Hay VAE para texto, aunque tienen dificultades. Una de ellas es que el decodificador termine utilizando poco el código oculto. Tampoco todos los VAE producen la salida de la misma manera: depende de cómo se diseñe el decodificador.
 
-### Dos recorridos en un VAE
+**Qué debes recordar:** el codificador ayuda a inferir códigos para datos conocidos; el decodificador utiliza códigos para modelar y generar datos. El entrenamiento conecta ambas partes.
 
-![Dos recorridos en un VAE](<Recursos visuales/07-vae.png>)
+## Fuentes de esta explicación
 
-**Cómo leerlo:** Arriba: un dato pasa por el codificador, se obtiene una distribución latente y se muestrea z para decodificar. Abajo: al generar, z viene directamente del prior. El decodificador produce una distribución sobre x; su salida puede usarse para reconstruir o muestrear según el modelo. La ruta inferior evita el codificador, pero utiliza el mismo decodificador entrenado.
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[sesion-01.pdf#page=17|Sesión 01, páginas 17–18]]
+- [[doersch-2016-tutorial-vae.pdf|Doersch, introducción a modelos generativos y variables latentes]]
+- [[murphy-2022-pml-introduction.pdf#page=713|Murphy, §20.3.5, pp. impresas 683–685; PDF 713–715]]
 
 ## Preguntas para comprobar que entendiste
 
@@ -103,7 +106,7 @@ Intenta responder antes de desplegar cada respuesta.
 > Produce parámetros de una distribución, normalmente media y varianza. De esa distribución se muestrea el código latente.
 
 > [!question]- ¿Qué equilibran los dos términos de la ELBO?
-> La capacidad de explicar o reconstruir el dato y la cercanía de la distribución latente inferida al prior.
+> El primer término favorece que el decodificador explique bien el dato original. El segundo penaliza que los códigos que propone el codificador se alejen demasiado de la distribución de la que queremos generar.
 
 > [!question]- Con media 1, desviación 2 y epsilon 0.5, ¿cuánto vale z?
 > z=1+2×0.5=2. Se utiliza la desviación estándar, no su cuadrado.
@@ -116,7 +119,7 @@ Intenta responder antes de desplegar cada respuesta.
 
 
 > [!question]- ¿Qué significa inferencia amortizada?
-> Entrenar una función compartida, el codificador, para aproximar la posterior de distintos datos sin resolver desde cero una búsqueda separada para cada uno.
+> Significa aprender un codificador que propone códigos para muchas entradas. Así no hace falta empezar una búsqueda independiente y costosa cada vez que llega una nueva imagen.
 
 > [!question]- ¿Qué ELBO es mejor: −7 o −9?
 > −7, porque se maximiza la ELBO. Si se minimiza su negativo, 7 es mejor que 9.

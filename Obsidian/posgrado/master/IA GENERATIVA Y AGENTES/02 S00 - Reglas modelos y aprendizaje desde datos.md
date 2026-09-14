@@ -9,82 +9,73 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-00.pdf#page=11|Sesión 00, páginas 11–13]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Qué es un modelo, con un ejemplo sencillo
 
-## Un modelo es una representación que puede fallar
+Un mapa representa una ciudad, pero no contiene todo lo que hay en ella. Conserva lo necesario para orientarte. Un modelo hace algo parecido: representa ciertas relaciones de un problema para poder calcular o predecir algo.
 
-Un modelo simplifica un fenómeno para calcular algo sobre él. Un mapa no contiene todos los detalles de una ciudad, pero permite planificar una ruta. De manera parecida, un modelo de clasificación conserva relaciones útiles para predecir una etiqueta.
+Por ejemplo, un modelo de correos recibe información de un mensaje e intenta decidir si es spam. No reproduce todo lo que sabe una persona sobre comunicación; utiliza las características y relaciones que su diseño permite representar.
 
-Sus supuestos determinan qué representa bien y qué puede ignorar. Un modelo puede ser matemáticamente correcto y describir mal el fenómeno porque sus supuestos no se cumplen.
+Por eso un modelo puede ser útil y equivocarse. Su representación es una simplificación.
 
-## Dos maneras de introducir conocimiento
+## 2. Primera forma: una persona escribe las reglas
 
-**Enfoque simbólico:** una persona expresa hechos, reglas y relaciones. Un motor de inferencia utiliza esas reglas para obtener conclusiones.
+Supón que defines estas instrucciones:
 
 ```text
-Hecho: Ana entregó el proyecto.
-Hecho: Ana aprobó el examen.
-Regla: si alguien entregó el proyecto y aprobó el examen,
-       cumple los requisitos académicos considerados.
-Conclusión: Ana cumple esos requisitos.
+Si Ana entregó el proyecto y aprobó el examen,
+entonces cumple los dos requisitos considerados.
 ```
 
-Aquí podemos inspeccionar la derivación. Pero la conclusión solo vale respecto de esas reglas y hechos: si falta un requisito, la derivación no garantiza que la decisión sea correcta en el mundo real.
+El sistema revisa los hechos y aplica la regla. Esto es un ejemplo de enfoque **simbólico**: el conocimiento se expresa como hechos y reglas.
 
-LISP y Prolog aparecen en la sesión como herramientas históricas importantes. LISP está asociado al procesamiento de listas y funciones; Prolog permite expresar hechos y reglas lógicas. No necesitas dominar estos lenguajes para comprender la diferencia entre escribir conocimiento y aprender parámetros.
+Puedes revisar cómo llegó a la conclusión. Pero si olvidaste incluir un tercer requisito, la conclusión puede ser insuficiente para la situación real. Razonar correctamente con una regla no garantiza que la regla describa todo el problema.
 
-**Enfoque estadístico:** se define una familia de modelos y se ajustan sus parámetros a partir de ejemplos. Para detectar spam, en lugar de escribir todas las reglas posibles, se proporcionan correos y etiquetas y se optimiza un criterio de aprendizaje.
+LISP y Prolog aparecen en la sesión por su importancia histórica. Para esta parte basta recordar que permitieron expresar programas y conocimiento de manera explícita; no necesitas aprender sus lenguajes ahora.
 
-La frase «nadie escribe el conocimiento» es una simplificación: las personas siguen eligiendo datos, variables, arquitectura y objetivo. Lo aprendido es la configuración concreta de parámetros.
+## 3. Segunda forma: ajustar a partir de ejemplos
 
-| Aspecto | Reglas explícitas | Aprendizaje estadístico |
-| --- | --- | --- |
-| Contenido principal | Hechos y reglas | Parámetros ajustados |
-| Cambio habitual | Editar reglas | Volver a entrenar o ajustar |
-| Dificultad | Mantener excepciones | Conseguir datos y generalizar |
-| Explicación | Puede ofrecer derivación formal | Requiere analizar comportamiento y evidencia |
+En lugar de escribir todas las condiciones que hacen spam a un correo, entregas muchos correos clasificados. El modelo busca valores numéricos que le ayuden a predecir esas etiquetas.
 
-Las familias pueden combinarse. Un sistema puede generar texto con una red neuronal y comprobar reglas de negocio mediante código.
+Esos valores se llaman **parámetros**. Por ejemplo, un peso puede aumentar cuánto influye una característica en la decisión. **Entrenar** significa ajustar esos valores usando los datos.
 
-## Qué ocurre al entrenar
+El proceso tiene una secuencia:
 
-1. Se representan las entradas mediante números.
-2. El modelo produce una predicción usando sus parámetros actuales.
-3. Una función de pérdida mide el desacuerdo con el objetivo.
-4. Un procedimiento de optimización modifica los parámetros.
-5. Se evalúa con datos distintos de los usados para ajustar.
+1. El modelo recibe un ejemplo y hace una predicción.
+2. Se compara con el resultado esperado.
+3. Una función de pérdida mide cuánto se equivocó según el criterio elegido.
+4. Un procedimiento de ajuste modifica los parámetros.
+5. Se repite con más ejemplos y se comprueba el desempeño en datos nuevos.
 
-**Entrenamiento** significa ajustar. **Inferencia**, en el uso habitual de aprendizaje automático, significa aplicar el modelo entrenado. Un ejemplo nuevo puede cambiar la respuesta sin cambiar los pesos.
+Las personas siguen tomando decisiones: qué datos usar, qué modelo construir y qué error minimizar. Aprender de datos no elimina esas decisiones.
 
-### Memorizar no es generalizar
+## 4. Entrenar no es lo mismo que usar el modelo
 
-Si estudias únicamente las respuestas exactas de un examen viejo, puedes fallar ante una pregunta equivalente redactada de otra forma. A un modelo también le puede pasar: aprender detalles del conjunto de entrenamiento no garantiza funcionar en casos nuevos.
+Durante el entrenamiento cambian los parámetros. Durante el uso ordinario del modelo, llamado **inferencia**, los parámetros permanecen fijos y cambia la entrada.
 
-Por eso se separan datos de entrenamiento, validación y prueba. La validación ayuda a tomar decisiones de desarrollo; la prueba permite una evaluación final que no debería guiar repetidamente esas decisiones.
+Piensa en estudiar y rendir un examen. Al estudiar ajustas lo que sabes; al responder utilizas lo aprendido. Es una analogía para distinguir etapas, no una afirmación de que una red aprende igual que una persona.
 
-## Qué cambia con deep learning
+## 5. Por qué memorizar puede dar malos resultados
 
-En aprendizaje estadístico tradicional era frecuente diseñar manualmente características: presencia de palabras, longitud del texto o número de signos. Las redes profundas pueden aprender representaciones intermedias útiles a partir de los datos.
+Bishop muestra una curva que pasa por todos los puntos de entrenamiento, pero hace oscilaciones extrañas entre ellos. Captura también pequeñas variaciones que no representan la tendencia general. A esto se le llama **sobreajuste**.
 
-Esto no elimina el diseño humano; desplaza parte del trabajo hacia seleccionar la arquitectura, el objetivo y el procedimiento de aprendizaje. La siguiente nota muestra la unidad más sencilla de ese enfoque: [[03 S00 - Perceptrón redes neuronales y XOR]].
+Imagina mediciones de temperatura con algo de ruido del sensor. Una curva demasiado rígida puede no seguir la tendencia; una demasiado flexible puede perseguir cada error de medición. Queremos que funcione en horas que no medimos, no solo que copie los datos conocidos.
 
-## Complemento del libro: entender el sobreajuste con una curva
+Por eso se separan conjuntos de datos: entrenamiento para ajustar; validación para orientar decisiones de desarrollo; prueba para evaluar al final. Si usas la prueba repetidamente para cambiar el modelo, deja de ser una comprobación independiente.
 
-Bishop empieza con puntos generados alrededor de una curva. Compara modelos con distinta flexibilidad: uno demasiado rígido no sigue la tendencia; uno muy flexible pasa por todos los puntos, pero oscila entre ellos. Ajustar exactamente las observaciones también puede significar ajustar su ruido.
+**Capacidad** es lo que la familia del modelo puede representar. **Generalización** es cómo funciona lo que aprendió en datos nuevos. Tener más capacidad no garantiza generalizar mejor.
 
-Imagina que mides temperatura a diferentes horas. Las mediciones contienen una tendencia y pequeñas variaciones del sensor. Si fuerzas al modelo a reproducir cada variación, quizá prediga mal una hora no medida. El objetivo es capturar la relación que persiste, no cada accidente de la muestra.
+## 6. Qué añade el aprendizaje profundo
 
-| Lo que observas | Interpretación posible | Qué revisar |
-| --- | --- | --- |
-| Error alto en entrenamiento y validación | Modelo demasiado restrictivo o ajuste deficiente | Representación, capacidad y entrenamiento |
-| Error muy bajo en entrenamiento y alto en validación | Posible sobreajuste | Datos, complejidad y regularización |
-| Error bajo en ambos | Buena señal en esa evaluación | Prueba independiente y condiciones de uso |
+En muchos métodos tradicionales, una persona diseña características como longitud del correo o presencia de una palabra. Una red profunda puede aprender representaciones intermedias útiles a partir de los datos.
 
-Estos patrones orientan el diagnóstico; no identifican por sí solos una causa única. Datos mal divididos también pueden hacer que la validación parezca excelente.
+Para entender qué significa esto, comienza con una unidad sencilla: [[03 S00 - Perceptrón redes neuronales y XOR|el perceptrón]].
 
-**Capacidad** significa qué funciones puede representar el modelo. **Generalización** significa cómo funciona fuera de los datos de ajuste. La primera no garantiza la segunda. En la figura del libro, el polinomio más flexible incluye a los simples entre sus posibilidades, pero el ajuste elegido a partir de pocos datos resulta peor fuera de la muestra.
+## Fuentes de esta explicación
 
-**Fuente:** [[bishop-2006-prml.pdf#page=26|Bishop, §1.1, pp. impresas 6–8; PDF 26–28]]. El ejemplo de temperatura y la tabla son explicaciones propias.
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
+
+- [[sesion-00.pdf#page=11|Sesión 00, páginas 11–13]]
+- [[bishop-2006-prml.pdf#page=26|Bishop, §1.1, pp. impresas 6–8; PDF 26–28]]
 
 ## Preguntas para comprobar que entendiste
 

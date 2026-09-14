@@ -9,93 +9,89 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-01.pdf#page=12|Sesión 01, páginas 12]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. La idea: aprender qué palabras aparecen en cada clase
 
-## La idea que simplifica el problema
+Vamos a crear un clasificador pequeño. En lugar de interpretar el correo como una persona, contará palabras y aprenderá cuáles aparecen más en spam y en mensajes normales.
 
-Naive Bayes supone que las características son independientes **condicionadas a la clase**:
+Usaremos solo tres palabras para poder hacer todas las cuentas: **oferta, premio y reunión**. Los conteos son inventados para aprender el procedimiento.
 
-$$P(X,Y)=P(Y)\prod_{i=1}^{d}P(x_i\mid Y).$$
-
-Aquí d es el número de características. El supuesto no afirma que todas las palabras sean independientes en general. Afirma que, una vez fijada la clase, el modelo calcula sus contribuciones por separado.
-
-En lenguaje esto rara vez es exacto: «tarjeta» y «crédito» siguen relacionadas aunque ya sepamos que el correo es spam. La simplificación puede ser útil para clasificar, pero pierde estructura.
-
-## Dos variantes que no debes mezclar
-
-**Bernoulli:** cada característica indica presencia o ausencia de una palabra en un documento. Se estiman probabilidades de presencia dentro de los documentos de cada clase y también importa la ausencia.
-
-**Multinomial:** representa conteos de palabras y estima probabilidades de tokens dentro de cada clase. En un correo importa cuántas veces aparece cada palabra. Esta es la variante del siguiente ejemplo.
-
-Contar documentos que contienen una palabra y contar todas las apariciones de esa palabra no es la misma operación.
-
-## Ejemplo de conteo y suavizado
-
-Vocabulario: `oferta`, `premio`, `reunión`. Supón estos conteos de tokens:
-
-| Palabra | Spam | Normal |
+| Palabra | Apariciones en spam | Apariciones en normales |
 | --- | --- | --- |
 | oferta | 6 | 1 |
 | premio | 3 | 0 |
 | reunión | 1 | 9 |
 | Total | 10 | 10 |
 
-Sin suavizado, premio tendría probabilidad cero en normales. Eso anularía el producto completo de esa clase cuando aparece la palabra.
+## 2. El supuesto que simplifica el cálculo
 
-Con suavizado de Laplace, $\alpha=1$, sumamos uno a cada conteo y el tamaño del vocabulario al total:
+Naive Bayes calcula la contribución de cada característica por separado una vez fijada la clase. Este supuesto se llama **independencia condicional**.
 
-$$P(w\mid c)=\frac{N_{w,c}+\alpha}{N_c+\alpha V}.$$
+Para entenderlo, imagina que ya decidiste evaluar la clase spam. El modelo multiplica la contribución de «oferta» por la de «premio» sin representar que ambas palabras podrían estar relacionadas dentro de la misma frase.
 
-En este ejemplo V=3 es el tamaño del vocabulario; es una notación local a esta nota.
+La simplificación suele ser falsa en sentido literal, pero puede ser útil. Permite estimar menos relaciones a partir de los datos.
 
-| Palabra | $P(w\mid S)$ | $P(w\mid N)$ |
+$$P(X,Y)=P(Y)\prod_i P(x_i\mid Y).$$
+
+La fórmula dice: probabilidad de la clase multiplicada por las probabilidades de sus características. El símbolo $\prod$ significa multiplicar los términos.
+
+## 3. Por qué necesitamos suavizado
+
+En los correos normales no apareció «premio». Si le asignamos probabilidad cero, cualquier mensaje con esa palabra obtiene producto cero para esa clase. Estaríamos tratando algo no observado como imposible.
+
+El **suavizado de Laplace** añade uno a cada conteo. Como tenemos tres palabras, añadimos tres al total:
+
+| Palabra | Probabilidad en spam | Probabilidad en normales |
 | --- | --- | --- |
-| oferta | 7/13 | 2/13 |
+| oferta | (6+1)/(10+3) = 7/13 | 2/13 |
 | premio | 4/13 | 1/13 |
 | reunión | 2/13 | 10/13 |
 
-Cada columna suma 1. El suavizado evita tratar un evento no observado como imposible; no demuestra que todas las palabras sean igualmente plausibles.
+Cada columna suma 1. Si sumaras uno arriba pero dejaras 10 abajo, ya no tendrías probabilidades que sumen 1.
 
-## Clasificar «oferta premio»
+Para cualquier vocabulario de tamaño V, la regla es $(\text{conteo}+1)/(\text{total}+V)$. El tamaño del vocabulario importa porque repartes masa entre todas las opciones.
 
-Supón priors iguales: $P(S)=P(N)=0.5$. Para comparar clases calculamos puntajes proporcionales a la posterior:
+## 4. Clasifiquemos «oferta premio» paso a paso
 
-$$s_S=0.5\frac7{13}\frac4{13}=\frac{14}{169},$$
-$$s_N=0.5\frac2{13}\frac1{13}=\frac1{169}.$$
+Supongamos que antes de leer el mensaje spam y normal tienen la misma probabilidad: 0.5 cada uno.
 
-Normalizamos:
+**Puntaje de spam:** $0.5\times7/13\times4/13=14/169$.
 
-$$P(S\mid X)=\frac{s_S}{s_S+s_N}=\frac{14}{15}\approx0.9333.$$
+**Puntaje de normal:** $0.5\times2/13\times1/13=1/169$.
 
-El modelo asigna mayor probabilidad a spam. El coeficiente multinomial común a ambas clases se cancela en esta comparación. Esta probabilidad es la del modelo y depende de sus supuestos; no constituye una certeza del mundo real.
+Estos dos puntajes todavía no suman 1. Sumamos ambos: $15/169$. Luego dividimos el puntaje de spam entre ese total:
 
-Para correos largos se suman logaritmos en lugar de multiplicar números muy pequeños:
+$$P(\text{spam}\mid\text{mensaje})=\frac{14/169}{15/169}=\frac{14}{15}\approx93.33\%.$$
 
-$$\log P(c)+\sum_w n_w\log P(w\mid c).$$
+Este resultado pertenece al modelo y sus supuestos; no es una garantía absoluta. En el modelo de conteos, un factor combinatorio común a ambas clases se cancela al comparar estos puntajes.
 
-## Usar el modelo para generar
+## 5. Cómo generar un mensaje con el mismo modelo
 
-Fija la clase spam y elige una longitud, por ejemplo cinco palabras. En cada posición muestrea usando las probabilidades 7/13, 4/13 y 2/13. Podría salir «oferta premio oferta reunión oferta».
+Fija la clase spam y una longitud, por ejemplo cinco palabras. Sortea cada palabra usando las probabilidades 7/13, 4/13 y 2/13. Podría salir «oferta premio oferta reunión oferta».
 
-Ese procedimiento refleja frecuencias de la clase, pero no utiliza la palabra anterior. No aprendió orden, concordancia ni significado composicional. Fijar la longitud también es una decisión de este ejemplo: estas probabilidades no modelan por sí mismas la longitud del correo.
+Se parece al spam en frecuencias, pero no necesariamente en gramática. El modelo no utiliza el orden de las palabras. Suavizar tampoco añade esa capacidad: solo modifica las probabilidades estimadas.
 
-## Qué aporta al recorrido del curso
+La clase se conoce en los ejemplos de entrenamiento; no es una variable latente allí. Al generar podemos elegirla o sortearla.
 
-Naive Bayes demuestra que la generación comienza en una distribución y un mecanismo de muestreo; no exige una red enorme. Sus límites permiten comprender por qué luego necesitamos dependencias, estados ocultos y representaciones más flexibles.
+## 6. Dos variantes que debes distinguir
 
-## Complemento del libro: por qué tiene sentido sumar uno
+El ejemplo anterior usa **Naive Bayes multinomial**: cuenta apariciones de palabras. Si «oferta» aparece tres veces, sus tres apariciones cuentan.
 
-El suavizado no tiene que entenderse como un truco arbitrario para evitar ceros. Murphy muestra que, para una variable binaria y un prior uniforme sobre su probabilidad, la predicción bayesiana da:
+**Naive Bayes Bernoulli** utiliza presencia o ausencia: pregunta si la palabra apareció en el documento. En ese caso también debe considerarse su ausencia. No mezcles conteos de palabras con conteos de documentos al calcular las probabilidades.
 
-$$P(\text{éxito siguiente}\mid D)=\frac{\text{éxitos}+1}{\text{ensayos}+2}.$$
+Para textos largos, los programas suelen sumar logaritmos en lugar de multiplicar muchos números pequeños. Es otra forma de calcular el mismo criterio y evita problemas numéricos.
 
-El denominador añade dos porque hay dos resultados posibles. Con tres éxitos y ningún fracaso se predice éxito con 4/5, dejando probabilidad para un fracaso aún no observado.
+## 7. Una conexión con Bayes
 
-En la tabla multinomial de palabras, sumar uno a cada una de V categorías exige sumar V al denominador. Si aumentas el vocabulario y mantienes los conteos, cada palabra recibe una porción menor: estás repartiendo masa entre más posibilidades. No puedes sumar uno arriba y olvidar ajustar abajo.
+Murphy muestra que, en un problema binario con prior uniforme, la predicción bayesiana suma uno a cada resultado. Esto ayuda a entender por qué el suavizado deja una posibilidad para lo que todavía no vimos.
 
-**Lo que sí cambia:** cuánto peso das a eventos no vistos. **Lo que permanece como supuesto del modelo:** la independencia condicional y la pérdida del orden. Suavizar una bolsa de palabras no la convierte en un modelo de sintaxis.
+En [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números]] se desarrolla esa idea con una moneda. Aquí lo esencial es distinguir **falta de ejemplos** de **imposibilidad**.
 
-**Fuente del razonamiento binario:** [[murphy-2022-pml-introduction.pdf#page=164|Murphy, §4.6.2.9, p. impresa 134; PDF 164]]. La conexión con tu tabla multinomial es una explicación algebraica propia. Más detalle en [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números]].
+## Fuentes de esta explicación
+
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
+
+- [[sesion-01.pdf#page=12|Sesión 01, páginas 12]]
+- [[murphy-2022-pml-introduction.pdf#page=164|Murphy, §4.6.2.9, p. impresa 134; PDF 164]]
 
 ## Preguntas para comprobar que entendiste
 

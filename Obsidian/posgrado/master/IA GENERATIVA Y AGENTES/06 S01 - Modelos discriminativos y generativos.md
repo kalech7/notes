@@ -9,76 +9,72 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-01.pdf#page=3|Sesión 01, páginas 3–7]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Un mismo correo, dos formas de aprender
 
-## Dos preguntas diferentes sobre los mismos datos
+Quieres decidir si un correo es spam. Un modelo **discriminativo** puede aprender directamente a relacionar las características del mensaje con esa etiqueta.
 
-Supón que quieres trabajar con correos. Un enfoque **discriminativo** aprende a decidir la clase del correo. Un enfoque **generativo** modela cómo podrían distribuirse los datos, eventualmente junto con una clase.
+Un modelo **generativo** puede aprender cómo son los correos de cada clase: qué características aparecen en spam, cuáles en normales y con qué frecuencia ocurre cada clase. Después aplica Bayes para decidir qué clase explica mejor el correo recibido.
 
-En clasificación generativa:
+Ambos pueden clasificar. La diferencia está en qué aprenden para llegar a la decisión.
 
-$$P(X,Y)=P(Y)P(X\mid Y).$$
+## 2. Qué significan X e Y aquí
 
-Después se aplica Bayes para obtener $P(Y\mid X)$. Por eso un modelo generativo también puede clasificar. «Generativo» no significa que su única utilidad sea producir texto o imágenes.
+En esta nota, X representa el correo mediante características y Y representa su etiqueta. Por ejemplo, X puede ser una lista de conteos de palabras e Y puede valer «spam».
 
-En clasificación discriminativa probabilística se aprende directamente $P(Y\mid X)$. Esto evita modelar toda la distribución de las entradas si la tarea consiste únicamente en decidir una etiqueta.
+El discriminativo probabilístico aprende $P(Y\mid X)$: dada la entrada, qué probabilidad tiene cada etiqueta.
 
-## Las tres posibilidades de Bishop
+El generativo de clasificación aprende $P(X,Y)=P(Y)P(X\mid Y)$: cómo se distribuyen las clases y cómo son los datos de cada una. Después obtiene $P(Y\mid X)$ con Bayes.
 
-| Enfoque | Qué aprende | Ejemplo |
+No clasifiques un sistema solo por ver una fórmula condicional. En otros problemas Y podría ser un texto completo por generar, en lugar de una etiqueta. Aquí estamos comparando enfoques de **clasificación**.
+
+## 3. Las tres opciones que explica Bishop
+
+| Opción | Qué entrega o aprende | Ejemplo |
 | --- | --- | --- |
-| Generativo | Conjunta o distribución de entradas | Naive Bayes, GMM |
-| Discriminativo probabilístico | Posterior de la clase | Regresión logística |
-| Función discriminante | Puntaje o etiqueta sin probabilidades obligatorias | SVM |
+| Generativa | Modelo de datos y clases | Naive Bayes |
+| Discriminativa probabilística | Probabilidades de etiquetas dada la entrada | Regresión logística |
+| Función de decisión | Puntaje o etiqueta, sin probabilidades obligatorias | SVM |
 
-Una SVM estándar entrega una función de decisión; no debe interpretarse automáticamente su puntaje como probabilidad. En clase, las dos últimas filas se agrupan bajo «discriminativo».
+En clase se agrupan las dos últimas como discriminativas. Una SVM no entrega automáticamente una probabilidad: su puntaje necesita una interpretación adecuada.
 
-El nombre «regresión logística» puede confundir: se usa para clasificación probabilística. En el caso binario, transforma un puntaje mediante la función logística para producir un valor entre 0 y 1.
+Un BERT ajustado para sentimiento realiza una tarea discriminativa porque predice etiquetas a partir del texto. Compartir el tipo de arquitectura transformer con GPT no hace idénticos sus objetivos.
 
-## Cómo genera un modelo de clasificación generativo
+## 4. Por qué el enfoque generativo también puede crear datos
 
-Primero puede sortear una clase con $P(Y)$. Después sortea una entrada usando $P(X\mid Y)$. Si eliges tú la clase, realizas generación condicionada.
+Si aprendiste cómo se distribuyen los datos de cada clase, puedes elegir primero una clase y después sortear un dato compatible con ella.
 
-Que el modelo permita muestrear no implica que las muestras sean realistas. Un Naive Bayes de palabras puede producir una bolsa de términos típicos del spam y no una frase gramatical. La calidad depende de los supuestos y de lo que se aprendió.
+Por ejemplo: eliges spam y sorteas palabras según sus frecuencias en spam. Eso puede producir «oferta premio oferta». El procedimiento genera datos, pero no garantiza una oración gramatical. La calidad depende de las relaciones que el modelo representa.
 
-También existen modelos generativos condicionales que producen datos dada una entrada. Por tanto, ver una expresión $P(Y\mid X)$ aislada no basta para clasificar cualquier sistema: hay que preguntar qué representa Y. En las diapositivas de clasificación, Y es una etiqueta; en otros problemas podría ser un texto completo.
+## 5. ¿Cuál enfoque es mejor?
 
-## ¿BERT para sentimiento es discriminativo?
+Depende del problema. Un modelo que hace supuestos fuertes puede necesitar menos datos para ajustarse, pero esos supuestos pueden limitar su resultado. Otro más flexible puede necesitar más ejemplos.
 
-El BERT afinado para clasificar sentimiento descrito en la sesión se usa para estimar etiquetas a partir de texto. Esa tarea es discriminativa. Compartir la familia transformer con GPT no cambia el objetivo del sistema.
+Ng y Jordan estudian esta diferencia comparando Naive Bayes y regresión logística bajo condiciones concretas. Encontraron situaciones con dos regímenes: uno puede rendir mejor con pocos datos y el otro con más. No es una ley de que cualquier generativo siempre gane con pocos ejemplos.
 
-Esto no significa que todas las posibles aplicaciones de una arquitectura sean iguales. Debemos distinguir arquitectura, objetivo de entrenamiento y tarea de uso.
+## 6. La etiqueta más probable no siempre dicta la acción
 
-## Pocos datos y muchos datos: una comparación con condiciones
+Supón que el modelo asigna 0.7 a spam y 0.3 a normal. Si bloquear un normal cuesta 10 unidades y dejar pasar un spam cuesta 1:
 
-El artículo de Ng y Jordan incluido en las fuentes compara Naive Bayes y su contraparte discriminativa, regresión logística, bajo condiciones específicas. Muestra que un modelo generativo puede acercarse rápidamente a su error límite, mientras el discriminativo puede necesitar más datos y alcanzar un límite mejor.
+- Bloquear tiene costo esperado $0.3\times10=3$.
+- Dejar pasar tiene costo esperado $0.7\times1=0.7$.
 
-La intuición es una compensación: supuestos fuertes simplifican la estimación, pero pueden imponer un sesgo que persiste aun con muchos datos. Una familia menos restrictiva puede requerir más evidencia para ajustarse bien.
+Con esos costos, dejarlo tiene menor costo esperado. El modelo no cambió de opinión sobre la clase: cambiaron las consecuencias que consideramos al decidir.
 
-> [!note] Cómo interpretar la diapositiva 7
-> Las tasas de crecimiento logarítmico y lineal se refieren al análisis y supuestos de ese trabajo. No constituyen una regla universal de que «con pocos datos siempre gana cualquier generativo» o «con muchos siempre gana cualquier discriminativo». El cruce puede ocurrir; hay que evaluar el problema concreto.
+Esto explica por qué separar **probabilidad** y **acción** es útil. Elegir la clase más probable es apropiado para ciertos costos, no para todos.
 
-## De características manuales a representaciones aprendidas
+## 7. Cómo conecta con los modelos de lenguaje
 
-La sesión recorre reglas simbólicas, aprendizaje estadístico, redes profundas, atención y transformers. El cambio central es que se aprende cada vez más de la representación útil para la tarea.
+El recorrido de reglas a aprendizaje profundo también cambió la representación de los datos. Antes era habitual diseñar características a mano; una red puede aprender representaciones útiles. Las RNN procesan secuencias mediante un estado que se actualiza paso a paso. La atención permite combinar información de distintas posiciones y los transformers facilitan cálculos por posiciones durante entrenamiento.
 
-Las RNN procesan secuencias manteniendo un estado que depende del anterior. La atención permite consultar distintas posiciones; los transformers eliminan la recurrencia de su arquitectura básica y facilitan procesar posiciones en paralelo durante entrenamiento. La generación autorregresiva sigue produciendo nuevos tokens en pasos sucesivos.
+Un modelo fundacional es un modelo preentrenado que puede servir de base para distintas tareas. No todos se describen exclusivamente como generadores autorregresivos. En este curso nos centraremos especialmente en esa forma de generar lenguaje.
 
-Un **modelo fundacional** es un modelo preentrenado a escala que sirve de base para distintas tareas. Es una categoría de alcance y reutilización; no todos los modelos fundacionales se definen exclusivamente por ser generativos autorregresivos.
+## Fuentes de esta explicación
 
-**Lectura de apoyo consultada:** [[ng-jordan-2001-discriminative-vs-generative.pdf|Ng y Jordan, introducción y planteamiento de la comparación]].
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-## Complemento del libro: predecir una probabilidad y decidir una acción
-
-Bishop separa **inferencia** y **decisión**. Primero estimas una probabilidad; después eliges una acción teniendo en cuenta el costo de equivocarte.
-
-Ejemplo propio: el modelo asigna 0.7 a spam. Supón que enviar un correo normal a spam cuesta 10 unidades y dejar un spam en la bandeja cuesta 1. Si lo envías a spam, el costo esperado es $0.3\times10=3$. Si lo dejas, es $0.7\times1=0.7$. Con estos costos y probabilidades, conviene dejarlo aunque spam sea la clase más probable.
-
-Elegir siempre la clase más probable corresponde al caso particular de errores con igual costo y aciertos sin costo. Si cambian los costos, puedes cambiar la decisión sin volver a entrenar un modelo que ya proporciona probabilidades adecuadas.
-
-También puedes reservar una acción «revisar» para casos inciertos, si el costo de revisión y el objetivo de uso lo justifican. Un puntaje de clasificación sin interpretación probabilística no permite hacer estos cálculos directamente.
-
-**Fuente:** [[bishop-2006-prml.pdf#page=64|Bishop, §1.5.4, pp. impresas 44–45; PDF 64–65]]. Valores y escenario creados para explicar la separación.
+- [[sesion-01.pdf#page=3|Sesión 01, páginas 3–7]]
+- [[ng-jordan-2001-discriminative-vs-generative.pdf|Ng y Jordan, introducción y planteamiento de la comparación]]
+- [[bishop-2006-prml.pdf#page=64|Bishop, §1.5.4, pp. impresas 44–45; PDF 64–65]]
 
 ## Preguntas para comprobar que entendiste
 

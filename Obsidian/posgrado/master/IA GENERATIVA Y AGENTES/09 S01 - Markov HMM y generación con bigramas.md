@@ -9,29 +9,15 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-01.pdf#page=14|Sesión 01, páginas 14–16]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Generar una frase eligiendo una palabra cada vez
 
-## La regla del producto es exacta
+Imagina que quieres completar «yo…». Un modelo sencillo podría mirar qué palabras siguieron a «yo» en sus ejemplos y sortear una de ellas.
 
-Para una secuencia de longitud n:
+Después utiliza la última palabra elegida para decidir la siguiente. Así genera paso a paso. Vamos a construir ese modelo antes de estudiar estados ocultos.
 
-$$P(x_1,\ldots,x_n)=\prod_{t=1}^{n}P(x_t\mid x_{<t}).$$
+## 2. Un bigrama se aprende contando pares
 
-$x_{<t}$ significa todos los elementos anteriores a la posición t. Para el primero no hay prefijo y el factor es $P(x_1)$.
-
-Esta identidad no supone que el pasado sea corto. La aproximación aparece cuando decidimos cómo representar cada probabilidad condicional.
-
-## Markov de primer orden: usar solo el último elemento
-
-Un modelo de primer orden utiliza:
-
-$$P(x_t\mid x_{<t})\approx P(x_t\mid x_{t-1}).$$
-
-En un modelo de bigramas se cuenta qué palabra sigue a otra. «Bi» se refiere al par anterior-siguiente, no a que el contexto tenga dos palabras.
-
-### Ejemplo contado a mano
-
-Corpus didáctico:
+Nuestro pequeño conjunto de frases es:
 
 ```text
 <inicio> yo estudio ia <fin>
@@ -39,80 +25,77 @@ Corpus didáctico:
 <inicio> yo aprendo ia <fin>
 ```
 
-Después de `yo`, `estudio` aparece dos veces y `aprendo` una:
+Después de «yo» aparece «estudio» dos veces y «aprendo» una. Por tanto:
 
-$$P(\text{estudio}\mid\text{yo})=2/3,\quad
-P(\text{aprendo}\mid\text{yo})=1/3.$$
+$$P(\text{estudio}\mid\text{yo})=2/3,\qquad P(\text{aprendo}\mid\text{yo})=1/3.$$
 
-Después de `estudio`, `ia` y `bayes` aparecen una vez cada una: probabilidad 1/2 para cada opción. La probabilidad de la ruta completa `yo estudio bayes`, incluyendo inicio y fin, es $1\times(2/3)\times(1/2)\times1=1/3$.
+Después de «estudio», «ia» y «bayes» aparecen una vez cada una. Cada opción recibe probabilidad 1/2.
 
-## Generar paso a paso
+Se llama **bigrama** porque cuenta pares de elementos: anterior y siguiente. El contexto utilizado para la predicción es de una palabra, no dos.
 
-Empieza en `<inicio>`. Sortea la siguiente palabra de su fila, añádela a la salida y utiliza esa palabra como nuevo estado. Continúa hasta `<fin>` o un límite de pasos.
+## 3. Cómo generar con esa tabla
 
-La generación necesita una política para contextos sin continuaciones: detenerse, volver a una distribución de respaldo o aplicar suavizado. Un conteo cero no siempre significa que una secuencia sea lingüísticamente imposible; puede indicar falta de ejemplos.
+Empieza en `<inicio>`, que en estos ejemplos lleva a «yo». Desde «yo», sortea «estudio» o «aprendo» con sus probabilidades. Si sale «estudio», sortea «ia» o «bayes». Continúa hasta `<fin>`.
 
-Los marcadores de inicio y fin evitan conectar por accidente la última palabra de una oración con la primera de otra. Son una decisión explícita de este ejemplo.
+La probabilidad de la ruta «yo estudio bayes» es $1\times2/3\times1/2\times1=1/3$. Multiplicamos porque la secuencia requiere que se produzcan todas esas elecciones.
 
-## Por qué aumentar la memoria sale caro
+Si aparece un contexto sin continuaciones, el programa necesita una regla: detenerse, usar otra distribución como respaldo o aplicar suavizado. Los marcadores de inicio y fin evitan unir accidentalmente dos oraciones distintas.
 
-Con K símbolos y contexto de longitud M hay $K^M$ contextos posibles. Cada fila necesita K probabilidades, pero solo K−1 son libres porque deben sumar 1:
+## 4. Qué significa la hipótesis de Markov
 
-$$\text{parámetros libres}=K^M(K-1).$$
+La probabilidad de una secuencia puede escribirse exactamente como:
 
-Para K=100: con M=1 son 9 900; con M=2 son 990 000; con M=3 son 99 000 000. Esta cuenta corresponde a una tabla completa de transiciones y no incluye distribuciones iniciales adicionales.
+$$P(x_1,\ldots,x_n)=\prod_{t=1}^{n}P(x_t\mid x_{<t}).$$
 
-Además del costo de almacenar, muchos contextos tendrán pocos ejemplos o ninguno. El suavizado distribuye probabilidad, pero no equivale a aprender relaciones semánticas entre palabras.
+Se lee: multiplica la probabilidad de cada elemento teniendo en cuenta todo lo que apareció antes. $x_{<t}$ es el prefijo y $\prod$ indica un producto.
 
-## HMM: el estado que evoluciona está oculto
+El bigrama hace una simplificación: usa solo el elemento anterior. Esto se llama **Markov de primer orden**. La regla del producto es exacta; restringir el pasado es una decisión del modelo.
 
-En un **modelo oculto de Markov (HMM)** tenemos observaciones $x_t$ y estados ocultos $z_t$. Por ejemplo, observamos palabras y postulamos estados que representan alguna estructura no etiquetada.
+## 5. Por qué no basta con crear una tabla cada vez más grande
 
-$$P(z_1,x_1,\ldots,z_n,x_n)=P(z_1)P(x_1\mid z_1)
-\prod_{t=2}^{n}P(z_t\mid z_{t-1})P(x_t\mid z_t).$$
+Si hay K símbolos y guardas M símbolos de contexto, existen $K^M$ contextos posibles. Para cada contexto necesitas una distribución sobre K continuaciones. Como las probabilidades suman 1, hay K−1 valores libres por fila.
 
-La transición conecta estados ocultos; la emisión relaciona un estado con la observación. No son la misma distribución.
+La tabla completa necesita $K^M(K-1)$ parámetros libres, sin contar la distribución inicial. Con K=10 y M=2 son $100\times9=900$. Al aumentar M, crece muy rápido y faltan ejemplos para muchos contextos.
 
-### La trampa de «solo recuerda un paso»
+Una red neuronal puede compartir parámetros entre contextos en lugar de aprender cada fila de forma aislada. Esa idea ayudará a entender los LLM.
 
-La cadena oculta es de primer orden, pero la creencia sobre el estado actual se actualiza usando las observaciones acumuladas. La predicción puede escribirse:
+## 6. Un HMM cambia qué cosa sigue la cadena
 
-$$P(x_{t+1}\mid x_{1:t})=\sum_{j,k}P(x_{t+1}\mid z_{t+1}=k)
-P(z_{t+1}=k\mid z_t=j)P(z_t=j\mid x_{1:t}).$$
+Ahora imagina una máquina cuyo estado no puedes ver: puede estar «estable» o «exigida». Lo que sí observas es el ruido que emite.
 
-La última distribución incorpora la historia observada. Por eso el HMM no es simplemente un bigrama sobre observaciones. Resume el pasado en una distribución de creencias sobre sus estados, aunque esa representación tenga capacidad limitada.
+El **modelo oculto de Markov (HMM)** distingue el estado oculto z y el dato observado x. El estado de un momento influye en el siguiente, y cada estado determina una distribución de observaciones posibles.
 
-## Camino hacia los modelos neuronales
+![Estados y observaciones de un HMM](<Recursos visuales/06-hmm.png>)
 
-En lugar de una fila independiente para cada contexto, una red puede compartir parámetros entre contextos. Esa reutilización ayuda a generalizar a combinaciones que no aparecieron exactamente en los datos. Un modelo autorregresivo de lenguaje mantiene la regla del producto, pero cambia la forma de aprender cada factor.
+Sigue las flechas horizontales para ver cambios de estado. Sigue las verticales para ver cómo un estado se relaciona con una observación. El modelo puede verse como una mezcla cuyo componente cambia siguiendo una cadena.
 
-## Complemento del libro: el HMM como una mezcla que evoluciona
+## 7. Cómo usa el historial, con números
 
-Bishop conecta el HMM con las mezclas: en un instante, cada estado oculto propone una distribución de observaciones. La novedad es que el estado siguiente depende del actual, en lugar de elegir independientemente un componente para cada dato.
+Después de escuchar los ruidos anteriores, crees que la máquina está estable con probabilidad 0.8 y exigida con 0.2.
 
-Ejemplo didáctico: una máquina tiene estado oculto «estable» o «exigido» y observamos su ruido. Después de escucharla, nuestra creencia actual es 0.8 estable y 0.2 exigido. Supón que la probabilidad de seguir estable desde estable es 0.9 y de pasar a estable desde exigido es 0.3.
+Supón que, si está estable, sigue estable con probabilidad 0.9. Si está exigida, pasa a estable con probabilidad 0.3. Para predecir el siguiente estado estable, suma ambos caminos:
 
-La predicción del estado siguiente combina los caminos:
+$$0.8\times0.9+0.2\times0.3=0.72+0.06=0.78.$$
 
-$$P(z_{t+1}=\text{estable}\mid x_{1:t})=0.8(0.9)+0.2(0.3)=0.78.$$
+Cuando llega un ruido nuevo, multiplicas la predicción de cada estado por la probabilidad de ese ruido bajo ese estado y normalizas. Es otra actualización de Bayes.
 
-Queda 0.22 para exigido. Cuando llega el siguiente sonido, multiplicas esos priors predictivos por las probabilidades de ese sonido en cada estado y normalizas con Bayes. Así alternas **predecir el estado** y **actualizarlo con la observación**.
+Así, el modelo conserva información del pasado en **la distribución de creencias sobre el estado actual**. Decir que el estado oculto depende del anterior no significa que solo se use la última observación.
 
-Esto explica con un cálculo qué significa «resumir la historia»: no guardamos únicamente el último sonido, sino una creencia que ya incorporó observaciones anteriores.
+## 8. La fórmula completa, después de entender el recorrido
 
-Para evaluar una secuencia completa, enumerar todos los caminos ocultos requeriría $K^n$ posibilidades. El libro explica que se pueden reorganizar las sumas para reutilizar cálculos. Esa es la intuición de la inferencia eficiente en cadenas: evitar volver a calcular los mismos prefijos.
+$$P(z_1,x_1,\ldots,z_n,x_n)=P(z_1)P(x_1\mid z_1)\prod_{t=2}^{n}P(z_t\mid z_{t-1})P(x_t\mid z_t).$$
 
-**Fuente:** [[bishop-2006-prml.pdf#page=630|Bishop, §13.2, p. impresa 610; PDF 630]] y [[bishop-2006-prml.pdf#page=635|§13.2.1, pp. 615–616; PDF 635–636]]. Ejemplo de máquina propio.
+Hay tres piezas: estado inicial, transiciones entre estados y emisiones de observaciones. Para calcular la probabilidad de los datos sin conocer los estados se suman los caminos ocultos posibles. Los algoritmos de cadenas reutilizan cálculos para evitar enumerar cada camino por separado.
 
-## Gráficos y diagramas para entender el tema
+La lección principal es distinguir **el estado que suponemos** de **la observación que recibimos**.
 
-### Distinguir lo oculto de lo observado
+## Fuentes de esta explicación
 
-![Distinguir lo oculto de lo observado](<Recursos visuales/06-hmm.png>)
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-**Cómo leerlo:** Lee horizontalmente la evolución de los estados z y verticalmente la emisión de los datos x. Aunque cada estado dependa del anterior, la creencia sobre el estado actual incorpora el historial observado. Las flechas son dependencias del modelo probabilístico; no debes interpretarlas automáticamente como causas del mundo.
-
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[sesion-01.pdf#page=14|Sesión 01, páginas 14–16]]
+- [[bishop-2006-prml.pdf#page=630|Bishop, §13.2, p. impresa 610; PDF 630]]
+- [[bishop-2006-prml.pdf#page=635|§13.2.1, pp. 615–616; PDF 635–636]]
 
 ## Preguntas para comprobar que entendiste
 

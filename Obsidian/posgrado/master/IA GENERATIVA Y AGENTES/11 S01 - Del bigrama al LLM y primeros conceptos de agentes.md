@@ -9,87 +9,84 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-01.pdf#page=18|Sesión 01, páginas 18–20]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción. El apartado de agentes es una orientación adicional basada en el glosario; estas sesiones todavía no desarrollan el tema.
+## 1. Lo que ya sabes del bigrama
 
-## Lo que se conserva al pasar al LLM
+En la nota anterior, un bigrama elegía la siguiente palabra mirando solo la última. Podía aprender que después de «yo» aparecía «estudio», pero no representaba una relación larga entre partes de una frase.
 
-Un modelo grande de lenguaje, **LLM**, de tipo autorregresivo aprende una distribución del próximo token dado el prefijo:
+Un LLM autorregresivo también genera un elemento después de otro. La diferencia es que usa una red entrenada para calcular la siguiente distribución a partir de un contexto más amplio.
 
-$$P_\theta(x_1,\ldots,x_n)=\prod_{t=1}^{n}P_\theta(x_t\mid x_{<t}).$$
+LLM significa **modelo grande de lenguaje**. En esta nota hablaremos del tipo generativo autorregresivo, como los modelos de la familia GPT.
 
-Es la misma regla del producto estudiada antes. Lo que cambia frente al bigrama es cómo se calcula cada distribución y cuánto contexto puede utilizar.
+## 2. Mira primero el recorrido completo
 
-## Qué le falta al bigrama del ejercicio
+![Generación paso a paso en un LLM](<Recursos visuales/08-llm-ciclo.png>)
 
-| Aspecto | Bigrama por conteo | LLM autorregresivo tipo GPT |
-| --- | --- | --- |
-| Contexto | Un elemento anterior | Prefijo disponible dentro de su contexto |
-| Representación | Identidades y conteos | Representaciones vectoriales aprendidas |
-| Parámetros | Filas de una tabla | Pesos compartidos de una red |
-| Relaciones | Frecuencias locales | Patrones aprendidos entre posiciones |
-| Escala | Corpus de juguete | Preentrenamiento de gran escala |
+El sistema convierte el texto en tokens, los representa con números, procesa el contexto y calcula probabilidades para el siguiente token. Elige uno, lo añade al texto y repite.
 
-Tres diferencias suficientes para explicar el salto son contexto más amplio, representaciones aprendidas y una red con parámetros compartidos. Tener más datos ayuda, pero una tabla de bigramas no se convierte en transformer solo por crecer.
+La flecha que regresa al principio significa **añadir información al contexto**. No significa volver a entrenar los pesos en cada vuelta.
 
-La expresión «GPT de contexto 1» de la actividad es una analogía para el muestreo secuencial, no una equivalencia de arquitecturas.
+## 3. Qué es un token
 
-## Un token no equivale a una palabra
+Un token es una unidad del vocabulario del modelo. Puede ser una palabra, una parte de una palabra, un signo u otra unidad definida por el tokenizador.
 
-Un token es una unidad del vocabulario del modelo. Puede corresponder a una palabra, una parte, un signo u otra unidad según el tokenizador.
+En los ejercicios dividimos por espacios para simplificar. Un LLM real puede dividir de otra forma. Por eso no debes asumir que diez palabras son diez tokens.
 
-Separar una oración con `split()` por espacios sirve en un ejercicio introductorio, pero no reproduce necesariamente la tokenización de un LLM. No conviene deducir el número exacto de tokens a partir del número de palabras.
+## 4. Por qué usa vectores y contexto
 
-## Entrenar y generar hacen cosas distintas
+Cada token tiene una representación numérica inicial, llamada **embedding** o representación vectorial. La red utiliza esos vectores para calcular relaciones útiles.
 
-Durante preentrenamiento autorregresivo se ajustan los pesos para asignar alta probabilidad a los tokens observados según su contexto. La pérdida habitual es una suma o promedio de log-probabilidades negativas.
+Piensa en «banco» en «me senté en el banco» y «deposité dinero en el banco». Si se usa el mismo token, puede comenzar con el mismo vector. Al procesar las palabras que lo rodean, las representaciones internas pueden volverse diferentes.
 
-Durante generación se calcula una distribución y se elige un token. Después ese token pasa a formar parte del prefijo y se repite el proceso. Elegir siempre el más probable se llama decodificación greedy; muestrear permite elegir otras opciones según sus probabilidades.
+No cambió necesariamente la tabla de pesos. Cambió el resultado de procesar una entrada distinta. Esta diferencia entre pesos y activaciones es importante para entender la inferencia.
 
-Ejemplo inventado: tras «estudio», el modelo asigna 0.5 a «Bayes», 0.3 a «IA» y 0.2 a «probabilidad». Greedy elige «Bayes». Un muestreo podría elegir cualquiera de las tres, con esas frecuencias a largo plazo. Producir opciones variadas no garantiza mejores respuestas.
+## 5. Qué cambia respecto del bigrama
 
-## Por qué un texto probable puede ser falso
+| Bigrama del ejercicio | LLM autorregresivo |
+| --- | --- |
+| Mira un elemento anterior | Utiliza el prefijo disponible dentro de su contexto |
+| Cuenta pares | Calcula con una red neuronal |
+| Cada fila describe un contexto por separado | Comparte pesos entre muchos contextos |
+| No aprende vectores de significado en esa tabla | Aprende representaciones útiles de los datos |
 
-El objetivo de predecir texto no es idéntico a verificar cada afirmación en el mundo. Los datos pueden contener errores, faltar información o mezclar contextos. Un modelo puede construir una continuación plausible que no tenga respaldo.
+Más datos por sí solos no convierten una tabla de bigramas en un transformer. También cambia la forma de representar y calcular las probabilidades.
 
-La probabilidad de un token tampoco es directamente la probabilidad de que una afirmación completa sea verdadera. Para estudiar, contrasta definiciones y cálculos con las fuentes y verifica los resultados.
+La identidad se conserva:
 
-## Orientación: modelo, RAG y agente
+$$P(x_1,\ldots,x_n)=\prod_{t=1}^{n}P(x_t\mid x_{<t}).$$
 
-Estos conceptos aparecerán más adelante. Aquí basta con ubicarlos:
+Es decir: la probabilidad de la secuencia se construye con las probabilidades sucesivas. La red aprende cómo calcular esos factores.
 
-- **Modelo de lenguaje:** componente que procesa lenguaje y produce salidas.
-- **RAG, recuperación aumentada con generación:** recuperar documentos relevantes y proporcionarlos como contexto para generar una respuesta respaldada en esas fuentes.
-- **Agente:** sistema que usa un modelo dentro de un proceso de selección de acciones, uso de herramientas y observación de resultados para avanzar hacia una tarea.
+## 6. Entrenar, elegir y responder son operaciones distintas
 
-Ejemplo educativo: responder qué es Bayes con información del entrenamiento usa el modelo; buscar el apartado en tus apuntes y contestar con esa evidencia añade recuperación; planificar una búsqueda, ejecutar una calculadora y revisar si se resolvió la tarea introduce un ciclo de acciones.
+Al entrenar, el texto observado proporciona los objetivos: qué token venía después de cada prefijo. Se ajustan los pesos para mejorar esas predicciones.
 
-Un agente no es necesariamente otro modelo más grande. Importa el sistema que lo rodea: herramientas, estado, permisos y criterio de parada. También debe distinguir instrucciones del usuario de texto encontrado en documentos, que puede contener instrucciones ajenas a la tarea.
+Al generar, los pesos suelen estar fijos. Si tras «estudio» las opciones son Bayes 0.5, IA 0.3 y probabilidad 0.2, elegir siempre la de mayor probabilidad produce «Bayes». Eso se llama **greedy**. Muestrear permite obtener cualquiera de las tres según sus probabilidades.
 
-Esta orientación no sustituye apuntes detallados de las futuras sesiones de agentes: el material principal aportado aquí corresponde al preámbulo y a Bayes/modelos generativos.
+Predecir texto no equivale a verificar la verdad de cada frase. Tampoco equivale automáticamente a seguir instrucciones. El modelo base puede necesitar entrenamiento adicional para adoptar el comportamiento de un asistente.
 
-## Complemento de los libros: cómo el texto se vuelve aprendizaje
+En [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]] puedes seguir todo el entrenamiento con una frase de cuatro unidades.
 
-*Hands-On Large Language Models* distingue el vector de entrada de un token y la representación que resulta de procesarlo en contexto. El primero se busca en una tabla aprendida; la segunda depende también de lo que lo rodea.
+## 7. Dónde encajan RAG y los agentes
 
-Ejemplo propio: «banco» en «me senté en el banco» y «deposité dinero en el banco» puede partir del mismo vector de token, si el tokenizador lo representa con el mismo identificador. Después de procesar contexto, sus representaciones pueden diferir. No significa que los pesos se entrenen de nuevo con cada frase: cambian las activaciones.
+Imagina tres asistentes para estudiar:
 
-Raschka explica además que el texto trae sus propios objetivos. Para `[yo, estudio, Bayes, hoy]`, una entrada puede ser `[yo, estudio, Bayes]` y los objetivos `[estudio, Bayes, hoy]`. No se necesita que una persona etiquete manualmente el próximo token de cada posición.
+1. Uno responde a partir del modelo de lenguaje.
+2. Otro busca el apartado en tus PDF y usa el texto recuperado para responder. Añade **RAG**, recuperación de información seguida de generación con ese contexto.
+3. Otro decide qué buscar, usa una calculadora y revisa si los resultados bastan para completar una tarea. Añade un ciclo de acciones y observaciones propio de un **agente**.
 
-La pérdida penaliza asignar poca probabilidad al token realmente observado. Así se conecta la máxima verosimilitud de Bayes con el entrenamiento de un LLM. El preentrenamiento enseña patrones de continuación; aprender a seguir instrucciones requiere una adaptación del comportamiento y datos apropiados.
+Pueden combinarse. RAG no garantiza que toda respuesta esté bien respaldada, y un agente no es necesariamente un modelo más grande: incluye herramientas, reglas de acción, estado y condiciones para detenerse.
 
-Para ver este recorrido con tablas y un cálculo de pérdida, sigue con [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]].
+Este apartado solo ubica esos conceptos. Las sesiones 00 y 01 todavía no desarrollan un curso completo de agentes.
 
-**Fuentes:** [[Hands-On_Large_Language_Models.pdf#page=48|Alammar y Grootendorst, p. impresa 26; PDF 48]] y [[Hands-On_Large_Language_Models.pdf#page=79|pp. 57–59; PDF 79–81]]; [[Build_a_Large_Language_Model_From_Scrat.pdf#page=59|Raschka, §2.6, pp. 37–38; PDF 59–60]] y [[Build_a_Large_Language_Model_From_Scrat.pdf#page=159|§5.1, pp. 137–139; PDF 159–161]].
+## Fuentes de esta explicación
 
-## Gráficos y diagramas para entender el tema
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-### Seguir una vuelta de generación
-
-![Seguir una vuelta de generación](<Recursos visuales/08-llm-ciclo.png>)
-
-**Cómo leerlo:** El contexto se tokeniza, se representa con vectores y se procesa para obtener probabilidades del siguiente token. Después de elegirlo, se añade al contexto. Esa realimentación modifica la entrada, no los pesos en inferencia ordinaria. El dibujo omite detalles internos del transformer para resaltar el ciclo.
-
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[sesion-01.pdf#page=18|Sesión 01, páginas 18–20]]
+- [[Hands-On_Large_Language_Models.pdf#page=48|Alammar y Grootendorst, p. impresa 26; PDF 48]]
+- [[Hands-On_Large_Language_Models.pdf#page=79|pp. 57–59; PDF 79–81]]
+- [[Build_a_Large_Language_Model_From_Scrat.pdf#page=59|Raschka, §2.6, pp. 37–38; PDF 59–60]]
+- [[Build_a_Large_Language_Model_From_Scrat.pdf#page=159|§5.1, pp. 137–139; PDF 159–161]]
 
 ## Preguntas para comprobar que entendiste
 

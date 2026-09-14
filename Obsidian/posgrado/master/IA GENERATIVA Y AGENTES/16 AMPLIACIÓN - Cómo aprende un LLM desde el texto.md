@@ -9,85 +9,104 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Continúa:** [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. Esta nota desarrolla el puente al LLM; no presupone saber programar un transformer.
+## 1. Vamos a entrenar con una frase muy pequeña
 
-## 1. Del texto a los identificadores
+Usaremos «yo estudio Bayes hoy» para entender de dónde salen las entradas, los objetivos y la pérdida de un modelo de lenguaje.
 
-Un tokenizador convierte texto en unidades y les asigna identificadores de un vocabulario. Para explicar el recorrido, usaremos cuatro unidades: `[yo, estudio, Bayes, hoy]`. Son una tokenización didáctica; un tokenizador real puede dividir las palabras de otra forma.
+Para facilitar la explicación trataremos cada palabra como una unidad. Es una tokenización didáctica: un tokenizador real podría dividir de otra forma. Esta nota amplía [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]].
 
-El identificador no expresa por sí mismo significado: que un token tenga ID 25 y otro 26 no significa que sean más parecidos que 25 y 400. El ID permite localizar una fila de la tabla de representaciones vectoriales.
+## 2. El modelo necesita números para calcular
 
-## 2. De identificadores a vectores
+El tokenizador transforma el texto en tokens y los asocia con identificadores, llamados IDs. Un ID solo identifica una unidad. Tener ID 26 no significa ser más parecido al 25 que al 400.
 
-Cada token tiene un vector de entrada aprendido. Piensa en una lista de coordenadas que el entrenamiento ajusta para que resulte útil al modelo. No hay que asignar a mano «la coordenada de verbos» o «la coordenada de objetos».
+Después se busca un vector para cada ID en una tabla aprendida. Ese vector es el **embedding de entrada**: una lista de números que se ajusta durante entrenamiento.
 
-Al procesar contexto, el modelo produce representaciones que dependen de la secuencia. El mismo token puede contribuir de forma diferente en frases distintas. Es importante separar **pesos aprendidos** de **representaciones calculadas para una entrada**.
+La red procesa esos vectores junto con información de posición y contexto. Sus representaciones internas pueden cambiar entre frases aunque los pesos sigan fijos. No necesitas asignar a mano una coordenada que signifique «verbo» u «objeto».
 
-*Hands-On Large Language Models* usa esta distinción para conectar las representaciones de tokens con aplicaciones que necesitan contexto. Aquí nos permite entender por qué una red puede ir más allá de una tabla aislada de pares.
+## 3. Los objetivos ya están en el propio texto
 
-## 3. El propio texto aporta los objetivos
-
-Para nuestra secuencia, construimos:
+Construimos estas dos filas:
 
 ```text
 Entrada:   yo        estudio    Bayes
 Objetivo:  estudio   Bayes      hoy
 ```
 
-Cada posición predice el token siguiente. Visto como tareas:
+La fila de objetivos está desplazada una posición. Cada posición intenta predecir qué viene después:
 
-| Contexto permitido | Token observado que debe predecir |
+| Lo que puede usar | Lo que debe predecir |
 | --- | --- |
 | yo | estudio |
 | yo estudio | Bayes |
 | yo estudio Bayes | hoy |
 
-Esto es **aprendizaje autosupervisado**: la señal de entrenamiento se construye a partir de los propios datos. «Texto sin etiquetas manuales» no significa «entrenar sin objetivo».
+No necesitamos una persona que escriba manualmente la respuesta correcta para cada caso. Sale del texto. Por eso se llama **aprendizaje autosupervisado**: los datos proporcionan la señal con la que se entrena.
 
-## 4. Por qué hay que ocultar el futuro
+## 4. Por qué ocultamos las palabras futuras
 
-Durante entrenamiento disponemos de toda la secuencia y podemos organizar cálculos por posiciones. Pero al predecir «estudio» desde «yo», permitir que el modelo mire «estudio» revelaría la respuesta.
+Durante entrenamiento tenemos la frase completa, pero permitir que «yo» consulte «estudio» para predecir «estudio» revelaría la respuesta.
 
-La máscara causal impide consultar posiciones posteriores a la posición actual. Permite calcular muchas predicciones durante entrenamiento respetando el límite de información de cada una. Durante generación, los tokens futuros aún no existen y hay que producirlos progresivamente.
+La **máscara causal** impide que una posición lea posiciones posteriores. Así podemos calcular muchas predicciones durante entrenamiento sin que cada una use información que no debería tener.
 
-Esta máscara no prueba causalidad entre fenómenos del mundo, como se aclara en [[04 S00 - Correlación causalidad y límites de las predicciones]].
+Durante generación el futuro todavía no existe. El modelo elige un token, lo añade y calcula el siguiente.
 
-## El ciclo de generación, a la vista
+![Ciclo de generación de un modelo de lenguaje](<Recursos visuales/08-llm-ciclo.png>)
 
-![Ciclo de generación del LLM](<Recursos visuales/08-llm-ciclo.png>)
+Lee la flecha de retorno como «añadir un token al contexto». No es una actualización de pesos. Tampoco la palabra causal significa aquí que el modelo haya descubierto causas del mundo: se refiere a la restricción de lectura del texto.
 
-Sigue una vuelta: contexto → procesamiento → probabilidades → token elegido → contexto ampliado. Este ciclo describe generación; la actualización de pesos durante entrenamiento es una operación distinta.
+## 5. Cómo se convierte una predicción en una pérdida
 
-## 5. De puntajes a probabilidades
+El modelo produce un puntaje para cada token del vocabulario. Esos puntajes se llaman **logits**. Softmax los transforma en probabilidades que suman 1.
 
-El modelo produce **logits**, puntajes sin normalizar para los tokens del vocabulario. Softmax los convierte en probabilidades no negativas que suman 1. Para calcular la pérdida se toma, en cada posición, la probabilidad asignada al token realmente observado.
+Para evaluar la predicción buscamos la probabilidad que asignó al token correcto de cada posición. Supón estos resultados:
 
-Supón que las probabilidades de los tres objetivos son 0.5, 0.25 y 0.8. Su producto es 0.1. La pérdida promedio de log-verosimilitud negativa es:
+| Objetivo observado | Probabilidad asignada | Penalización: −ln(probabilidad) |
+| --- | --- | --- |
+| estudio | 0.5 | 0.6931 |
+| Bayes | 0.25 | 1.3863 |
+| hoy | 0.8 | 0.2231 |
 
-$$L=-\frac{\ln0.5+\ln0.25+\ln0.8}{3}
-=\frac{0.6931+1.3863+0.2231}{3}\approx0.7675.$$
+Asignar poca probabilidad al token observado produce una penalización mayor. La predicción de Bayes recibe más penalización que la de hoy.
 
-Asignar 0.25 al objetivo penaliza más que asignarle 0.8. El logaritmo convierte el producto en suma y el signo negativo permite minimizar. Con objetivos categóricos observados, esta es la forma habitual de entropía cruzada.
+Promediamos las tres:
 
-Luego la retropropagación calcula gradientes y el optimizador actualiza los pesos. El texto de entrenamiento no desaparece del razonamiento: define cuáles eran los objetivos de esas actualizaciones.
+$$L=\frac{0.6931+1.3863+0.2231}{3}\approx0.7675.$$
 
-## 6. Qué significa la perplejidad
+Esta pérdida es la **log-probabilidad negativa promedio**. Con objetivos categóricos observados corresponde a la forma habitual de **entropía cruzada**.
 
-Cuando la pérdida usa logaritmos naturales y promedio por token, la perplejidad se calcula como $\exp(L)$. En el ejemplo, aproximadamente 2.154.
+## 6. Cómo se aprende a partir de ese número
 
-Si un modelo asignara probabilidad uniforme a cada uno de cuatro tokens posibles en todos los pasos, su pérdida sería $\ln4$ y su perplejidad 4. Esa comparación ayuda a interpretar el número, pero no implica que el modelo esté literalmente considerando siempre esa cantidad de opciones.
+La pérdida indica cuánto penaliza el criterio a las predicciones. La retropropagación calcula derivadas: cómo influirían pequeños cambios de los parámetros en esa pérdida. El optimizador utiliza esa información para actualizar los pesos.
 
-Comparar perplejidades requiere condiciones compatibles, incluido corpus y tokenización. Una perplejidad menor no verifica hechos ni demuestra que una respuesta sea útil para una persona.
+Se repite con muchos ejemplos. El objetivo es mejorar predicciones también en textos nuevos, por lo que se evalúa fuera de los datos usados para ajustar.
 
-## 7. Por qué un modelo base no equivale a un asistente
+La relación con máxima verosimilitud es directa: asignar más probabilidad al texto observado equivale a reducir su log-probabilidad negativa. El logaritmo convierte productos de probabilidades en sumas más manejables.
 
-El preentrenamiento busca aprender patrones de texto. Seguir instrucciones es un comportamiento más específico. Un modelo base podría continuar un documento que empieza con una pregunta sin responderla como tú esperas.
+## 7. Qué significa la perplejidad
 
-El ajuste para instrucciones utiliza ejemplos de la conducta deseada y modifica parámetros. Proporcionar un ejemplo dentro de un prompt solo condiciona la inferencia ordinaria: no es ese mismo entrenamiento.
+Cuando L usa logaritmo natural y promedio por token, la perplejidad es $\exp(L)$. Para 0.7675, aproximadamente 2.154.
 
-El libro *Hands-On* presenta el recorrido general de preentrenamiento y adaptación. Estos pasos explican por qué «conoce patrones de lenguaje», «clasifica», «sigue instrucciones» y «actúa con herramientas» describen capacidades distintas.
+Un ejemplo más fácil: si el modelo diera probabilidad 1/4 al objetivo en cada paso, su pérdida sería $\ln4$ y su perplejidad 4. Esto ayuda a interpretar el número, pero no significa que siempre considere literalmente cuatro opciones.
 
-**Fuentes consultadas:** [[Hands-On_Large_Language_Models.pdf#page=48|Alammar y Grootendorst, p. impresa 26; PDF 48]] y [[Hands-On_Large_Language_Models.pdf#page=79|pp. 57–59; PDF 79–81]]. [[Build_a_Large_Language_Model_From_Scrat.pdf#page=59|Raschka, §2.6, pp. 37–38; PDF 59–60]], [[Build_a_Large_Language_Model_From_Scrat.pdf#page=97|§3.5.1, p. 75; PDF 97]] y [[Build_a_Large_Language_Model_From_Scrat.pdf#page=159|§5.1, pp. 137–139; PDF 159–161]]. Los ejemplos y cálculos de esta nota son propios.
+Para comparar perplejidades necesitas condiciones compatibles, como corpus y tokenización. Un valor menor no comprueba que las afirmaciones sean verdaderas ni que una respuesta sea útil.
+
+## 8. Por qué aprender lenguaje no equivale a seguir instrucciones
+
+El preentrenamiento enseña patrones de continuación de texto. Un modelo base podría continuar una pregunta con más preguntas en vez de responder como un asistente.
+
+El ajuste para instrucciones utiliza ejemplos del comportamiento deseado y modifica parámetros. Dar ejemplos dentro de un prompt, en cambio, aporta contexto para responder sin actualizar normalmente los pesos.
+
+La idea que debes poder explicar es esta: **el texto proporciona objetivos; el modelo calcula probabilidades; la pérdida orienta el ajuste de pesos**. Generar después consiste en utilizar lo aprendido para elegir tokens sucesivos.
+
+## Fuentes de esta explicación
+
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
+
+- [[Hands-On_Large_Language_Models.pdf#page=48|Alammar y Grootendorst, p. impresa 26; PDF 48]]
+- [[Hands-On_Large_Language_Models.pdf#page=79|pp. 57–59; PDF 79–81]]
+- [[Build_a_Large_Language_Model_From_Scrat.pdf#page=59|Raschka, §2.6, pp. 37–38; PDF 59–60]]
+- [[Build_a_Large_Language_Model_From_Scrat.pdf#page=97|§3.5.1, p. 75; PDF 97]]
+- [[Build_a_Large_Language_Model_From_Scrat.pdf#page=159|§5.1, pp. 137–139; PDF 159–161]]
 
 ## Preguntas para comprobar que entendiste
 

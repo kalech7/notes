@@ -11,6 +11,12 @@ tags:
 
 **Base:** sesiones 00 y 01, especialmente [[sesion-01.pdf#page=19|Sesión 01, páginas 19–20]]. Ejercicios propios para estudiar. No es el notebook oficial mencionado en las diapositivas.
 
+## Antes de calcular
+
+Para cada ejercicio escribe tres cosas: qué información te dan, qué te preguntan y qué grupo o distribución debes usar para responder. Haz una operación por línea. Si aparece una letra, escribe al lado qué significa en ese problema.
+
+No necesitas resolver todos los ejercicios de una vez. Los primeros seis repasan los modelos de la sesión; los siguientes conectan esas ideas y las aplican a nuevas situaciones.
+
 ## Cómo practicar
 
 Primero explica el concepto con tus palabras, luego calcula sin mirar y por último abre la respuesta. Si aciertas por intuición pero no sabes justificarlo, vuelve a la nota correspondiente.
@@ -23,7 +29,7 @@ Clasifica tres sistemas: A usa reglas explícitas para decidir requisitos; B apr
 
 ## Ejercicio 2: Bayes con una tasa base diferente
 
-En un conjunto, el 10 % de los correos es spam. «Premio» aparece en el 80 % de los spam y en el 20 % de los normales. Calcula la probabilidad de spam cuando aparece «premio». Escribe prior, verosimilitud y evidencia.
+En un conjunto, el 10 % de los correos es spam. «Premio» aparece en el 80 % de los spam y en el 20 % de los normales. Calcula la probabilidad de spam cuando aparece «premio». Primero calcula qué proporción de todos los correos contiene «premio» y es spam. Después calcula qué proporción contiene «premio» y es normal. Usa la suma como denominador. Al terminar, identifica prior, verosimilitud y evidencia.
 
 ## Ejercicio 3: generar desde una distribución
 
@@ -31,7 +37,7 @@ Un modelo condicionado en spam da 0.5 a `oferta`, 0.3 a `premio` y 0.2 a `hoy`. 
 
 ## Ejercicio 4: responsabilidades de una mezcla
 
-Dos componentes tienen pesos 0.25 y 0.75. Sus densidades en un punto son 0.4 y 0.2. Calcula las responsabilidades y explica por qué el componente de mayor densidad no necesariamente tiene la mayor responsabilidad.
+Dos componentes tienen pesos 0.25 y 0.75. Sus densidades en un punto son 0.4 y 0.2. Multiplica cada peso por su densidad. Suma ambos resultados y divide cada uno por esa suma. Esas son las responsabilidades. Explica después por qué mirar solo la densidad sería insuficiente.
 
 ## Ejercicio 5: tabla de bigramas
 
@@ -65,7 +71,7 @@ Más útil que el total es detectar dónde fallas: si confundes condicionales, v
 
 **Ejercicio 10.** Con prior Beta(1,1), observas dos caras y dos cruces. Calcula posterior y predicción de cara.
 
-**Ejercicio 11.** Para un componente GMM, dos puntos 2 y 8 tienen responsabilidades 0.75 y 0.25. Calcula su nueva media.
+**Ejercicio 11.** Para un componente GMM, dos puntos 2 y 8 tienen responsabilidades 0.75 y 0.25. Multiplica cada punto por su responsabilidad, suma los productos y divide por la suma de responsabilidades. Ese es el nuevo centro.
 
 **Ejercicio 12.** Un modelo de lenguaje asigna 0.5 al objetivo en dos posiciones. Calcula pérdida promedio con logaritmo natural y perplejidad.
 

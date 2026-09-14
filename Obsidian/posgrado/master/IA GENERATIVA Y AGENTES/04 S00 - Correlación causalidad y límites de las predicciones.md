@@ -9,70 +9,56 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-00.pdf#page=14|Sesión 00, páginas 14–15]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Dos cosas pueden cambiar juntas sin causarse entre sí
 
-## Predecir una asociación no equivale a explicar una causa
+Supón que los días con más ventas de helados también hay más personas nadando. Es tentador concluir que vender helados provoca que la gente nade.
 
-Supón que en tus datos los días con más helados vendidos también tienen más personas nadando. ¿Vender helados hace que la gente nade? Puede existir una tercera variable: el calor aumenta ambas cosas.
+Pero existe otra explicación: **el calor aumenta ambas cosas**. La venta de helados ayuda a predecir cuánta gente habrá nadando, aunque no sea la causa de esa actividad.
 
-Una asociación indica que observar una variable aporta información sobre otra. La causalidad pregunta qué cambiaría si modificáramos una variable mediante una intervención.
+Cuando dos variables aportan información una sobre otra hablamos de asociación. Cuando preguntamos qué cambiaría al intervenir sobre una de ellas, estamos haciendo una pregunta causal.
 
-## Tres explicaciones compatibles con una asociación
+## 2. Lee el diagrama como una hipótesis sobre el mundo
 
-Si $X$ y $Y$ están asociados, podrían existir estructuras como:
+![Observar e intervenir](<Recursos visuales/10-causalidad.png>)
 
-- $X\rightarrow Y$: X influye en Y.
-- $Y\rightarrow X$: la dirección es inversa.
-- $X\leftarrow Z\rightarrow Y$: una causa común influye en ambas.
+A la izquierda, el calor tiene una flecha hacia las ventas y otra hacia la natación. El diagrama dice que el calor influye en ambas. No tiene una flecha de ventas a natación.
 
-La correlación por sí sola no elige entre estas explicaciones. Se necesitan supuestos, conocimiento del problema o diseños de estudio capaces de identificar el efecto.
+A la derecha fijamos las ventas mediante una acción externa. Por ejemplo, hacemos una promoción que cambia cuántos helados se venden. Retiramos la flecha que normalmente determinaba esa variable, pero no cambiamos el calor. Según esta hipótesis, tampoco cambia la natación por esa ruta.
 
-> [!note] Matiz respecto de la diapositiva
-> La frase «A causa B o B causa A, y no las dos a la vez» no es una definición general de causalidad. Puede existir retroalimentación a lo largo del tiempo. Los grafos dirigidos acíclicos excluyen ciclos por su estructura; eso no significa que todo sistema real carezca de retroalimentación.
+El dibujo no demuestra que el mundo funcione así. Expresa un supuesto causal que necesitaría justificarse.
 
-## Observar y actuar son preguntas diferentes
+## 3. Qué significan las dos probabilidades
 
-$P(Y\mid X=x)$ pregunta por Y entre los casos donde observamos X con valor x.
+$P(Y\mid X=x)$ significa: «entre los casos en los que observamos X con ese valor, ¿cómo se comporta Y?». Por ejemplo, mirar días con muchas ventas y contar nadadores.
 
-$P(Y\mid\operatorname{do}(X=x))$ pregunta por Y al fijar X mediante una intervención. En un grafo causal, esa intervención sustituye el mecanismo que normalmente determina X y elimina sus flechas entrantes.
+$P(Y\mid\operatorname{do}(X=x))$ significa: «si fijamos X mediante una intervención, ¿cómo se comporta Y?». Por ejemplo, cambiar las ventas por una acción y estudiar su efecto.
 
-En el ejemplo del calor, aumentar artificialmente las ventas de helados no aumenta necesariamente la temperatura ni la cantidad de personas que nadan. La asociación observada no basta para predecir el efecto de esa acción.
+La palabra **do** señala esa intervención. Observar un grupo de casos y cambiar el mecanismo que produce una variable no son el mismo procedimiento.
 
-## Qué significa esto para un modelo predictivo
+## 4. Qué otras explicaciones puede tener una asociación
 
-Un modelo podría aprender que cierta palabra identifica spam porque aparece mucho en los datos. Si los remitentes cambian de vocabulario, ese patrón puede dejar de servir. Se llama cambio de distribución cuando cambian las condiciones estadísticas relevantes entre entrenamiento y uso.
+Si X e Y cambian juntas, X podría influir en Y, Y podría influir en X o una tercera variable podría influir en ambas. Una correlación por sí sola no decide cuál explicación es correcta.
 
-Tampoco hay garantía de acierto aunque no haya un cambio: puede haber ruido, datos insuficientes o errores del modelo. Lo correcto es decir que las asociaciones aprendidas pueden perder utilidad cuando cambian las condiciones, no que un mundo estable garantice aciertos.
+También puede existir retroalimentación a lo largo del tiempo. Los grafos dirigidos acíclicos excluyen ciclos por cómo están definidos; eso no significa que ningún sistema real pueda tener efectos recíprocos.
 
-## Qué significa para un modelo de lenguaje
+## 5. Qué implica para la IA
 
-Un modelo puede redactar una explicación causal plausible porque aprendió patrones de lenguaje y conocimiento descrito en textos. Esa capacidad no verifica el efecto causal específico de una intervención real.
+Un clasificador de spam puede aprender que cierta palabra es una pista útil. Si cambian los mensajes, esa pista puede dejar de servir. Aprender una asociación no explica automáticamente qué ocurrirá cuando alguien actúe para modificar la situación.
 
-Si un sistema propone «haz X para mejorar Y», conviene distinguir entre una hipótesis razonable, evidencia observacional y evidencia de intervención. La calidad de la redacción no reemplaza esa evaluación.
+Del mismo modo, un modelo de lenguaje puede redactar una explicación convincente sin haber verificado la causa que describe. Debes separar lo plausible de lo demostrado con datos y supuestos apropiados.
 
-## Una forma de recordar la sesión 00
+## 6. Una palabra que puede confundirte después
 
-El recorrido comienza con mecanismos y pruebas de comportamiento, pasa a modelos escritos o aprendidos y termina con una limitación: calcular una predicción útil no resuelve automáticamente la pregunta por las causas. Para entender cómo se calculan las predicciones de la sesión 01, sigue con [[05 S01 - Probabilidad y teorema de Bayes paso a paso]].
+En transformers encontrarás **atención causal**. Allí significa impedir que una posición consulte tokens futuros mientras predice. Por ejemplo, al predecir la palabra que sigue a «yo», el modelo no debe mirar esa respuesta más adelante en la frase.
 
-## Complemento del libro: atención causal no significa inferencia causal
+Esa máscara controla qué partes del texto puede leer. No demuestra causas del mundo ni calcula por sí sola efectos de intervenciones. Recuerda esta diferencia cuando llegues a los modelos de lenguaje.
 
-Cuando estudies transformers aparecerá otra vez la palabra **causal**, pero con una función distinta. Raschka llama atención causal al mecanismo que impide que una posición consulte tokens futuros mientras predice el siguiente token.
+## Fuentes de esta explicación
 
-Con la entrada «yo estudio Bayes», la posición de «yo» no puede consultar «estudio» para predecirlo. La máscara evita revelar la respuesta durante el entrenamiento. Restringe el flujo de información de la secuencia.
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-Esto no calcula $P(Y\mid\operatorname{do}(X))$ ni identifica qué intervención produce un efecto. El nombre compartido no convierte una red con máscara en un modelo causal del mundo. Puedes recordar la diferencia como **restricción temporal de lectura** frente a **pregunta sobre el efecto de actuar**.
-
-**Fuente de la máscara:** [[Build_a_Large_Language_Model_From_Scrat.pdf#page=97|Raschka, §3.5.1, p. impresa 75; PDF 97]]. La comparación con la causalidad de la sesión 00 es una conexión didáctica.
-
-## Gráficos y diagramas para entender el tema
-
-### Comparar observación e intervención
-
-![Comparar observación e intervención](<Recursos visuales/10-causalidad.png>)
-
-**Cómo leerlo:** A la izquierda el calor influye en ventas y natación. A la derecha fijamos las ventas externamente y retiramos su flecha entrante. En este ejemplo no hay una flecha de ventas a natación: la asociación se explica por el calor. El dibujo representa un supuesto causal explícito, no una estructura descubierta solo por correlación.
-
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[sesion-00.pdf#page=14|Sesión 00, páginas 14–15]]
+- [[Build_a_Large_Language_Model_From_Scrat.pdf#page=97|Raschka, §3.5.1, p. impresa 75; PDF 97]]
 
 ## Preguntas para comprobar que entendiste
 

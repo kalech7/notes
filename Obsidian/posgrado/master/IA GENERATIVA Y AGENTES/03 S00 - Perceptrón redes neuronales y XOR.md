@@ -9,109 +9,73 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** [[sesion-00.pdf#page=13|Sesión 00, páginas 13]]. Explicaciones y ejemplos elaborados para estudiar; no son una transcripción.
+## 1. Una decisión hecha con números
 
-## Una neurona artificial como decisión numérica
+Un perceptrón recibe números, los combina y devuelve una decisión. Vamos a usar entradas que solo pueden valer 0 o 1. Queremos que la salida sea 1 únicamente cuando **las dos entradas valgan 1**. Esta regla se llama AND.
 
-El perceptrón combina entradas, calcula un puntaje y aplica un umbral:
+No imagines todavía una red enorme. Solo necesitamos dos entradas, una suma y un umbral.
 
-$$a=w_1x_1+w_2x_2+b,\qquad y=f(a).$$
+![Cómo calcula un perceptrón](<Recursos visuales/01-perceptron.png>)
 
-En el perceptrón de la sesión, $f(a)=1$ si $a\geq0$ y $f(a)=0$ en otro caso.
+Lee de izquierda a derecha: las entradas llegan a la suma; el resultado pasa por una condición; la condición produce 0 o 1.
 
-- $x_1,x_2$: entradas observadas.
-- $w_1,w_2$: pesos; regulan cuánto influye cada entrada.
-- $b$: sesgo; desplaza el umbral.
-- $a$: puntaje antes de decidir.
-- $y$: salida del modelo.
+## 2. Qué hace cada parte de la fórmula
 
-La salida 0 o 1 es una decisión, no una probabilidad calibrada.
+$$a=w_1x_1+w_2x_2+b.$$
 
-## Ejemplo resuelto: la función AND
+Las entradas son $x_1$ y $x_2$. Cada una se multiplica por un **peso**, $w_1$ o $w_2$, que regula su influencia. Después se añade $b$, llamado **sesgo**. El resultado $a$ es un puntaje.
 
-Queremos salida 1 solo cuando ambas entradas valgan 1. Elige $w_1=w_2=1$ y $b=-1.5$.
+La regla de salida es: si $a\geq0$, devuelve 1; si es negativo, devuelve 0. El puntaje no es una probabilidad, y la salida tampoco dice cuánta confianza tiene el modelo.
 
-| $x_1$ | $x_2$ | $a=x_1+x_2-1.5$ | Salida |
+## 3. Hagamos el cálculo de AND
+
+Elige pesos 1 y 1, y sesgo −1.5. Ahora la fórmula es $a=x_1+x_2-1.5$.
+
+| Entradas | Cálculo | Puntaje | Salida |
 | --- | --- | --- | --- |
-| 0 | 0 | -1.5 | 0 |
-| 0 | 1 | -0.5 | 0 |
-| 1 | 0 | -0.5 | 0 |
-| 1 | 1 | 0.5 | 1 |
+| 0 y 0 | 0 + 0 − 1.5 | −1.5 | 0 |
+| 0 y 1 | 0 + 1 − 1.5 | −0.5 | 0 |
+| 1 y 0 | 1 + 0 − 1.5 | −0.5 | 0 |
+| 1 y 1 | 1 + 1 − 1.5 | 0.5 | 1 |
 
-El sesgo exige que la suma alcance 1.5. Como las entradas son binarias, solo el último caso lo consigue. Hemos elegido los pesos para explicar el mecanismo; un algoritmo de aprendizaje podría buscarlos a partir de ejemplos.
+El sesgo hace que una sola entrada activa no alcance el umbral. En este ejemplo elegimos los valores a mano para ver cómo funciona. Al entrenar, un algoritmo busca valores apropiados a partir de ejemplos.
 
-## Qué significa aprender los pesos
+## 4. Por qué XOR es más difícil
 
-Una regla clásica de actualización del perceptrón es:
+XOR devuelve 1 cuando las entradas son **diferentes**. Devuelve 0 para (0,0) y (1,1), y 1 para (0,1) y (1,0).
 
-$$w_i\leftarrow w_i+\eta(y_{\mathrm{real}}-y_{\mathrm{pred}})x_i,$$
-$$b\leftarrow b+\eta(y_{\mathrm{real}}-y_{\mathrm{pred}}).$$
+![Comparación de AND y XOR](<Recursos visuales/02-and-xor.png>)
 
-$\eta>0$ es la tasa de aprendizaje. Si la predicción es correcta, la diferencia es cero y no hay cambio. Si predice 0 donde debía predecir 1, la actualización aumenta el puntaje para esa entrada. Esta regla es una ampliación didáctica, distinta de la retropropagación usada en redes profundas.
+En AND, una recta puede separar los puntos de salida 0 de los de salida 1. En XOR, las clases están en diagonales opuestas. Ninguna recta deja los dos ceros de un lado y los dos unos del otro.
 
-## Por qué XOR no cabe en un solo perceptrón
+Un perceptrón con estas entradas solo puede crear una frontera recta. Por eso entrenarlo durante más tiempo no resuelve XOR: el problema está en lo que puede representar.
 
-XOR devuelve 1 cuando las entradas son diferentes y 0 cuando son iguales.
+## 5. Cómo ayudan las capas intermedias
 
-| Entrada | XOR |
-| --- | --- |
-| (0, 0) | 0 |
-| (0, 1) | 1 |
-| (1, 0) | 1 |
-| (1, 1) | 0 |
+Podemos calcular primero dos resultados: $h_1$ indica si al menos una entrada vale 1 (OR), y $h_2$ indica si ambas valen 1 (AND). Después calculamos $h_1-2h_2-0.5$ y aplicamos el umbral.
 
-Dibuja esos cuatro puntos en un cuadrado: las dos clases ocupan diagonales opuestas. Una única recta no puede dejar todos los ceros de un lado y todos los unos del otro.
+Para entradas distintas, $h_1=1$ y $h_2=0$: el puntaje da 0.5 y la salida 1. Para ambas iguales a 1, da −1.5 y la salida 0. Para ambas iguales a 0, da −0.5 y la salida 0. Así resolvimos XOR creando una representación intermedia.
 
-La frontera del perceptrón es $w_1x_1+w_2x_2+b=0$, una recta en dos dimensiones. El límite es de representación: repetir el entrenamiento no arregla que la familia del modelo no pueda expresar XOR.
+Las redes profundas aprenden representaciones de este tipo, generalmente mucho más complejas. Apilar únicamente transformaciones lineales no basta: su composición sigue siendo lineal. Se necesitan funciones no lineales para ganar esa capacidad.
 
-## Cómo ayudan varias capas
+## 6. Qué significa ajustar los pesos
 
-Podemos calcular primero dos características:
+Una regla clásica del perceptrón modifica los pesos cuando se equivoca:
 
-- $h_1=\operatorname{OR}(x_1,x_2)$: al menos una entrada vale 1.
-- $h_2=\operatorname{AND}(x_1,x_2)$: ambas valen 1.
+$$w_i\leftarrow w_i+\eta(y_{\mathrm{real}}-y_{\mathrm{pred}})x_i.$$
 
-Después una salida con puntaje $h_1-2h_2-0.5$ y el mismo umbral resuelve XOR. Para (0,0) da -0.5; para entradas diferentes da 0.5; para (1,1) da -1.5.
+$\eta$ controla el tamaño del cambio. Si acierta, la diferencia entre resultado real y predicho es cero. El sesgo se actualiza de forma parecida, sin multiplicar por $x_i$.
 
-Esto demuestra por construcción por qué una representación intermedia puede hacer resoluble un problema. En redes prácticas esas representaciones normalmente se aprenden.
+Corregir un ejemplo puede empeorar otro. La convergencia del algoritmo clásico requiere que los datos sean separables por una frontera lineal en la representación utilizada. Incluso entonces, separar el entrenamiento no garantiza acertar en casos nuevos.
 
-## Retropropagación y optimización
+En redes profundas se distingue **retropropagación**, que calcula cómo influye cada parámetro en la pérdida mediante derivadas, y **optimizador**, que utiliza esa información para actualizarlo. El escalón del perceptrón no es la activación habitual para entrenar esas redes con gradientes.
 
-La **retropropagación** calcula derivadas de la pérdida respecto de los parámetros aplicando la regla de la cadena. Un **optimizador** utiliza esas derivadas para actualizar pesos. Son operaciones relacionadas, pero distintas.
+## Fuentes de esta explicación
 
-Las redes profundas suelen usar activaciones adecuadas para ese cálculo, como ReLU, y no el escalón duro del perceptrón como mecanismo ordinario de entrenamiento. Además, apilar capas solo lineales equivale a otra transformación lineal; las no linealidades son esenciales para ganar capacidad expresiva.
+Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
 
-Un modelo más expresivo no aprende automáticamente mejor: aún necesita datos, un objetivo apropiado y evaluación. Tampoco obtiene causalidad solo por tener más capas: [[04 S00 - Correlación causalidad y límites de las predicciones]].
-
-## Complemento del libro: qué garantiza el aprendizaje del perceptrón
-
-Bishop distingue tres cosas que a menudo se mezclan: que exista una frontera correcta, que el algoritmo la encuentre y que esa frontera generalice.
-
-Para un conjunto finito linealmente separable, el algoritmo clásico del perceptrón converge a una solución separadora en un número finito de actualizaciones. Esa garantía **depende de la separabilidad**. XOR en las entradas originales no cumple la condición.
-
-Además, corregir un ejemplo puede hacer que otro antes correcto quede mal clasificado. Por eso una actualización no tiene por qué reducir el número total de errores inmediatamente. Incluso si hay varias soluciones válidas, el orden de los ejemplos y la inicialización pueden influir en cuál encuentra el algoritmo.
-
-Una última distinción: separar todo el conjunto de entrenamiento no prueba que se clasifiquen bien nuevas observaciones. La garantía del algoritmo se refiere al problema de entrenamiento bajo sus condiciones, no a una inteligencia general.
-
-**Notación del libro:** Bishop codifica clases como −1 y +1 en este apartado. Estas notas usaron 0 y 1. Ambas convenciones sirven, pero no debes copiar una fórmula de actualización sin comprobar con cuál se definió.
-
-**Fuente:** [[bishop-2006-prml.pdf#page=213|Bishop, §4.1.7, pp. impresas 193–194; PDF 213–214]].
-
-## Gráficos y diagramas para entender el tema
-
-### Recorrido visual del perceptrón
-
-![Recorrido visual del perceptrón](<Recursos visuales/01-perceptron.png>)
-
-**Cómo leerlo:** Sigue las flechas de izquierda a derecha: cada entrada aporta un valor ponderado, el sesgo desplaza la suma y el umbral transforma el puntaje en una decisión. Prueba el recorrido con las entradas (1,1) y (1,0).
-
-### Por qué XOR necesita otra representación
-
-![Por qué XOR necesita otra representación](<Recursos visuales/02-and-xor.png>)
-
-**Cómo leerlo:** Los círculos azules tienen salida 0 y los cuadrados naranjas salida 1. En AND la recta separa las clases; en XOR las clases ocupan diagonales opuestas y ninguna recta separa las cuatro entradas. No confundas esta limitación geométrica con falta de tiempo de entrenamiento.
-
-*Figuras originales elaboradas para estos apuntes. Los números y supuestos se explican en el texto; no son imágenes copiadas de los libros.*
+- [[sesion-00.pdf#page=13|Sesión 00, páginas 13]]
+- [[bishop-2006-prml.pdf#page=213|Bishop, §4.1.7, pp. impresas 193–194; PDF 213–214]]
 
 ## Preguntas para comprobar que entendiste
 
