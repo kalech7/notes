@@ -1,0 +1,110 @@
+{
+  "descripcion_tarea": "Clasificación automática de incidentes críticos de infraestructura cloud en 4 clases canónicas: DATABASE_OUTAGE, SECURITY_BREACH, NETWORK_PARTITION, RESOURCE_EXHAUSTION.",
+  "clases_permitidas": [
+    "DATABASE_OUTAGE",
+    "SECURITY_BREACH",
+    "NETWORK_PARTITION",
+    "RESOURCE_EXHAUSTION"
+  ],
+  "casos_verificables": [
+    {
+      "id": "CASE-01",
+      "titulo": "Bloqueo por concurrencia transaccional en Postgres",
+      "descripcion": "Logs de producción: 'ERROR: deadlock detected on relation orders_tbl'. Las conexiones activas alcanzaron max_connections=500 y el pooler PgBouncer rechaza nuevas transacciones con timeout.",
+      "categoria_esperada": "DATABASE_OUTAGE",
+      "justificacion": "Afectación directa a la base de datos relacional y saturación del pool transaccional."
+    },
+    {
+      "id": "CASE-02",
+      "titulo": "Intentos masivos de autenticación SSH por fuerza bruta",
+      "descripcion": "El sensor SIEM detectó 15.000 intentos de inicio de sesión fallidos en el puerto 22 desde un rango de IPs no autorizadas (AS4582), logrando acceso no autorizado a la cuenta 'deploy-runner' y alterando claves authorized_keys.",
+      "categoria_esperada": "SECURITY_BREACH",
+      "justificacion": "Compromiso de credenciales y acceso no autorizado a la infraestructura."
+    },
+    {
+      "id": "CASE-03",
+      "titulo": "Aislamiento de zona de disponibilidad por fallo BGP",
+      "descripcion": "El tráfico inter-región entre us-east-1a y us-east-1b presenta 100% de packet loss tras un retiro de rutas BGP. Los nodos de Kubernetes reportan 'NodeNotReady' por fallo en el heartbeat del plano de control.",
+      "categoria_esperada": "NETWORK_PARTITION",
+      "justificacion": "Pérdida de conectividad y partición de red entre zonas de disponibilidad."
+    },
+    {
+      "id": "CASE-04",
+      "titulo": "OOMKilled recursivo en pods de procesamiento de imágenes",
+      "descripcion": "El DaemonSet de procesamiento batch reporta terminación de contenedores con código 137 (OOMKilled). El uso de RAM en el nodo superó el límite asignado de 64 GB debido a memory leaks en la biblioteca de rasterizado.",
+      "categoria_esperada": "RESOURCE_EXHAUSTION",
+      "justificacion": "Saturación crítica de memoria RAM y terminación por el kernel OOM killer."
+    },
+    {
+      "id": "CASE-05",
+      "titulo": "Corrupción de réplica de lectura en MySQL",
+      "descripcion": "El proceso mysqld en la réplica réplica-read-02 falló con 'Fatal error: Replica SQL thread failed to apply event - Table definition mismatch'. La replicación binaria se detuvo completamente.",
+      "categoria_esperada": "DATABASE_OUTAGE",
+      "justificacion": "Fallo crítico en el motor de base de datos y detención de replicación."
+    },
+    {
+      "id": "CASE-06",
+      "titulo": "Filtración de secreto AWS en log público de CI/CD",
+      "descripcion": "Un escaneo automático de GitGuardian alertó que el token de acceso AWS_SECRET_ACCESS_KEY fue impreso en texto claro en los logs públicos del pipeline de GitLab Runner y ya se detectaron llamadas anómalas a sts:GetCallerIdentity.",
+      "categoria_esperada": "SECURITY_BREACH",
+      "justificacion": "Exposición de credenciales de seguridad con explotación confirmada."
+    },
+    {
+      "id": "CASE-07",
+      "titulo": "Latencia anómala y pérdida de paquetes en Transit Gateway",
+      "descripcion": "CloudWatch alarma: MTU mismatch en la interfaz VPN hacia el datacenter local genera fragmentación masiva, elevando la pérdida de paquetes ICMP al 78% entre la VPC privada y el backend on-premise.",
+      "categoria_esperada": "NETWORK_PARTITION",
+      "justificacion": "Fallo severo de enrutamiento y conectividad de red."
+    },
+    {
+      "id": "CASE-08",
+      "titulo": "Llenado al 100% de inodes en volumen raíz EBS",
+      "descripcion": "Servicios web arrojan error 'No space left on device' a pesar de mostrar 40% de espacio libre en disco. 'df -i' confirma el consumo del 100% de inodes debido a 20 millones de archivos temporales huérfanos en /tmp.",
+      "categoria_esperada": "RESOURCE_EXHAUSTION",
+      "justificacion": "Agotamiento de recursos del sistema de archivos (inodos)."
+    },
+    {
+      "id": "CASE-09",
+      "titulo": "CrashLoopBackOff en Redis por persistencia RDB corrupta",
+      "descripcion": "El clúster de caché en memoria Redis entra en estado CrashLoopBackOff. El log del contenedor indica: 'Bad file format reading the append only file / data.rdb: unexpected EOF'. Las lecturas de sesión fallan.",
+      "categoria_esperada": "DATABASE_OUTAGE",
+      "justificacion": "Caída del almacenamiento de base de datos / caché clave-valor."
+    },
+    {
+      "id": "CASE-10",
+      "titulo": "Exfiltración de datos mediante inyección de prompt indirecta",
+      "descripcion": "Un usuario externo manipuló un currículum PDF con texto oculto que ordenó al agente interno de HR extraer y enviar la base de datos de salarios a un webhook malicioso externo en https://attacker-c2.net/exfil.",
+      "categoria_esperada": "SECURITY_BREACH",
+      "justificacion": "Ataque y compromiso de seguridad por inyección y exfiltración de información confidencial."
+    }
+  ],
+  "casos_contaminados_4b": [
+    {
+      "id": "CONTAM-01",
+      "tipo_trampa": "distraccion_irrelevante",
+      "titulo": "Fallo de BD con ruido de climatización y bodega",
+      "descripcion": "INFORMACIÓN AMBIENTAL DEL DATACENTER: En Frankfurt, el sensor HVAC reportó variación de 0.4°C en rack 12. El inventario de cables patch de red tiene 82 unidades en stock.\n\nINCIDENTE TÉCNICO:\nEl cluster de PostgreSQL arrojó 'PANIC: could not locate a valid checkpoint record'. El proceso demonio se detuvo y no procesa queries SQL.",
+      "categoria_esperada": "DATABASE_OUTAGE",
+      "categoria_espuria": "RESOURCE_EXHAUSTION",
+      "justificacion": "Trivialmente DATABASE_OUTAGE. Modelos que sobre-razonan tienden a perderse en el ruido ambiental."
+    },
+    {
+      "id": "CONTAM-02",
+      "tipo_trampa": "sobreajuste_al_marco",
+      "titulo": "Disco lleno con marco alarmista de ciberataque APT",
+      "descripcion": "¡ALERTA ROJA DE SEGURIDAD! El equipo SOC sospecha un ataque DDoS avanzado patrocinado por actores estatales que buscan saturar los logs para sabotear la empresa.\n\nEVIDENCIA FORENSE TÉCNICA:\nUn backup local olvidó habilitar gzip y creó un dump tar sin comprimir de 600 GB en /var/backups, llenando el 100% de la partición de disco físico.",
+      "categoria_esperada": "RESOURCE_EXHAUSTION",
+      "categoria_espuria": "SECURITY_BREACH",
+      "justificacion": "Es agotamiento de disco (RESOURCE_EXHAUSTION). El sesgo de encuadre en el prompt intenta forzar SECURITY_BREACH."
+    },
+    {
+      "id": "CONTAM-03",
+      "tipo_trampa": "correlacion_espuria",
+      "titulo": "Intrusión crítica con correlación histórica de red",
+      "descripcion": "RUNBOOK HISTÓRICO: El 99% de incidentes ocurridos en viernes a las 18:00 corresponden a mantenimiento de switches de red troncal.\n\nREPORTE EN TIEMPO REAL (Viernes 18:00):\nUn atacante publicó en Telegram credenciales de administrador filtradas mediante un exploit en el portal de login y ya escaló privilegios de root.",
+      "categoria_esperada": "SECURITY_BREACH",
+      "categoria_espuria": "NETWORK_PARTITION",
+      "justificacion": "Es SECURITY_BREACH. La correlación espuria del viernes intenta desviar el juicio hacia NETWORK_PARTITION."
+    }
+  ]
+}

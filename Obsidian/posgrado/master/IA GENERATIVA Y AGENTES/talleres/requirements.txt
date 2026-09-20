@@ -1,0 +1,39 @@
+# Dependencias para Taller 01 - Foundation Models: MMIA 6013
+# Entorno recomendado: Python 3.12
+#
+# Notas de compatibilidad (verificadas en este equipo, macOS x86_64):
+#   - En macOS Intel el ultimo wheel publicado de PyTorch es 2.2.2; no existen
+#     wheels de torch >= 2.5 para esa plataforma.
+#   - transformers 5.x exige torch >= 2.5 y, si no lo encuentra, desactiva
+#     PyTorch en silencio ("Disabling PyTorch...") y GPT-2 nunca carga.
+#     Por eso se fija transformers < 5.
+#   - torch 2.2.2 se compilo contra numpy 1.x y falla al inicializar con
+#     numpy 2.x ("_ARRAY_API not found"). Por eso se fija numpy < 2.
+#   - Python 3.13 no tiene wheels de torch para esta plataforma.
+#
+# Instalacion:
+#   uv venv --python 3.12 .venv
+#   uv pip install --python .venv/bin/python -r requirements.txt
+
+torch==2.2.2 ; sys_platform == "darwin" and platform_machine == "x86_64"
+torch>=2.5.0 ; sys_platform != "darwin" or platform_machine != "x86_64"
+transformers>=4.44.0,<5
+numpy>=1.24.0,<2
+openai>=1.30.0
+anthropic>=0.25.0
+python-dotenv>=1.0.0
+pandas>=2.0.0,<3
+matplotlib>=3.8.0
+seaborn>=0.13.0
+tabulate>=0.9.0
+tqdm>=4.66.0
+pydantic>=2.7.0
+ipykernel>=6.29.0
+
+# --- Extras ajenos al taller, presentes solo en este equipo ---
+# Este .venv se usa ademas como SDK del modulo en IntelliJ, compartido con el
+# proyecto de MATEMATICAS. Se fijan a las ultimas versiones que todavia
+# soportan numpy 1.x: instalarlas sin restriccion arrastra numpy 2.x y rompe
+# torch 2.2.2 con "RuntimeError: Numpy is not available".
+scipy>=1.11,<1.14
+scikit-learn>=1.4,<1.6
