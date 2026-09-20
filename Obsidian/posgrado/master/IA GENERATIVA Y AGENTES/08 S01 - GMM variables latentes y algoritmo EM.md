@@ -9,6 +9,8 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
+Práctica del notebook: [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas#2. GMM: mezcla de gaussianas|Entrenar tres componentes y generar 200 puntos nuevos]].
+
 ## 1. Imagina una nube de puntos con dos grupos
 
 Cada punto del siguiente gráfico tiene dos características numéricas. Podrían ser tamaño y duración de un archivo. Vemos concentraciones de puntos en zonas distintas, pero los datos no incluyen una etiqueta que diga a qué grupo pertenece cada uno.

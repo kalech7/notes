@@ -9,6 +9,8 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
+Práctica del notebook: [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas#3. Bigramas: mi primer modelo autorregresivo|Construir la tabla de conteos y generar texto paso a paso]].
+
 ## 1. Generar una frase eligiendo una palabra cada vez
 
 Imagina que quieres completar «yo…». Un modelo sencillo podría mirar qué palabras siguieron a «yo» en sus ejemplos y sortear una de ellas.

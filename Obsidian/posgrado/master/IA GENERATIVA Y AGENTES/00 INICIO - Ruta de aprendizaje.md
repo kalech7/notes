@@ -42,6 +42,7 @@ Puedes leerlas al llegar a su tema o volver después. Están separadas para que 
 
 ## Si te atascas o quieres practicar
 
+- [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas|S1·LUN: notebook explicado, código y ejercicios de Naive Bayes, GMM y bigramas]]. Incluye el corpus de spam y ham, conteos reales del ejercicio y generación paso a paso.
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Busca un término explicado con palabras sencillas]].
 - [[13 PRÁCTICA - Repaso integrado y ejercicios resueltos|Resuelve los ejercicios y comprueba tus respuestas]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Consulta de dónde sale cada explicación]].

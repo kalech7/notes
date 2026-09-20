@@ -53,7 +53,13 @@ El PDF de Murphy lleva «2022» en el nombre, pero la copia consultada indica ve
 
 Los complementos son explicaciones originales y ejemplos adaptados; no transcripciones extensas ni resúmenes completos de los libros. El glosario 12 y la práctica 13 también incorporan estos conceptos.
 
-Las rutas a notebooks, diapositivas fuente o notas teóricas citadas por los PDF no aparecen en el ZIP suministrado. No se crearon enlaces a esos archivos ausentes. La práctica es propia y no reemplaza un notebook oficial.
+Las rutas a notebooks, diapositivas fuente o notas teóricas citadas por los PDF no aparecían en el ZIP suministrado. La práctica 13 es propia y no reemplaza un notebook oficial.
+
+### Notebook S1·LUN incorporado
+
+Ahora está disponible [[s1-lun-estudiante.ipynb]] en `Materiales`. Se revisaron sus celdas y salidas para elaborar [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas]], que complementa las notas 07, 08 y 09 con el corpus original, código explicado, cálculos y preguntas resueltas.
+
+La nota 17 aclara que el componente latente del GMM es discreto, que los datos de `make_blobs` son sintéticos y que el bigrama original une las líneas del corpus. Distingue los ejercicios del notebook de las ampliaciones añadidas, incluida la variante con marcadores de inicio y fin.
 
 ## Libros utilizados y otras lecturas opcionales
 

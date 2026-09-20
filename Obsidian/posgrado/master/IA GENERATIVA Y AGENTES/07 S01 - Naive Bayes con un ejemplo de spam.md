@@ -9,6 +9,8 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
+Práctica con el corpus de diez mensajes del notebook: [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas#1. Naive Bayes|Dataset, vectorización, probabilidades y generación de spam y ham]].
+
 ## 1. La idea: aprender qué palabras aparecen en cada clase
 
 Vamos a crear un clasificador pequeño. En lugar de interpretar el correo como una persona, contará palabras y aprenderá cuáles aparecen más en spam y en mensajes normales.
