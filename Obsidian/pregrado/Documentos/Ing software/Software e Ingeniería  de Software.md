@@ -1,11 +1,11 @@
-es un producto y al mismo tiempo es el vehículo para entregar un producto
+Es un producto y al mismo tiempo es el vehículo para entregar un producto
 
 **forma de producto:** brinda el potencial de cómputo incorporado en el hardware de cómputo o, con más amplitud, en una red de computadoras a las que se accede por medio de un hardware local
-* el software es un transformador de información produce, administra, adquiere, modifica, despliega o transmite información que puede ser tan simple como un solo bit o tan compleja como una presentación con multimedios generada a partir de datos obtenidos de decenas de fuentes independientes.
+* El software es un transformador de información produce, administra, adquiere, modifica, despliega o transmite información que puede ser tan simple como un solo bit o tan compleja como una presentación con multimedios generada a partir de datos obtenidos de decenas de fuentes independientes.
 **forma de vehiculo:** distribuir el producto 
-* como la base para el control de la computadora (sistemas operativos),  
-* para la comunicación de información (redes) 
-* para la creación y control de otros programas (herramientas y ambientes de software)
+* Como la base para el control de la computadora (sistemas operativos),  
+* Para la comunicación de información (redes) 
+* Para la creación y control de otros programas (herramientas y ambientes de software)
 
 Existen sistemas basados en computadora más sofisticados y complejos gracias a: 
 * Las notables mejoras en el funcionamiento del hardware
@@ -66,6 +66,9 @@ el software no tiene características físicas como el hardware:
 ## Ingenieria de Software 
 Es una disciplina o área de la Informática o Ciencias de la Computación, que ofrece métodos y técnicas para desarrollar y mantener software de calidad que resuelven problemas de todo tipo.
 
+> [!info] Explicación: ¿Qué es realmente la Ingeniería de Software?
+> La Ingeniería de Software no es solo programar, es la aplicación sistemática, disciplinada y cuantificable al desarrollo, operación y mantenimiento de software. Su importancia radica en poder construir sistemas complejos que sean confiables, mantenibles, fáciles de probar (testing) y que entreguen valor real dentro de un presupuesto y tiempo definidos utilizando diversas metodologías.
+
 ## Dominios de aplicación del software
 existen 7 grandes categorías
 
@@ -103,6 +106,10 @@ También se dirige a mercados masivos de consumidores, tales como: procesamiento
 ### Aplicaciones web:
 son poco más que un conjunto de archivos de hipertexto vinculados que presentan información con uso de texto y gráficas limitadas
 Pero desde la Web 2.0, las webapps han evolucionado están integradas con bases de datos corporativas y aplicaciones de negocios.
+
+> [!info] Explicación: Evolución de los Dominios y Convergencia
+> La evolución de las metodologías ágiles ha permitido iterar rápidamente sobre estas plataformas. Hoy en día, una aplicación web moderna (webapp) funciona como centro neurálgico de un negocio, conectándose con software embebido (como dispositivos IoT) e integrando inteligencia artificial. Esto requiere ciclos de desarrollo cortos y testing automatizado continuo para asegurar que las integraciones no fallen.
+
 ### Software de inteligencia artificial:
 hace uso de algoritmos no numéricos para resolver problemas complejos que no son fáciles de tratar computacionalmente o con el análisis directo.
 **Las aplicaciones incluyen:** 
@@ -133,8 +140,21 @@ se caracteriza por su longevidad e importancia crítica para el negocio, pero en
 
 si el software heredado satisface las necesidades de sus usuarios y corre de manera confiable, entonces no falla ni necesita repararse.
 
+> [!info] Explicación: El desafío del Código Legacy
+> El código legacy a menudo se define popularmente en la industria como "código sin pruebas automatizadas" (según el experto Michael Feathers). Al no tener testing automático, cualquier cambio es riesgoso porque puede introducir fallos sin darnos cuenta. Modificar estos sistemas requiere de técnicas cuidadosas de refactorización y cobertura progresiva con pruebas antes de implementar nuevas características.
+
 **los sistemas de software evolucionen por una o varias de las siguientes razones:** 
 - El software debe adaptarse para que cumpla las necesidades de los nuevos ambientes de cómputo y tecnología. 
 - El software debe ser mejorado para implementar nuevos requerimientos del negocio. 
 - El software debe ampliarse para que sea operable con otros sistemas o bases de datos modernos.  La arquitectura del software debe rediseñarse para hacerla viable dentro de un ambiente de redes.
 se debe hacer la reingeniería del sistema heredado para que sea viable en el futuro
+
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

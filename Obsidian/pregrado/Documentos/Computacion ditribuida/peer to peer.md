@@ -1,39 +1,40 @@
-peer to peer entrega de contenido es una alternativa interesante porque provee una alternativa cliente servidor usando cdns(content delivery network: es una red de servidores distribuidos geograficamentre que tebajan juntos para entregar contenido de internet de manera rapida y eficneiente. estos servidores alamcenan en cache contenido estatico y dinaminco, su proposito es reducir la latencia )
-corre sin una infraestructura dedicada 
-## contexto
-entrega con cliente servidor CDNs: 
-eficiente escalable para contenido popular
-confiable manegado para un buen servicio
-sus desventajas son: 
-necesita infraestructura dedicada
-control centralizado
+La entrega de contenido Peer-to-Peer (P2P) es una alternativa muy interesante al modelo cliente-servidor tradicional, ya que no requiere infraestructura dedicada.
 
-la metaa de p2p es entregar sin una infraestrutura dedicada o control centralizada lo que lo hace  aun eficiente en escala y confiable
-la idea principal es tener parcipantes que ayuden a los demas 
+> [!info] Explicación: ¿Qué es P2P?
+> En una red **P2P (Peer-to-Peer)**, cada computadora (nodo o *peer*) actúa simultáneamente como cliente y como servidor. No hay un servidor central; los recursos (ancho de banda, almacenamiento, procesamiento) son compartidos directamente entre los participantes.
 
-los retos que presenta p2p es que no tienen servidores confiables ya que toda la comunicacion para entregar el contenido estara entre los participantes y estos peers van a organizarse ellos mismo de alguna manera en una arquitectura coherente para lograr la tarea de entregar contenido mas no cliente-servidor
-conduce varios problemas a escala:
-1. limitadas capacidades no se tiene el privilegio de tener una highend servers que puede distribuir contenido a diferentes clientes
-2. iniciativas de participacion: los peers estan ayudando a todos pero si alguien quiere descargar contenido va a tener una copia del archivo apesar de eso estas ayudando a los demas nodos
-3. decentralizacion los nodos cambian con el tiempo no esta tan claro a quien contactar para tener una copia del contenido
+## Contexto
+En la entrega tradicional mediante Cliente-Servidor o CDNs (Content Delivery Networks):
+- **Ventajas:** Es eficiente, escalable para contenido popular, y al ser un servicio gestionado, resulta altamente confiable.
+- **Desventajas:** Necesita una infraestructura dedicada costosa y depende de un control centralizado. *(Nota: Las CDNs son redes de servidores distribuidos geográficamente que trabajan juntos para entregar contenido de internet de manera rápida y eficiente. Estos servidores almacenan en caché contenido estático y dinámico, con el propósito de reducir la latencia).*
 
-los nodos pueden enviar contenido a los demas usnado un arbol de distribucion tipicamente con replicas y con la capacidad de  auto escalar
-los nodos juegan dos roles: 
-descarga para ayudar  a los demas y carga  para completar favores a otros nodos
-combinan los dos roles  yo cargo por ti si tu decargas por mi 
-fomenta la cooperacion 
-## permitiendo la decentralizacion 
-los nodos deben aprender donde obtener el contenido  se usand dhts(distributed hash tables: es una estructura de datos que asocia claves con valores cada clave transdorma mediante una funciona hash en un indice de una tabla)  estos dhts son completamente desentralizados, eficientes  para un indice distribuido, el indice esta espacrido en todos los nodos 
-la lista de indices se usan   para contactar el contenido 
-cualquier noodo puede ver el indice 
-## bittorrent
-principal p2p se usa aun 
-trafieree arhcigo en piezas por paralelismo 
-usa tracker o un decentralizado indice dht 
-1. se empiza con una descripcion de l torrent
-2. se contacta al tracker para unir y obtener la lista de nodos o un dht 
-3. intercambia pedazos con diferentes nodos 
-4. favorece a los nodos que pueden cargar hacia a mi y axifixia nodos que no bajando la carga hacia ellos
+La meta principal del modelo P2P es entregar contenido sin depender de una infraestructura dedicada ni de un control centralizado, logrando aún así ser eficiente, escalable y confiable. La idea fundamental es que los propios participantes ayuden a distribuir la información a los demás.
+
+### Retos del modelo P2P
+Dado que no existen servidores altamente confiables, toda la comunicación para entregar el contenido ocurre entre los propios participantes. Estos nodos deben organizarse por sí mismos en una arquitectura coherente. Esto conduce a varios problemas al escalar:
+
+1. **Capacidades limitadas:** A diferencia de un servidor de alta gama, los nodos domésticos tienen ancho de banda y recursos limitados.
+2. **Iniciativas de participación:** Un nodo que descarga un archivo también debe estar dispuesto a cargar partes de ese archivo para ayudar a otros nodos, lo cual requiere incentivar la cooperación ("yo cargo por ti si tú descargas por mí").
+3. **Descentralización y dinamismo (Churn):** Los nodos se conectan y desconectan continuamente. Por lo tanto, es difícil saber a quién contactar en un momento dado para obtener una copia del contenido.
+
+Los nodos pueden enviar contenido a los demás usando árboles de distribución, típicamente con réplicas y con capacidad de autoescalar. Cada nodo juega dos roles combinados: **descarga** (para obtener lo que necesita) y **carga** (para hacer favores a otros nodos).
+
+## Permitiendo la descentralización 
+Para que los nodos sepan dónde obtener el contenido sin un servidor central, se utilizan **DHTs (Distributed Hash Tables)**.
+
+> [!info] Explicación: Distributed Hash Table (DHT)
+> Una **DHT** es una estructura de datos distribuida que asocia claves con valores. Cada clave se transforma mediante una función hash en un índice. En lugar de estar guardada en un solo servidor, esta "tabla" está fragmentada y repartida entre todos los nodos de la red. Es completamente descentralizada, eficiente y permite que cualquier nodo pueda consultar el índice para localizar quién tiene el contenido deseado.
+
+## BitTorrent
+Es el protocolo P2P más conocido y utilizado en la actualidad. Su principal característica es que transfiere archivos dividiéndolos en pequeñas piezas que se descargan en paralelo desde múltiples fuentes.
+
+Puede utilizar un **tracker** (un servidor central que solo mantiene listas de quién tiene qué) o un índice descentralizado mediante **DHT**.
+
+El proceso funciona así:
+1. Se empieza obteniendo una descripción del archivo (el archivo `.torrent` o el enlace *magnet*).
+2. Se contacta al *tracker* (o se consulta la DHT) para unirse al enjambre y obtener la lista de nodos participantes.
+3. El cliente intercambia pedazos del archivo con diferentes nodos.
+4. **Mecanismo de incentivo (Tit-for-Tat):** El protocolo favorece otorgando más velocidad de descarga a los nodos que suben datos activamente hacia él, y "asfixia" (choke) o corta la conexión a los nodos que solo descargan sin compartir.
 
 ## Notas relacionadas
 - [[content delivery networks]]

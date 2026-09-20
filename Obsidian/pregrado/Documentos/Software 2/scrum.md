@@ -1,69 +1,64 @@
-caja de tiempo sucede cada 1-4 semanas  
-sprint es el preido de tiempo 
-* reuniones
-sprint planning meeting (revisar el objetivo del sprintbacklog)(sprint backlog historia de usuario)
-sprint retrospective 
-sprint scrum meeting 
-daily scrum (15 minutos que hacer,que hiciste ayer, problemas)
-sprint review es el trabajo finalizado(minimo 3h product owner,srum master)
-* artefactos 
-productbacklog (lenguaje normal) vamos al roi(identificamos las prioridades)(bugs US tareas riesgos)
-sprint backlog (lenguaje tecnico)
-cada historia genera un conjunto de tareas 
-incremento(producto terminado)
-* control 
-burndown chart up 
+# Scrum
 
+Scrum trabaja mediante una "caja de tiempo" (Timebox) que generalmente dura entre 1 y 4 semanas. A este periodo de tiempo se le denomina **Sprint**.
 
-## sprint planning meeting
-1) objetivo sprint
-2) sprint backlog (lenaguaje tecnico, las tareas )
+## Reuniones (Eventos) en Scrum
+* **Sprint Planning Meeting:** Es la reunión donde se revisa el objetivo del sprint y se define el *Sprint Backlog* (el conjunto de historias de usuario a trabajar).
+* **Sprint Retrospective:** Reunión al final del sprint para evaluar cómo trabajó el equipo y encontrar oportunidades de mejora continua.
+* **Daily Scrum:** Reunión diaria de máximo 15 minutos donde cada miembro responde: ¿Qué hice ayer?, ¿Qué haré hoy?, y ¿Qué problemas o bloqueos tengo?
+* **Sprint Review:** Reunión donde se muestra el trabajo finalizado al final del sprint (dura mínimo 3 horas; participan el Product Owner, el Scrum Master y el equipo).
 
-| objetivo                     | tareas(lenguaje tecnico)                         |
-| ---------------------------- | ------------------------------------------------ |
-| backlog                      |                                                  |
-| bugs                         |                                                  |
-| usuario                      | crear tablas difinir restricciones tarea tecnica |
-| capacitacion                 |                                                  |
-| requeriminetos de desarollos | (spikes)                                         |
-parte 1 
-el product owner y el team revisan el product backlog
+## Artefactos
+* **Product Backlog:** Lista priorizada de todo lo que se necesita en el producto, escrita en un lenguaje normal o de negocio. Se basa en el ROI (Retorno de Inversión) para identificar las prioridades. Incluye nuevas funcionalidades (Historias de Usuario o US), errores (bugs), tareas técnicas y riesgos.
+* **Sprint Backlog:** Lista de tareas técnicas para el sprint actual. Cada historia de usuario seleccionada genera un conjunto de tareas más pequeñas (lenguaje técnico).
+* **Incremento:** Es el producto terminado y funcional que resulta al final del sprint.
 
-se ajusta los tiempos en todo los backlog el anexo
+## Control
+* **Burndown / Burnup chart:** Gráficos que permiten visualizar el trabajo pendiente o completado frente al tiempo restante del sprint.
 
-en git hub por lo general no es una regla se tienen 3 ramas 
-main cambios en el proyecto que entran a produccion
-dev cambios en el proyecto que se hacen a lo largo  de los sprints (no necesariamnete testeados) features cambios que cada desarollador hace  en el proyecto 
+## Sprint Planning Meeting
+Durante esta reunión se definen dos cosas principales:
+1. **Objetivo del Sprint:** La meta que se espera alcanzar.
+2. **Sprint Backlog:** Las tareas en lenguaje técnico que el equipo debe desarrollar.
 
-En Scrum no se hace referencia explícita al Sprint 0. De hecho, el coautor Ken Schawber considera que es una “mala denominación” y que realmente se refiere a la planificación que se realiza de forma previa al Sprint 1. En parte, esto se debe a que no genera ningún incremento de valor del producto, algo necesario según la definición de “sprint”. Sin embargo, el uso de esta expresión está tan generalizado que se puede llegar a entender como una parte esencial del proyecto y establecer una definición.
+| Objetivo | Tareas (Lenguaje Técnico) |
+| --- | --- |
+| Desarrollar Backlog | Crear tablas, definir restricciones, etc. |
+| Corregir Bugs | Tareas de depuración |
+| Interfaz de Usuario | Diseñar y maquetar |
+| Capacitación | Preparar manuales |
+| Requerimientos de desarrollo | Spikes (tareas de investigación) |
 
-Tal y como se ha dado a entender, **el Sprint 0 corresponde a la fase previa al inicio de un proyecto de [Scrum](https://aulasvirtuales.epn.edu.ec/mod/book/view.php?id=8998972 "SCRUM")**. Tiene como objetivo **establecer el propósito del proyecto**, así como las líneas principales de trabajo. Se crea una estructura básica de metodologías ágiles para que se desarrollen los siguientes Sprints de manera satisfactoria. Durante este periodo, tienen lugar distintas tareas. Algunas son:
+**Parte 1:** El Product Owner y el equipo de desarrollo revisan el Product Backlog.
+**Parte 2:** Se ajustan los tiempos estimados para todas las tareas del Sprint Backlog.
 
-- **Elaborar la versión inicial del Product Backlog**. Se preparan las [historias de usuario](https://aulasvirtuales.epn.edu.ec/mod/book/view.php?id=8998723 "Historias de Usuario") que se incluirán, fijando las prioritarias.  
-    
-- Puede incluir tareas de investigación o análisis, incluyendo **estudio de requisitos iniciales** (por ejemplo, en cuanto a formación, herramientas, seguridad, etc.).  
-    
-- Se estudia **el diseño y la arquitectura**, así como los entornos de desarrollo.  
-    
-- Se define **el equipo y los roles** de cada persona, preparándolos y organizando también el trabajo a realizar.  
-    
-- Se hace una aproximación de los **plazos y esfuerzos necesarios** para el correcto desarrollo del proyecto, definiendo los distintos puntos de entrega (las versiones que se irán mostrando) y determinando también en qué momento se podrá decir que el proyecto ha finalizado, es decir, cómo debe ser el resultado final (conocido como DoD, es decir, _Definition of Done_ o “Definición de completado”).  
-    
-- Se estudia el **Business Case**, esto es, aspectos como la viabilidad del proyecto o su rentabilidad, entre otras.  
-    
+En los repositorios (como GitHub), por lo general (aunque no es una regla estricta de Scrum), se manejan al menos 3 ramas de control de versiones:
+* **main:** Cambios estables en el proyecto que entran directamente a producción.
+* **dev:** Cambios consolidados que se hacen a lo largo de los sprints (no necesariamente testeados al 100% aún).
+* **feature:** Cambios puntuales que cada desarrollador hace en su propia rama antes de integrarlos.
+
+## El "Sprint 0"
+En la guía oficial de Scrum no se hace referencia explícita al "Sprint 0". De hecho, el coautor Ken Schwaber considera que es una "mala denominación" y que realmente se refiere a la planificación inicial que se realiza antes del Sprint 1. Esto se debe a que no genera un incremento de valor del producto, lo cual es requisito esencial para ser considerado un sprint. Sin embargo, su uso está tan generalizado en la industria que vale la pena definirlo.
+
+El **Sprint 0** corresponde a la fase previa al inicio del proyecto. Tiene como objetivo establecer el propósito del producto y preparar las bases técnicas y metodológicas:
+* **Elaborar la versión inicial del Product Backlog:** Se preparan las historias de usuario iniciales y se fijan prioridades.
+* **Investigación:** Incluye tareas de análisis o estudio de requisitos iniciales (herramientas, seguridad, etc.).
+* **Diseño y arquitectura:** Se define la arquitectura base y los entornos de desarrollo.
+* **Equipo:** Se define el equipo y los roles de cada persona.
+* **Definición de Completado (DoD):** Se hace una aproximación de los plazos y se define el *Definition of Done* (DoD), es decir, los criterios de calidad que toda tarea debe cumplir para considerarse finalizada.
+* **Business Case:** Se analiza la viabilidad del proyecto y su rentabilidad.
 
 ### Ventajas del Sprint 0
+Aunque no existe oficialmente en Scrum, realizar esta etapa de preparación inicial tiene varias ventajas:
+* Permite identificar los objetivos y puntos clave del proyecto con exactitud.
+* Al definir el alcance inicial, ayuda a determinar la duración y el coste estimado, disminuyendo la incertidumbre.
+* Aclara las bases del proyecto y la forma en que se aplicará la metodología.
+* Sirve como guía de planificación para el resto de los sprints, ahorrando tiempo en el futuro.
 
-Debido a que esta noción no existe oficialmente en el método [Scrum](https://aulasvirtuales.epn.edu.ec/mod/book/view.php?id=8998972 "SCRUM"), se puede entender que el desarrollo de esta etapa no es obligatorio. De hecho, se genera polémica en torno a su necesidad por este mismo motivo, ya que no se le considera un “sprint” como tal. Sin embargo, dejando de lado la denominación del mismo, este concepto cuenta con diversas ventajas:
-
-- Permite **identificar los objetivos y puntos clave del proyecto**, enfocándolo con más exactitud.
-- Definiendo el alcance, **ayuda a determinar aspectos como la duración, el tiempo o el coste**, disminuyendo la incertidumbre.
-- Ayuda a tener claras las **bases del proyecto** y la metodología ágil que se empleará, facilitando su aplicación.
-- Permite planificar todo lo que será necesario, simplificando el inicio del proyecto.
-- Servirá como **guía de planificación del resto de sprints**, ahorrando tiempo más tarde.
 ![[Pasted image 20240623221655.png]]
 
-tiempo de entrega 
+> [!info] Explicación: Scrum y Testing (Definition of Done)
+> En Scrum, el "Definition of Done" (DoD) es crucial para asegurar la calidad. El DoD no solo significa que el código fue escrito, sino que fue probado. Típicamente incluye: "El código pasa las pruebas unitarias", "El código ha pasado pruebas de integración", y "El código no rompe la construcción (CI)". Esto garantiza que el *Incremento* al final del Sprint sea verdaderamente funcional y libre de errores graves (bugs).
 
 ## Notas relacionadas
 - [[software 2]]
@@ -71,3 +66,13 @@ tiempo de entrega
 - [[kanban]]
 - [[historias de usuario]]
 - [[proyectos]]
+
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

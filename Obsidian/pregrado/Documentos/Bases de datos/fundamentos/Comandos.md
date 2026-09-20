@@ -1,21 +1,28 @@
 [[Fechas]]
+
+> [!info] Explicación
+> Esta nota agrupa los comandos fundamentales de SQL para el lenguaje de definición de datos (DDL) y el lenguaje de manipulación de datos (DML). Se incluyen las operaciones básicas de CRUD (Crear, Leer, Actualizar, Eliminar) y ejemplos prácticos de cómo realizar consultas combinando múltiples tablas a través de la cláusula JOIN.
+
 ## Create 
 ```sql
-CREATE TABLE (nombre)(nombre_columnas
-			nombre_col1 (tipo de dato ) (key?),
+CREATE TABLE (nombre)(
+	nombre_col1 (tipo de dato) (key?),
+	...
 );
-
 ```
+
 ## Eliminar
 ```sql
-DROP (table o database)
+DROP (TABLE o DATABASE)
 ```
+
 ## Modificar
 
 ```sql
-ALTER TABLE (columna) ADD (nombre col) tipodedato
-					  DROP 
+ALTER TABLE (tabla) ADD (nombre_columna) tipo_de_dato
+ALTER TABLE (tabla) DROP (nombre_columna)
 ```
+
 ## Insertar
 
 ```sql
@@ -23,121 +30,125 @@ INSERT INTO tabla (argumentos)
 ```
 
 ## Select
-**select** sirve para realizar consultas a la base de datos
+**SELECT** sirve para realizar consultas a la base de datos.
 
-Los comandos tienen CLAUSULAS
-
-**Select— from—-where—group by—having—- order by**
-
-SELECT (lista_de _atributos) FROM tabla;
-
-La clausula FROM es opcional si los datos nose obtienen de tablas
-
-Comúnmente las sentencias `SELECT` van acompañadas después del `FROM` de la cláusula `WHERE`, que permite añadir filtros a la consulta para restringir o filtrar los registros a devolver. Existen además otras clausulas después del `WHERE` que repercuten en cómo se visualizarán los registros y el orden en que se visualizarán, como por ejemplo el **GROUP BY** y **ORDER BY**.
-
-no es sensible al uppercase en el caso de las plabras clave del comando
-
-_**imprime la inicial del nombre y el apellido**_
+Los comandos tienen CLÁUSULAS. El orden lógico de escritura suele ser:
+**SELECT — FROM — WHERE — GROUP BY — HAVING — ORDER BY**
 
 ```sql
-SELECT SUBSTRING (first_name,1,1)|| '.' || '' || last_name,create_date
-FROM Customer
+SELECT (lista_de_atributos) FROM tabla;
+```
+
+La cláusula `FROM` es opcional si los datos no se obtienen de tablas específicas.
+
+> [!info] Explicación de las Cláusulas
+> Comúnmente las sentencias `SELECT` van acompañadas, después del `FROM`, de la cláusula `WHERE`. Esta cláusula permite añadir filtros a la consulta para restringir o filtrar los registros que se van a devolver. Existen además otras cláusulas después del `WHERE` que repercuten en cómo se agruparán los registros y el orden en que se visualizarán, como por ejemplo `GROUP BY` y `ORDER BY`.
+
+No es sensible a mayúsculas o minúsculas (case-insensitive) en el caso de las palabras clave del comando SQL.
+
+_**Imprime la inicial del nombre y el apellido:**_
+
+```sql
+SELECT SUBSTRING(first_name, 1, 1) || '.' || ' ' || last_name, create_date
+FROM Customer;
 ```
 
 ## Alias de columna
 
-Coloca nombres a las columnas
+Se utiliza para colocar nombres personalizados a las columnas en el resultado de la consulta.
 
-_**Cambia de nombre las columnas por lo que tenga**_
+_**Cambia de nombre las columnas por un texto descriptivo:**_
 
 ```sql
-SELECT SUBSTRING (first_name,1,1)|| '.' || '' || last_name as  "inicial + nombre",create_date as "fecha de creacion"
-FROM Customer
+SELECT SUBSTRING(first_name, 1, 1) || '.' || ' ' || last_name as "inicial + nombre", create_date as "fecha de creacion"
+FROM Customer;
 ```
 
 # Comando JOIN
 
+> [!info] Explicación de JOIN
+> Los `JOIN` permiten unir tablas basándose en una columna común para hacer consultas más complejas y relacionadas. Hay tres tipos principales de JOIN:
+> - **INNER JOIN:** Devuelve los registros que tienen coincidencias en ambas tablas.
+> - **LEFT OUTER JOIN:** Devuelve todos los registros de la tabla de la izquierda, y las coincidencias de la derecha (si no hay coincidencia, retorna NULL).
+> - **RIGHT OUTER JOIN:** Devuelve todos los registros de la tabla de la derecha, y las coincidencias de la izquierda.
+> 
+> Para realizar un JOIN, se utiliza la cláusula `ON`, que especifica la condición para unir las tablas (generalmente igualando Primary Key y Foreign Key). Además, el `NATURAL JOIN` iguala automáticamente los atributos con el mismo nombre.
 
-Los JOIN permiten unir tablas para hacer consultas más complejas. Hay tres tipos principales de JOIN: INNER JOIN, LEFT OUTER JOIN y RIGHT OUTER JOIN.
+**Tabla 1 || Intersección || Tabla 2**
 
-- Inner Join: devuelve los registros que corresponden a cada tabla solo si hay una relación entre ellos.
-- Left Outer Join: devuelve todos los registros de la tabla de la izquierda y los registros de la derecha que cumplen con la condición especificada.
-- Right Outer Join: devuelve todos los registros de la tabla de la derecha y los registros de la izquierda que cumplen con la condición especificada.
+Left Outer || Inner || Right Outer
 
-Para realizar un JOIN, se utiliza la cláusula ON, que especifica la condición para unir las tablas.
+_Tabla izquierda_ INNER JOIN _tabla derecha_ ON (condición)
 
-Los JOIN también se pueden combinar con otras cláusulas, como WHERE, GROUP BY y ORDER BY, para obtener resultados más específicos.
+_Tabla izquierda_ LEFT OUTER JOIN _tabla derecha_ ON (condición)
 
-**Tabla 1 || intersection|| Tabla 2**
+_Tabla izquierda_ RIGHT OUTER JOIN _tabla derecha_ ON (condición)
 
-Left Outer|| Inner || Right outer
+_Tabla izquierda_ NATURAL JOIN _tabla derecha_
 
-_Tabla izquierda_ Inner Join _tabla derecha_ ON (condicion)
-
-_Tabla izquierda_ LEFT OUTER JOIN _tabla derecha_ ON (condicion)
-
-_Tabla izquierda_ RIGTH OUTER JOIN _tabla derecha_ ON (condicion)
-
-Tabla izquierda NATURAL JOIN _tabla derecha_
-
-en el natural join automáticamente se igualan los atributos con el mismo nombre
+En el `NATURAL JOIN` automáticamente se igualan los atributos con el mismo nombre.
 
 ```sql
-SELECT first_name,Last_name
-From custimer C INNER JOIN Rental R 
-ON (C.customer_id=R.customer_id)
+SELECT first_name, last_name
+FROM customer C INNER JOIN Rental R 
+ON (C.customer_id = R.customer_id);
 ```
 
 ```sql
---los nombres de los clientes que han rentado peliculas o que nunca lo han hecho
-SELECT first_name||''||last_name AS 'Nombre'
+-- Los nombres de los clientes que han rentado películas o que nunca lo han hecho
+SELECT first_name || ' ' || last_name AS 'Nombre'
 FROM customer C LEFT OUTER JOIN Rental R
-ON (C.custumer_id=R.customer_id)
--- desplegar la fecha de realizacion de alquier
-SELECT firs_name ||''||last_name as "nombre",rental_date
+ON (C.customer_id = R.customer_id);
+
+-- Desplegar la fecha de realización de alquiler
+SELECT first_name || ' ' || last_name as "nombre", rental_date
 FROM customer C LEFT OUTER JOIN Rental R
-ON (C.custumer_id=R.customer_id)
-where rental_date as 
---cuales son los alquieres que se han realizados a los clientes con registro de clientes o no
---desplegar el id de alquiler y el nombre del cliente  en caso de que nose haya registrado el cliente
----en caso de que nose haya registrado desplegar el null 
-SELECT rental_id,first_name||''|| SUBSTRING(last_name,1,1)||'.' AS "nombre"
+ON (C.customer_id = R.customer_id)
+-- WHERE rental_date ... (incompleto en el original)
+
+-- Cuáles son los alquileres que se han realizado a los clientes, con registro de clientes o no.
+-- Desplegar el ID de alquiler y el nombre del cliente.
+-- En caso de que no se haya registrado el cliente, desplegar un NULL.
+SELECT rental_id, first_name || ' ' || SUBSTRING(last_name, 1, 1) || '.' AS "nombre"
 FROM customer C RIGHT OUTER JOIN Rental R
-ON (C.customer_id=R.customer_id)
-WHERE C.Customer_id IS NULL
--- Despligue los nombres de los clientes que han realizados algun alquiler junti a la fecha de realizaacion
-SELECT first_name ||''|| last_name AS "nombre",rental_date"fecha de alquiler"
+ON (C.customer_id = R.customer_id)
+WHERE C.customer_id IS NULL;
+
+-- Despliegue los nombres de los clientes que han realizado algún alquiler junto a la fecha de realización
+SELECT first_name || ' ' || last_name AS "nombre", rental_date as "fecha de alquiler"
 FROM Customer C INNER JOIN rental R 
-ON (C. customer_id = R.customer_id)
-WHERE C.customer_id IS NULL OR R.customer_id IS NULL
--- cuales osn los mmontos de los pagos que ha realizados la cliente susan 
-SELECT amount ,R.rental_id
+ON (C.customer_id = R.customer_id)
+WHERE C.customer_id IS NULL OR R.customer_id IS NULL; -- Nota: Al usar INNER JOIN, esto normalmente será vacío.
+
+-- Cuáles son los montos de los pagos que ha realizado la cliente Susan 
+SELECT amount, R.rental_id
 FROM payment P INNER JOIN rental R
-ON P.rental_id=R.rental_id)
+ON (P.rental_id = R.rental_id)
 INNER JOIN customer C 
-ON (R.customer_id=C.costumer_id) 
-WHERE first_name='susan'
+ON (R.customer_id = C.customer_id) 
+WHERE first_name = 'susan';
 ```
 
-|Customer|Rental|Payment|
+| Customer | Rental | Payment |
 |---|---|---|
-|customer_id (pk)|rental_id (pk)|rental_id(fk)|
-||customer_id(fk)||
+| customer_id (pk) | rental_id (pk) | rental_id(fk) |
+| | customer_id(fk) | |
 
-siempre se realzaciona una pk(primary key) con una fk (foreign key)
+> [!info] Explicación de Relaciones
+> Siempre se relaciona una clave primaria (Primary Key - PK) de una tabla principal con una clave foránea (Foreign Key - FK) de una tabla dependiente, asegurando así la integridad referencial.
 
 ```sql
--- en que pelicula ha actuado grace mostel 
-select title
-FROM film F INNER JOIN film_actor FA ON f.film_id= fa.film_id 
-INNER JOIN actor A ON (FA.actor_id= A.actor_id) 
-WHERE first_name='grace' AND last_name='mostel'
--- la segunda opcion 
-select title, first_name,last_name 
-FROM film F INNER 
-JOIN film_actor FA ON f.film_id= fa.film_id 
-INNER JOIN actor A ON (FA.actor_id= A.actor_id) 
-WHERE first_name='grace'
+-- En qué película ha actuado Grace Mostel 
+SELECT title
+FROM film F INNER JOIN film_actor FA ON f.film_id = fa.film_id 
+INNER JOIN actor A ON (FA.actor_id = A.actor_id) 
+WHERE first_name = 'grace' AND last_name = 'mostel';
+
+-- La segunda opción (solo por primer nombre)
+SELECT title, first_name, last_name 
+FROM film F INNER JOIN film_actor FA ON f.film_id = fa.film_id 
+INNER JOIN actor A ON (FA.actor_id = A.actor_id) 
+WHERE first_name = 'grace';
 ```
 [[ejemplos]]
 [[ejercicios]]

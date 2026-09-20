@@ -5158,3 +5158,13 @@ una verifcacion para poder ver si es fresco o no ^Tp5RDanj
 }
 ```
 %%
+
+## Diagrama de Referencia
+
+```mermaid
+flowchart TD
+    A[Activo] --> B[Amenaza]
+    B --> C[Vulnerabilidad]
+    C --> D[Riesgo]
+    D --> E[Control/Mitigación]
+```

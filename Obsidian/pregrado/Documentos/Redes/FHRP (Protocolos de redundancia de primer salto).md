@@ -1,47 +1,64 @@
-## Limitacion del gateway predeterminado
-Si falla un router o una interfaz del router (que funciona como gateway predeterminado), los hosts configurados con ese gateway predeterminado quedan aislados de las redes externas.
+## La limitación crítica del Gateway Predeterminado
+En una red conmutada tradicional, cada cliente final (PC, teléfono IP) recibe la configuración de un único gateway predeterminado (Puerta de enlace). Si este router o la interfaz específica que funciona como gateway falla, los hosts configurados para usarlo quedan inmediatamente aislados, perdiendo toda comunicación con las redes externas y con Internet.
 
-Se necesita un mecanismo para proporcionar gateways predeterminados alternativos en las redes conmutadas donde hay dos o más routers conectados a las mismas VLAN. Este mecanismo es proporcionado por los protocolos de redundancia de primer salto (FHRP).
-En una red conmutada, cada cliente recibe solo un gateway predeterminado. No hay forma de usar un gateway secundario, incluso si existe una segunda ruta que transporte paquetes fuera del segmento local.
+No existe una forma nativa o automática en la que un cliente común pueda usar un gateway secundario simultáneamente, incluso si existe un segundo router físico en la oficina que podría encargarse de transportar los paquetes.
 ![[Pasted image 20230731230517.png]]
-Por lo general, los dispositivos finales o terminales se configuran con una única dirección IPv4 para un gateway predeterminado. Esta dirección no se modifica cuando cambia la topología de la red
-**Nota**: Los dispositivos IPv6 reciben dinámicamente su dirección de puerta de enlace predeterminada del anuncio de router ICMPv6. Sin embargo, los dispositivos IPv6 se benefician con una conmutación por error más rápida a la nueva puerta de enlace predeterminada cuando se utiliza FHRP.
-### Redundancia del router
-Una forma de evitar un único punto de falla en el gateway predeterminado es implementar un router virtual. 
-se configuran varios routers para que funcionen juntos y así dar la sensación de que hay un único router a los hosts en la LAN. Al compartir una dirección IP y una dirección MAC, dos o más routers pueden funcionar como un único router virtual.
-![[Pasted image 20230731231506.png]]
-La topología de red física muestra cuatro PC, tres routers y una nube de red troncal de Internet o ISP. Los cuatro PCs y los tres routers están conectados a una LAN. Los tres routers también tienen un enlace que sube a la red troncal Iternet o IPS. Hay un router de reenvío con dirección IP 192.0.2.1/24. Hay un router virtual con dirección IP 192.0.2.100/24. Hay un router en espera con dirección IP 192.0.2.2/24. Una flecha que representa un paquete enviado desde PC2 va al router virtual en la dirección IP 192.0.2.100, luego al router de reenvío con la dirección IP 192.0.2.1 y luego al Internet o ISP.
-La dirección IPv4 del router virtual se configura como la puerta de enlace predeterminada para las estaciones de trabajo de un segmento específico de IPv4. Cuando se envían tramas desde los dispositivos host hacia el gateway predeterminado, los hosts utilizan ARP para resolver la dirección MAC asociada a la dirección IPv4 del gateway predeterminado.La resolución de ARP devuelve la dirección MAC del router virtual.
 
-Un protocolo de redundancia proporciona el mecanismo para determinar qué router debe cumplir la función activa en el reenvío de tráfico. Además, determina cuándo un router de reserva debe asumir la función de reenvío. La transición entre los routers de reenvío es transparente para los dispositivos finales.
-La capacidad que tiene una red para recuperarse dinámicamente de la falla de un dispositivo que funciona como gateway predeterminado se conoce como “redundancia de primer salto”.
-### Pasos para la conmutacion por falla del router
-1. El router de reserva deja de recibir los mensajes de saludo del router de reenvío.
-2. El router de reserva asume la función del router de reenvío.
-3. Debido a que el nuevo router de reenvío asume tanto la dirección IPv4 como la dirección MAC del router virtual, los dispositivos host no perciben ninguna interrupción en el servicio.
-Cuando falla el router activo, el protocolo de redundancia hace que el router de reserva asuma el nuevo rol de router activo
+Por lo general, los dispositivos finales se configuran (ya sea estáticamente o vía DHCP) con una única dirección IPv4 para su gateway predeterminado. Esta dirección no se modifica automáticamente si cambia la topología de la red o si un router se apaga, lo que convierte al Default Gateway en un **punto único de falla (Single Point of Failure - SPOF)** inaceptable para redes de alta disponibilidad.
+
+*(Nota: Los dispositivos modernos con IPv6 reciben dinámicamente su dirección de puerta de enlace de forma activa a través de los mensajes de anuncio de router ICMPv6 (SLAAC). Sin embargo, también se benefician enormemente de una conmutación por error (failover) transparente y mucho más rápida hacia un nuevo router cuando se utiliza una tecnología de redundancia).*
+
+## Redundancia del router (FHRP)
+Para solucionar este problema estructural, se necesita un mecanismo para proporcionar gateways predeterminados alternativos de manera transparente y automática. Este mecanismo es proporcionado por los **Protocolos de Redundancia de Primer Salto (FHRP - First Hop Redundancy Protocols)**.
+
+Una forma elegante de evitar un único punto de falla en el gateway es implementar la ilusión de un "router virtual". 
+Para ello, se configuran varios routers físicos independientes para que funcionen juntos en equipo, dando la ilusión a todos los hosts de la LAN de que solo existe un único e infalible router. Al compartir una misma dirección IP virtual y una dirección MAC virtual, dos o más routers pueden respaldarse entre sí activamente.
+
+> [!info] Explicación: ¿Qué es el Primer Salto?
+> El "primer salto" (First Hop) es literalmente el primer router físico por el que debe pasar obligatoriamente el tráfico de tu computadora para lograr salir de la red local. Redundancia de primer salto significa tener siempre un segundo router físico listo y a la espera para actuar inmediatamente si el router principal explota o se desconecta, sin que las computadoras deban darse cuenta o ser reconfiguradas.
+
+```mermaid
+flowchart TD
+    subgraph "Hosts en la LAN"
+        PC1(PC 1)
+        PC2(PC 2)
+    end
+    
+    subgraph "Grupo FHRP (Router Virtual)"
+        RV(("Router Virtual\nIP: 192.168.1.1\nMAC: 0000.0C07.AC01"))
+        R1[Router Físico 1\n(Activo)]
+        R2[Router Físico 2\n(Reserva/Standby)]
+        
+        RV -.-> R1
+        RV -.-> R2
+    end
+    
+    PC1 --> |Tráfico a 192.168.1.1| RV
+    PC2 --> |Tráfico a 192.168.1.1| RV
+```
+
+La dirección IPv4 del router virtual se configura como el default gateway en las estaciones de trabajo del segmento. Cuando los dispositivos envían tramas hacia el gateway, utilizan el protocolo ARP para resolver la dirección MAC de esa IP. El router físico que actualmente es el "Activo" del grupo virtual responde a esa solicitud entregando la dirección MAC virtual compartida, engañando efectivamente a la PC.
+
+Un protocolo FHRP proporciona la matemática y los temporizadores para determinar automáticamente qué router físico debe cumplir la función de reenvío, y en qué milisegundo exacto un router de reserva debe asumir el trono en caso de emergencia.
+
+### Pasos para la conmutación por falla (Failover)
+1. El router de reserva deja de recibir los vitales mensajes periódicos de "saludo" (keepalives/hellos) provenientes del router de reenvío (el router activo).
+2. Tras agotarse un temporizador de seguridad, el router de reserva asume la muerte del principal y se convierte de inmediato en el nuevo router de reenvío.
+3. Debido a que este nuevo router asume de forma transparente y sin cambios tanto la dirección IPv4 como la dirección MAC del router virtual, los switches redirigen el tráfico de hardware hacia él, y las conexiones de red de los hosts no se caen.
+
 ![[Pasted image 20230731232109.png]]
-### Opciones FHRP
 
-|                                Opciones FHRP                                 | Descripcion                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|:----------------------------------------------------------------------------:| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|                    Protocolo de Router de Reserva Directa                    | es una FHRP propietaria de Cisco que está diseñada para permitir conmutación por error (failover) transparente de un dispositivo IPv4 de primer salto                                                                                                                                                                                                                                                                                                         |
-|                     HSRP (Hot Standby Router Protocol)                      | Proporciona alta disponibilidad de red al proporcionar redundancia de enrutamiento de primer salto para IPv4 hosts en redes configuradas con una dirección de puerta de enlace predeterminada IPv4.                                                                                                                                                                                                                                                           |
-|                                                                              | se utiliza en un grupo de routers para seleccionar un dispositivo activo y un dispositivo de espera                                                                                                                                                                                                                                                                                                                                                           |
-|                                                                              | En un grupo de interfaces de dispositivo, el dispositivo activo es el dispositivo que se utiliza para enrutar los paquetes; el dispositivo de espera es el dispositivo que se hace cargo cuando el dispositivo activo falla o cuando se preconfigura se cumplen las condiciones. La función del router de espera HSRP es supervisar el estado operativo del grupo HSRP y asumir rápidamente responsabilidad de reenvío de paquetes si falla el router activo. |
-|                                HSRP para IPv6                                | Propietaria de Cisco que proporciona la misma funcionalidad de HSRP, pero en un entorno IPv6. Un grupo IPv6 HSRP tiene un MAC virtual derivada del número de grupo HSRP y un vínculo IPv6 virtual local derivada de la dirección MAC virtual HSRP                                                                                                                                                                                                             |
-|            Virtual Router Redundancy Protocol version 2 (VRRPv2)             | es un protocolo electoral no propietario que asigna dinámicamente responsabilidad de uno o más routeres virtuales a los routeres VRRP en una LAN IPv4.                                                                                                                                                                                                                                                                                                        |
-|                                                                              | permite que varios routers en un enlace multiacceso utilicen la misma dirección IPv4 virtual. Un router VRRP está configurado para ejecutar el protocolo VRRP junto con uno o más routeres conectados a una LAN   se elige un router como el virtual router master, con los otros routers actuando como copias de seguridad, en caso de que el virtual router master falle.                                                                                   |
-|                                    VRRPv3                                    | Proporciona la capacidad de admitir direcciones IPv4 e IPv6. VRRPv3 Funciona en entornos de varios proveedores y es más escalable que VRRPv2.                                                                                                                                                                                                                                                                                                                 |
-| Protocolo de Equilibrio de Carga del Gateway (Load Balancing Protocol, GLBP) | es un FHRP propiedad de Cisco que protege el tráfico de datos de un router o circuito fallido, como HSRP y VRRP, mientras que también permite la carga equilibrada (también llamado uso compartido de carga) entre un grupo de routers.                                                                                                                                                                                                                       |
-|                                GLBP para IPv6                                | es una FHRP propietaria de Cisco que proporciona la misma funcionalidad de GLBP, pero en un entorno IPv6. GLBP para IPv6 proporciona automáticamente un respaldo de router para los hosts IPv6 configurados con un único gateway predeterminado en una LAN. Múltiples routers de primer salto en la LAN se combinan para ofrecer un único router IPv6 virtual de primer salto mientras comparte el reenvío de paquetes IPv6 carga.                            |
-|    Protocolo de detección del router ICMP (IRDP, ICMP Router Discovery Protocol)   | Especificado en RFC 1256, IRDP es una solución FHRP heredada. IRDP permite IPv4 hosts ubiquen routers que proporcionan conectividad IPv4 a otras redes IP (no locales).                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-#### *Conceptos*
--  Un dispositivo que sirve como puerta de enlace predeterminada es responsable del enrutamiento del tráfico destinado a segmentos de red que están más allá del segmento de red de origen.
-- Un router virtual es en realidad un conjunto de routers que trabajan juntos para presentar la ilusión de un solo router a los hosts en un segmento LAN.
-- Un router en espera(reserva) es un dispositivo que forma parte de un grupo de routers virtuales al que se le asigna la función de puerta de enlace predeterminada alternativa.
-- Un router de reenvío es un dispositivo que forma parte de un grupo de routers virtuales asignado a la función de puerta de enlace predeterminada.
-- HSRP y HSRP para IPv6 son propiedad de Cisco. VRRPV2 e IRDP son protocolos no propietarios.
+## Opciones y Protocolos de la familia FHRP
+
+| Protocolo FHRP | Descripción e Implementación |
+|:---:| --- |
+| **HSRP (Hot Standby Router Protocol)** | Protocolo propietario clásico de Cisco. Diseñado para permitir la conmutación por error en IPv4 e IPv6. Selecciona explícitamente un dispositivo Activo (el que trabaja) y uno en Espera (el que vigila). |
+| **VRRPv2 / VRRPv3 (Virtual Router Redundancy Protocol)** | Protocolo **estándar abierto** de la industria (IEFT RFC) equivalente a HSRP. Permite la redundancia virtual pero puede funcionar cruzando diferentes marcas. Elige un router como "Master" (Maestro) y los demás operan como "Backups" (Respaldos). |
+| **GLBP (Gateway Load Balancing Protocol)** | Protocolo avanzado y propietario de Cisco que, además de ofrecer un respaldo de emergencia (como HSRP/VRRP), permite realizar un **balanceo de carga inteligente** repartiendo el tráfico simultáneamente entre todos los routers físicos del grupo. |
+
+> [!info] Explicación: HSRP vs VRRP vs GLBP
+> - **HSRP y VRRP:** Ambos operan bajo un modelo "Activo/Pasivo" estricto. Uno de los routers trabaja procesando el 100% de los paquetes y el otro router está literalmente de brazos cruzados, cobrando polvo y electricidad, esperando que el primero falle para empezar a trabajar.
+> - **GLBP:** Funciona bajo un brillante modelo "Activo/Activo". Si tienes dos routers físicos en el grupo GLBP, el protocolo le asignará a la mitad de tus PCs la MAC del Router 1 y a la otra mitad la MAC del Router 2. De este modo, ambos routers reenvían el 50% de la carga de Internet, aprovechando económicamente todo tu hardware. Si uno falla, el otro asume el 100% de la carga.
 
 ## Notas relacionadas
 - [[HSRP (Hot Standby Router Protocol)]]

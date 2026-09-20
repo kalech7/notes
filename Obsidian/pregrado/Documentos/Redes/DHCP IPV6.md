@@ -1,129 +1,93 @@
-Para utilizar la configuración automática de direcciones stateless (SLAAC) o DHCPv6, debe revisar las direcciones globales de unidifusión (GUA) y las direcciones link-local (LLAs).
+En el mundo del direccionamiento IPv6, existen dos tipos fundamentales de direcciones que deben configurarse y comprenderse a la perfección para habilitar servicios dinámicos como SLAAC o DHCPv6 en un router:
+- **GUA (Global Unicast Address):** Enrutable públicamente en todo Internet (equivalente a la IP Pública). Se configura manualmente con el comando `ipv6 address 2001:db8::1/64`.
+- **LLA (Link-Local Address):** Es estrictamente confinada al medio físico local y no cruza hacia otros routers. Generalmente autoconfigurada, pero se puede fijar estáticamente usando `ipv6 address fe80::1 link-local`. Fundamental, porque las máquinas cliente utilizarán esta dirección LLA del router como su verdadera Puerta de Enlace Predeterminada (Default Gateway).
 
-En un router, una dirección global de unidifusión (GUA) IPv6 se configura manualmente mediante el comando de configuración :
+## El Paradigma de Asignación de IPv6
 
-**ipv6 address** _ipv6-address_**_/_**_prefix-length_ interface.
-## **IPv6 GUA Assingment**
+El protocolo general fue rediseñado de raíz para simplificar, descentralizar y flexibilizar drásticamente la forma en que los sistemas operativos clientes adquieren su configuración completa de red.
 
-- fue diseñado para simplificar la forma en que un host puede adquirir su configuración IPv6
-    
-- Todos los métodos stateless y stateful de este módulo utilizan mensajes de RA ICMPv6 para sugerir al host cómo crear o adquirir su configuración IPv6
-    
-- se puede asignar dinámicamente utilizando servicios stateless y stateful, como se muestra en la figura
-- ![[Screenshots/image 1.png]]
-En slaac no se necesia una servidor dhcp
+Todos los métodos lógicos de configuración —tanto la autoconfiguración "stateless" (sin estado o registro central) como la asignación clásica "stateful" (con estado mediante un servidor que controla cada IP)— dependen inherentemente de un único elemento crítico: **Los mensajes de Anuncio de Router (Router Advertisement, RA)** enviados mediante ICMPv6. Estos mensajes fungen como "consejeros" que dictan e instruyen al host sobre qué estrategia precisa debe emplear para armar su configuración.
+
 ![[Pasted image 20230827223734.png]]
 
-## **Tres flags de mensaje RA**
+## Las 3 Banderas (Flags) Dictadoras del Mensaje RA
+El router incluye pequeños switches de estado (Flags) de un bit dentro del paquete RA para controlar a la red:
+- **A flag (Autoconfiguration):** Cuando este bit está en 1, indica y permite activamente al host receptor que utilice la técnica matemática de Autoconfiguración Sin Estado (SLAAC) para forjar su propia dirección GUA de IPv6.
+- **O flag (Other Configuration):** Indica al host que su proceso no ha terminado. Le advierte que debe conectarse a un servidor secundario DHCPv6 "Stateless" para obtener parámetros periféricos de vital importancia que el router no envió (principalmente la dirección IP del servidor DNS de la compañía).
+- **M flag (Managed Address):** Esta bandera cambia las reglas del juego. Cuando está en 1, prohíbe tácitamente al equipo usar su autonomía y le ordena comportarse como en IPv4: debe ubicar, consultar y someterse a un servidor DHCPv6 central "Stateful" para que este le arriende formalmente una IP y el resto de parámetros.
 
-- **Un flag** - Este es el indicador de configuración automática de direcciones. Usa Stateless Address Autoconfiguration (SLAAC) para crear un GUA de IPv6.
-    
-- **O flag** - Este es otro indicador de configuración (Other) Otra información está disponible desde un servidor DHCPv6 stateless.
-    
-- **M flag** - Este es es indicador Managed Address. Utilice un servidor DHCPv6 stateful para obtener una GUA IPv6.
- ![[Pasted image 20230827224304.png]]
+![[Pasted image 20230827224304.png]]
 
-## Pasos para habilitar SLAAC
-
-1. asignar una direccion ipv6 a la int del router
+## Pasos Universales para habilitar SLAAC (El modo por defecto)
+1. Asignar de forma estática una dirección GUA a la interfaz perimetral del router:
+```cisco
+interface GigabitEthernet 0/0
+ipv6 address 2001:db8:acad:1::1/64
+no shutdown
 ```
-int g0/0
-
-ipv6 address (dir ipv6)
-
-no shut
-```
-2. Habilitar el enrutamineto de ipv6
-```
+2. **El Comando Vital:** Habilitar globalmente el enrutamiento y procesamiento lógico de paquetes IPv6 en el hardware del router. Sin este comando, el router jamás generará mensajes RA:
+```cisco
 ipv6 unicast-routing
 ```
+A partir de este momento, por defecto, el router comenzará a enviar RAs con el Flag A activado y los otros apagados, dejando a los PCs trabajar 100% bajo SLAAC Puro.
 
-3. verficamos que SLAAC esta activado
+> [!info] Explicación: ¿Por qué le llaman "Sin Estado" (Stateless)?
+> No significa que los dispositivos estén confundidos o apagados. "Stateless" en redes significa simplemente que **no existe una base de datos centralizada, tabla de Excel o disco duro (un Estado de memoria)** llevando el control individual de "a la computadora Juan le di la IP 11, y a Pedro la IP 12".
+> En SLAAC, el router hace un anuncio de megáfono: "Muchachos, el código de área (prefijo) de nuestra red es `2001:db8:acad:1::/64`. Constrúyanse ustedes mismos la mitad que falta de su IP y no me avisen, porque matemáticamente es imposible que dos de ustedes coincidan por accidente". Esto descarga masivamente de trabajo al hardware central.
 
+## Proceso de Intercambio Cliente-Servidor DHCPv6
+
+Cuando el administrador de red de la empresa ha decidido (mediante el Flag O o el Flag M) involucrar a un servidor DHCPv6 (ya sea el propio router u otra máquina), el protocolo dicta un intercambio oficial de 4 mensajes. A diferencia del D.O.R.A de IPv4, aquí se bautiza con otros nombres, pero la naturaleza lógica es equivalente. 
+
+*(Nota arquitectónica: En IPv6, los servidores DHCP escuchan las solicitudes entrantes en el puerto UDP 547, y los clientes en el 546).*
+
+```mermaid
+sequenceDiagram
+    participant PC as Cliente IPv6
+    participant Router as Router Local
+    participant DHCP as Servidor DHCPv6
+    
+    PC->>Router: 1. RS (Router Solicitation): "¿Hay routers cerca?"
+    Router-->>PC: 2. RA (Router Advertisement): "Usa Flag M y O (Busca un DHCP)"
+    
+    Note over PC,DHCP: Inicio de Negociación DHCPv6
+    PC->>DHCP: 3. SOLICIT (Multicast UDP 547): "¿Hay algún servidor DHCPv6?"
+    DHCP-->>PC: 4. ADVERTISE (Unicast UDP 546): "Yo existo y te ofrezco mis parámetros"
+    PC->>DHCP: 5. REQUEST o INFO-REQUEST: "Excelente, acepto tu oferta/solicito los DNS"
+    DHCP-->>PC: 6. REPLY: "Parámetros registrados. Operación exitosa."
 ```
-ipv6 unicast-routing
-```
-Si se presenta como en la captura slaac esta activado
-![[Screenshots/image 1.png]]
 
-## **Método Sólo SLAAC**
+## Configuración: DHCPv6 Stateless (SLAAC + DHCP)
+En este popular modelo híbrido, SLAAC genera la IP de forma mágica y sin esfuerzo, pero se configura el router para enviar un flag que le ordene a las PCs contactar al DHCP solo para obtener el servicio de resolución DNS (que SLAAC no siempre hace bien en versiones viejas).
 
-está habilitado de forma predeterminada cuando se configura el **ipv6 unicast-routing** comando.
-
-El **A = 1** flag sugiere al cliente que cree su propio IPv6 GUA usando el prefijo anunciado en la RA. El cliente puede crear su propio ID de interfaz utilizando el método Extended Unique Identifier (EUI-64) o hacer que se genere aleatoriamente.
-
-Los flags **O =0** y **M=0** le indican al cliente que use la información del mensaje RA exclusivamente.
-
-### Preguntas SLAAC
-![[image 1 1.png]]\
-
-## **DHCP Puertos**
-
-El servidor DHCP opera en el puerto UDP 67, y el cliente DHCP opera en el puerto UDP 68.
-
-## **Pasos de operación DHCPv6**
-
-DHCPv6 stateless y stateful DHCPv6 stateless utiliza partes de SLAAC para asegurarse de que toda la información necesaria se suministra al host. DHCPv6 stateful no requiere SLAAC.
-
-- Paso 1. El host envía un mensaje RS.
-    ![[Pasted image 20230827224529.png]]
-    
-- Paso 2. El router responde con un mensaje RA.
-    ![[Pasted image 20230827224538.png]]
-    
-- Paso 3. El host envía un mensaje DHCPv6 SOLIT.
-    ![[Pasted image 20230827224547.png]]
-    
-- Paso 4. El servidor DHCPv6 responde con un mensaje ADVERTISE.
-    ![[Pasted image 20230827224555.png]]
-    
-- Paso 5. El host responde al servidor DHCPv6.
-    ![[Pasted image 20230827224604.png]]
-    
-- Paso 6. El servidor DHCPv6 envía un mensaje REPLY
-    ![[Pasted image 20230827224614.png]]
-    
-
-## **Habilitar DHCPv6 stateless en una interfaz**
-
-DHCPv6 Stateless está habilitado en una interfaz de router mediante el comando
-
+Bajo la interfaz se ingresa el comando:
 ```cisco
 ipv6 nd other-config-flag
 ```
+Esto establece artificialmente el **Flag O = 1** en los mensajes RA salientes.
+Al recibir esto, el equipo host asume de inmediato la autoconfiguración de su IP, e inicia un mensaje SOLICIT para buscar quién le proporciona el DNS corporativo.
 
-Esto establece el flag O en 1.
+## Configuración: DHCPv6 Stateful (El Control Total)
+Si se desea un control férreo, de tipo gubernamental, empresarial o militar, en el que se deba llevar un log exacto de qué IP se asignó a qué tarjeta de red, se requiere DHCPv6 Stateful (equivalente al clásico servidor Windows de IPv4).
 
-![[image 2.png]]
+Para instruir a los hosts a abandonar por completo su independencia y someterse al control centralizado de un DHCPv6, se modifica la interfaz:
+```cisco
+// Enciende el Flag M = 1 (Obliga a solicitar la IP gestionada)
+ipv6 nd managed-config-flag
 
-
-El resultado resaltado confirma que la RA le indicará a los hosts receptores que usen la configuración automática stateless (A flag = 1) y se comunique con un servidor DHCPv6 para obtener otra información de configuración (O flag = 1).
-
-## **Habilitar DHCPv6 stateful en una interfaz**
-
-es habilitado en una interfaz de router mediante el comando **ipv6 nd managed-config-flag** interface configuration Esto establece el flag M en 1.
-
-con el comando
-```
+// Opcional recomendado: Apaga explícitamente SLAAC (Flag A = 0)
 ipv6 nd prefix default no-autoconfig
 ```
 
-se utiliza para deshabilitar la configuración automática de direcciones IPv6 en una interfaz.
-
+Posteriormente, el router o el servidor externo deben estar configurados de antemano con un Pool (grupo) oficial de direcciones reservadas:
 ```cisco
-ipv6 dhcp pool (nombre)
+ipv6 dhcp pool MIPOPL-CORPORATIVO
+address prefix 2001:db8:acad:1::/64
+dns-server 2001:db8:acad:99::53
+domain-name empresa.com
 ```
 
-```cisco
-address prefix (direccion ipv6/prefijo)
-```
-
-
-El resultado resaltado en el ejemplo confirma que RA indicará al host que obtenga toda la información de configuración IPv6 de un servidor DHCPv6 (flag M = 1)
-![[image 3.png]]
-**Nota**: Puede usar el comando **no ipv6 nd managed-config-flag** para devolver la bandera M a su valor predeterminado de 0. El comando **no** **ipv6 nd prefix default no-autoconfig** devuelve la bandera A a su valor predeterminado de 1.
-[[DCHPv4]]
-[[SLAAC (Stateless Address Autoconfiguration)]]
+**Nota para los administradores de sistemas:** Para restablecer el router a su comportamiento nativo original de SLAAC puro en caso de error, simplemente niegue los comandos anteriores con `no ipv6 nd managed-config-flag` y `no ipv6 nd other-config-flag`.
 
 ## Notas relacionadas
 - [[DCHPv4]]

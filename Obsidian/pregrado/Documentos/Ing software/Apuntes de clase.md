@@ -1,139 +1,65 @@
-abstracion es preoparse por la mas relevante de algo en la vida real se debe visualizar los metodos y las metodologias
-procedural= totalmente con procesos
-enfoque llamdo abstracion por ejemplo:
-abstracion de procesos: primero aparecio esta
-abstraccion de datos: segundo esta 
-aplicaciones case 
+# Apuntes de Clase: Ingeniería de Software
 
-maquinas que se puedan conectarse a red 
-base de datos
-programacion 
+## Abstracción y Enfoques de Desarrollo
+La **abstracción** consiste en preocuparse por la característica más relevante de un objeto o problema en la vida real, lo que permite visualizar los métodos y metodologías adecuados para resolverlo.
+Existen diferentes enfoques históricos de abstracción:
+1. **Abstracción de procesos (Enfoque procedural):** Fue el primero en aparecer, basándose totalmente en modelar los procesos del sistema.
+2. **Abstracción de datos:** Surgió después, enfocándose en las estructuras de la información.
+Las herramientas CASE (Computer-Aided Software Engineering) apoyan estos enfoques automatizando partes del desarrollo.
 
-redes:protocolos
-la solucion del software esta en los requeriminetos 
+La solución de software siempre tiene su origen en los **requerimientos**. Estos requerimientos se pueden resolver mediante hardware, software, o creando un listado formal de ambos. Es importante considerar redes (protocolos), bases de datos y la capacidad de las máquinas para conectarse.
 
-los requerimientos se pueden resolver por hardware o por software o hago un listado de rqueirimientos 
+## Fases y Modelos Tradicionales
+En la ingeniería de software clásica (como el modelo de Cascada, estructurado por Pressman), existen fases claras:
+* **Planificación:** Organizarse en el tiempo.
+* **Seguimiento:** Verificar que las tareas se hayan realizado según el plan.
+* **Modelado y Diseño:** Analizar las necesidades del cliente (análisis del sistema) para modelar los requerimientos y luego diseñar la solución.
 
-programacion  organizarse en el tiempo 
-seguimiento veriifcar las tareas que sean realizado 
+El software moderno requiere conectarse mediante **interfaces**, que generalmente se dividen en 5 tipos:
+1. Usuario (UI)
+2. Hardware
+3. Comunicación (Redes)
+4. Software interno (APIs locales)
+5. Sistemas externos (cuando el sistema se conecta con software de terceros).
 
-la planificcacion la puso pressman el original no tiene del modelo cascada 
+El **Modelo en Cascada** solo se recomienda para sistemas altamente complejos y predecibles; para sistemas simples y dinámicos, no es adecuado.
 
-modelado: modelar los requerimientos 
-diseño modelar la solucion 
+## Modelo de Proceso Incremental y Evolutivo
+El modelo incremental consiste en hacer **entregas funcionales poco a poco**.
+* Se usa cuando hay una necesidad imperiosa de dar rápidamente cierta funcionalidad limitada a los usuarios, la cual se aumenta en entregas posteriores.
+* Puede funcionar en paralelo, con varios equipos trabajando en distintos incrementos. Cada entrega es independiente.
+* A diferencia del modelo en cascada (que tiene solo 1 entrega final), el modelo evolutivo incremental tiene "N entregas funcionales" que el cliente instala y usa inmediatamente.
+* Los planes son cortos. Frecuentemente, el primer incremento es el que más falla porque es donde se descubre la mayor incertidumbre (y tiene impacto en costo y tiempo). Se debe hacer todo el esfuerzo posible en asegurar el éxito de este primer paso.
+* Si el incremento es bien recibido, se puede agregar más personal para el siguiente y avanzar más rápido.
+* Este modelo ayuda a la competitividad de las empresas e innova sobre lo que ya existe.
 
-necesidades del clientes , Analiss del sistema 
+> [!info] Explicación: Agilidad y Entregas Frecuentes
+> El modelo de entregas funcionales y rápidas es la base de metodologías como Scrum y Kanban. Entregar de "poco en poco" disminuye el riesgo de construir un producto que el cliente no quiere. Las empresas modernas logran hacer estas entregas incluso varias veces al día utilizando pipelines de Integración y Entrega Continua (CI/CD) junto con pruebas automatizadas robustas.
 
-existen 5 interfaces
-usuario 
-hardware 
-comunicacion
-software 
-sistemas (mi sistema se conecta con otro )
-para sistmeas simple no se usa cascada solo en complej-
+## Gestión de Riesgos
+Un riesgo es cualquier acontecimiento que afecte el éxito del proyecto (su costo, tiempo o calidad). El proceso de gestión incluye:
+1. Identificar los riesgos.
+2. Cuantificar el impacto del riesgo y su probabilidad de ocurrencia.
+3. Ordenar los riesgos por probabilidad y luego por impacto.
+4. Aplicar la **Regla de Pareto (80/20)**: mitigando el 20% de los riesgos más críticos, se cubre el 80% del peligro total.
 
-modelo de proceso incremental
-se hacen entregas en de poco en poco
-se usa cuando hay necesidad imperiorsa de dar reapidamente cierta funcionalidad limitdada a los usuarios y aumentarla en entregas posteriores 
+## Especificación y Modelado
+* **LSRS (Especificación de Requerimientos de Software):** Es un documento esencial escrito de forma colaborativa que detalla qué hará el sistema.
+* Los requerimientos deben ser **no ambiguos y consistentes**. Generalmente, los establece un "Analista de Negocios" o Product Owner, no necesariamente el ingeniero de software. El diseño e implementación sí es tarea exclusiva de los técnicos.
+* **Casos de Uso:** Es una secuencia de acciones que permite obtener un resultado observable y de valor para un "Actor". Los actores siempre son externos al sistema (pueden ser hardware, otro software, o un usuario humano). Se identifican conversando directamente con los usuarios. El sistema no funcionará bien si no se especifican correctamente los casos de uso.
 
-puede funcionar en paralelo con varios equipos haciendo varios incrementos  
-cada entrega es independiente
+## Testing y Calidad (Costo, Tiempo, Calidad)
+La satisfacción del cliente, la usabilidad (tiempo que le toma al usuario volverse experto en la app) y la portabilidad son fundamentales.
+Para asegurar esto, existen varios niveles de pruebas:
+* **Pruebas de Unidad (Unit Testing):** Prueban componentes aislados.
+* **Pruebas de Integración:** Verifican qué sucede cuando se unen todos los componentes.
+* **Pruebas Alfa y Beta:** Se usa el software liberado (como prototipo o primera versión) para que el cliente lo use y ayude a verificar errores en entornos casi reales.
 
-evolutivo incremental (cada incremento entrego al cliente para que lo pueda usar) se llaman entregas funcionales es un codigo instalado en la maquina para que el cliente lo pueda usar existen N entregas 
-cascada solo tiene 1 entrega funcional
+## Arquitectura de Componentes
+Un **componente** es un encapsulado de funcionalidad que se conecta por interfaces bien definidas. Si se quiere reutilizar software de forma efectiva, se debe usar una arquitectura basada en componentes. 
 
-los planes son cortos para cada incremento  el primer incremnto es el que mas falla y toca repetir todo y tiene un costo una perdida su impacto es minimo(tiempo del proyecto, costo del proyecto,calidad del producto siempre va a ver ) 
-se hace todo el esfuerzo posible al primer incremento 
-
-corregir todo o corregir los errores + lo del siguiente incremento o solamnete el sigueinte incremento 
-
-en el siguiente incremento solo corrigo 
-si es bien recibido se pueden agregar mas personas al siguiente incremento y ser mas rapido 
-
-incremental no es un modelo tradicional, entregas funcionales es idonea en empresas o de gestion donde necesitan sistemas lo mas rapido posibles y las caracterisitcas cambian a menudo 
-
-el uso del proceso incremental ayuda la competividad  de la empresas e innova (agrega cosas a algo que ya existe)
-
-hay que bajar el impacto
-un riego es cualquier hecho acontensimiento que afecte el exito(costo,tiempo,calidad) del proyecto
-identificar los riesgos 
-cuantificar el impacto del riesgo y la probabilidad 
-luego ordenamos el riego por probabilidad y luego por impacto 
-regla de pareto (80 20) cubriendo el 20% de los reigos se curbre el 80  de los retantes
-
-es un documento escrito por el usuario sirve para sistemas de computacion 
-analisis de riesgos 
-en n ciclos validamos requsiitos
-el modelo espiral es iterar cada fase de cascada valido en n iteracion no tanto como prototipo 
-el concepto de operaciones  hace el usuario 
-la espiral se acaba cuando se termina el producto
-puede adaptarse para aplicarse a lo largo del ciclo de vida del software 
-
-media incremental 
-alta empresarial espiral incremental
-complejidad alta 
-
-
-espiral software y sistemas
-cascada sistema
-sistemas de computacion 
-
-esa iteracion es sobre la fase 
-se cobra por fases 
-	LSRS (ESPRECIFICACION DE REQUIRIMIENTOS DE SOFTWARE)
-
-
-
-costo tiempo calidad 
-los evlotumi=vos los cambios se puedne hacer tranquilamnate
-
-satisfaccion del cliente 
-
-
-usabilidad (tiempo para que el usuario se vuelva pro en la app )
-portabildidad
-
-no ambiguos 
-consistentenes
-
-no necesariamente el ing de software establece los requiriemientos generalmente un analista de negocios los hace 
-
-diseño e implementacion del software lo hacen los tecnicos 
-generar el codigo automativamente 
-se puede reutilizar todo 
-
-prueba de unidad  pruebas de componentes 
-pruebas de integracion cuando se une todos los componentes es prueba de integracion de mientas 
-
-software liberado es un software como prototipo para que el cliente pueda usarlo y verifique si hay errores
-pruebas dfa,pruebas beta buscar lo que hacen
-se debe estdiar el imparcto de impacto tomandoo en cuenta  costo tiempo calidad 
-caso de uso secuencia de acciones que permite obtner resultado observable de valor para un actor 
-procesod de la vida real le pasa n a software 
-
-
-
-
-tipos de actores
-hardware 
-software
-usuario
-el actor es siempre externos al sistema
-
-casos de usos: se identifcan conversando con los usuarios del sistema 
-resultado observable matematicamente observable
-
-no va a funcionar si no se especifican bien los casos de uso
-
-
-
-componennte es un encapsulado de funcionalidad que se conecta por interfaces bien definidas
- si se quiere reutilizar software se debe usar componentes
-linea base 
-
-
-permitir que los protyecto puedan llevar a acabo
-facilitan la ejecucion de procesos en la empresa 
+> [!info] Explicación: Reutilización y Pruebas Unitarias
+> El uso de componentes aislados facilita enormemente el **Testing**. Al tener interfaces bien definidas, podemos aplicar "Pruebas Unitarias" sobre el componente aislando sus dependencias mediante "mocks" o dobles de prueba. Además, metodologías ágiles como XP promueven prácticas como TDD (Test-Driven Development), donde la prueba se escribe antes que el componente mismo.
 
 ## Notas relacionadas
 - [[El proceso de software]]
@@ -141,3 +67,13 @@ facilitan la ejecucion de procesos en la empresa
 - [[Software e Ingeniería  de Software]]
 - [[proyectos]]
 - [[metodologias de analisis y evaluacion de riesgo]]
+
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

@@ -1,79 +1,90 @@
-Cisco proporciona HSRP y HSRP para IPv6 como una forma de evitar la pérdida de acceso externo a la red si falla el router predeterminado.
-Es el protocolo FHRP exclusivo de Cisco diseñado para permitir la conmutación por falla transparente de los dispositivos IPv4 de primer salto.
-HSRP se utiliza en un grupo de routers para seleccionar un dispositivo activo y un dispositivo de reserva. 
-para la version 1 la mac address: 0000.0c07.acXX
-para la version 2 la mac address: 0000.0c9f.fXXX (en esta version se puede usar para los mensajes de hello holdtime en ms) 
-**En un grupo de interfaces de dispositivo:** 
-<span style="background:#d3f8b6"> El dispositivo activo </span> es aquel que se utiliza para enrutar paquetes.
-<span style="background:#d2cbff">El dispositivo de reserva </span>es el que toma el control cuando falla el dispositivo activo o cuando se cumplen condiciones previamente establecidas.
-La función del router de suspensión del HSRP es controlar el estado operativo del grupo de HSRP y asumir rápidamente la responsabilidad de reenvío de paquetes si falla el router activo.
-## Prioridad e Intento de Prioridad del HSRP
-El rol de los routers activos y de reserva se determina durante el proceso de elección del HSRP.
-De manera predeterminada, el router con la dirección IPv4 numéricamente más alta se elige como router activo
+Cisco proporciona el protocolo robusto **HSRP (Hot Standby Router Protocol)** y su variante para IPv6 como mecanismo definitivo para evitar la catastrófica pérdida de acceso externo si falla el router que actúa como puerta de enlace predeterminada en una oficina.
 
- ***Prioridad HSRP***
-La prioridad HSRP se puede utilizar para determinar el router activo. El router con la prioridad HSRP más alta será el router activo. De manera predeterminada, la prioridad HSRP es 100.
-Si las prioridades son iguales, el router con la dirección IPv4 numéricamente más alta es elegido como router activo.
-para configuar utilice el comando de interfaz el rango va de  0 a 255
+Es un protocolo FHRP (Protocolo de Redundancia de Primer Salto) exclusivo y propietario de Cisco, diseñado a nivel de ingeniería para permitir la conmutación por error (failover) inmediata y completamente transparente para los usuarios finales.
+
+HSRP se utiliza en un conjunto de routers físicos interconectados para elegir lógicamente un **dispositivo activo** y un **dispositivo de reserva (standby)**. 
+Para compartir identidades frente a los clientes, HSRP genera una MAC asociada a la IP virtual elegida:
+- En la Versión 1, la MAC virtual siempre tiene el formato: `0000.0c07.acXX` (donde XX es el número de grupo HSRP en formato hexadecimal).
+- En la Versión 2, la MAC virtual es: `0000.0c9f.fXXX` (esta versión moderna permite configurar temporizadores ultrarrápidos medidos en milisegundos).
+
+**Dentro del grupo configurado HSRP:** 
+- <span style="background:#d3f8b6"> El dispositivo Activo </span> es aquel que asume en exclusiva la MAC virtual, la IP virtual, y se encarga de recibir, procesar y enrutar el 100% de los paquetes del segmento de red.
+- <span style="background:#d2cbff">El dispositivo de Reserva (Standby) </span> es el vigilante. Su única tarea es monitorear incesantemente el estado de salud del router Activo. Si no recibe los mensajes de vida, asume el control de la IP y MAC virtual en cuestión de segundos.
+
+> [!info] Explicación: ¿Qué es una IP Virtual?
+> Para que HSRP funcione y engañe a los PCs, los dos routers comparten y configuran internamente una misma **Dirección IP y MAC Virtual** (ej. 192.168.1.1). Las computadoras de los oficinistas se configuran (o el DHCP se los dicta) para usar esta IP Virtual como su puerta de enlace. 
+> Cuando las PCs envían tráfico a la 192.168.1.1, solo el Router Activo "responde" por ella. Si este router se quema, el Router de Reserva se adjudica esa misma IP Virtual. Como la IP de salida no cambió, las PCs ni siquiera notan que ahora están saliendo por un aparato diferente.
+
+## Prioridad y el poder de la Apropiación (Preempt)
+El rol de quién será el rey (Activo) y quién será el suplente (Reserva) se debate y determina mediante un rígido proceso de elección matemática.
+Por defecto, si no se configura nada más, el router con la dirección IPv4 configurada en su interfaz que sea numéricamente más alta gana las elecciones.
+
+***Prioridad HSRP (El Factor Decisivo)***
+Para que el administrador controle realmente quién gana, se utiliza el valor de **Prioridad HSRP**. El router con la prioridad HSRP más alta siempre será declarado ganador y convertido en el Activo.
+De manera predeterminada de fábrica, todos los routers Cisco tienen un valor de prioridad de **100**. Para alterar esto y forzar a que el router principal gane, se utiliza el siguiente comando de interfaz (el rango válido de configuración es de 0 a 255):
 ```cisco
-standby priority
+standby [grupo] priority [valor_mayor_a_100]
 ```
 
-***Preferencias HSRP***
-De forma predeterminada, después de que un router se convierte en el router activo, seguirá siendo el router activo incluso si otro router está disponible en línea con una prioridad HSRP más alta.
-Para forzar un nuevo proceso de elección HSRP a tener lugar cuando un router de mayor prioridad entra en línea, la preferencia debe habilitarse mediante el comando
-
+***Apropiación (Preempt)***
+Por las reglas básicas de estabilidad de HSRP, una vez que un router se convierte legítimamente en el router Activo, se aferrará al trono para siempre. Incluso si posteriormente un super-router con una prioridad mucho más alta se conecta a la red, el router Activo actual **no le cederá el puesto**.
+Para corregir esto y forzar a que un router superior reclame su lugar cuando vuelve a la red (por ejemplo, después de haberse reiniciado), debe estar habilitada la poderosa función de "apropiación" (preempt):
 ```cisco
-standby preempt
+standby [grupo] preempt
 ```
- El intento de prioridad es la capacidad de un router HSRP de activar el proceso de la nueva elección
- El intento de prioridad solo permite que un router se convierta en router activo si tiene una prioridad más alta. 
- Un router habilitado para intento de propiedad, con una prioridad equivalente pero una dirección IPv4 más alta, no desplazará la prioridad de un router activo.
- ![[Pasted image 20230822161220.png]]
- El R1 se configuró con la prioridad de HSRP de 150 mientras que el R2 tiene la prioridad de HSRP predeterminada de 100. El intento de prioridad está habilitado en el R1. Con una prioridad más alta, el R1 es el router activo y el R2 es el router de reserva.
-  Debido a un corte de energía que solo afecta al R1, el router activo ya no está disponible y el router de reserva R2 asume el rol de router activo. Después de que se restaura la energía, el R1 vuelve a estar en línea. Dado que R1 tiene una prioridad más alta y el intento de prioridad se encuentra habilitado, forzará un nuevo proceso de elección. R1 reanudará su rol de router activo y el R2 volverá al rol de router de reserva.
-  
-**Nota**: Si el intento de prioridad está desactivado, el router que arranque primero será el router activo si no hay otros routers en línea durante el proceso de elección.
-  
+
+La función *preempt* permite a un router irrumpir en la red y desatar de inmediato una nueva elección HSRP. Sin embargo, para dar un "golpe de estado", el router intruso debe tener una prioridad estrictamente mayor al router que está actualmente Activo.
+
+![[Pasted image 20230822161220.png]]
+**Ejemplo del proceso:** Se configuró el router principal R1 con prioridad 150 y función `preempt`. El router R2 se dejó por defecto (100). R1 es el Activo.
+De pronto, un apagón apaga R1. R2, al dejar de recibir los paquetes Hello, se auto-declara el nuevo Router Activo. 
+Quince minutos después, R1 se reinicia y vuelve a la vida. Al tener `preempt` configurado, R1 observa que R2 es el Activo y dice: "Mi prioridad es 150, la tuya es 100. Quítate". R1 recupera su trono de forma inmediata y R2 vuelve pacíficamente a la Reserva.
+
 ## Estados y Temporizadores de HSRP
-Un router puede ser el router HSRP activo responsable de la devolución del tráfico al segmento, donde el router puede ser un router HSRP pasivo de reserva, listo para asumir rol activo si falla el router activo. 
-Cuando se configura una interfaz con HSRP o se habilita primero con una configuración HSRP existente, el router envía y recibe paquetes de saludo del HSRP para comenzar el proceso de determinar qué estado asumirá en el grupo HSRP.
+Cuando se configura un puerto con los parámetros HSRP y se enciende, el dispositivo no salta a enrutar inmediatamente, sino que atraviesa una serie de estados lógicos seguros, dictados por el intercambio de mensajes de saludo (Hello packets).
 
-| Estado de HSRP | Descripcion |
-| -------------- | ----------- |
-| **Inicial**        |     ingresa a través de un cambio de configuración o cuando una interfaz está disponible en primer lugar.       |
-| **Aprendizaje**    |    El router no ha determinado la dirección IP virtual ha visto un mensaje de saludo desde el router activo. En este estado, el router espera para escuchar al router activo.         |
-| **Escucha**        |      El router conoce la dirección IP virtual, pero no es el router activo ni el router en espera. Escucha los mensajes de saludo de esos routers.       |
-| **Hablar**         |      El router envía mensajes de saludo periódicos y participa activamente en la elección del router activo y/o en espera.       |
-| **En espera**               |      El router es candidato a convertirse en el próximo router activo y envía mensajes de saludo periódicos.       |
-
-El router HSRP activo y el de reserva envían paquetes de saludo a la dirección de multidifusión del grupo HSRP cada 3 segundos, de forma predeterminada. v1: 224.0.02 v2: 224.0.0.102
-El router de reserva se convertirá en activo si no recibe un mensaje de saludo del router activo después de 10 segundos. Puede bajar estas configuraciones del temporizador para agilizar las fallas o el intento de prioridad. Sin embargo, para evitar el aumento del uso de la CPU y cambios de estado de reserva innecesarios, no configure el temporizador de saludo a menos de 1 segundo o el temporizador de espera a menos de 4 segundos.
-
-## Comandos
-Router 1
-```cisco
-int (interfaz del router)
-standby (grupo) ip (ip virtual)
-standby (grupo) priority (>100)
-```
-Router 2
-```cisco
-int (interfaz del router)
-standby (grupo) ip (ip virtual)
-standby (grupo) preempt
+```mermaid
+stateDiagram-v2
+    [*] --> Initial: Interfaz encendida
+    Initial --> Learn: No conoce IP Virtual
+    Learn --> Listen: Conoce IP Virtual, escucha Hellos
+    Listen --> Speak: Participa activamente en Elección
+    
+    state Eleccion <<choice>>
+    Speak --> Eleccion
+    
+    Eleccion --> Standby: Pierde elección (Se queda vigilando)
+    Eleccion --> Active: Gana elección (Reenvía tráfico)
+    
+    Standby --> Active: Si el router Activo actual "muere"
+    Active --> Speak: Si llega un router con Preempt y mayor prioridad
 ```
 
-Verificacion de hsrp conf
+Por defecto, los routers envían paquetes Hello a la dirección reservada de multidifusión cada **3 segundos** (v1: `224.0.0.2` / v2: `224.0.0.102`).
+El temporizador crítico de espera (Hold Timer) es de **10 segundos**. Esto significa que si el Router de Reserva no escucha ningún Hello del Activo por 10 segundos continuos, lo declara muerto y toma el control.
+
+## Comandos Esenciales de Configuración
+
+**En el Router 1 (Principal y Deseado)**
 ```cisco
-sh standby brief
+interface GigabitEthernet 0/1
+standby 10 ip 192.168.1.1        // Define el grupo 10 y la IP Virtual Compartida
+standby 10 priority 150          // Le aseguramos la victoria
+standby 10 preempt               // Le permitimos recuperar el puesto si se reinicia
 ```
- 
-### Conceptos
-- La prioridad predeterminada de HSRP es 100. El rango de etiquetas de prioridad es de 0 a 7. El router con la prioridad más alta se convertirá en el router activo.
-- Los routers activos HSRP siguen siendo el router activo incluso si otro router con una prioridad más alta se une a la red.
-- En el estado de habla HSRP, el router comienza a enviar mensajes de saludo periódicos.
-- En el estado de aprendizaje de HSRP, el router aún no ha determinado la dirección IP virtual.
+
+**En el Router 2 (De Reserva)**
+```cisco
+interface GigabitEthernet 0/1
+standby 10 ip 192.168.1.1        // Debe coincidir el grupo y la IP
+standby 10 preempt               // Buena práctica activarlo también aquí
+```
+*(Nota: R2 usará la prioridad por defecto de 100, garantizando que quede en Reserva)*
+
+Para monitorear y verificar qué router es el Activo y cuál es el Standby:
+```cisco
+show standby brief
+```
 
 ## Notas relacionadas
 - [[FHRP (Protocolos de redundancia de primer salto)]]

@@ -117,32 +117,32 @@ Se encarga de validar certificados digitales ya emitidos.
 
 # encriptacion wifi
 1. **WPA3 (Wi-Fi Protected Access 3):**
-    - **Seguridad: Alta**
+    - **seguridad: Alta**
         - Es la versión más avanzada y segura de WPA.
-        - Utiliza **SAE (Simultaneous Authentication of Equals)** en lugar de PSK, lo que la hace más resistente a ataques de fuerza bruta y garantiza mayor seguridad incluso si la contraseña es débil.
+        - Utiliza **SAE (Simultaneous autenticación of Equals)** en lugar de PSK, lo que la hace más resistente a ataques de fuerza bruta y garantiza mayor seguridad incluso si la contraseña es débil.
         - Ofrece cifrado de **128 bits** en redes personales y **192 bits** en redes empresariales.
     - **Coloca a WPA3 como la opción más segura.**
 
 ---
 
 2. **WPA2 Enterprise con RADIUS:**
-    - **Seguridad: Muy alta**
-        - Utiliza **EAP (Extensible Authentication Protocol)** para autenticar usuarios.
-        - Integra un servidor **RADIUS (Remote Authentication Dial-In User Service)**, que agrega una capa de autenticación y administración centralizada.
+    - **seguridad: Muy alta**
+        - Utiliza **EAP (Extensible autenticación Protocol)** para autenticar usuarios.
+        - Integra un servidor **RADIUS (Remote autenticación Dial-In User Service)**, que agrega una capa de autenticación y administración centralizada.
         - Requiere credenciales únicas para cada usuario, lo que lo hace ideal para entornos empresariales.
     - **Menos avanzado que WPA3, pero más seguro que WPA2 PSK.**
 
 ---
 
 3. **WPA2 Enterprise (sin RADIUS):**
-    - **Seguridad: Alta**
+    - **seguridad: Alta**
         - Similar a WPA2 Enterprise con RADIUS, pero sin la integración de un servidor de autenticación RADIUS.
         - Es más vulnerable si no se configura correctamente, ya que la autenticación depende más de la red local.
 
 ---
 
 4. **WPA2 PSK (Pre-Shared Key):**
-    - **Seguridad: Media**
+    - **seguridad: Media**
         - Utiliza una clave compartida entre los usuarios de la red.
         - Es adecuado para redes personales o pequeñas oficinas, pero es menos seguro porque:
             - Todos los usuarios comparten la misma clave.
@@ -224,13 +224,13 @@ Se encarga de validar certificados digitales ya emitidos.
     - Aunque ofrece flexibilidad, no garantiza el control total sobre los datos porque pueden estar distribuidos en varios entornos.
 
 # Protocolos
-1. **RADIUS (Remote Authentication Dial-In User Service):**
+1. **RADIUS (Remote autenticación Dial-In User Service):**
     - Es un protocolo de autenticación utilizado principalmente para administrar el acceso a redes.
     - No tiene relación directa con el cifrado y la firma de correos electrónicos.
 2. **S/MIME (Secure/Multipurpose Internet Mail Extensions):**
     - Es un estándar ampliamente utilizado para proporcionar **cifrado de extremo a extremo** y **firmas digitales** en correos electrónicos.
     - Emplea algoritmos como **DSS (Digital Signature Standard)** para firmas digitales y **Triple DES** para cifrado de mensajes.
-3. **EAP (Extensible Authentication Protocol):**
+3. **EAP (Extensible autenticación Protocol):**
     - Se utiliza para la autenticación en redes, especialmente en conexiones inalámbricas como WPA/WPA2.
     - No está diseñado para cifrar o firmar correos electrónicos.
 4. **TACACS+ (Terminal Access Controller Access-Control System Plus):**
@@ -486,3 +486,12 @@ El **SIEM** es una solución de seguridad que proporciona monitoreo en tiempo re
 
 - Significa que los empleados utilizan sus propios dispositivos personales para acceder a los recursos de la empresa.
 - La empresa establece políticas y medidas de seguridad para proteger los datos corporativos, pero el dispositivo sigue siendo propiedad del empleado.
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

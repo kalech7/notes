@@ -1,111 +1,84 @@
-amaneza: es algo probable que vaya a pasar es algo que no se puede controlar 
-una amenza nunca se vuelve real hasta que se tiene una vulnerabilidad 
-es un potencial problema a la seguridad del activo 
-vulnerabilidades: es algo interno 
-es imposible que algo no tenga vulnerabilidades 
-riesgo: la probabilidad de que una amenza se vuelva realizad y el nivel de impracto que esta podria causar
-el valor del activo influye en el riesgo 
-ataque: es cuando se lleva en accion una amenaza se aprovecha de vulnerabilidadades
+**Amenaza:** Es un evento probable que pueda ocurrir; es algo que no se puede controlar. Una amenaza nunca se vuelve real hasta que explota una vulnerabilidad. Representa un potencial problema para la seguridad de un activo.
 
-se deben proteger estos 4 activos:
-1) hardware 
-2) software y firmware 
-3) datos
-4) telecomunicaciones
-desde la perspectiva de la seguridad informatica 
-ninugn protocolo de tcp/ip son seguras
+**Vulnerabilidad:** Es una debilidad interna. Es imposible que un sistema no tenga vulnerabilidades.
+
+**Riesgo:** Es la probabilidad de que una amenaza se vuelva realidad y el nivel de impacto que esta podría causar. El valor del activo influye en el nivel de riesgo.
+
+**Ataque:** Es la acción que ocurre cuando se materializa una amenaza, aprovechándose de las vulnerabilidades existentes.
+
+Desde la perspectiva de la seguridad informática, se deben proteger principalmente estos cuatro activos:
+1. Hardware
+2. Software y firmware
+3. Datos
+4. Telecomunicaciones
+
+*Nota:* Ningún protocolo de TCP/IP es inherentemente seguro.
+
+> [!info] Explicación: Conceptos Básicos de seguridad
+> - **Amenaza vs Vulnerabilidad:** Piensa en la amenaza como un ladrón en el vecindario y la vulnerabilidad como una puerta sin seguro. El riesgo es la probabilidad de que el ladrón abra esa puerta y te robe (impacto).
+> - **Activos:** Proteger el hardware y software es esencial, pero los datos suelen ser el activo más valioso de una organización.
+
 ## Malware
-software malicioso
-el mecanismo de propagacion como se mueve de un sistema a otro
-payload (carga de daño)
-* virus es un subconjunto del malware:
-se adjunta a una aplicacion anfitrion 
-no es un ejecutable completo cuando se ejecuta la aplicacion anfitrion tambien se ejecuta el codigo del virus
-el virus no puede proagarse pro si mimso requiere de algun tipo de accion del usuario
-* gusanos 
-se replica a si mismo y se propaga a traves de la red sin la necesidad de aplicacion anfitrion o intereccion de usuario
-pueden proagarse por si solos 
-se propaga por el protocolo sifmb 
-puede causar sobrecaga del ancho de la red 
-ejemplos:
-stuxnet-> infecto la instalacion nuclear irani
-* cabello de troya:
-malware que se oculta en algo legitimo 
-pretenden ofrecer una funcionalidad beneficiosa pero ejecutan procesos maliciosos
-rat(remote access trojan)
-permite al hacker contraola el sistema infetado a traves de la red algunos recolectan pulsaciones de tecaldos, usernames/contraseñas emails,historial de navegacion
+Software malicioso. Se caracteriza por su mecanismo de propagación (cómo se mueve de un sistema a otro) y su payload (la carga dañina que ejecuta).
 
-adware:
-no maliciosos: software que muestran publicidad a cambio del uso gratuito 
-adware malicioso: muestran publicidad legitima con otra publicidad 
-es peligroso?
-depende del tipo de publicidad que es cargado 
-podria mostrar publicidad inadecuada 
-podria redireccionar a sitios con contenidos peligrosos 
+- **Virus:** Es un subconjunto del malware que se adjunta a una aplicación anfitriona. No es un ejecutable completo; cuando se ejecuta la aplicación anfitriona, también se ejecuta el código del virus. El virus no puede propagarse por sí mismo, requiere de algún tipo de acción del usuario.
+- **Gusanos (Worms):** Se replican a sí mismos y se propagan a través de la red sin la necesidad de una aplicación anfitriona o interacción del usuario. Pueden causar sobrecarga del ancho de banda de la red. Por ejemplo, Stuxnet, que infectó una instalación nuclear iraní.
+- **Caballo de Troya (Troyano):** Malware que se oculta dentro de algo legítimo. Pretende ofrecer una funcionalidad beneficiosa, pero ejecuta procesos maliciosos en segundo plano.
+  - **RAT (Remote Access Trojan):** Permite al atacante controlar el sistema infectado a través de la red. Algunos recolectan pulsaciones de teclados, nombres de usuario/contraseñas, correos electrónicos e historial de navegación.
 
-spyware:
-recolecta informacion sin el conocimiento o consentimiento del usuario
-recolecta informacion alamcenado en el computador 
+> [!info] Explicación: Diferencias en Malware
+> - **Virus:** Necesita de ti para moverse (ej. abrir un archivo de Word infectado).
+> - **Gusano:** Es autónomo. Una vez dentro de la red, busca otras máquinas vulnerables y salta hacia ellas.
+> - **Troyano:** Entra con engaños (ej. descargas un juego gratis, pero trae un software de control remoto oculto).
 
-ransomware:
-nace con las criptomonedas
-malware que bloquea el computador o informacion del usuario hasta que se pague un valor de rescate
+- **Adware:**
+  - *No malicioso:* Software que muestra publicidad a cambio del uso gratuito de una aplicación.
+  - *Malicioso:* Muestra publicidad legítima mezclada con otra publicidad engañosa. Puede ser peligroso dependiendo del tipo de publicidad cargada, ya que podría mostrar contenido inadecuado o redireccionar a sitios web con contenido peligroso.
+- **Spyware:** Recolecta información almacenada en el computador sin el conocimiento o consentimiento del usuario.
+- **Ransomware:** Su popularidad creció con las criptomonedas. Es un malware que bloquea el computador o cifra la información del usuario hasta que se pague un valor de rescate.
+- **Bomba lógica:** Malware que está configurado para ejecutar un payload cuando se cumplen ciertas condiciones específicas.
+- **Bomba de tiempo:** Es una bomba lógica que se activa en una fecha u hora determinada.
+- **Keylogger:** Software o dispositivo de hardware que captura y guarda todas las pulsaciones que el usuario realiza en el teclado.
 
-bomba logica:
-malware que esta configurado para ejecutar un payload  cuando se cumplen ciertas condiciones 
+> [!info] Explicación: Ransomware y Keyloggers
+> - **Ransomware:** Es el ataque más lucrativo actualmente. Cifra los archivos del disco duro (usa criptografía) y exige un pago (generalmente en Bitcoin) a cambio de la llave para descifrarlos.
+> - **Keylogger:** Puede ser un programa oculto o incluso un pequeño conector USB conectado entre el teclado y la PC. Es usado primariamente para robar credenciales bancarias y contraseñas.
 
-bomba de tiempo: 
-bomba logica que se aactiva en una fecha u hora determinada 
+- **Botnet:** Conjunto de dispositivos infectados por algún malware que están bajo el control central de un atacante (botmaster). Los dueños de botnets buscan beneficios económicos y pueden utilizarlas para enviar spam, ejecutar ataques de denegación de servicio distribuido (DDoS), minar criptomonedas o realizar ataques de fuerza bruta.
+- **Rootkit:** Malware que permite el acceso a un dispositivo en modo de sistema (kernel) y mantiene su presencia oculta corrompiendo el sistema operativo o sus aplicaciones. 
+  - Un programa común se ejecuta en modo de usuario (privilegios limitados).
+  - Un rootkit se ejecuta en modo de sistema o kernel (altos privilegios) y puede modificar procesos y registros para no ser detectado.
+- **Malware blindado (Armored Malware):** Malware diseñado para que sea difícil realizarle ingeniería inversa. Utilizan métodos como escribir el código en lenguaje ensamblador con técnicas de ofuscación para ocultar la verdadera intención del malware.
 
-keylogger: software o dispositivo que captura las pulsaciones del teclado 
-guarda todo lo que el usuario escribe en el teclado 
-informacion es guardado  
-notnet: conjunto de dispositivos infectados por algun malware que estan bajo control de un atacante 
-dueños de botnets buscan beneficios eocnomicos 
-pueden usarse para eviar spams 
-ejecutar ddos 
-mineria de criptos 
-ataques de fuerza bruta
+## Clasificación de los atacantes
 
-rootkit
-malware que permite el acceso de un dispoitivo en mode de sistema(kernel) y mantiene su prensencia oculta corropiendo el sistema operativo o aplicaciones 
-programa comun: se ejecuta en mode de usuario(privilegios limitados)
-rooot kit se ejecuta en modo de sistema o kernel(altos privilegios)
-puede modifcar procesos registros
+### Por nivel de conocimiento
+- **Script Kiddies:** Atacantes novatos que utilizan herramientas o scripts creados por otros sin entender completamente cómo funcionan.
 
-malware blindados
-malware que es dificil realizar la ingenieria inversa 
-utilizan metodos como: escribir el codigo en ensamblador con tenicas de ofuscacion 
-ocultar la verdadera intecion de lo malwares 
+### Por intenciones o motivaciones del atacante
+#### Criminales
+Atacantes que cometen actos ilegales en el mundo cibernético. Realizan ataques normalmente para obtener dinero. Utilizan medios como la Dark Web y criptomonedas (Bitcoin) para monetizar sus acciones y se esconden en el anonimato. Ejecutan actos como fraude, extorsión, robo y falsificación.
 
-## clasificacion de los atacantes
+#### Hacktivistas
+Hacktivista = Hacker + Activista. Atacan para avanzar en una agenda política o social; atacan para promover o defender una causa.
 
-### nivel de conocimiento 
-script kiddies 
+> [!info] Explicación: Deep Web vs Dark Web
+> - **Deep Web:** Es simplemente todo el contenido de internet que no es indexado por los motores de búsqueda (como tu bandeja de entrada de correo o sistemas cerrados corporativos).
+> - **Dark Web:** Es una pequeña porción de la Deep Web que requiere navegadores especializados (como Tor) para acceder, y donde suele ocurrir actividad ilegal u oculta.
 
-### intenciones o motiaciones del atacante
-#### **criminales**
-atacantes que cometen actos ilegales en el mundo cibernetico 
-realizan ataques normalmente para hacer dinero 
-utilizan medios como la dark web y bitcoin para monetizar
-se esconden en el anonimato 
-ejecutan actos como fraude extorsion robo y falsifcacion
-hacktivista=hacker + activista 
-atacan para avanzar en una agenda politica o social atacan para promover o defender una causa 
-deep web(sistemas cerrados)
-darkweb(son browser especializados)
-hacktivistas 
-#### competencia
-ejecutan el espionaje corporativo o ataques para hacer daño a la competencia 
-algunas empresas buscan informacion que les otorgue una ventaja competitiva
-#### Amenazas persistentes avanzadas 
-avanzadas porque estan compuestos por expoertos altamente califcados 
-persistente porque trabajan metoddicamente y estan bien fiananciados 
-empelan herramientas extremadamente avanzadas y tecnicas que son muy dificiles 
+#### Competencia
+Ejecutan espionaje corporativo o ataques para hacer daño a la competencia. Algunas empresas buscan información que les otorgue una ventaja competitiva en el mercado.
+
+#### Amenazas Persistentes Avanzadas (APT - Advanced Persistent Threats)
+- **Avanzadas:** Porque están compuestas por expertos altamente calificados.
+- **Persistentes:** Porque trabajan metódicamente, a largo plazo y están bien financiados (muchas veces por gobiernos).
+- Emplean herramientas extremadamente avanzadas y técnicas que son muy difíciles de detectar y contrarrestar.
+
 ### Origen del atacante
-#### internos
-
-#### externos
+#### Internos
+Atacantes que provienen de dentro de la organización (empleados descontentos, ex-empleados con accesos no revocados).
+#### Externos
+Atacantes que operan desde fuera de la red de la organización.
 
 ## Notas relacionadas
 - [[seguridad informatica]]
@@ -113,3 +86,13 @@ empelan herramientas extremadamente avanzadas y tecnicas que son muy dificiles
 - [[ataques a contraseñas]]
 - [[protocolos criptograficos]]
 - [[Ingenieria social]]
+
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

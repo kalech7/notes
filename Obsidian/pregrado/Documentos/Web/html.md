@@ -1,59 +1,73 @@
-consiste en una serie de elementos y atributos que se utilizan para marcar todos los componentes de un documento para estructurarlo de una manera significativa.
-son básicamente un árbol de nodos, que incluye elementos HTML y nodos de texto. Los elementos HTML proporcionan la semántica y el formato de los documentos, incluida la creación de párrafos, listas y tablas, y la incrustación de imágenes y controles de formulario.
-Los elementos HTML están delineados por etiquetas, escritas con corchetes angulares ( y ).`<``>`
+Para asegurarnos de que el contenido de nuestros documentos sea interpretado correctamente como código HTML, debemos agregar la declaración `<!DOCTYPE html>` al comienzo del archivo. Esta declaración se requiere al principio de cada documento para ayudar al navegador a decidir cómo debe procesar y generar la página web según los estándares de HTML5.
 
-en el head se tiene informacion de metadata con palabras clave <meta> son etiquetas huerfanas no tienen un cierre dentro de <head> </head>
+> [!info] Explicación
+> **DOM (Document Object Model):** Ese "árbol de nodos" del que se habla es el DOM. Imagina HTML como el esqueleto de un árbol genealógico: el `<html>` es el abuelo, `<head>` y `<body>` son los hijos, y los párrafos o imágenes dentro del body son los nietos.
 
-el body es la parte visible de la pagina web
-  solo se puede tener un <h1> </h1>por tenemas de usabilidad
-  Para asegurarnos de que el contenido de nuestros documentos sea interpretado correctamente como código HTML, debemos agregar la declaración al comienzo del archivo. se requiere al comienzo de cada documento para ayudar al navegador a decidir cómo debe generar la página web. Para documentos programados con HTML5, la declaración debe incluir el atributo html
-  
-### elementos  
-<html></html> Este elemento delimita el código HTML. Puede incluir el atributo lang para definir el idioma del contenido del documento. 
-<head></head> Este elemento se usa para definir la información necesaria para configurar la página web, como el título, el tipo de codificación de caracteres y los archivos externos requeridos por el documento. 
-<body></body>Este elemento delimita el contenido del documento (la parte visible de la página).
-El elemento <link></link> se usa comúnmente para cargar archivos CSS con los estilos necesarios para generar la página web. Por ejemplo, el siguiente documento carga el archivo misestilos.css.
-<div></div>Este elemento define una división genérica. Se usa cuando no se puede aplicar ningún otro elemento.
-<main> </main>Este elemento define una división que contiene el contenido principal del documento (el contenido que representa el tema central de la página).
-<nav></nav>este elemento define una división que contiene ayuda para la navegación, como el menú principal de la página o bloques de enlaces necesarios para navegar en el sitio web.
-<section></section>Este elemento define una sección genérica. Se usa frecuentemente para separar contenido temático, o para generar columnas o bloques que ayudan a organizar el contenido principal.
-<aside></aside>Este elemento define una división que contiene información relacionada con el contenido principal pero que no es parte del mismo, como referencias a artículos o enlaces que apuntan a publicaciones anteriores.
-<article></article>Este elemento representa un artículo independiente, como un mensaje de foro, el artículo de una revista, una entrada de un blog, un comentario, etc.
-<header></header>Este elemento define la cabecera del cuerpo o de secciones dentro del cuerpo.
-<footer></footer>Este elemento define el pie del cuerpo o de secciones dentro del cuerpo.
-son flexibles y se pueden implementar en diferentes partes del diseño, todos siguen un patrón que se encuentra comúnmente en la mayoría de los sitios web.
+```mermaid
+graph TD
+    HTML[<html>] --> HEAD[<head>]
+    HTML --> BODY[<body>]
+    
+    HEAD --> TITLE[<title>]
+    HEAD --> META[<meta>]
+    HEAD --> LINK[<link>]
+    
+    BODY --> HEADER[<header>]
+    BODY --> MAIN[<main>]
+    BODY --> FOOTER[<footer>]
+    
+    HEADER --> NAV[<nav>]
+    MAIN --> H1[<h1>]
+    MAIN --> P[<p>]
+```
+
+### Elementos Principales
+
+- `<html></html>`: Este elemento delimita todo el código HTML de la página. Puede incluir el atributo `lang` para definir el idioma principal del contenido del documento. 
+- `<head></head>`: En el head se tiene la información de metadata o configuración de la página web. Aquí se incluyen el título, el tipo de codificación de caracteres y los archivos externos (como CSS). Dentro del head se usan etiquetas huérfanas (sin cierre) como `<meta>`.
+- `<body></body>`: Este elemento delimita el contenido del documento, es decir, toda la parte visible de la página web.
+- `<link>`: Se usa comúnmente dentro del head para cargar archivos CSS externos con los estilos necesarios para generar el diseño visual de la página web.
+
+> [!info] Explicación
+> **Diferencia Head vs Body:** Lo que pongas en el `<head>` es para que lo lean las máquinas (el navegador, Google, redes sociales). Lo que pongas en el `<body>` es para que lo lean los humanos (los visitantes de tu sitio).
+
+### Estructura Semántica
+Estos elementos definen divisiones y zonas de la página con un significado específico:
+
+- `<div></div>`: Define una división genérica. Se usa cuando no se puede aplicar ningún otro elemento con un significado semántico más claro.
+- `<main></main>`: Define el contenido principal del documento (el tema central de la página).
+- `<nav></nav>`: Define una división que contiene ayuda para la navegación, como el menú principal de la página o bloques de enlaces. Puede insertarse dentro de un `<header>` o en otra sección.
+- `<section></section>`: Define una sección genérica. Se usa frecuentemente para separar contenido temático o generar bloques lógicos.
+- `<aside></aside>`: Define una división que contiene información relacionada con el contenido principal, pero que no es estrictamente parte del mismo (ej. barras laterales con enlaces a artículos anteriores o publicidad).
+- `<article></article>`: Representa un artículo independiente y autocontenido, como una entrada de blog, una noticia, un comentario en un foro, etc.
+- `<header></header>`: Define la cabecera principal del cuerpo de la página, o la cabecera interna de artículos y secciones.
+- `<footer></footer>`: Define el pie de página, o el cierre de una sección.
+
+Estos elementos semánticos son muy flexibles y se pueden implementar en diferentes partes del diseño, siguiendo patrones comunes en la mayoría de los sitios web.
 ![[Pasted image 20240519214757.png]]
 
- el elemento <nav></nav> se podría insertar dentro de etiquetas o en otra sección del cuerpo
- 
-### contenido
-#### texto
-El medio más importante que puede incluir un documento es texto es el titulo puede ir  hasta 6 <h1></h1>
-Los siguientes son los elementos que ofrece HTML para representar el cuerpo del texto.
+> [!info] Explicación
+> **¿Por qué usar HTML Semántico?** Usar `<main>`, `<article>` o `<nav>` en lugar de puros `<div>` ayuda enormemente al SEO (que Google entienda tu página) y a la accesibilidad (lectores de pantalla para personas ciegas). 
 
-<p></p>Este elemento representa un párrafo. Por defecto, los navegadores le asignan un margen en la parte superior para separar un párrafo de otro.
-<pre></pre>Este elemento representa un texto con formato predefinido, como código de 
-programación o un poema que requiere que los espacios asignados a cada carácter y los 
-saltos de línea se muestren como se han declarado originalmente. 
-<span>Este elemento puede contener un párrafo, una frase o una palabra. No aplica 
-ningún estilo al texto pero se usa para asignar estilos personalizados, como veremos en 
-próximos capítulos.
-  
-<br></br>Este elemento se usa para insertar saltos de línea. 
-<wbr></wbr>Este elemento sugiere la posibilidad de un salto de línea para ayudar al navegador a decidir dónde cortar el texto cuando no hay suficiente espacio para mostrarlo entero
-<em></em>Este elemento se usa para indicar énfasis. El texto se muestra por defecto con letra cursiva. 
-<strong></strong>Este elemento es utiliza para indicar importancia. El texto se muestra por defecto en negrita. 
-<i></i>Este elemento representa una voz alternativa o un estado de humor, como un pensamiento, un término técnico, etc. El texto se muestra por defecto con letra cursiva. 
-<u></u>Este elemento representa texto no articulado. Por defecto se muestra subrayado. <b></b>Este elemento se usa para indicar importancia. Debería ser implementado solo cuando ningún otro elemento es apropiado para la situación. El texto se muestra por defecto en negrita.
-<mark></mark>Este elemento resalta texto que es relevante en las circunstancias actuales (por ejemplo, términos que busca el usuario). 
-<small></small>Este elemento representa letra pequeña, como declaraciones legales, descargos, etc. 
-<cite></cite>Este elemento representa el autor o título de una obra, como un libro, una película, etc.
-<address></address>Este elemento representa información de contacto. Se implementa con frecuencia dentro de los pies de página para definir la dirección de la empresa o el sitio web.
+### Contenido de Texto
 
-### enlaces 
+El contenido más importante que suele incluir un documento web es el texto. Para los títulos, se utilizan las etiquetas desde `<h1>` hasta `<h6>`. 
+*Nota importante:* Por temas de usabilidad y SEO, solo se debe tener un único `<h1>` por página web, ya que representa el título principal.
 
+Otros elementos para representar texto:
+- `<p></p>`: Representa un párrafo normal. Los navegadores le asignan un margen superior e inferior por defecto para separarlo.
+- `<span></span>`: Puede contener un texto pequeño, una frase o una palabra. No aplica ningún estilo semántico por defecto, pero se usa para aislar un pedazo de texto y asignarle estilos personalizados con CSS.
+- `<br>`: Se usa para forzar la inserción de un salto de línea (es una etiqueta huérfana).
+- `<wbr>`: Sugiere un posible salto de línea, ayudando al navegador a decidir dónde cortar una palabra larga si no hay espacio suficiente.
+- `<em></em>`: Se usa para indicar énfasis semántico. El texto se muestra en *cursiva*.
+- `<strong></strong>`: Se utiliza para indicar importancia extrema. El texto se muestra en **negrita**.
+- `<i></i>`: Representa un texto con voz alternativa o término técnico. Se muestra en cursiva.
+- `<b></b>`: Resalta texto sin darle una importancia semántica extra. Se muestra en negrita.
+- `<mark></mark>`: Resalta texto como si estuviera marcado con un rotulador (útil para resultados de búsqueda).
+- `<small></small>`: Representa "letra pequeña", utilizada generalmente en descargos de responsabilidad o declaraciones legales.
+- `<cite></cite>`: Representa el autor o título de una obra (libro, película).
+- `<address></address>`: Representa información de contacto. Se suele ubicar en el footer.
+- `<pre></pre>`: Representa un bloque de texto con formato predefinido. A diferencia de otros elementos, respeta los espacios en blanco y saltos de línea literales del código fuente. Se configura con tipografía monoespaciada, siendo ideal para mostrar fragmentos de código de programación.
 
----
- <pre></pre>se configura por defecto con márgenes y un tipo de letra que respeta el 
-formato asignado al texto original, lo que lo hace apropiado para presentar código de 
-programación y cualquier clase de texto con formato predefinido
+### Enlaces 
+(Sección reservada para etiquetas como `<a>` utilizadas para hipervínculos).

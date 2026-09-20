@@ -6,6 +6,8 @@ tags: [excalidraw]
 ---
 ==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==
 
+> [!info] Explicación
+> El **Cálculo de atributos** en la fase de análisis semántico de un compilador se refiere a la evaluación de las reglas semánticas asociadas a la gramática. Los atributos (como `p`, `q`, `z`, `w`, `x` en el diagrama) pueden ser *sintetizados* (pasan información de los hijos hacia el padre en el árbol sintáctico) o *heredados* (pasan información del padre y hermanos hacia los hijos).
 
 # Text Elements
 Sequence: d a3 a2 a0 a1 b4 ^mQheD9cJ

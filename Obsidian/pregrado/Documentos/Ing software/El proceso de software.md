@@ -1,4 +1,4 @@
-es una serie de actividades relacionadas que conduce a la elaboración de un producto de software.
+Es una serie de actividades relacionadas que conduce a la elaboración de un producto de software.
 pueden incluir el desarrollo de software desde cero en un lenguaje de programación estándar como Java o C.
 las aplicaciones de negocios no se desarrollan precisamente de esta forma. se desarrolla extendiendo y modificando los sistemas existentes, o configurando e integrando el software comercial o componentes del sistema
 
@@ -33,6 +33,9 @@ por un plan son aquellos donde todas las actividades del proceso se planean por 
 ## los procesos ágiles
 la planeación es incremental y es más fácil modificar el proceso para reflejar los requerimientos cambiantes del cliente.
 
+> [!info] Explicación: Predictibilidad vs Flexibilidad
+> Los modelos dirigidos por planes (como Cascada) son excelentes cuando el costo de un error es altísimo (como software médico). En contraste, las metodologías ágiles (como Scrum o XP) nacieron para lidiar con la incertidumbre del mercado: los requerimientos cambian constantemente y la clave es adaptarse rápido al feedback del usuario mediante entregas continuas.
+
 uno necesita encontrar un equilibrio entre procesos dirigidos por un plan y procesos ágiles
 existe un ámbito para mejorar el proceso de software. Los procesos quizás incluyan técnicas obsoletas o tal vez no aprovechen las mejores prácticas en la industria
 
@@ -53,13 +56,13 @@ se puede dar cuando deben hacerse adaptaciones o mejoras bien definidas a un sis
 También ocurre en cierto número limitado de nuevos esfuerzos de desarrollo, pero sólo cuando los requerimientos están bien definidos y tienen una estabilidad razonable.
 
 #### características: 
-- se llama ciclo de vida clásico
+- Se llama ciclo de vida clásico
 - Sugiere un enfoque sistemático y secuencial para el desarrollo del software
 - Comienza con la especificación de los requerimientos por parte del cliente
 - Avanza a través de planeación, modelado, construcción y despliegue. 
 - Concluye con el apoyo del software terminado (asistencia). 
 - Una variante se denomina modelo en V
-- muestra la relación entre las acciones para el aseguramiento de la calidad y aquellas asociadas con la comunicación, modelado y construcción temprana
+- Muestra la relación entre las acciones para el aseguramiento de la calidad y aquellas asociadas con la comunicación, modelado y construcción temprana
 #### Pasos 
 1. comunicacion 
 inicio del proyecto recabar los requerimientos
@@ -106,12 +109,12 @@ Se generan estados de bloqueo entre equipos.
 - Es útil en situaciones en las que los requerimientos son fijos y el trabajo avanza en forma lineal hacia el final
 - Apropiado para sistemas muy complejos en que los requerimientos no cambian desde el principio
 ### Modelo de proceso incremental
-- cuando los requerimientos del software están razonablemente bien definidos, pero el alcance del esfuerzo de desarrollo imposibilita un proceso lineal
-- necesidad imperiosa de dar rápidamente cierta funcionalidad limitada a los usuarios y aumentarla en entregas posteriores
+- Cuando los requerimientos del software están razonablemente bien definidos, pero el alcance del esfuerzo de desarrollo imposibilita un proceso lineal
+- Necesidad imperiosa de dar rápidamente cierta funcionalidad limitada a los usuarios y aumentarla en entregas posteriores
 - Combina elementos de los flujos de proceso lineal y paralelo.
 - Aplica secuencias lineales en forma escalonada a medida que avanza el calendario de actividades del proyecto
 - Cada secuencia produce incrementos de software susceptibles de entregarse de manera similar a los incrementos producidos en un flujo de proceso evolutivo
-- para cualquier incremento puede incorporar el paradigma del prototipo.
+- Para cualquier incremento puede incorporar el paradigma del prototipo.
 
  *Es frecuente que el primer incremento sea el producto fundamental*
 - Se abordan los requerimientos básicos, pero no se proporcionan muchas características suplementarias (algunas conocidas y otras no).
@@ -135,6 +138,9 @@ VENTAJAS:
 DESVENTAJAS: 
 - Con muchos incrementos se puede perder la visión del producto final. 
 - La integración es particularmente importante en cada incremento.
+
+> [!info] Explicación: Integración Continua (CI) y Pruebas
+> Debido a que "la integración es particularmente importante en cada incremento", las metodologías modernas aplican Integración Continua (CI). Consiste en compilar y ejecutar pruebas automatizadas (unit testing) constantemente para asegurar que el nuevo incremento no rompa funcionalidades anteriores (regresiones).
 
 ### Modelos de procesos evolutivos
 Los requerimientos del negocio y del producto cambian en el tiempo
@@ -232,3 +238,13 @@ Los procesos de software deben centrarse en la flexibilidad y capacidad de exten
 El objetivo de los modelos evolutivos es desarrollar software de alta calidad en forma iterativa e incremental. 
 También se puede usar un proceso evolutivo para hacer énfasis en la flexibilidad, expansibilidad y velocidad del desarrollo. 
 El reto es establecer un balance apropiado entre estos parámetros críticos del proyecto y el producto, y la satisfacción del cliente (que determina finalmente la calidad del software)
+
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

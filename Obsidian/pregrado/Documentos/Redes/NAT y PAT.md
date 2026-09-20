@@ -1,108 +1,147 @@
-En las diecciones ip privadas no se deben pagar en cambio las direcciones publicas son pagadas ya que permiten el enroutamiento de paquetes a traves del internet 
-Para la ip publica se le pide al: 
-1) isp  (proveedores de servicios de Internet) luego el isp pide a
-2) LACNIC   (Registros Regionales de Internet) luego la lacnic se le pide al IANA 
-3) IANA (Autoridad de Asignación de Números de Internet) la IANA registra la dir publica y se le asigna la ip solicitada
-Como maximo se puede asignarse a 10 ip publicas 
-**Rango de ip de clases:** 
+Las direcciones IP privadas son de uso gratuito y local, mientras que las direcciones IP públicas tienen un costo asociado y deben registrarse, ya que son las que permiten el enrutamiento directo de paquetes a través de la Internet global.
 
-| Clase | rango ips                       |
+Para obtener una dirección IP pública legítima, se sigue una cadena jerárquica de asignación:
+1. **ISP (Proveedor de Servicios de Internet):** El usuario final o la empresa solicita la dirección IP a su proveedor local.
+2. **RIR (Registros Regionales de Internet, como LACNIC para América Latina):** El ISP obtiene grandes bloques de direcciones IP de estos registros regionales.
+3. **IANA (Autoridad de Asignación de Números de Internet):** Es la entidad global central que administra el espacio total de direcciones IP y delega bloques a los diferentes RIR del mundo.
+
+**Rango de direcciones IP públicas por clases (Modelo Histórico):**
+
+| Clase | Rango de IPs |
 | ----- | ------------------------------- |
-| A     | 0.0.0.0 hasta 127.255.255.255   |
-| B     | 128.0.0.0 hasta 191.255.255.255 |
-| C      |       192.0.0.0 hasta 223.255.255.255                          |
-**Rango para ip privadas:**
+| A | 0.0.0.0 hasta 127.255.255.255 |
+| B | 128.0.0.0 hasta 191.255.255.255 |
+| C | 192.0.0.0 hasta 223.255.255.255 |
 
-| Clase |           rango ips            |
+**Rango reservado para direcciones IP privadas (Según el RFC 1918):**
+
+| Clase | Rango de IPs Privadas |
 |:-----:|:------------------------------:|
-|   A   |   10.0.0.0 - 10.255.255.255    |
-|   B   |  172.16.0.0 - 172.31.255.255   |
-|   C   | 192.168.0.0 - 192.168.255.255. |
+| A | 10.0.0.0 - 10.255.255.255 |
+| B | 172.16.0.0 - 172.31.255.255 |
+| C | 192.168.0.0 - 192.168.255.255 |
 
-## Red stub
-tiene una unica conexion de salida hacia la infraestructura del isp se da en en router de borde 
-## NAT
-NAT es una técnica que se utiliza para traducir direcciones IP privadas en una red local a una dirección IP pública en el enrutador o dispositivo de conexión a Internet. Esto permite que varios dispositivos en una red local compartan una única dirección IP pública para acceder a Internet. NAT se utiliza comúnmente en redes domésticas y pequeñas empresas para ahorrar direcciones IP públicas, ya que las direcciones IP públicas son limitadas y valiosas.
-NAT (Network Address Translation = Traducción de Direcciones de Red) tiene muchos usos, pero el principal es **conservar las direcciones IPv4 públicas**. Esto se logra al permitir que las redes utilicen direcciones IPv4 privadas internamente y al proporcionar la traducción a una dirección pública solo cuando sea necesario.
+## Red Stub (Red de conexión única)
+Una red *stub* es aquella que tiene una única conexión de salida física hacia la infraestructura del ISP. Todo el tráfico que sale o entra de esta red local debe pasar obligatoriamente por un único router de borde.
+
+## NAT (Network Address Translation)
+NAT es una tecnología utilizada para traducir direcciones IP privadas ubicadas en una red local a una o más direcciones IP públicas directamente en el router de borde (el dispositivo que conecta a Internet). 
+
+> [!info] Explicación: ¿Qué es NAT y por qué lo usamos?
+> Las direcciones IPv4 públicas se agotaron hace tiempo. Si cada teléfono celular, computadora y televisor inteligente de tu casa necesitara una IP pública única, no habría suficientes en todo el mundo. 
+> **NAT** permite que todos tus dispositivos utilicen direcciones privadas (por ejemplo, 192.168.1.x) a nivel interno. Cuando estos dispositivos necesitan acceder a Internet, el router oculta sus IPs privadas y "traduce" sus mensajes para que salgan a la red global con una única IP pública. 
+
+El propósito principal de implementar NAT es **conservar el espacio de direcciones IPv4 públicas**. Esto se logra permitiendo que las organizaciones utilicen redes privadas de forma interna, traduciendo el tráfico a direcciones públicas únicamente cuando los paquetes necesitan cruzar hacia Internet.
 ![[Pasted image 20230816085427.png]]
->*Local=privado*, *Global=publico*
-1) Ip publica especifica
-2) Ip(pool dir)
-### Comando
-1) 
-```cisco
-int (interfaz con dir privado)
-ip nat inside 
+> *Términos clave: Local = Red privada interna, Global = Red pública (Internet)*
+
+```mermaid
+sequenceDiagram
+    participant PC as PC Privada (192.168.1.10)
+    participant Router as Router Borde (NAT)
+    participant Web as Servidor en Internet
+    
+    PC->>Router: Petición HTTP (Origen: 192.168.1.10, Dest: Servidor)
+    Note over Router: NAT: Traduce la IP de origen privada <br/>a su IP Pública (ej. 200.1.1.5)
+    Router->>Web: Petición HTTP (Origen: 200.1.1.5, Dest: Servidor)
+    Web->>Router: Respuesta HTTP (Origen: Servidor, Dest: 200.1.1.5)
+    Note over Router: NAT: Traduce la IP destino pública <br/>a la IP Privada original
+    Router->>PC: Respuesta HTTP (Origen: Servidor, Dest: 192.168.1.10)
 ```
-en el ambiente outside inside  Local es la misma afuera de la red 
-la parte inside outside Global se va a llenar cuando hagamos peticiones 
-Para conectar dos routers de borde su usa el protocolo de BGP(Border Gateway Protocol)
-El proceso de nat generalmente siempre inicia desde la red interna pero no siempre
+
+### Configuración básica
+Para que el protocolo NAT funcione correctamente, el administrador debe definir qué interfaces físicas del router pertenecen a la red interna y cuáles a la red externa:
+```cisco
+interface GigabitEthernet0/0  // (Interfaz conectada a la red LAN local)
+ip nat inside 
+
+interface GigabitEthernet0/1  // (Interfaz conectada hacia el ISP)
+ip nat outside
+```
+La tabla de estado de NAT del router se llenará dinámicamente cuando los equipos de la red "inside" realicen peticiones hacia la red "outside". El proceso de NAT casi siempre es iniciado desde la red interna hacia la externa, aunque existen excepciones para exponer servicios internos de forma intencional.
 
 ```cisco
 show ip nat translations
 ```
-muestra las truducciones de la tabla nat
+Este comando permite visualizar las traducciones activas almacenadas actualmente en la tabla NAT de la memoria del router.
 
+### NAT Estática
+Consiste en asignar una dirección IP pública específica y fija a un dispositivo particular en la red interna. Esta asignación es estrictamente uno a uno y de carácter permanente.
+Se utiliza habitualmente para exponer servidores internos (como servidores web corporativos o cámaras de seguridad) para que puedan ser administrados o accedidos de forma remota y constante desde Internet.
 ```cisco
- ip nat inside source static local-ip  global-ip(ip_dada_del_isp)
+ip nat inside source static [IP_Local_Privada] [IP_Global_Pública_del_ISP]
 ```
-Se establece la traducción estática entre una dirección local interna y la dirrecion publica dada por el isp
-### NAT Estatica
-se agina una dirección IP pública específica a un dispositivo en una red interna
-la signacion es uno a uno
-se usa para administrar dispositivos de manera remota o algun servicio 
-### NAT Dinamica
-Se van asginando a medida de las peticiones que se hagan 
-Se usa un pool de direcciones
-se deben tener las suficientes direcciones publicas para las diferentes peticiones que realicen los dispositivos porque si no hay los suficientes no pueden realizarse la traduduccion nat al dipositivos que lo requiere
+
+### NAT Dinámica
+Consiste en asignar temporalmente direcciones IP públicas provenientes de un grupo (pool) reservado a medida que los dispositivos internos realizan peticiones hacia Internet.
+Para que funcione bien, se requiere que el pool configurado tenga suficientes direcciones públicas para manejar todas las peticiones simultáneas; si el pool se agota por completo, los nuevos dispositivos internos no podrán acceder a Internet hasta que otra conexión finalice y libere su IP pública.
 ![[Pasted image 20230821233813.png]]
 
-0. Definir interfaces
-1. POOL-> direcciones publicas (net mask)
-2. Crear las listas de control de acceso (ACLs)-> Identificador usando wildcard
-3. Enlazar las ACLs con las pool publicas
-no se prensentan en primer momento el ip local y la ip global
-
-### Configuracion
+**Pasos de configuración:**
+0. Definir las direcciones de las interfaces (`ip nat inside` / `ip nat outside`).
+1. Crear el POOL (grupo) de direcciones públicas disponibles brindadas por el ISP.
+2. Crear Listas de Control de Acceso (ACL) utilizando *wildcards* para identificar qué rangos de IPs privadas tienen el permiso de ser traducidas.
+3. Enlazar lógicamente la regla ACL con el pool público creado.
 
 ```cisco
-ip nat pool (nombre)(ip inicio)(ip final) netmask (mascara)
-```
-#### Sumarisar  redes
-Sumamos las redes que tengan coincidencia si no hay concidencia se coloca 0 ejemplo:
-192.168.10.0
-192.168.11.0
-__________
-192.168.0.0
+// Paso 1
+ip nat pool [nombre_del_pool] [ip_inicio] [ip_final] netmask [máscara_de_red]
 
-```cisco
-access-list (numero) permit/deny (ip permitida) (wildcard)
-ip nat inside source list (numero) pool (nombre)
+// Paso 2
+access-list [número_acl] permit [ip_red_permitida] [wildcard]
+
+// Paso 3
+ip nat inside source list [número_acl] pool [nombre_del_pool]
 ```
+
+#### Sumarización de redes
+Para optimizar las tablas de ruteo y las ACLs, se pueden sumarizar redes (combinarlas en una sola regla matemática) siempre que sean contiguas y coincidan en sus bits más significativos.
+Ejemplo práctico:
+Las redes `192.168.10.0` y `192.168.11.0` se pueden agrupar bajo una regla más amplia como `192.168.10.0/23` (con la wildcard correspondiente `0.0.1.255`).
+
 #### **Lista de acceso extendida** 
 ```cisco
-ip access-list extended (nombre)
-permit ip (dir red)(wildcard) any
+ip access-list extended [nombre_acl]
+permit ip [dirección_de_red] [wildcard] any
 ```
 
-## Wildcard
-tienen la misma estrutura que la mascara de red  pero tienen diferente proposito
-en la wilcard (0->coincidencia y 1-> no coincidencia)
-indica qué partes de una dirección de IP son relevantes para la ejecución de una determinada acción. Se utilizan para especificar un rango de direcciones de red. Se suelen utilizar con protocolos de enrutamiento (como OSPF) y listas de control de acceso. Al igual que una máscara de subred, una máscara wildcard tiene 32 bits)
- 
-255.255.255.0 (mascara )
-0.     0.    0. 255 (wildcard)
-## PAT
-PAT es una extensión de NAT que permite traducir no solo las direcciones IP, sino también los números de puerto. En un escenario de PAT, múltiples dispositivos internos en una red comparten la misma dirección IP pública, pero se diferencian por los números de puerto. Esto permite que varios dispositivos internos se comuniquen con recursos externos utilizando diferentes puertos, manteniendo así la distinción de las conexiones.
-Es un nat con sobrecarga ademas de traducir las dir ips se traducen los puertos varias direcciones probadas se pueden traducir por una o pocas direcciones publicas para que no exista confucion en la entrega de paquetes se usa el puerto 
-es aleatorio la asignacion del puerto en el lado inside en el lado outside se tienen puertos especificos
+## Wildcard (Máscara comodín)
+La máscara *wildcard* posee la misma estructura binaria de 32 bits que una máscara de subred convencional, pero con un propósito lógico inverso.
+En la lógica de una máscara wildcard:
+- El bit **0** significa "Debe haber una coincidencia exacta" en ese bit específico.
+- El bit **1** significa "No importa la coincidencia" (actúa simplemente como comodín).
 
-grupo de puertos 0-511,512-1023 o  1024-65535 de acuerdo a los grupos se va asignando de acuerdo a la disponibilidad 
+Sirve para indicar al router qué partes de una dirección IP son verdaderamente relevantes al aplicar una regla, permitiendo definir rangos numéricos muy específicos y flexibles. Se utilizan extensamente en las Listas de Control de Acceso (ACL) y en protocolos de enrutamiento dinámico como OSPF.
+Ejemplo:
+- Máscara de red tradicional: `255.255.255.0`
+- Wildcard equivalente: `0.0.0.255`
 
+## PAT (Port Address Translation / NAT con Sobrecarga)
+PAT es una extensión y mejora técnica de NAT que permite traducir no solo las direcciones IP (Capa 3), sino también los números de puerto de origen (Capa 4). 
+
+> [!info] Explicación: ¿Qué es PAT?
+> A PAT también se le conoce frecuentemente en Cisco como "NAT Overload" (NAT con sobrecarga). 
+> Imagina que tienes 100 computadoras en una oficina pero **solo cuentas con 1 IP pública**. La única forma en que todas las computadoras puedan navegar por Internet de forma concurrente es asignándole un número de "puerto de origen" diferente a cada conexión. El router anota en su tabla: "La computadora con IP privada 192.168.1.5 utilizó el puerto temporal 2000" y gracias a esto logra devolver correctamente la respuesta proveniente de Internet a la computadora adecuada sin que los datos se mezclen.
+
+En un escenario de PAT, múltiples dispositivos internos comparten la **misma** dirección IP pública de forma totalmente simultánea, pero sus flujos de tráfico individuales se diferencian y ordenan mediante números de puerto (TCP o UDP) únicos asignados dinámicamente por el router. 
+La asignación de puertos suele seguir ciertos grupos lógicos estándar (como 0-511, 512-1023 o 1024-65535) dependiendo del espacio de memoria y disponibilidad del dispositivo de red.
+
+```mermaid
+flowchart TD
+    A["PC1 (192.168.1.10)"] -->|Solicita Web, Pto 1500| R["Router con PAT"]
+    B["PC2 (192.168.1.20)"] -->|Solicita Web, Pto 1501| R
+    
+    R -->|Sale: IP Pública 200.1.1.5, Pto 2000| I["Internet"]
+    R -->|Sale: IP Pública 200.1.1.5, Pto 2001| I
+```
+
+**Configuración de PAT (Sobrecarga):**
 ```cisco
-ip nat inside source list (lista) interface (interface) overload
-debug ip nat  # todas las traducciones se muestren en tiempo real en el modo global
+ip nat inside source list [número_acl] interface [interfaz_de_salida] overload
+```
+Para supervisar y ver las traducciones en tiempo real (Nota: solo debe utilizarse en entornos de laboratorio, ya que puede sobrecargar la CPU del router):
+```cisco
+debug ip nat 
 ```
 
 ## Notas relacionadas

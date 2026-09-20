@@ -1604,3 +1604,12 @@ Se llama como el ciclo de vida clasico sugiere un enfoque sistematico y secuenci
 }
 ```
 %%
+
+## Diagrama de Referencia
+
+```mermaid
+graph TD
+    A[Seguridad de la Información] --> B(Confidencialidad)
+    A --> C(Integridad)
+    A --> D(Disponibilidad)
+```

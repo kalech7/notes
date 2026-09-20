@@ -1,134 +1,121 @@
-Inter-VLA routing es el proceso de reenviar el tráfico de red de una VLAN a otra VLAN.
-Hay tres opciones inter-VLAN routing:
-- **Inter-VLAN Routing heredado** - Esta es una solución antigua. No escala bien
-- **Router-on-a-stick** - Esta es una solución aceptable para una red pequeña y mediana.
-- **Switch de capa 3 con interfaces virtuales (SVIs)** : esta es la solución más escalable para organizaciones medianas y grandes.
+El Inter-VLAN routing (enrutamiento entre VLANs) es el proceso crítico de reenviar tráfico de red desde una VLAN hacia otra VLAN distinta.
 
+> [!info] Explicación: Inter-VLAN Routing
+> **Concepto:** Por defecto, los dispositivos ubicados en diferentes VLANs no pueden comunicarse entre sí bajo ninguna circunstancia, incluso si están conectados exactamente al mismo switch físico. Esto ocurre porque pertenecen a dominios de difusión (subredes) totalmente separados. El **Inter-VLAN Routing** es la solución tecnológica que permite cruzar de una VLAN a otra. 
+> **¿Por qué es importante?** Permite que los distintos departamentos de una empresa mantengan el aislamiento y seguridad en la Capa 2 (Switching), mientras que un dispositivo de Capa 3 (Router o Switch Multicapa) inspecciona, enruta y permite la comunicación necesaria entre ellos a nivel de direcciones IP.
+
+A lo largo de la historia de las redes, se han desarrollado tres opciones para el Inter-VLAN routing:
+- **Inter-VLAN Routing heredado:** Una solución antigua y poco escalable (un cable físico por cada VLAN).
+- **Router-on-a-stick:** Una solución aceptable, económica y muy común para redes pequeñas y medianas.
+- **Switch de capa 3 con interfaces virtuales (SVIs):** La solución moderna, rápida y altamente escalable, estándar en organizaciones medianas y grandes.
+
+```mermaid
+flowchart TD
+    A[Inter-VLAN Routing] --> B(Router-on-a-Stick)
+    A --> C(Switch Multicapa L3)
+    
+    B --> B1[Usa Router Externo]
+    B --> B2[1 Enlace Troncal Físico]
+    B --> B3[Subinterfaces lógicas ej. G0/0.10]
+    
+    C --> C1[Todo en un solo equipo]
+    C --> C2[Enrutamiento por Hardware]
+    C --> C3[Interfaces Virtuales SVI ej. int vlan 10]
+```
 
 ## Inter-VLAN Routing heredado
+Este método primitivo se basaba en el uso de un router tradicional con múltiples interfaces físicas de red. Cada interfaz del router se conectaba con un cable individual a un puerto de acceso del switch, asignado a una VLAN diferente.
+Aunque funciona perfectamente, tiene limitaciones de escalabilidad insalvables: los routers tienen una cantidad muy limitada de interfaces físicas, y requerir un puerto físico dedicado para cada nueva VLAN que se crea agota rápidamente los puertos y aumenta los costos operativos.
 
-Se basó en el uso de un router con múltiples interfaces Ethernet. Cada interfaz del router estaba conectada a un puerto del switch en diferentes VLAN.
-![[Pasted image 20230704212348.png]]
-Inter-VLAN routing heredado, usa las interfaces fisicas funciona, pero tiene limitaciones significantes. No es razonablemente escalable porque los routers tienen un número limitado de interfaces físicas. Requerir una interfaz física del router por VLAN agota rápidamente la capacidad de la interfaz física del router
 ## Router-on-a-Stick Inter-VLAN Routing
- Solo requiere una interfaz Ethernet física para enrutar el tráfico entre varias VLAN de una red.
- Las subinterfaces configuradas son interfaces virtuales basadas en software. Cada uno está asociado a una única interfaz Ethernet física. Estas subinterfaces se configuran en el software del router. Cada una se configura de forma independiente con sus propias direcciones IP y una asignación de VLAN.
- ![[Pasted image 20230704213844.png]]
-## Inter-VLAN Routing en un switch de capa 3
+Esta solución supera los problemas del diseño heredado al requerir **una única interfaz Ethernet física** en el router para enrutar el tráfico entre múltiples VLAN.
 
-es utilizar switches de capa 3 e interfaces virtuales del switch (SVI). Una SVI es una interfaz virtual configurada en un switch multicapa, como se muestra en la figura.
-![[Pasted image 20230704214121.png]]
-Los SVIs entre VLAN se crean de la misma manera que se configura la interfaz de VLAN de administración. El SVI se crea para una VLAN que existe en el switch. Aunque es virtual, el SVI realiza las mismas funciones para la VLAN que lo haría una interfaz de router.
-- Es mucho más veloz que router-on-a-stick, porque todo el switching y el routing se realizan por hardware.
-- El routing no requiere enlaces externos del switch al router. No se* limitan a un enlace porque los EtherChannels de Capa 2 se pueden utilizar como enlaces troncal entre los switches para aumentar el ancho de banda.
-- La latencia es mucho más baja, dado que los datos no necesitan salir del switch para ser enrutados a una red diferente. Se* implementan con mayor frecuencia en una LAN de campus que en routers.
+Para lograr esto, la única interfaz física del router se divide en múltiples **subinterfaces** lógicas basadas en software. Cada subinterfaz se asocia a una VLAN específica mediante el etiquetado 802.1Q y se configura con su propia dirección IP (actuando como el Default Gateway de esa VLAN). En el lado del switch, el puerto conectado al router debe configurarse estrictamente como un enlace **Troncal (Trunk)**.
 
-La única desventaja es que los switches de capa 3 son más caros.
+> [!info] Explicación: Router-on-a-Stick
+> **¿Cómo funciona?** En lugar de tender 5 cables físicos distintos para 5 VLANs hacia el router, se utiliza un único cable de alta capacidad configurado como "Troncal". En el router, esta única interfaz física (ej. `GigabitEthernet0/0`) se divide lógicamente en varios "carriles virtuales" o subinterfaces (ej. `GigabitEthernet0/0.10` para VLAN 10, `0/0.20` para VLAN 20). 
+> **Ejemplo:** Es como tener una autopista principal indivisa, donde mediante software se pintan carriles virtuales exclusivos para que cada departamento pueda transitar sin mezclarse, hasta llegar al "peaje" (router) donde se enrutan a su destino final.
 
-## Escenario Router-on-a-Stick
-### S1 VLAN and configuraciones de enlaces troncales
+## Inter-VLAN Routing en un Switch de Capa 3
+Las redes empresariales modernas a gran escala utilizan switches multicapa (Capa 3) y sus Interfaces Virtuales de Switch (SVI).
+Una SVI es una interfaz virtual configurada internamente en el software del switch multicapa. Se crea una SVI (con su respectiva dirección IP) por cada VLAN existente, y esta actúa directamente como la puerta de enlace predeterminada para los equipos en esa VLAN.
 
-**Paso 1**. Crear y nombrar las VLANs.
+**Ventajas masivas del Switch Capa 3:**
+- Es **extremadamente veloz** en comparación con router-on-a-stick, porque el switching de Capa 2 y el routing de Capa 3 se realizan directamente en los chips de hardware especializados (ASICs) del switch.
+- El tráfico no necesita salir del switch a través de un cuello de botella de un solo cable hacia un router externo, eliminando latencias.
+- Permite mayor ancho de banda utilizando EtherChannels de Capa 2 o Capa 3 entre los propios switches.
 
-**Paso 2**. Crear la interfaz de administración
+La única desventaja práctica de esta solución es que los switches de Capa 3 son significativamente más costosos que los switches de Capa 2 tradicionales.
 
-**Paso 3**. Configurar puertos de acceso.
+> [!info] Explicación: Switch de Capa 3 y SVI
+> **Switch Multicapa (L3):** Es un equipo avanzado que además de conmutar tramas MAC como un switch normal (Capa 2), tiene un motor de enrutamiento capaz de procesar paquetes IP (Capa 3). Básicamente es un router y un switch fusionados en la misma caja metálica.
+> **SVI (Switch Virtual Interface):** Cuando creas la `interface vlan 10` y le pones una IP, acabas de crear una SVI. Al ocurrir todo dentro de la misma placa de hardware, cuando un paquete necesita ir de la VLAN 10 a la 20, el switch lo enruta instantáneamente a velocidad de cable.
 
-**Paso 4**. Configurar puertos de enlace troncal.![[Pasted image 20230704222147.png]]
-### Configuración de subinterfaces de R1
-cada subinterfaz se configura con los dos comandos siguientes:
-- **encapsulation dot1q** _vlan_id_  - This command configures the subinterface to respond to 802.1Q encapsulated traffic from the specified _vlan-id_. The **native** keyword sólo se agrega para establecer la VLAN nativa en algo distinto de VLAN 1.
-- **ip address** _ip-address subnet-mask_ - Este comando configura la dirección IPv4 de la subinterfaz. Esta dirección normalmente sirve como default gateway para la VLAN identificada.
-Repita el proceso para cada VLAN que se vaya a enrutar. Es necesario asignar una dirección IP a cada subinterfaz del router en una subred única para que se produzca el routing.
-Cuando se hayan creado todas las subinterfaces, habilite la interfaz física mediante el comando de configuración de **no shutdown** interfaz. Si la interfaz física está deshabilitada, todas las subinterfaces están deshabilitadas.
+## Configuración: Escenario Router-on-a-Stick
 
+### En el Switch (S1)
+**Paso 1**. Crear las VLANs.
+**Paso 2**. Asignar los puertos de los usuarios en modo de **acceso** a sus respectivas VLANs.
+**Paso 3**. Configurar el puerto que conecta al router en modo **troncal** (`switchport mode trunk`).
 
-## Inter-VLAN Routing en Switch de capa 3
-Las redes empresariales modernas rara vez usan router-on-a-stick porque no se escalan fácilmente para cumplir los requisitos. En estas redes muy grandes, los administradores de red utilizan switches de capa 3 para configurar el inter-VLAN routing.
+### En el Router (R1)
+Para crear subinterfaces, se ingresa a la interfaz lógica (agregando un punto y el número deseado, generalmente el mismo ID de la VLAN para mantener un orden lógico) y se configuran dos comandos obligatorios:
+1. `encapsulation dot1Q [vlan_id]` - Le indica al router a qué etiqueta de VLAN debe responder esta subinterfaz.
+2. `ip address [ip] [máscara]` - Asigna la dirección IP que será el Default Gateway de esa subred.
 
-El inter-VLAN routing. mediante el método router-on-a-stick es fácil de implementar para una organización pequeña y mediana. Sin embargo, una gran empresa requiere un método más rápido y mucho más escalable para proporcionar inter-VLAN routing.
-Las capacidades de un switch de capa 3 incluyen la capacidad de hacer lo siguiente:
+```cisco
+// Ejemplo de configuración de Subinterfaz
+R1(config)# interface GigabitEthernet0/0.10
+R1(config-subif)# encapsulation dot1Q 10
+R1(config-subif)# ip address 192.168.10.1 255.255.255.0
+R1(config-subif)# exit
+```
+Finalmente, es crítico ingresar a la interfaz física principal (`interface g0/0`) y encenderla con `no shutdown`. Al encender la física, todas sus subinterfaces lógicas se encenderán simultáneamente.
 
-- Ruta de una VLAN a otra mediante múltiples interfaces virtuales de switch (SVIs).
-- Convierta un puerto de switch de capa 2 en una interfaz de capa 3 (es decir, un puerto enrutado). Un puerto enrutado es similar a una interfaz física en un router Cisco IOS.
-
-Para proporcionar enrutamiento entre VLAN, los switches de capa 3 utilizan SVIs. Los SVIs se configuran utilizando el mismo comando **interface vlan** _vlan-id_ utilizado para crear el SVI de administración en un switch de capa 2. Se debe crear un SVI de Capa 3 para cada una de las VLAN enrutables.
-
-## Configuracion de switch de capa 3
+## Configuración: Switch de Capa 3
+Para proporcionar enrutamiento a velocidad de hardware, el switch de capa 3 debe tener habilitada la función de ruteo global y poseer una SVI por cada VLAN.
 
 **Paso 1**. Crear las VLAN.
-
 ```cisco
 D1(config)# vlan 10
 D1(config-vlan)# name LAN10
 D1(config-vlan)# vlan 20
 D1(config-vlan)# name LAN20
-D1(config-vlan)# exit
-D1(config)#
 ```
 
-**Paso 2**. Crear las interfaces VLAN SVI.
-Configurar el SVI para VLANs 10 y 20 Las direcciones IP configuradas servirán como default gateways para los hosts de las VLAN respectivas
+**Paso 2**. Crear las interfaces virtuales (SVIs) correspondientes.
 ```cisco
 D1(config)# interface vlan 10 
-D1(config-if)# **description Default Gateway SVI for 192.168.10.0/24
-D1(config-if)# **ip add 192.168.10.1** **255.255.255.0
-D1(config-if)# **no shut
-D1(config-if)# **exit
-D1(config)# 
-D1(config)# **int vlan 20
-D1(config-if)# **description Default Gateway SVI for 192.168.20.0/24 
-D1(config-if)# **ip add 192.168.20.1 255.255.255.0
-D1(config-if)# **no shut
-D1(config-if)# **exit
-D1(config)#
+D1(config-if)# ip address 192.168.10.1 255.255.255.0
+D1(config-if)# no shut
+
+D1(config)# interface vlan 20
+D1(config-if)# ip address 192.168.20.1 255.255.255.0
+D1(config-if)# no shut
 ```
 
-**Paso 3**. Configurar puertos de acceso.
-
+**Paso 3**. Asignar puertos de acceso a los equipos finales.
 ```cisco
 D1(config)# interface GigabitEthernet1/0/6 
-D1(config-if)# description Access port to PC1 
 D1(config-if)# switchport mode access
 D1(config-if)# switchport access vlan 10 
-D1(config-if)# exit
-D1(config)# 
-D1(config)# interface GigabitEthernet1/0/18
-D1(config-if)#description Access port to PC2
-D1(config-if)# switchport mode access 
-1(config-if)# switchport access vlan 20 
-D1(config-if)# exit
 ```
 
-**Paso 4**. Habilitar IP routing.
-Por último, habilite el enrutamiento IPv4 con el comando de configuración **ip routing** global para permitir el intercambio de tráfico entre las VLAN 10 y 20. Este comando debe configurarse para habilitar el inter-VAN routing en un switch de capa 3 para IPv4.
-
+**Paso 4**. **CRÍTICO:** Habilitar el enrutamiento IP.
+Por defecto, los switches de capa 3 operan únicamente como capa 2. Es obligatorio ejecutar el comando global `ip routing` para activar el motor de enrutamiento y permitir el tráfico inter-VLAN.
 ```cisco
 D1(config)# ip routing 
-D1(config)#
 ```
 
 ## Problemas comunes de Inter-VLAN routing
 
-En primer lugar, compruebe la capa física para resolver cualquier problema en el que un cable pueda estar conectado al puerto incorrecto. Si las conexiones son correctas, utilice la lista de la tabla para otras razones comunes por las que puede fallar la conectividad entre VLAN.
-![[Pasted image 20230704224851.png]]
+Al solucionar problemas de conectividad inter-VLAN, el orden metódico es clave:
+1. **Capa Física:** Comprobar si el cable está conectado al puerto correcto y hay luz en el enlace.
+2. **VLAN faltantes:** Verificar que la VLAN haya sido efectivamente creada en la base de datos del switch (`show vlan brief`). Si se asigna un puerto a una VLAN inexistente, el tráfico no fluirá.
+3. **Enlaces Troncales mal configurados:** Validar que el puerto entre el switch y el router esté operando como Trunk y que esté permitiendo el paso de las VLANs correspondientes (`show interfaces trunk`).
+4. **Puertos de acceso erróneos:** Confirmar que la PC del usuario esté conectada a un puerto asignado a la VLAN correcta.
+5. **Configuración del Router/Subinterfaces:** En diseños Router-on-a-Stick, los errores más comunes incluyen haber colocado el comando `encapsulation dot1Q` con un número de VLAN equivocado, o que las PCs tengan configurado un Default Gateway incorrecto. El comando `show ip interface brief` es ideal para validar las subinterfaces.
 
-### VLAN faltantes
-
-Un problema de conectividad entre VLAN podría deberse a la falta de una VLAN. La VLAN podría faltar si no se creó, se eliminó accidentalmente o no se permite en el enlace troncal.
-
-Utilice el **show interface** comando **switchport** _interface-id_ para verificar la pertenencia a VLAN.
-
-### Problemas con el puerto troncal del switch
-el enrutamiento entre VLAN incluye puertos de switch mal configurados. En una solución interVLAN heredada, esto podría deberse a que el puerto del router de conexión no está asignado a la VLAN correcta.
-Sin embargo, con una solución router-on-a-stick, la causa más común es un puerto troncal mal configurado
-### Problemas en los puertos de acceso de switch
-utilice los distintos comandos de verificación para examinar la configuración e identificar el problema.
-
-## Temas de configuración del router
-Los problemas de configuración del router-on-a-stick suelen estar relacionados con configuraciones incorrectas de la subinterfaz.
-Verificó el enlace troncal del switch y todo parece estar en orden. Verificar el estatus de las interfaces usando el **show ip interface brief**
-
-Compruebe en qué VLAN se encuentra cada una de las subinterfaces. Para ello, el **show interfaces** comando es útil, pero genera una gran cantidad de resultados adicionales no requeridos. El resultado del comando se puede reducir utilizando filtros
-Compruebe en qué VLAN se encuentra cada una de las subinterfaces. Para ello, el **show interfaces** comando es útil, pero genera una gran cantidad de resultados adicionales no requeridos. El resultado del comando se puede reducir utilizando filtros
-*Relacionado con:*  [[Enrutamiento]]
+*Relacionado con:*  
+- [[Enrutamiento]]
+- [[VLAN]]
