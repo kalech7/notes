@@ -17,7 +17,7 @@ Cada punto del siguiente gráfico tiene dos características numéricas. Podría
 
 Queremos un modelo que describa esa distribución y que también pueda crear puntos nuevos parecidos.
 
-![Dos componentes de una mezcla](<Recursos visuales/04-gmm-componentes.png>)
+![Dos componentes de una mezcla](<../Recursos visuales/04-gmm-componentes.png>)
 
 Los puntos grises son datos sintéticos. Las cruces señalan centros de dos distribuciones propuestas por el modelo. Las elipses muestran cómo se extiende cada distribución alrededor de su centro; no son paredes que prohíban pertenecer a otra.
 
@@ -62,7 +62,7 @@ Hay una dificultad: para calcular a qué grupo pertenece un punto necesitamos co
 
 El algoritmo **EM, esperanza–maximización**, comienza con una propuesta y la mejora alternando dos operaciones.
 
-![Ciclo de EM](<Recursos visuales/05-em-ciclo.png>)
+![Ciclo de EM](<../Recursos visuales/05-em-ciclo.png>)
 
 **Paso E:** con los centros, covarianzas y pesos actuales, calcula las responsabilidades de cada punto. Por ahora no cambia esos parámetros.
 

@@ -50,7 +50,7 @@ La **máscara causal** impide que una posición lea posiciones posteriores. Así
 
 Durante generación el futuro todavía no existe. El modelo elige un token, lo añade y calcula el siguiente.
 
-![Ciclo de generación de un modelo de lenguaje](<Recursos visuales/08-llm-ciclo.png>)
+![Ciclo de generación de un modelo de lenguaje](<../Recursos visuales/08-llm-ciclo.png>)
 
 Lee la flecha de retorno como «añadir un token al contexto». No es una actualización de pesos. Tampoco la palabra causal significa aquí que el modelo haya descubierto causas del mundo: se refiere a la restricción de lectura del texto.
 
@@ -97,6 +97,8 @@ El preentrenamiento enseña patrones de continuación de texto. Un modelo base p
 El ajuste para instrucciones utiliza ejemplos del comportamiento deseado y modifica parámetros. Dar ejemplos dentro de un prompt, en cambio, aporta contexto para responder sin actualizar normalmente los pesos.
 
 La idea que debes poder explicar es esta: **el texto proporciona objetivos; el modelo calcula probabilidades; la pérdida orienta el ajuste de pesos**. Generar después consiste en utilizar lo aprendido para elegir tokens sucesivos.
+
+Continúa con [[21 S03 - Preentrenamiento autosupervisado y MLE]] para conectar este ejemplo con el ciclo completo de entrenamiento, y con [[22 S03 - SFT RLHF DPO y Constitutional AI]] para entender por qué predecir texto no basta para seguir instrucciones.
 
 ## Fuentes de esta explicación
 

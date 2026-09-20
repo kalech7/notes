@@ -29,7 +29,7 @@ Antes de mirar palabras, 200 de cada 1 000 correos son spam: 20 %. Cuando sabemo
 
 Por tanto, la respuesta es $120/200=0.6$: **60 %**. La pista hizo subir la probabilidad del 20 % al 60 %, pero no al 100 %.
 
-![Bayes explicado mediante conteos](<Recursos visuales/03-bayes-conteos.png>)
+![Bayes explicado mediante conteos](<../Recursos visuales/03-bayes-conteos.png>)
 
 Sigue las flechas y observa cómo cambia el grupo que contamos. La respuesta final usa únicamente los correos con «oferta».
 

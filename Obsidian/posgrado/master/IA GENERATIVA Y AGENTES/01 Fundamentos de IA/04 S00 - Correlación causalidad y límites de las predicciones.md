@@ -19,7 +19,7 @@ Cuando dos variables aportan información una sobre otra hablamos de asociación
 
 ## 2. Lee el diagrama como una hipótesis sobre el mundo
 
-![Observar e intervenir](<Recursos visuales/10-causalidad.png>)
+![Observar e intervenir](<../Recursos visuales/10-causalidad.png>)
 
 A la izquierda, el calor tiene una flecha hacia las ventas y otra hacia la natación. El diagrama dice que el calor influye en ambas. No tiene una flecha de ventas a natación.
 

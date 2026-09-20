@@ -21,7 +21,7 @@ El **codificador** recibe una imagen y propone una distribución de códigos z q
 
 El **decodificador** recibe un código z y produce una distribución sobre imágenes. Durante entrenamiento intentamos que pueda explicar bien las imágenes originales.
 
-![Los dos recorridos del VAE](<Recursos visuales/07-vae.png>)
+![Los dos recorridos del VAE](<../Recursos visuales/07-vae.png>)
 
 En la ruta superior partes de una imagen conocida. En la inferior partes de un código sorteado. Ambas rutas utilizan el mismo decodificador.
 

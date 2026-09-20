@@ -15,7 +15,7 @@ Un perceptrón recibe números, los combina y devuelve una decisión. Vamos a us
 
 No imagines todavía una red enorme. Solo necesitamos dos entradas, una suma y un umbral.
 
-![Cómo calcula un perceptrón](<Recursos visuales/01-perceptron.png>)
+![Cómo calcula un perceptrón](<../Recursos visuales/01-perceptron.png>)
 
 Lee de izquierda a derecha: las entradas llegan a la suma; el resultado pasa por una condición; la condición produce 0 o 1.
 
@@ -44,7 +44,7 @@ El sesgo hace que una sola entrada activa no alcance el umbral. En este ejemplo 
 
 XOR devuelve 1 cuando las entradas son **diferentes**. Devuelve 0 para (0,0) y (1,1), y 1 para (0,1) y (1,0).
 
-![Comparación de AND y XOR](<Recursos visuales/02-and-xor.png>)
+![Comparación de AND y XOR](<../Recursos visuales/02-and-xor.png>)
 
 En AND, una recta puede separar los puntos de salida 0 de los de salida 1. En XOR, las clases están en diagonales opuestas. Ninguna recta deja los dos ceros de un lado y los dos unos del otro.
 

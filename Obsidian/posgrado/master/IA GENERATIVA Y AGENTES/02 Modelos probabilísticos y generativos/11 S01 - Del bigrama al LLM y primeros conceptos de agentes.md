@@ -19,7 +19,7 @@ LLM significa **modelo grande de lenguaje**. En esta nota hablaremos del tipo ge
 
 ## 2. Mira primero el recorrido completo
 
-![Generación paso a paso en un LLM](<Recursos visuales/08-llm-ciclo.png>)
+![Generación paso a paso en un LLM](<../Recursos visuales/08-llm-ciclo.png>)
 
 El sistema convierte el texto en tokens, los representa con números, procesa el contexto y calcula probabilidades para el siguiente token. Elige uno, lo añade al texto y repite.
 

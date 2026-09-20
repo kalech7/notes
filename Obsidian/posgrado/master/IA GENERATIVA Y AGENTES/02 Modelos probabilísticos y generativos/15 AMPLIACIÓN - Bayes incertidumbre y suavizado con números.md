@@ -69,7 +69,7 @@ Esta es la conexión con el suavizado de [[07 S01 - Naive Bayes con un ejemplo d
 
 ## 7. Mira cómo cambia la curva con más datos
 
-![Incertidumbre sobre la probabilidad de cara](<Recursos visuales/09-bayes-incertidumbre.png>)
+![Incertidumbre sobre la probabilidad de cara](<../Recursos visuales/09-bayes-incertidumbre.png>)
 
 La línea gris es el prior uniforme. La azul incorpora 7 caras y 3 cruces. La naranja incorpora 70 y 30. La proporción observada es la misma, pero la curva naranja queda más concentrada.
 

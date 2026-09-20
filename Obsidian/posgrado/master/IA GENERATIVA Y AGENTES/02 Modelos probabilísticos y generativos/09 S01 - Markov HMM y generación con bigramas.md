@@ -67,7 +67,7 @@ Ahora imagina una máquina cuyo estado no puedes ver: puede estar «estable» o 
 
 El **modelo oculto de Markov (HMM)** distingue el estado oculto z y el dato observado x. El estado de un momento influye en el siguiente, y cada estado determina una distribución de observaciones posibles.
 
-![Estados y observaciones de un HMM](<Recursos visuales/06-hmm.png>)
+![Estados y observaciones de un HMM](<../Recursos visuales/06-hmm.png>)
 
 Sigue las flechas horizontales para ver cambios de estado. Sigue las verticales para ver cómo un estado se relaciona con una observación. El modelo puede verse como una mezcla cuyo componente cambia siguiendo una cadena.
 

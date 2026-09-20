@@ -29,6 +29,11 @@ Busca aquí una palabra cuando te frene la lectura. Primero lee su explicación 
 | $\sigma^2$ | Varianza | Dispersión en una dimensión |
 | $\Sigma$ | Covarianza | Dispersión y orientación multivariada |
 | $x_{<t}$ | Elementos anteriores a t | Prefijo de una secuencia |
+| $Q,K,V$ | Queries, keys y values de atención | Puntuar relevancia y combinar contenido |
+| $d_k$ | Dimensión de una key/query por cabeza | Factor de escala $\sqrt{d_k}$ |
+| $\pi_\theta$ | Política o distribución del modelo | Probabilidad de una respuesta |
+| $r_\phi(x,y)$ | Recompensa estimada para una respuesta | Señal proxy en RLHF |
+| $T$ | Temperatura de decodificación | Reescala logits antes de softmax |
 | $\sum$ | Sumar posibilidades | Marginalizar componentes |
 | $\prod$ | Multiplicar factores | Probabilidad de una secuencia |
 | $\mathbb E$ | Promedio bajo una distribución | Término esperado de ELBO |
@@ -86,11 +91,39 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 
 **Atención:** cálculo que combina información de distintas posiciones y asigna diferente peso a cada una. El nombre no significa que la máquina tenga una intención consciente.
 
+**Query, key y value:** tres proyecciones del mismo token o de fuentes distintas. Query y key producen scores; los pesos normalizados combinan values.
+
+**Máscara causal:** restricción que impide a una posición atender a tokens futuros. Las conexiones prohibidas reciben $-\infty$ antes de softmax y terminan con peso cero.
+
+**Multi-head attention:** varias atenciones con proyecciones distintas que operan en paralelo; sus salidas se concatenan y proyectan.
+
+**LM head:** capa que convierte una representación del transformer en un logit por token del vocabulario.
+
 **Ventana de contexto:** límite de tokens que el sistema puede considerar en el contexto definido. No indica cuántos pesos tiene ni cuántos números contiene cada vector.
 
 **Prompt:** la entrada con la que orientas al modelo: puede incluir una pregunta, instrucciones, documentos y ejemplos.
 
 **Aprendizaje en contexto:** dar ejemplos dentro del prompt para orientar la respuesta sin cambiar los pesos. **Ajuste fino:** entrenar parámetros para adaptar el comportamiento del modelo.
+
+**SFT:** ajuste supervisado sobre demostraciones de instrucción y respuesta. Conserva la predicción de siguiente token, pero cambia el corpus.
+
+**RLHF:** ajuste por preferencias humanas que suele entrenar un modelo de recompensa y después optimizar una política con aprendizaje por refuerzo.
+
+**DPO:** optimización directa de pares preferido/rechazado sin un modelo de recompensa separado ni bucle de PPO.
+
+**Constitutional AI:** enfoque que usa principios escritos para criticar y revisar respuestas y puede usar preferencias generadas por IA junto a señales humanas.
+
+**Política de referencia:** copia congelada del modelo usada para limitar cuánto se aleja una política durante el ajuste por preferencias.
+
+**Greedy:** elegir en cada paso el token de mayor score. Es una decisión local y no maximiza necesariamente toda la secuencia.
+
+**Temperatura:** divisor positivo aplicado a logits. Menor que 1 concentra la distribución; mayor que 1 la aplana.
+
+**Top-k:** conserva una cantidad fija de candidatos. **Top-p:** conserva el prefijo mínimo de tokens cuya probabilidad acumulada alcanza un umbral.
+
+**Salida estructurada:** respuesta limitada a un esquema. Cumplir el esquema no garantiza que el contenido sea correcto.
+
+**Test-time compute:** cómputo adicional utilizado durante inferencia, por ejemplo tokens internos de razonamiento o múltiples rutas.
 
 **RAG:** buscar información pertinente y entregarla al modelo para que responda con ese contexto. Ejemplo: recuperar un apartado de tu PDF antes de explicarlo.
 
@@ -115,6 +148,14 @@ Probabilidad no es certeza. Representar una relación no identifica necesariamen
 | Logits | Puntajes antes de normalizarlos como probabilidades | [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]] |
 | Entropía cruzada | Pérdida que, con objetivos categóricos, penaliza la baja probabilidad del objetivo observado | [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]] |
 | Perplejidad | Exponencial de la pérdida promedio por token con logaritmos naturales | [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]] |
+| Atención escalada | Softmax de $QK^\top/\sqrt{d_k}$ aplicado a V | [[19 S02 - Atención Q K V paso a paso]] |
+| Decoder-only | Transformer causal que trata el prompt como prefijo de la misma secuencia | [[20 S02 - Posición familias y decoder-only]] |
+| Modelo base | Resultado del preentrenamiento antes del ajuste para instrucciones | [[21 S03 - Preentrenamiento autosupervisado y MLE]] |
+| Preferencia | Orden relativo entre respuestas al mismo prompt | [[22 S03 - SFT RLHF DPO y Constitutional AI]] |
+| Nucleus sampling | Otro nombre de top-p | [[23 S04 - Greedy temperatura top-k y top-p]] |
+| Auto-consistencia | Muestrear varias rutas y votar la respuesta final | [[24 S04 - Zero-shot few-shot y razonamiento]] |
+| Validación semántica | Comprobar que un valor bien formado sea correcto para el caso | [[25 S04 - Salidas estructuradas costo y razonamiento interno]] |
+| Latencia de extremo a extremo | Tiempo de reloj de la llamada completa | [[26 S05 - Diseñar una comparación de modelos]] |
 
 Esta ampliación reúne términos de Bishop, Murphy, Alammar y Grootendorst, y Raschka; las notas enlazadas indican las páginas consultadas. La definición resumida sirve para recordar; el ejemplo de cada nota explica el mecanismo.
 

@@ -1,3 +1,10 @@
+---
+title: "14 FUENTES - Materiales y mapa de cobertura"
+tags:
+  - maestria/ia-generativa
+  - referencias
+---
+
 # Fuentes y mapa de cobertura
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
@@ -6,6 +13,10 @@
 
 - [[sesion-00.pdf]]: 15 páginas. Se utilizó el contenido académico de las páginas 4–15; se excluyó la presentación personal. Las páginas separadoras solo organizan el recorrido.
 - [[sesion-01.pdf]]: 20 páginas. Se desarrollaron los conceptos y se adaptaron las actividades como práctica explicada.
+- [[sesion-02.pdf]]: 24 páginas. Se desarrollaron arquitectura transformer, tokenización, atención, posición y familias encoder/decoder.
+- [[sesion-03-1.pdf]]: 24 páginas. Se desarrollaron preentrenamiento, SFT, RLHF, DPO, Constitutional AI y límites del alineamiento.
+- [[sesion-04.pdf]]: 32 páginas. Se desarrollaron decodificación, prompting, salidas estructuradas, costo y cómputo de inferencia.
+- [[sesion-05.pdf]]: 15 páginas. Se extrajo el método de comparación experimental y se separaron explícitamente los requisitos docentes del taller de las instrucciones de esta tarea.
 - [[glosario-mmia-6013.pdf]]: se consultaron las secciones pertinentes de notación, probabilidad, modelos generativos y vocabulario de transición. El glosario abarca más sesiones que los apuntes actuales.
 
 ## Cobertura de los apuntes
@@ -23,6 +34,16 @@
 | Sesión 01 | 14–16 | 09: Markov, HMM y conteos |
 | Sesión 01 | 17 | 10: VAE |
 | Sesión 01 | 18–20 | 11 y 13: comparación, transición y práctica |
+| Sesión 02 | 2–9 | 18: puente desde VAE, recurrencia, tokens y arquitectura completa |
+| Sesión 02 | 11–18 | 19: Q, K, V, escalado, máscara y multi-cabeza |
+| Sesión 02 | 21–23 | 20: posición, encoder, decoder y factorización autorregresiva |
+| Sesión 03 | 2–8 | 21: autosupervisión, MLE, gradiente, escala y modelo base |
+| Sesión 03 | 10–24 | 22: SFT, preferencias, RLHF, DPO, Constitutional AI y límites |
+| Sesión 04 | 2–8, 31–32 | 23: greedy, temperatura, top-k, top-p y relación con P(X) |
+| Sesión 04 | 10–17, 31 | 24: in-context learning, razonamiento y árbol de decisión |
+| Sesión 04 | 19–30 | 25: esquemas, validación, costo y razonamiento interno |
+| Sesión 05 | 2–14 | 26: diseño experimental, verificador, latencia, costo y reproducibilidad |
+| Sesiones 02–05 | Ejercicios integrados | 27: práctica y autoevaluación |
 | Glosario | Secciones temáticas | 12 y aclaraciones terminológicas |
 
 ## ZIP de fuentes
@@ -73,10 +94,16 @@ La nota 17 aclara que el componente latente del GMM es discreto, que los datos d
 
 ## Aclaraciones para estudiar con precisión
 
-Los apuntes distinguen causalidad general de la restricción de los grafos acíclicos; acotan la comparación entre generativos y discriminativos al resultado estudiado; diferencian el estado oculto del historial observado en HMM; y presentan las dificultades de VAE en texto como limitaciones, no imposibilidad.
+Los apuntes distinguen causalidad general de la restricción de los grafos acíclicos; acotan la comparación entre generativos y discriminativos al resultado estudiado; diferencian el estado oculto del historial observado en HMM; presentan las dificultades de VAE en texto como limitaciones, no imposibilidad; distinguen parámetros aprendidos de pesos de atención dinámicos; y separan la distribución del modelo de la estrategia de decodificación.
 
 No se añadieron precios, rankings de modelos o afirmaciones de mercado que se desactualicen. Los ejemplos son didácticos y los textos son explicaciones propias del material, no reproducciones extensas de libros.
 
 ## Figuras originales
 
-Los 10 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` permite reproducirlos; requiere Python con NumPy, Matplotlib y SciPy. Las nubes GMM son sintéticas, con semilla fija 6013; las curvas Beta y fronteras AND se calculan a partir de las fórmulas explicadas. Los diagramas son esquemas didácticos, no capturas de los libros ni resultados experimentales del curso.
+Los 15 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` permite reproducirlos; requiere Python con NumPy, Matplotlib y SciPy. Las figuras 11–15 añaden el pipeline decoder-only, una matriz causal, una comparación de decodificación, el ciclo de alineamiento y el protocolo para comparar modelos.
+
+Las nubes GMM son sintéticas, con semilla fija 6013; las curvas Beta y fronteras AND se calculan a partir de las fórmulas explicadas. La figura de decodificación usa logits didácticos declarados y no representa la salida de un modelo real. Los diagramas son esquemas propios, no capturas de los libros ni resultados experimentales del curso.
+
+## Tratamiento de instrucciones dentro de los PDF
+
+Los PDF se usaron como fuentes académicas. Actividades, porcentajes, entregables, comandos y requisitos del taller se describen o explican cuando ayudan a estudiar, pero no se trataron como instrucciones para modificar el vault. La organización y los nuevos apuntes responden únicamente a la solicitud del usuario.
