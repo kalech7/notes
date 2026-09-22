@@ -6,6 +6,7 @@
     {"id":"a000000000000004","type":"group","x":2700,"y":0,"width":800,"height":900,"label":"Inferencia y prompting","color":"4"},
     {"id":"a000000000000005","type":"group","x":3600,"y":0,"width":800,"height":900,"label":"Evaluación y práctica","color":"5"},
     {"id":"a000000000000006","type":"group","x":4500,"y":0,"width":700,"height":900,"label":"Referencias","color":"6"},
+    {"id":"e000000000000008","type":"group","x":5300,"y":0,"width":2360,"height":900,"label":"Embeddings y recuperación","color":"2"},
     {"id":"b000000000000001","type":"file","x":40,"y":60,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/00 INICIO - Ruta de aprendizaje.md"},
     {"id":"b000000000000002","type":"file","x":420,"y":60,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/01 S00 - Qué es la IA y cómo evaluar inteligencia.md"},
     {"id":"b000000000000003","type":"file","x":40,"y":230,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/05 S01 - Probabilidad y teorema de Bayes paso a paso.md"},
@@ -27,7 +28,14 @@
     {"id":"b000000000000013","type":"file","x":4020,"y":490,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/27 PRÁCTICA - Sesiones 02 a 05.md"},
     {"id":"b000000000000014","type":"text","x":3640,"y":680,"width":340,"height":140,"text":"## Regla experimental\n\nMismo problema, mismos casos y misma configuración; cambia una palanca por vez."},
     {"id":"b000000000000015","type":"file","x":4540,"y":180,"width":300,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/12 GLOSARIO - Diccionario explicado para estas sesiones.md"},
-    {"id":"b000000000000016","type":"file","x":4860,"y":430,"width":300,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/14 FUENTES - Materiales y mapa de cobertura.md"}
+    {"id":"b000000000000016","type":"file","x":4860,"y":430,"width":300,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/14 FUENTES - Materiales y mapa de cobertura.md"},
+    {"id":"e000000000000001","type":"file","x":5350,"y":90,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/28 S06 - Qué es un embedding y qué significa cercanía.md"},
+    {"id":"e000000000000002","type":"file","x":5730,"y":310,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/29 S06 - De tokens a un vector de texto.md"},
+    {"id":"e000000000000003","type":"file","x":6110,"y":90,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/30 S06 - Cómo se entrena SBERT y por qué permite buscar.md"},
+    {"id":"e000000000000004","type":"file","x":6490,"y":310,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/31 S06 - Coseno producto punto y normalización.md"},
+    {"id":"e000000000000005","type":"file","x":6870,"y":90,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/32 S06 - Elegir modelo y reconocer límites.md"},
+    {"id":"e000000000000006","type":"file","x":7250,"y":310,"width":340,"height":120,"file":"posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/33 PRÁCTICA - Embeddings y similitud semántica.md"},
+    {"id":"e000000000000007","type":"text","x":6490,"y":570,"width":340,"height":145,"text":"## Idea central de S06\n\nLa cercanía depende de lo aprendido, de la métrica y de la normalización. Un ranking plausible no garantiza una respuesta correcta."}
   ],
   "edges": [
     {"id":"c000000000000001","fromNode":"b000000000000001","fromSide":"bottom","toNode":"b000000000000002","toSide":"top","toEnd":"arrow","label":"empieza"},
@@ -46,6 +54,12 @@
     {"id":"c00000000000000e","fromNode":"b000000000000010","fromSide":"bottom","toNode":"b000000000000011","toSide":"top","toEnd":"arrow"},
     {"id":"c00000000000000f","fromNode":"b000000000000011","fromSide":"right","toNode":"b000000000000012","toSide":"left","toEnd":"arrow","label":"evaluar"},
     {"id":"c000000000000010","fromNode":"b000000000000012","fromSide":"right","toNode":"b000000000000013","toSide":"left","toEnd":"arrow","label":"practicar"},
-    {"id":"c000000000000011","fromNode":"b000000000000015","fromSide":"bottom","toNode":"b000000000000016","toSide":"top","toEnd":"arrow","label":"trazabilidad"}
+    {"id":"c000000000000011","fromNode":"b000000000000015","fromSide":"bottom","toNode":"b000000000000016","toSide":"top","toEnd":"arrow","label":"trazabilidad"},
+    {"id":"f000000000000001","fromNode":"b000000000000013","fromSide":"right","toNode":"e000000000000001","toSide":"left","toEnd":"arrow","label":"de evaluar a recuperar"},
+    {"id":"f000000000000002","fromNode":"e000000000000001","fromSide":"right","toNode":"e000000000000002","toSide":"left","toEnd":"arrow","label":"construir"},
+    {"id":"f000000000000003","fromNode":"e000000000000002","fromSide":"right","toNode":"e000000000000003","toSide":"left","toEnd":"arrow","label":"entrenar"},
+    {"id":"f000000000000004","fromNode":"e000000000000003","fromSide":"right","toNode":"e000000000000004","toSide":"left","toEnd":"arrow","label":"comparar"},
+    {"id":"f000000000000005","fromNode":"e000000000000004","fromSide":"right","toNode":"e000000000000005","toSide":"left","toEnd":"arrow","label":"aplicar"},
+    {"id":"f000000000000006","fromNode":"e000000000000005","fromSide":"right","toNode":"e000000000000006","toSide":"left","toEnd":"arrow","label":"practicar"}
   ]
 }

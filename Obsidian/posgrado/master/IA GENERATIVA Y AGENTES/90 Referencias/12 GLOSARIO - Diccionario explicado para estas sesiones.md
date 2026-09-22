@@ -129,6 +129,24 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 
 **Agente:** sistema que puede elegir acciones, usar herramientas y revisar sus resultados para avanzar en una tarea. Por ejemplo: buscar datos, ejecutar un cálculo y comprobar si resolvió la pregunta.
 
+## Embeddings y recuperación: vocabulario de la sesión 06
+
+**Embedding de texto:** vector de dimensión fija calculado para una oración o fragmento completo. La cercanía tiene sentido según el entrenamiento y la métrica usada. [[28 S06 - Qué es un embedding y qué significa cercanía|Ejemplo visual]].
+
+**Vector contextualizado de token:** representación de un token después de procesar el resto del texto; difiere del vector fijo de entrada asociado a su ID. [[29 S06 - De tokens a un vector de texto|Tres niveles de representación]].
+
+**Pooling:** operación que resume varios vectores de token en uno de texto. MEAN promedia, CLS selecciona una posición y MAX toma máximos por coordenada. [[29 S06 - De tokens a un vector de texto#2. El problema de longitud variable|Cálculo explicado]].
+
+**SBERT:** familia estudiada en la sesión que adapta un encoder para producir embeddings de oraciones comparables, usando entrenamiento sobre relaciones entre textos. [[30 S06 - Cómo se entrena SBERT y por qué permite buscar|Entrenamiento]].
+
+**Bi-encoder:** calcula el embedding de cada texto por separado; permite guardar los vectores de los documentos. **Cross-encoder:** recibe el par junto y puntúa ese par, con mayor costo al comparar muchos candidatos. [[30 S06 - Cómo se entrena SBERT y por qué permite buscar#4. Bi-encoder y cross-encoder|Diagrama]].
+
+**Coseno:** similitud que compara la orientación de dos vectores no nulos. **Producto punto:** suma de productos por coordenada; también responde a la longitud si los vectores no están normalizados. [[31 S06 - Coseno producto punto y normalización|Contraejemplo]].
+
+**Normalización L2:** dividir un vector por su norma para dejarla en 1. Con consulta y documento normalizados, producto punto y coseno coinciden en valor. [[31 S06 - Coseno producto punto y normalización#2. Qué hace normalizar|Derivación]].
+
+**Truncamiento:** descarte de tokens que exceden el máximo aceptado por el modelo; puede ocultar al buscador la parte final de un fragmento sin producir un error visible. [[32 S06 - Elegir modelo y reconocer límites#2. El límite de tokens puede borrar contenido sin error visible|Caso 512/128]].
+
 ## Tres distinciones para repasar siempre
 
 Probabilidad no es certeza. Representar una relación no identifica necesariamente una causa. Cambiar el contexto de entrada no equivale a entrenar los pesos.

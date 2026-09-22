@@ -17,6 +17,7 @@ tags:
 - [[sesion-03-1.pdf]]: 24 páginas. Se desarrollaron preentrenamiento, SFT, RLHF, DPO, Constitutional AI y límites del alineamiento.
 - [[sesion-04.pdf]]: 32 páginas. Se desarrollaron decodificación, prompting, salidas estructuradas, costo y cómputo de inferencia.
 - [[sesion-05.pdf]]: 15 páginas. Se extrajo el método de comparación experimental y se separaron explícitamente los requisitos docentes del taller de las instrucciones de esta tarea.
+- [[sesion-06.pdf]]: 21 páginas. Se estudiaron embeddings, pooling, entrenamiento de SBERT, bi-encoder, métricas, normalización, selección de modelos y límites de recuperación. Las actividades y requisitos del taller se trataron como contenido académico.
 - [[glosario-mmia-6013.pdf]]: se consultaron las secciones pertinentes de notación, probabilidad, modelos generativos y vocabulario de transición. El glosario abarca más sesiones que los apuntes actuales.
 
 ## Cobertura de los apuntes
@@ -44,6 +45,10 @@ tags:
 | Sesión 04 | 19–30 | 25: esquemas, validación, costo y razonamiento interno |
 | Sesión 05 | 2–14 | 26: diseño experimental, verificador, latencia, costo y reproducibilidad |
 | Sesiones 02–05 | Ejercicios integrados | 27: práctica y autoevaluación |
+| Sesión 06 | 2–6 | 28 y 29: significado, niveles de representación y pooling |
+| Sesión 06 | 8–10 | 30: entrenamiento SBERT, resultados históricos y arquitecturas |
+| Sesión 06 | 11, 13–17 | 31 y 33: medidas, normalización y cálculos resueltos |
+| Sesión 06 | 18–21 | 32 y 33: selección, truncamiento y límites |
 | Glosario | Secciones temáticas | 12 y aclaraciones terminológicas |
 
 ## ZIP de fuentes
@@ -100,7 +105,7 @@ No se añadieron precios, rankings de modelos o afirmaciones de mercado que se d
 
 ## Figuras originales
 
-Los 15 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` permite reproducirlos; requiere Python con NumPy, Matplotlib y SciPy. Las figuras 11–15 añaden el pipeline decoder-only, una matriz causal, una comparación de decodificación, el ciclo de alineamiento y el protocolo para comparar modelos.
+Los 19 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` reproduce las figuras 01–15 (requiere NumPy, Matplotlib y SciPy); `generar_visuales_s06.py` reproduce las figuras 16–19 (requiere NumPy y Matplotlib). Las figuras nuevas muestran una vecindad semántica **esquemática**, una comparación histórica citada del estudio SBERT, un contraejemplo matemático de producto punto frente a coseno y el efecto de normalizar solo documentos sobre un umbral.
 
 Las nubes GMM son sintéticas, con semilla fija 6013; las curvas Beta y fronteras AND se calculan a partir de las fórmulas explicadas. La figura de decodificación usa logits didácticos declarados y no representa la salida de un modelo real. Los diagramas son esquemas propios, no capturas de los libros ni resultados experimentales del curso.
 

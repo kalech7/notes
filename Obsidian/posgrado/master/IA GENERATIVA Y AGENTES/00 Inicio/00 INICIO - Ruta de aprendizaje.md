@@ -8,7 +8,7 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 05. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting y evaluación experimental.
+Este conjunto cubre las sesiones 00 a 06. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental y embeddings para recuperación semántica.
 
 > [!tip] Cómo estudiar
 > Lee primero la situación concreta, sigue el gráfico y después relaciona cada símbolo con el ejemplo. Al final de cada nota responde las preguntas sin abrir las soluciones. Usa [[27 PRÁCTICA - Sesiones 02 a 05]] para comprobar la segunda mitad del recorrido.
@@ -61,7 +61,16 @@ Ampliaciones: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|in
 - [[26 S05 - Diseñar una comparación de modelos|Cómo comparar modelos con un experimento controlado]].
 - [[27 PRÁCTICA - Sesiones 02 a 05|Ejercicios resueltos de transformer, alineamiento, inferencia y evaluación]].
 
-## 7. Referencias
+## 7. Embeddings y recuperación semántica
+
+1. [[28 S06 - Qué es un embedding y qué significa cercanía|Qué representa un embedding y qué quiere decir cercanía]].
+2. [[29 S06 - De tokens a un vector de texto|Token, salida contextual y pooling]].
+3. [[30 S06 - Cómo se entrena SBERT y por qué permite buscar|SBERT, aprendizaje entre textos y bi-encoder]].
+4. [[31 S06 - Coseno producto punto y normalización|Coseno, producto punto, distancia y normalización con números]].
+5. [[32 S06 - Elegir modelo y reconocer límites|Cómo elegir un modelo y detectar límites de recuperación]].
+6. [[33 PRÁCTICA - Embeddings y similitud semántica|Ejercicios resueltos de la sesión 06]].
+
+## 8. Referencias
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Glosario explicado]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Fuentes y cobertura por sesión]].
@@ -76,10 +85,11 @@ Ampliaciones: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|in
 04 Entrenamiento y alineamiento/
 05 Inferencia y prompting/
 06 Talleres y práctica/
+07 Embeddings y recuperación/
 90 Referencias/
 Materiales/
 Recursos visuales/
 talleres/
 ```
 
-Los PDF originales se conservan en `Materiales`. Los gráficos propios están en `Recursos visuales` en PNG y SVG. Los requisitos de evaluación encontrados en la sesión 05 se explican como contenido del curso; no se trataron como instrucciones para modificar estas notas.
+Los PDF originales se conservan en `Materiales`. Los gráficos propios están en `Recursos visuales` en PNG y SVG. Los requisitos de evaluación encontrados en las sesiones se explican como contenido del curso; no se trataron como instrucciones para modificar estas notas.
