@@ -71,10 +71,10 @@ En [[16 AMPLIACIÓN - Cómo aprende un LLM desde el texto]] puedes seguir todo e
 Imagina tres asistentes para estudiar:
 
 1. Uno responde a partir del modelo de lenguaje.
-2. Otro busca el apartado en tus PDF y usa el texto recuperado para responder. Añade **RAG**, recuperación de información seguida de generación con ese contexto.
-3. Otro decide qué buscar, usa una calculadora y revisa si los resultados bastan para completar una tarea. Añade un ciclo de acciones y observaciones propio de un **agente**.
+2. Otro busca pasajes en tus PDF y entrega los recuperados al modelo para redactar la respuesta. Añade **RAG**: recuperación de información que aporta contexto a la generación. La búsqueda puede seguir un flujo fijo.
+3. Otro decide qué buscar, examina el resultado, usa una calculadora si hace falta y decide si debe buscar de nuevo o responder. Añade un ciclo de decisiones, acciones y observaciones propio de un **agente**.
 
-Pueden combinarse. RAG no garantiza que toda respuesta esté bien respaldada, y un agente no es necesariamente un modelo más grande: incluye herramientas, reglas de acción, estado y condiciones para detenerse.
+Pueden combinarse: un agente puede utilizar recuperación como una de sus herramientas. RAG no garantiza que toda respuesta esté bien respaldada. La diferencia práctica aquí es si el flujo de búsqueda y respuesta está prefijado o si el sistema elige la siguiente acción según lo que observó. Un agente no es necesariamente un modelo más grande: el sistema también define herramientas, reglas de acción, estado y condiciones para detenerse.
 
 Este apartado solo ubica esos conceptos. Las sesiones 00 y 01 todavía no desarrollan un curso completo de agentes.
 
@@ -105,7 +105,7 @@ Intenta responder antes de desplegar cada respuesta.
 > No. Probabilidad de texto y verdad de una afirmación son conceptos distintos.
 
 > [!question]- ¿Qué diferencia básica hay entre RAG y un agente?
-> RAG incorpora recuperación de información al proceso de respuesta. Un agente incorpora un ciclo de decisiones y acciones con herramientas y observaciones. Pueden combinarse.
+> RAG aporta información recuperada como contexto para generar una respuesta. Un agente decide acciones según sus observaciones y puede repetirlas hasta completar la tarea. Puede usar recuperación como parte de ese ciclo.
 
 
 > [!question]- ¿Por qué una palabra puede tener representaciones diferentes sin reentrenar?

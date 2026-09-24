@@ -107,7 +107,7 @@ latencia = time.perf_counter() - start
 
 Eso incluye red y proveedor para una API, y hardware local para un modelo abierto. No es lo mismo que tiempo hasta el primer token ni tokens por segundo.
 
-Reporta al menos promedio y rango de varias corridas. También puede ser útil normalizar por tokens de salida cuando los modelos producen longitudes muy diferentes.
+Reporta al menos promedio y rango de varias corridas, y conserva cada tiempo individual. Registra también los tokens de salida: una respuesta más larga puede tardar más aunque el modelo no sea más lento por token. Si calculas segundos por token, informa además la latencia completa, porque ese cociente oculta el tiempo fijo de la llamada.
 
 ## 7. Costo
 
@@ -132,14 +132,14 @@ Un barrido sistemático puede variar:
 - variante de prompt;
 - nivel de razonamiento.
 
-Cada barrido debe conservar lo demás. Ejemplo:
+Para atribuir un cambio a una palanca, fija las demás. Ejemplo de un barrido de temperatura:
 
 ```text
-modelo fijo × 5 temperaturas × 3 valores top-p × 5 corridas
-= 75 observaciones
+modelo fijo × 5 temperaturas × 1 valor top-p × 5 corridas
+= 25 observaciones
 ```
 
-Antes de ejecutar, estima el número de llamadas y costo. La mayor cantidad de llamadas no siempre es la parte más cara si otra usa muchos tokens de razonamiento.
+Si quieres estudiar la interacción entre temperatura y top-p, usa una cuadrícula de $5\times3\times5=75$ observaciones y descríbela como un experimento de dos factores. Antes de ejecutar, estima el número de llamadas y costo. La mayor cantidad de llamadas no siempre es la parte más cara si otra usa muchos tokens de razonamiento.
 
 ## 9. Estabilidad
 

@@ -1,18 +1,7 @@
-validar
-roi
-regla 1 10 100
+# Startup y Busqua
 
-cada dolar invertido en inbestigacion genera un retorno de 100 (roi= 9.900%)
+El material está organizado en la carpeta **freelance / Startup Busqua**, con subnotas de teoría y análisis de negocio.
 
-64% de las funcionalidades no sea usan 
+Abre [[Obsidian/freelance/Startup Busqua/00 Empieza aquí|la ruta de Startup Busqua]] para estudiar Lean Startup, Antler, Sequoia, Rampd y KTH Innovation Readiness Level, junto con las guías y guiones de pitch.
 
-
-soluciona en busca de un problema sisp
-
-ideas tar pit (atractivas pero inviables)
-
-minimazr el impatcto de una idea porque no suene mu sexy al inicio 
-
-esperar la idea perfecta o lanzarse sin validar
-
-capacidad de pago 
+Los apuntes originales de clase quedaron desarrollados en [[Obsidian/freelance/Startup Busqua/10 Conceptos de clase y errores frecuentes|Conceptos de clase y errores frecuentes]].

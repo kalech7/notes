@@ -8,6 +8,16 @@ tags:
 
 # Validación, Unicode y contratos de datos
 
+## Sigue un dato desde que llega hasta que se acepta
+
+Supón que recibes `"\u00a0Ecuador "`, donde la notación representa un espacio NBSP real al inicio. Guarda primero el original. Sustituyes NBSP por espacio común, recortas los bordes y obtienes `Ecuador`. La regla de mayúsculas produce `ECUADOR`; el catálogo puede asociarlo con un ID estable.
+
+Si recibes `ECUADRO`, convertirlo a mayúsculas no resuelve el error: queda sin correspondencia. Regístralo para revisión en lugar de asumir que significa Ecuador. **Limpiar una representación no autoriza a adivinar una identidad.**
+
+Ejemplo de contabilidad: llegan 10 filas, aceptas 8 y rechazas 2. Una rechazada tiene país desconocido y goles negativos; la otra tiene marcador vacío. Hay 3 incidencias pero 2 filas rechazadas. La reconciliación es `10 = 8 + 2`, no `10 = 8 + 3`.
+
+El contrato debe decir qué hacer al fallar: apartar la fila, detener la carga o conservarla marcada. Esas decisiones cambian qué población representa el resultado.
+
 ## Un contrato hace explícito qué esperas
 
 Un contrato de datos describe campos, tipos, obligatoriedad, significado y reglas de compatibilidad. Un schema `goles: integer` no expresa por sí solo que los goles deban ser no negativos ni que la fuente esté completa. Por eso contrato, esquema y validación de negocio se complementan.

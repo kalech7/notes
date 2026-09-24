@@ -8,6 +8,22 @@ tags:
 
 # Ventanas: ranking, Top N y quintiles
 
+## La diferencia entre resumir y añadir un puesto
+
+Con las ventas Ana: 10, Ana: 20 y Luis: 7, una suma agrupada devuelve dos filas. Una ventana de suma por cliente puede conservar tres: Ana: 10 con total 30; Ana: 20 con total 30; Luis: 7 con total 7. Conservas cada compra y añades contexto.
+
+En `ROW_NUMBER() OVER (PARTITION BY grupo ORDER BY puntos DESC)`, lee las piezas así: «para cada fila, calcula su número; compite con su grupo; coloca primero los puntos mayores». Después filtras los números que necesitas mediante otra consulta.
+
+Con puntos 9, 7, 7 y 4:
+
+| Función | Números asignados | Qué significa pedir `<= 2` |
+|---|---|---|
+| ROW_NUMBER | 1, 2, 3, 4 | Dos filas; hace falta decidir cuál de los 7 va primero |
+| RANK | 1, 2, 2, 4 | Tres filas, por el empate del segundo puesto |
+| DENSE_RANK | 1, 2, 2, 3 | Los dos mejores valores distintos; aquí también tres filas |
+
+Los empates se definen con todas las expresiones del orden de la ventana. [SQLite documenta estas diferencias](https://www.sqlite.org/windowfunctions.html).
+
 ## Intuición
 
 Una ventana añade una medida relacionada con otras filas sin resumirlas en una sola. `PARTITION BY grupo` crea competencias independientes y `ORDER BY puntos DESC` decide el orden dentro de cada competencia. No implica particionar archivos ni ordenar la presentación final.

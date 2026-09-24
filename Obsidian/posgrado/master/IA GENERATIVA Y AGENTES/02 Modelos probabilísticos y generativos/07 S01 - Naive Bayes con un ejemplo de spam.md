@@ -24,17 +24,19 @@ Usaremos solo tres palabras para poder hacer todas las cuentas: **oferta, premio
 | reunión | 1 | 9 |
 | Total | 10 | 10 |
 
+Estos totales cuentan **apariciones de palabras**, no cantidad de correos. Por sí solos no permiten calcular qué proporción de correos es spam: esa probabilidad de clase se estima por separado.
+
 ## 2. El supuesto que simplifica el cálculo
 
-Naive Bayes calcula la contribución de cada característica por separado una vez fijada la clase. Este supuesto se llama **independencia condicional**.
+En la variante multinomial que usaremos, Naive Bayes trata cada aparición de una palabra como una elección de la distribución de palabras de su clase, una vez fijada la longitud del mensaje. Este supuesto se llama **independencia condicional**.
 
 Para entenderlo, imagina que ya decidiste evaluar la clase spam. El modelo multiplica la contribución de «oferta» por la de «premio» sin representar que ambas palabras podrían estar relacionadas dentro de la misma frase.
 
-La simplificación suele ser falsa en sentido literal, pero puede ser útil. Permite estimar menos relaciones a partir de los datos.
+La simplificación suele ser falsa en sentido literal, pero puede ser útil. Permite estimar menos relaciones a partir de los datos. Para un mensaje de longitud fija $L$, $w_t$ es la palabra en la posición $t$ y $Y$ es la clase. El puntaje para clasificarlo es:
 
-$$P(X,Y)=P(Y)\prod_i P(x_i\mid Y).$$
+$$s(Y)=P(Y)\prod_{t=1}^{L}P(w_t\mid Y).$$
 
-La fórmula dice: probabilidad de la clase multiplicada por las probabilidades de sus características. El símbolo $\prod$ significa multiplicar los términos.
+El símbolo $\prod$ significa multiplicar los términos. Este ejemplo supone que la longitud no aporta información sobre la clase. Aunque escribimos posiciones para hacer el cálculo, el modelo asigna el mismo producto a cualquier orden de esas palabras.
 
 ## 3. Por qué necesitamos suavizado
 
@@ -64,7 +66,7 @@ Estos dos puntajes todavía no suman 1. Sumamos ambos: $15/169$. Luego dividimos
 
 $$P(\text{spam}\mid\text{mensaje})=\frac{14/169}{15/169}=\frac{14}{15}\approx93.33\%.$$
 
-Este resultado pertenece al modelo y sus supuestos; no es una garantía absoluta. En el modelo de conteos, un factor combinatorio común a ambas clases se cancela al comparar estos puntajes.
+Este resultado pertenece al modelo y sus supuestos; no es una garantía absoluta. Si representamos el mensaje solo por sus conteos de palabras, aparece un factor combinatorio por los posibles órdenes. Para un mismo mensaje ese factor es común a ambas clases y se cancela al normalizar estos puntajes.
 
 ## 5. Cómo generar un mensaje con el mismo modelo
 
@@ -84,7 +86,7 @@ Para textos largos, los programas suelen sumar logaritmos en lugar de multiplica
 
 ## 7. Una conexión con Bayes
 
-Murphy muestra que, en un problema binario con prior uniforme, la predicción bayesiana suma uno a cada resultado. Esto ayuda a entender por qué el suavizado deja una posibilidad para lo que todavía no vimos.
+En el caso binario, una distribución Beta(1,1) sobre la probabilidad desconocida lleva a sumar uno a cada resultado en la predicción. Para un vocabulario de $V$ palabras, la generalización es una distribución Dirichlet con un parámetro inicial igual a 1 por palabra; su predicción da $(\text{conteo}+1)/(\text{total}+V)$. Así se justifica el suavizado de Laplace de la tabla bajo ese modelo.
 
 En [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números]] se desarrolla esa idea con una moneda. Aquí lo esencial es distinguir **falta de ejemplos** de **imposibilidad**.
 
@@ -100,7 +102,7 @@ Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces perm
 Intenta responder antes de desplegar cada respuesta.
 
 > [!question]- ¿Qué significa la independencia condicional?
-> Que, una vez conocida la clase, el modelo factoriza las probabilidades de las características. No afirma independencia universal entre palabras.
+> En la variante multinomial, que una vez fijada la clase y la longitud el modelo multiplica las probabilidades de cada aparición de palabra. No afirma independencia universal entre palabras ni modela su orden.
 
 > [!question]- Con 0 apariciones, 10 tokens y vocabulario de 3, ¿cuál es la probabilidad con Laplace?
 > (0+1)/(10+3)=1/13. Sin suavizado sería cero.

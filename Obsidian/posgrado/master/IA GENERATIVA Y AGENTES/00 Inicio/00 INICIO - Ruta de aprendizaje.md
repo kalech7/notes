@@ -8,14 +8,29 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 06. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental y embeddings para recuperación semántica.
+Este conjunto cubre las sesiones 00 a 06 y la sesión 08. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación y construcción del contexto. La sesión 07 no está incorporada en los materiales actuales.
+
+**Alcance de «agentes»:** por ahora hay una introducción en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. Las sesiones disponibles todavía no desarrollan en profundidad planificación, uso de herramientas ni evaluación de agentes.
 
 > [!tip] Cómo estudiar
 > Lee primero la situación concreta, sigue el gráfico y después relaciona cada símbolo con el ejemplo. Al final de cada nota responde las preguntas sin abrir las soluciones. Usa [[27 PRÁCTICA - Sesiones 02 a 05]] para comprobar la segunda mitad del recorrido.
 
 ## Mapa visual
 
-Abre [[Mapa de IA generativa y agentes.canvas|Mapa de IA generativa y agentes]] para recorrer las conexiones entre temas.
+Abre [[Mapa de IA generativa y agentes.canvas|Mapa de IA generativa y agentes]] para recorrer las conexiones iniciales entre temas. El mapa específico de RAG y sus dos etapas está en [[34 S08 - Guía para entender fragmentación y recuperación]].
+
+## El hilo conductor en seis preguntas
+
+| Pregunta | Idea que debes poder explicar | Nota de partida |
+| --- | --- | --- |
+| ¿Qué aprende un modelo entrenable? | Ajusta parámetros con datos para mejorar una tarea; acertar en ejemplos nuevos importa más que memorizar el entrenamiento. | [[02 S00 - Reglas modelos y aprendizaje desde datos]] |
+| ¿Cómo representa incertidumbre? | Una distribución asigna probabilidades a posibilidades; Bayes actualiza una creencia al observar datos. | [[05 S01 - Probabilidad y teorema de Bayes paso a paso]] |
+| ¿Cómo produce texto un LLM autorregresivo? | Calcula una distribución del siguiente token a partir del prefijo y repite el proceso. | [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]] |
+| ¿De dónde sale esa distribución? | El transformer procesa tokens y contexto; el entrenamiento ajusta sus pesos para predecir los tokens observados. | [[18 S02 - Transformer de extremo a extremo]] y [[21 S03 - Preentrenamiento autosupervisado y MLE]] |
+| ¿Qué cambia al pedirle una respuesta? | El prompt aporta contexto y la decodificación selecciona tokens; normalmente los pesos ya están fijos. | [[23 S04 - Greedy temperatura top-k y top-p]] |
+| ¿Cómo usa información externa? | Los embeddings ayudan a recuperar textos pertinentes; RAG incorpora esos textos a la respuesta. Un agente puede decidir acciones y revisar sus resultados. | [[28 S06 - Qué es un embedding y qué significa cercanía]] y [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes#7. Dónde encajan RAG y los agentes]] |
+
+Si una fórmula te resulta abstracta, vuelve a la pregunta de su fila: identifica **qué entra, qué se calcula y qué significa el resultado**. Por ejemplo, la atención calcula pesos entre posiciones del texto; esos pesos no son los parámetros que el entrenamiento guarda.
 
 ## 1. Fundamentos de IA
 
@@ -70,7 +85,19 @@ Ampliaciones: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|in
 5. [[32 S06 - Elegir modelo y reconocer límites|Cómo elegir un modelo y detectar límites de recuperación]].
 6. [[33 PRÁCTICA - Embeddings y similitud semántica|Ejercicios resueltos de la sesión 06]].
 
-## 8. Referencias
+## 8. RAG: fragmentación y recuperación — sesión 08
+
+Empieza por [[34 S08 - Guía para entender fragmentación y recuperación|la guía de la sesión 08]]. Cada nota desarrolla **qué es, cómo funciona, por qué se necesita y cómo se relaciona con el sistema**. Incluye diagramas, gráficos explicados, mecanismos desarrollados paso a paso y recordatorios. La revisión añade conexiones entre etapas y preguntas para anticipar qué ocurre al cambiar el sistema.
+
+1. [[35 S08 - RAG contexto memoria y generación fundamentada|RAG, memoria y evidencia externa]].
+2. [[36 S08 - Fragmentos tokens y truncamiento|Fragmentos, límites y truncamiento]].
+3. [[37 S08 - Estrategias de fragmentación y solapamiento|Cómo dividir conservando sentido]].
+4. [[38 S08 - Búsqueda léxica densa y fusión RRF|BM25, búsqueda densa e híbrida]].
+5. [[39 S08 - Reranking contexto y abstención|Reordenamiento, contexto y abstención]].
+6. [[40 S08 - Diagnóstico de fallos y decisiones del taller|Cómo localizar un fallo y justificar cambios]].
+7. [[41 S08 - Recordatorio y preguntas de comprensión|Recordatorios y preguntas con respuestas desplegables]].
+
+## 9. Referencias
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Glosario explicado]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Fuentes y cobertura por sesión]].
@@ -86,6 +113,7 @@ Ampliaciones: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|in
 05 Inferencia y prompting/
 06 Talleres y práctica/
 07 Embeddings y recuperación/
+08 RAG fragmentación y recuperación/
 90 Referencias/
 Materiales/
 Recursos visuales/

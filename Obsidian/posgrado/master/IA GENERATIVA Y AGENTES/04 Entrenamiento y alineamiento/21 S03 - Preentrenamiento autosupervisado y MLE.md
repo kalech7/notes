@@ -34,13 +34,15 @@ flowchart LR
 
 ## 2. De logits a pérdida
 
-Para cada posición, softmax convierte logits en probabilidades. Si el objetivo observado es $y_t$, la pérdida es
+Para cada posición, softmax convierte logits en probabilidades. Si la entrada termina en $x_t$ y el objetivo desplazado es $y_t=x_{t+1}$, la pérdida es
 
-$$\ell_t=-\log P_\theta(y_t\mid x_{<t}).$$
+$$\ell_t=-\log P_\theta(y_t\mid x_{\le t})=-\log P_\theta(x_{t+1}\mid x_{\le t}).$$
 
 Para un lote con $N$ posiciones válidas:
 
-$$L(\theta)=-\frac{1}{N}\sum_{t=1}^{N}\log P_\theta(y_t\mid x_{<t}).$$
+$$L(\theta)=-\frac{1}{N}\sum_{t\in\mathcal V}\log P_\theta(y_t\mid x_{\le t}),\qquad |\mathcal V|=N.$$
+
+$\mathcal V$ reúne las posiciones cuyo objetivo se evalúa; pueden excluirse tokens de relleno u otras posiciones enmascaradas. Si en cambio llamamos $x_t$ al token objetivo, la misma probabilidad se escribe $P_\theta(x_t\mid x_{<t})$.
 
 Asignar probabilidad alta al token observado reduce la pérdida. Asignar 0.8 produce $-\log(0.8)\approx0.223$; asignar 0.05 produce aproximadamente 2.996.
 

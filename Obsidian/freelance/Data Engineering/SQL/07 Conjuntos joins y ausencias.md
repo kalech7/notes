@@ -8,6 +8,22 @@ tags:
 
 # Conjuntos, joins y registros sin correspondencia
 
+## Un join explicado como parejas
+
+Tienes dos compras del cliente 1: compra A y compra B. En el catálogo hay por error dos fichas con ID 1: ficha X y ficha Y. Un join por ID produce A–X, A–Y, B–X y B–Y: **cuatro filas**. No escogió una ficha; devolvió cada pareja compatible.
+
+Ahora considera clientes 1, 2 y 3, con una compra únicamente del cliente 1:
+
+| Consulta | Resultado conceptual |
+|---|---|
+| INNER JOIN con compras | Cliente 1 junto a su compra |
+| LEFT JOIN con compras | Cliente 1 con compra; clientes 2 y 3 con columnas derechas nulas |
+| NOT EXISTS compra del cliente | Clientes 2 y 3 |
+
+`NULL` significa ausencia o desconocimiento, no cero ni cadena vacía. Comparar `2 = NULL` no demuestra ni igualdad ni desigualdad: da desconocido. WHERE solo conserva condiciones verdaderas, lo que explica la trampa de NOT IN con un nulo.
+
+Antes de un join escribe la relación esperada: una compra debería encontrar **como máximo una** ficha de cliente. Si encuentra varias, investiga la clave del catálogo antes de sumar importes.
+
 ## Concatenar y comparar conjuntos
 
 | Operación | A = [1,1,2], B = [2,3] | Significado |

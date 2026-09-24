@@ -10,6 +10,14 @@ tags:
 
 Este conjunto desarrolla el documento compartido con explicaciones, ejemplos y conexiones con tus notas de pregrado y maestría. La carpeta usada es **Obsidian/freelance**, que ya existía en tu vault.
 
+## Si las explicaciones anteriores te resultaban rápidas
+
+Empieza por el recorrido manual al inicio de cada nota: identifica la entrada, sigue los cambios y explica la salida antes de leer el código. Las notas de SQL, Spark, calidad, pruebas y DevOps incluyen ahora pasos intermedios específicos para su tema.
+
+Tres palabras que se repiten: **granularidad** es qué representa una fila; **pipeline** es una secuencia de procesamiento; **schema** es la descripción de campos y tipos. No memorices una API sin poder decir qué cambia en los datos.
+
+Ruta mínima para una primera vuelta: SQL 01 → SQL 04 → SQL 06 → laboratorio SQL; después Spark 01 → Spark 02 → Spark 07 → laboratorio Spark. Vuelve a calidad y pruebas para entender qué condiciones hacen confiable el resultado.
+
 ## La idea que conecta todo
 
 **SQL y Spark transforman datos; calidad comprueba su significado; testing verifica el comportamiento; DevOps permite entregar y operar los cambios.** Antes de elegir una función, define qué representa una fila y qué pregunta necesitas responder.
@@ -37,6 +45,12 @@ Abre [[Obsidian/freelance/Data Engineering/Mapa de estudio.canvas|el mapa visual
 7. **Repasar con criterio.** Usa las preguntas y la lista de dominio; vuelve a las notas cuando no puedas justificar una decisión.
 
 No hay un plazo obligatorio: avanza cuando puedas resolver una variación del ejemplo.
+
+## Para entender Spark y Lambda desde cero
+
+Lee [[Obsidian/freelance/Data Engineering/Spark/01 Arquitectura y procesamiento distribuido|cómo funciona Spark]] para seguir seis ventas desde la entrada hasta el total por país. Continúa con [[Obsidian/freelance/Data Engineering/Spark/02 Lazy DAG stages y shuffle|la ejecución interna]] para entender transformaciones, acciones, tareas y shuffle. Después, [[Obsidian/freelance/Data Engineering/Spark/10 Arquitectura Lambda|arquitectura Lambda]] explica cómo organizar un camino histórico y uno reciente sin duplicar resultados.
+
+Spark es el motor que ejecuta cálculos; Lambda es una forma de organizar el sistema. El mismo ejemplo permite separar ambas ideas antes de combinarlas.
 
 ## Notas por bloque
 

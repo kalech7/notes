@@ -8,6 +8,18 @@ tags:
 
 # Repaso: preguntas que debes poder explicar
 
+## Respuestas desarrolladas para empezar
+
+**¿Por qué un partido genera dos filas?** Porque el resultado se evalúa desde cada equipo. En 3–1, el local aporta 3 goles a favor, 1 en contra y 3 puntos; el visitante aporta 1 a favor, 3 en contra y 0 puntos. Después agrupas participaciones para obtener totales por equipo.
+
+**¿Por qué el join de medias devuelve el detalle?** Agrupar tres centros públicos crea una fila con su centroide. Unir ese resumen a los tres centros produce tres filas, cada una con coordenadas propias y centroide común. Necesitas ambos para calcular una distancia por centro.
+
+**¿Por qué no alcanza con que el código termine?** Una tabla de países con claves duplicadas puede multiplicar jugadores sin producir un error técnico. Comprueba la cantidad de filas, la unicidad del catálogo y resultados conocidos.
+
+**¿Qué significa entender un ranking?** Poder predecir quién compite con quién, en qué orden y qué ocurre con un empate. Con 9, 7, 7, pedir dos filas no expresa lo mismo que conservar a todos los empatados en el segundo puesto.
+
+En la tabla siguiente, las respuestas cortas son recordatorios. Si alguna palabra no te permite reconstruir estos pasos, vuelve a su nota y resuelve el ejemplo manual.
+
 ## Cómo usar este repaso
 
 Oculta la columna derecha o responde antes de leerla. Una respuesta dominada incluye ejemplo, motivo y límite; reconocer una palabra no basta. Los números de la tabla siguiente corresponden a las 30 preguntas de comprensión de la ampliación del spec.

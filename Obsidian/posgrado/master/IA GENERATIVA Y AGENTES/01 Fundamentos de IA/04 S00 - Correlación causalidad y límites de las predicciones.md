@@ -23,7 +23,7 @@ Cuando dos variables aportan información una sobre otra hablamos de asociación
 
 A la izquierda, el calor tiene una flecha hacia las ventas y otra hacia la natación. El diagrama dice que el calor influye en ambas. No tiene una flecha de ventas a natación.
 
-A la derecha fijamos las ventas mediante una acción externa. Por ejemplo, hacemos una promoción que cambia cuántos helados se venden. Retiramos la flecha que normalmente determinaba esa variable, pero no cambiamos el calor. Según esta hipótesis, tampoco cambia la natación por esa ruta.
+A la derecha imaginamos una intervención ideal que fija las ventas en un valor, independientemente del calor. En el diagrama se sustituye el mecanismo que normalmente determinaba las ventas; el calor y la natación conservan sus mecanismos. Según esta hipótesis, fijar las ventas no cambia la natación. Una promoción real podría tener otros efectos y no equivale necesariamente a esa intervención ideal.
 
 El dibujo no demuestra que el mundo funcione así. Expresa un supuesto causal que necesitaría justificarse.
 

@@ -8,6 +8,16 @@ tags:
 
 # DevOps y DataOps: entregar cambios y aprender de ellos
 
+## Un caso completo: el reporte terminó, pero estaba mal
+
+Ayer el proveedor enviaba `EC`; hoy envía `Ecuador`. El programa sigue ejecutando, pero el join por código deja esos registros sin país. El estado técnico dice «éxito» y el reporte pierde información.
+
+Un flujo operable detecta el aumento de países sin correspondencia, identifica el archivo y la versión de código involucrados, y permite corregir la regla y reprocesar. Ese es el motivo de conectar código, pruebas y métricas de datos.
+
+**Pipeline** significa una secuencia de pasos conectados: leer → validar → transformar → guardar. **Artefacto** es el resultado preparado para ejecutar o distribuir, como un paquete con una versión concreta. **Observación** significa mirar señales que permitan entender cómo funcionó esa ejecución.
+
+La idempotencia se entiende con un reintento: procesas la venta V1 de 20 y el proceso se corta después de guardarla. Al repetir, el resultado debe seguir conteniendo una venta V1 de 20. Si inserta otra copia y suma 40, el reintento alteró el resultado.
+
 ## Qué es y qué problema resuelve
 
 DevOps reúne desarrollo y operación mediante colaboración, automatización y aprendizaje continuo. Imagina que escribiste un cálculo perfecto en tu computadora, pero en producción falla por una versión distinta o nadie sabe detectar resultados incorrectos. Entregar software implica mucho más que escribir la función: hay que poder construirlo, probarlo, ejecutarlo, observarlo y recuperarlo.

@@ -8,6 +8,21 @@ tags:
 
 # Arrays, structs y JSON sin saturar el Driver
 
+## Construye la estructura desde adentro hacia afuera
+
+Un jugador puede representarse como `{ranking: 2, nombre: Ana}`: eso es un struct, un registro con campos nombrados. Dos registros dentro de corchetes forman un array: `[{ranking: 2, nombre: Ana}, {ranking: 1, nombre: Luis}]`.
+
+En el ejemplo del código:
+
+1. `struct` reúne ranking y nombre de cada fila.
+2. `collect_list` reúne esos registros para el mismo país.
+3. `sort_array` ordena la lista resultante: Luis antes que Ana por sus rankings 1 y 2.
+4. `alias("jugadores")` da nombre a la columna que contiene esa lista.
+
+Pasaste de dos filas de jugadores a una fila de país con dos elementos dentro. No eliminaste jugadores: cambiaste la forma de representarlos.
+
+JSON es una representación textual de esa estructura. Una columna con un array dentro de un DataFrame todavía pertenece al cálculo distribuido; pedir `collect()` trae las filas al Driver. Es distinto de agrupar registros dentro de cada fila.
+
 ## De filas a una entidad con hijos
 
 En una tabla plana, cada fila puede representar un jugador de un país. Para una API o exportación, puede resultar más cómodo tener una fila por país con un array de jugadores. Un **struct** reúne campos de una entidad; un **array** reúne varios elementos de un mismo tipo. Un array de structs permite tener varios jugadores, cada uno con nombre y ranking.

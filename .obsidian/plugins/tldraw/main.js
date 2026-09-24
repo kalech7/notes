@@ -10953,18 +10953,6 @@ function minBy(arr, fn) {
   }
   return min3;
 }
-function maxBy(arr, fn) {
-  let max2;
-  let maxVal = -Infinity;
-  for (const item of arr) {
-    const val = fn(item);
-    if (val > maxVal) {
-      max2 = item;
-      maxVal = val;
-    }
-  }
-  return max2;
-}
 function areArraysShallowEqual(arr1, arr2) {
   if (arr1 === arr2) return true;
   if (arr1.length !== arr2.length) return false;
@@ -12957,10 +12945,27 @@ function clearSessionStorage() {
 // node_modules/@tldraw/utils/dist-esm/lib/string.mjs
 init_define_import_meta();
 var graphemeSegmenter;
+var checkedForSegmenter = false;
+function getGraphemeSegmenter() {
+  if (!checkedForSegmenter) {
+    checkedForSegmenter = true;
+    if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+      graphemeSegmenter = new Intl.Segmenter(void 0, { granularity: "grapheme" });
+    }
+  }
+  return graphemeSegmenter;
+}
+function* iterateGraphemes(str) {
+  const segmenter = getGraphemeSegmenter();
+  if (segmenter) {
+    for (const { segment } of segmenter.segment(str)) yield segment;
+  } else {
+    yield* str;
+  }
+}
 function getFirstCharacter(str) {
   if (!str) return "";
-  graphemeSegmenter ??= new Intl.Segmenter(void 0, { granularity: "grapheme" });
-  for (const { segment } of graphemeSegmenter.segment(str)) {
+  for (const segment of iterateGraphemes(str)) {
     return segment;
   }
   return "";
@@ -13294,7 +13299,7 @@ function warnOnce(message) {
 // node_modules/@tldraw/utils/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "@tldraw/utils",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -13308,8 +13313,9 @@ function isChild(x) {
 }
 function haveParentsChanged(child) {
   for (let i = 0, n = child.parents.length; i < n; i++) {
-    child.parents[i].__unsafe__getWithoutCapture(true);
-    if (child.parents[i].lastChangedEpoch !== child.parentEpochs[i]) {
+    const parent = child.parents[i];
+    parent.__unsafe__getWithoutCapture(true);
+    if (parent.lastChangedEpoch !== child.parentEpochs[i]) {
       return true;
     }
   }
@@ -13351,54 +13357,27 @@ var EMPTY_ARRAY = singleton("empty_array", () => Object.freeze([]));
 init_define_import_meta();
 var ARRAY_SIZE_THRESHOLD = 8;
 var ArraySet = class {
-  arraySize = 0;
-  array = Array(ARRAY_SIZE_THRESHOLD);
   set = null;
+  // Slots [0, arraySize) hold the items; slots beyond are undefined. `add`/`has` scan the whole
+  // array with indexOf, which is why `clear` and `remove` must blank vacated slots.
+  array = null;
+  arraySize = 0;
   /**
    * Get whether this ArraySet has any elements.
-   *
-   * @returns True if this ArraySet has any elements, false otherwise.
    */
   // eslint-disable-next-line tldraw/no-setter-getter
   get isEmpty() {
-    if (this.array) {
-      return this.arraySize === 0;
-    }
     if (this.set) {
       return this.set.size === 0;
     }
-    throw new Error("no set or array");
+    return this.arraySize === 0;
   }
   /**
    * Add an element to the ArraySet if it is not already present.
    *
-   * @param elem - The element to add to the set
    * @returns `true` if the element was added, `false` if it was already present
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<string>()
-   *
-   * console.log(arraySet.add('hello')) // true
-   * console.log(arraySet.add('hello')) // false (already exists)
-   * ```
    */
   add(elem) {
-    if (this.array) {
-      const idx = this.array.indexOf(elem);
-      if (idx !== -1) {
-        return false;
-      }
-      if (this.arraySize < ARRAY_SIZE_THRESHOLD) {
-        this.array[this.arraySize] = elem;
-        this.arraySize++;
-        return true;
-      } else {
-        this.set = new Set(this.array);
-        this.array = null;
-        this.set.add(elem);
-        return true;
-      }
-    }
     if (this.set) {
       if (this.set.has(elem)) {
         return false;
@@ -13406,168 +13385,98 @@ var ArraySet = class {
       this.set.add(elem);
       return true;
     }
-    throw new Error("no set or array");
+    if (!this.array) {
+      this.array = Array(ARRAY_SIZE_THRESHOLD);
+    } else if (this.array.indexOf(elem) !== -1) {
+      return false;
+    }
+    if (this.arraySize < ARRAY_SIZE_THRESHOLD) {
+      this.array[this.arraySize] = elem;
+      this.arraySize++;
+      return true;
+    }
+    this.set = new Set(this.array);
+    this.set.add(elem);
+    this.array = null;
+    this.arraySize = 0;
+    return true;
   }
   /**
    * Remove an element from the ArraySet if it is present.
    *
-   * @param elem - The element to remove from the set
    * @returns `true` if the element was removed, `false` if it was not present
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<string>()
-   * arraySet.add('hello')
-   *
-   * console.log(arraySet.remove('hello')) // true
-   * console.log(arraySet.remove('hello')) // false (not present)
-   * ```
    */
   remove(elem) {
-    if (this.array) {
-      const idx = this.array.indexOf(elem);
-      if (idx === -1) {
-        return false;
-      }
-      this.array[idx] = void 0;
-      this.arraySize--;
-      if (idx !== this.arraySize) {
-        this.array[idx] = this.array[this.arraySize];
-        this.array[this.arraySize] = void 0;
-      }
-      return true;
-    }
     if (this.set) {
-      if (!this.set.has(elem)) {
-        return false;
-      }
-      this.set.delete(elem);
-      return true;
+      return this.set.delete(elem);
     }
-    throw new Error("no set or array");
+    if (!this.array) {
+      return false;
+    }
+    const idx = this.array.indexOf(elem);
+    if (idx === -1) {
+      return false;
+    }
+    this.arraySize--;
+    this.array[idx] = this.array[this.arraySize];
+    this.array[this.arraySize] = void 0;
+    return true;
   }
   /**
    * Execute a callback function for each element in the ArraySet.
-   *
-   * @param visitor - A function to call for each element in the set
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<string>()
-   * arraySet.add('hello')
-   * arraySet.add('world')
-   *
-   * arraySet.visit((item) => {
-   *   console.log(item) // 'hello', 'world'
-   * })
-   * ```
    */
   visit(visitor) {
-    if (this.array) {
-      for (let i = 0; i < this.arraySize; i++) {
-        const elem = this.array[i];
-        if (typeof elem !== "undefined") {
-          visitor(elem);
-        }
-      }
-      return;
-    }
     if (this.set) {
       this.set.forEach(visitor);
       return;
     }
-    throw new Error("no set or array");
+    if (!this.array) {
+      return;
+    }
+    for (let i = 0; i < this.arraySize; i++) {
+      visitor(this.array[i]);
+    }
   }
   /**
    * Make the ArraySet iterable, allowing it to be used in for...of loops and with spread syntax.
-   *
-   * @returns An iterator that yields each element in the set
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<number>()
-   * arraySet.add(1)
-   * arraySet.add(2)
-   *
-   * for (const item of arraySet) {
-   *   console.log(item) // 1, 2
-   * }
-   *
-   * const items = [...arraySet] // [1, 2]
-   * ```
    */
   *[Symbol.iterator]() {
-    if (this.array) {
-      for (let i = 0; i < this.arraySize; i++) {
-        const elem = this.array[i];
-        if (typeof elem !== "undefined") {
-          yield elem;
-        }
-      }
-    } else if (this.set) {
+    if (this.set) {
       yield* this.set;
-    } else {
-      throw new Error("no set or array");
+    } else if (this.array) {
+      for (let i = 0; i < this.arraySize; i++) {
+        yield this.array[i];
+      }
     }
   }
   /**
    * Check whether an element is present in the ArraySet.
-   *
-   * @param elem - The element to check for
-   * @returns `true` if the element is present, `false` otherwise
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<string>()
-   * arraySet.add('hello')
-   *
-   * console.log(arraySet.has('hello')) // true
-   * console.log(arraySet.has('world')) // false
-   * ```
    */
   has(elem) {
-    if (this.array) {
-      return this.array.indexOf(elem) !== -1;
-    } else {
+    if (this.set) {
       return this.set.has(elem);
     }
+    return this.array ? this.array.indexOf(elem) !== -1 : false;
   }
   /**
    * Remove all elements from the ArraySet.
-   *
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<string>()
-   * arraySet.add('hello')
-   * arraySet.add('world')
-   *
-   * arraySet.clear()
-   * console.log(arraySet.size()) // 0
-   * ```
    */
   clear() {
     if (this.set) {
       this.set.clear();
-    } else {
+    } else if (this.array) {
+      this.array.fill(void 0, 0, this.arraySize);
       this.arraySize = 0;
-      this.array = [];
     }
   }
   /**
    * Get the number of elements in the ArraySet.
-   *
-   * @returns The number of elements in the set
-   * @example
-   * ```ts
-   * const arraySet = new ArraySet<string>()
-   * console.log(arraySet.size()) // 0
-   *
-   * arraySet.add('hello')
-   * console.log(arraySet.size()) // 1
-   * ```
    */
   size() {
     if (this.set) {
       return this.set.size;
-    } else {
-      return this.arraySize;
     }
+    return this.arraySize;
   }
 };
 
@@ -13643,11 +13552,9 @@ function stopCapturingParents() {
 }
 function maybeCaptureParent(p) {
   if (inst.stack) {
-    const wasCapturedAlready = inst.stack.child.parentSet.has(p);
-    if (wasCapturedAlready) {
+    if (!inst.stack.child.parentSet.add(p)) {
       return;
     }
-    inst.stack.child.parentSet.add(p);
     if (inst.stack.child.isActivelyListening) {
       attach(p, inst.stack.child);
     }
@@ -13754,12 +13661,14 @@ var HistoryBuffer = class {
   /**
    * Adds a diff entry to the history buffer, representing a change between two epochs.
    *
-   * If the diff is undefined, the operation is ignored. If the diff is RESET_VALUE,
-   * the entire buffer is cleared to indicate that historical tracking should restart.
+   * If the diff is RESET_VALUE, or undefined (meaning no diff is available), the entire buffer is
+   * cleared to indicate that historical tracking should restart. Silently skipping an entry would
+   * leave a gap, and a later `getChangesSince` from before the gap would return an incomplete
+   * diff list rather than RESET_VALUE.
    *
    * @param lastComputedEpoch - The epoch when the previous value was computed
    * @param currentEpoch - The epoch when the current value was computed
-   * @param diff - The diff representing the change, or RESET_VALUE to clear history
+   * @param diff - The diff representing the change, or RESET_VALUE / undefined to clear history
    * @example
    * ```ts
    * const buffer = new HistoryBuffer<string>(5)
@@ -13768,10 +13677,7 @@ var HistoryBuffer = class {
    * ```
    */
   pushEntry(lastComputedEpoch, currentEpoch, diff) {
-    if (diff === void 0) {
-      return;
-    }
-    if (diff === RESET_VALUE) {
+    if (diff === RESET_VALUE || diff === void 0) {
       this.clear();
       return;
     }
@@ -13824,7 +13730,7 @@ var HistoryBuffer = class {
       }
       const [fromEpoch, toEpoch] = elem;
       if (i === 0 && sinceEpoch >= toEpoch) {
-        return [];
+        return EMPTY_ARRAY;
       }
       if (fromEpoch <= sinceEpoch && sinceEpoch < toEpoch) {
         const len = i + 1;
@@ -13856,37 +13762,30 @@ var Transaction = class {
   isSync;
   asyncProcessCount = 0;
   initialAtomValues = /* @__PURE__ */ new Map();
-  /**
-   * Get whether this transaction is a root (no parents).
-   *
-   * @public
-   */
   // eslint-disable-next-line tldraw/no-setter-getter
   get isRoot() {
     return this.parent === null;
   }
-  /**
-   * Commit the transaction's changes.
-   *
-   * @public
-   */
   commit() {
-    if (inst2.globalIsReacting) {
-      for (const atom2 of this.initialAtomValues.keys()) {
-        traverseAtomForCleanup(atom2);
-      }
-    } else if (this.isRoot) {
+    if (this.isRoot) {
       flushChanges(this.initialAtomValues.keys());
-    } else {
-      this.initialAtomValues.forEach((value, atom2) => {
-        if (!this.parent.initialAtomValues.has(atom2)) {
-          this.parent.initialAtomValues.set(atom2, value);
-        }
-      });
+      return;
     }
+    const parentValues = this.parent.initialAtomValues;
+    if (parentValues.size === 0) {
+      this.parent.initialAtomValues = this.initialAtomValues;
+      return;
+    }
+    this.initialAtomValues.forEach((value, atom2) => {
+      if (!parentValues.has(atom2)) {
+        parentValues.set(atom2, value);
+      }
+    });
   }
   /**
-   * Abort the transaction.
+   * Abort the transaction. Restores every atom changed in this transaction to its initial
+   * value, then commits. Must be called while this is still `inst.currentTransaction`, so that
+   * the restoring sets are recorded against it instead of each flushing effects on their own.
    *
    * @public
    */
@@ -13905,17 +13804,13 @@ var inst2 = singleton("transactions", () => ({
   // Whether any transaction is reacting.
   globalIsReacting: false,
   currentTransaction: null,
-  cleanupReactors: null,
-  reactionEpoch: GLOBAL_START_EPOCH + 1
+  cleanupReactors: null
 }));
-function getReactionEpoch() {
-  return inst2.reactionEpoch;
-}
 function getGlobalEpoch() {
   return inst2.globalEpoch;
 }
-function getIsReacting() {
-  return inst2.globalIsReacting;
+function getIsInTransaction() {
+  return inst2.currentTransaction !== null;
 }
 var traverseReactors;
 function traverseChild(child) {
@@ -13930,22 +13825,21 @@ function traverseChild(child) {
     child.children.visit(traverseChild);
   }
 }
-function traverse(reactors, child) {
-  traverseReactors = reactors;
-  traverseChild(child);
-}
 function flushChanges(atoms) {
   if (inst2.globalIsReacting) {
-    throw new Error("flushChanges cannot be called during a reaction");
+    for (const atom2 of atoms) {
+      traverseAtomForCleanup(atom2);
+    }
+    return;
   }
   const outerTxn = inst2.currentTransaction;
   try {
     inst2.currentTransaction = null;
     inst2.globalIsReacting = true;
-    inst2.reactionEpoch = inst2.globalEpoch;
     const reactors = /* @__PURE__ */ new Set();
+    traverseReactors = reactors;
     for (const atom2 of atoms) {
-      atom2.children.visit((child) => traverse(reactors, child));
+      atom2.children.visit(traverseChild);
     }
     for (const r of reactors) {
       r.maybeScheduleEffect();
@@ -13973,15 +13867,13 @@ function atomDidChange(atom2, previousValue) {
     if (!inst2.currentTransaction.initialAtomValues.has(atom2)) {
       inst2.currentTransaction.initialAtomValues.set(atom2, previousValue);
     }
-  } else if (inst2.globalIsReacting) {
-    traverseAtomForCleanup(atom2);
   } else {
     flushChanges([atom2]);
   }
 }
 function traverseAtomForCleanup(atom2) {
-  const rs = inst2.cleanupReactors ??= /* @__PURE__ */ new Set();
-  atom2.children.visit((child) => traverse(rs, child));
+  traverseReactors = inst2.cleanupReactors ??= /* @__PURE__ */ new Set();
+  atom2.children.visit(traverseChild);
 }
 function advanceGlobalEpoch() {
   inst2.globalEpoch++;
@@ -14032,30 +13924,15 @@ var __Atom__ = class {
   }
   name;
   current;
-  /**
-   * Custom equality function for comparing values, or null to use default equality.
-   * @internal
-   */
+  /** @internal */
   isEqual;
-  /**
-   * Optional function to compute diffs between old and new values.
-   * @internal
-   */
+  /** @internal */
   computeDiff;
-  /**
-   * The global epoch when this atom was last changed.
-   * @internal
-   */
+  /** @internal */
   lastChangedEpoch = getGlobalEpoch();
-  /**
-   * Set of child signals that depend on this atom.
-   * @internal
-   */
+  /** @internal */
   children = new ArraySet();
-  /**
-   * Optional history buffer for tracking changes over time.
-   * @internal
-   */
+  /** @internal */
   historyBuffer;
   /**
    * Gets the current value without capturing it as a dependency in the current reactive context.
@@ -14099,15 +13976,16 @@ var __Atom__ = class {
     if (this.isEqual?.(this.current, value) ?? equals(this.current, value)) {
       return this.current;
     }
-    advanceGlobalEpoch();
+    let historyDiff;
     if (this.historyBuffer) {
-      this.historyBuffer.pushEntry(
-        this.lastChangedEpoch,
-        getGlobalEpoch(),
-        diff ?? this.computeDiff?.(this.current, value, this.lastChangedEpoch, getGlobalEpoch()) ?? RESET_VALUE
-      );
+      historyDiff = diff !== void 0 ? diff : this.computeDiff ? this.computeDiff(this.current, value, this.lastChangedEpoch, getGlobalEpoch() + 1) : RESET_VALUE;
     }
-    this.lastChangedEpoch = getGlobalEpoch();
+    advanceGlobalEpoch();
+    const epoch = getGlobalEpoch();
+    if (this.historyBuffer) {
+      this.historyBuffer.pushEntry(this.lastChangedEpoch, epoch, historyDiff);
+    }
+    this.lastChangedEpoch = epoch;
     const oldValue = this.current;
     this.current = value;
     atomDidChange(this, oldValue);
@@ -14153,11 +14031,8 @@ init_define_import_meta();
 
 // node_modules/@tldraw/state/dist-esm/lib/warnings.mjs
 init_define_import_meta();
-var didWarnComputedGetter = false;
 function logComputedGetterWarning() {
-  if (didWarnComputedGetter) return;
-  didWarnComputedGetter = true;
-  console.warn(
+  warnOnce(
     `Using \`@computed\` as a decorator for getters is deprecated and will be removed in the near future. Please refactor to use \`@computed\` as a decorator for methods.
 
 // Before
@@ -14211,7 +14086,8 @@ var __UNSAFE__Computed = class {
   lastTraversedEpoch = GLOBAL_START_EPOCH;
   __debug_ancestor_epochs__ = null;
   /**
-   * The epoch when the reactor was last checked.
+   * The epoch when the reactor was last checked. Advances on every check, including ones that
+   * find no change, unlike `lastChangedEpoch`.
    */
   lastCheckedEpoch = GLOBAL_START_EPOCH;
   parentSet = new ArraySet();
@@ -14232,7 +14108,11 @@ var __UNSAFE__Computed = class {
   __unsafe__getWithoutCapture(ignoreErrors) {
     const isNew = this.lastChangedEpoch === GLOBAL_START_EPOCH;
     const globalEpoch = getGlobalEpoch();
-    if (!isNew && (this.lastCheckedEpoch === globalEpoch || this.isActivelyListening && getIsReacting() && this.lastTraversedEpoch < getReactionEpoch() || !haveParentsChanged(this))) {
+    if (!isNew && (this.lastCheckedEpoch === globalEpoch || // Every ancestor change to an actively-listening computed traverses it (`flushChanges`),
+    // so if it hasn't been traversed since it was last checked the O(parents) scan can be
+    // skipped. Not valid while a transaction is open (changes traverse at commit), and only
+    // if it was up to date when attached (see `attach` in helpers.ts).
+    this.isActivelyListening && !getIsInTransaction() && this.lastTraversedEpoch <= this.lastCheckedEpoch || !haveParentsChanged(this))) {
       this.lastCheckedEpoch = globalEpoch;
       if (this.error) {
         if (!ignoreErrors) {
@@ -14249,27 +14129,29 @@ var __UNSAFE__Computed = class {
       const result = this.derive(this.state, this.lastCheckedEpoch);
       const newState = result instanceof WithDiff ? result.value : result;
       const isUninitialized2 = this.state === UNINITIALIZED;
+      const epoch = getGlobalEpoch();
       if (isUninitialized2 || !this.isEqual(this.state, newState)) {
         if (this.historyBuffer && !isUninitialized2) {
           const diff = result instanceof WithDiff ? result.diff : void 0;
           this.historyBuffer.pushEntry(
             this.lastChangedEpoch,
-            getGlobalEpoch(),
-            diff ?? this.computeDiff?.(this.state, newState, this.lastCheckedEpoch, getGlobalEpoch()) ?? RESET_VALUE
+            epoch,
+            diff !== void 0 ? diff : this.computeDiff ? this.computeDiff(this.state, newState, this.lastCheckedEpoch, epoch) : RESET_VALUE
           );
         }
-        this.lastChangedEpoch = getGlobalEpoch();
+        this.lastChangedEpoch = epoch;
         this.state = newState;
       }
       this.error = null;
-      this.lastCheckedEpoch = getGlobalEpoch();
+      this.lastCheckedEpoch = epoch;
       return this.state;
     } catch (e) {
-      if (this.state !== UNINITIALIZED) {
+      const epoch = getGlobalEpoch();
+      if (this.error === null) {
         this.state = UNINITIALIZED;
-        this.lastChangedEpoch = getGlobalEpoch();
+        this.lastChangedEpoch = epoch;
       }
-      this.lastCheckedEpoch = getGlobalEpoch();
+      this.lastCheckedEpoch = epoch;
       if (this.historyBuffer) {
         this.historyBuffer.clear();
       }
@@ -14297,13 +14179,13 @@ var __UNSAFE__Computed = class {
   }
 };
 var _Computed = singleton("Computed", () => __UNSAFE__Computed);
-function computedMethodLegacyDecorator(options = {}, _target, key, descriptor) {
-  const originalMethod = descriptor.value;
-  const derivationKey = /* @__PURE__ */ Symbol.for("__@tldraw/state__computed__" + key);
-  descriptor.value = function() {
+var derivationKeyKey = "@@__computedDerivationKey__@@";
+function makeComputedWrapper(name, compute, options) {
+  const derivationKey = /* @__PURE__ */ Symbol("__@tldraw/state__computed__" + name);
+  const wrapper = function() {
     let d = this[derivationKey];
     if (!d) {
-      d = new _Computed(key, originalMethod.bind(this), options);
+      d = new _Computed(name, compute.bind(this), options);
       Object.defineProperty(this, derivationKey, {
         enumerable: false,
         configurable: false,
@@ -14313,63 +14195,27 @@ function computedMethodLegacyDecorator(options = {}, _target, key, descriptor) {
     }
     return d.get();
   };
-  descriptor.value[isComputedMethodKey] = true;
-  return descriptor;
-}
-function computedGetterLegacyDecorator(options = {}, _target, key, descriptor) {
-  const originalMethod = descriptor.get;
-  const derivationKey = /* @__PURE__ */ Symbol.for("__@tldraw/state__computed__" + key);
-  descriptor.get = function() {
-    let d = this[derivationKey];
-    if (!d) {
-      d = new _Computed(key, originalMethod.bind(this), options);
-      Object.defineProperty(this, derivationKey, {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: d
-      });
-    }
-    return d.get();
-  };
-  return descriptor;
-}
-function computedMethodTc39Decorator(options, compute, context) {
-  assert(context.kind === "method", "@computed can only be used on methods");
-  const derivationKey = /* @__PURE__ */ Symbol.for("__@tldraw/state__computed__" + String(context.name));
-  const fn = function() {
-    let d = this[derivationKey];
-    if (!d) {
-      d = new _Computed(String(context.name), compute.bind(this), options);
-      Object.defineProperty(this, derivationKey, {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: d
-      });
-    }
-    return d.get();
-  };
-  fn[isComputedMethodKey] = true;
-  return fn;
+  wrapper[derivationKeyKey] = derivationKey;
+  return wrapper;
 }
 function computedDecorator(options = {}, args) {
   if (args.length === 2) {
     const [originalMethod, context] = args;
-    return computedMethodTc39Decorator(options, originalMethod, context);
+    assert(context.kind === "method", "@computed can only be used on methods");
+    return makeComputedWrapper(String(context.name), originalMethod, options);
   } else {
     const [_target, key, descriptor] = args;
     if (descriptor.get) {
       logComputedGetterWarning();
-      return computedGetterLegacyDecorator(options, _target, key, descriptor);
+      descriptor.get = makeComputedWrapper(key, descriptor.get, options);
     } else {
-      return computedMethodLegacyDecorator(options, _target, key, descriptor);
+      descriptor.value = makeComputedWrapper(key, descriptor.value, options);
     }
+    return descriptor;
   }
 }
-var isComputedMethodKey = "@@__isComputedMethod__@@";
 function computed() {
-  if (arguments.length === 1) {
+  if (arguments.length <= 1) {
     const options = arguments[0];
     return (...args) => computedDecorator(options, args);
   } else if (typeof arguments[0] === "string") {
@@ -14428,7 +14274,7 @@ var __EffectScheduler__ = class {
   maybeScheduleEffect() {
     if (!this._isActivelyListening) return;
     if (this.lastReactedEpoch === getGlobalEpoch()) return;
-    if (this.parents.length && !haveParentsChanged(this)) {
+    if ((this.lastReactedEpoch !== GLOBAL_START_EPOCH || this.parents.length > 0) && !haveParentsChanged(this)) {
       this.lastReactedEpoch = getGlobalEpoch();
       return;
     }
@@ -14458,7 +14304,9 @@ var __EffectScheduler__ = class {
   attach() {
     this._isActivelyListening = true;
     for (let i = 0, n = this.parents.length; i < n; i++) {
-      attach(this.parents[i], this);
+      const parent = this.parents[i];
+      parent.__unsafe__getWithoutCapture(true);
+      attach(parent, this);
     }
   }
   /**
@@ -14536,7 +14384,7 @@ if (actualApiVersion !== currentApiVersion) {
 }
 registerTldrawLibraryVersion(
   "@tldraw/state",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -14706,7 +14554,7 @@ function useValue() {
 // node_modules/@tldraw/state-react/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "@tldraw/state-react",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -14778,7 +14626,7 @@ function cachedHashString(string2) {
     hashed = hashString(string2);
     if (stringHashCacheCount === STRING_HASH_CACHE_SIZE) {
       stringHashCacheCount = 0;
-      stringHashCache = {};
+      stringHashCache = /* @__PURE__ */ Object.create(null);
     }
     stringHashCache[string2] = hashed;
     stringHashCacheCount++;
@@ -14823,7 +14671,7 @@ function nextHash() {
 var weakMap = /* @__PURE__ */ new WeakMap();
 var symbolMap = /* @__PURE__ */ Object.create(null);
 var _objHashUID = 0;
-var stringHashCache = {};
+var stringHashCache = /* @__PURE__ */ Object.create(null);
 var stringHashCacheCount = 0;
 var STRING_HASH_CACHE_SIZE = 24e3;
 var SHIFT = 5;
@@ -14840,6 +14688,9 @@ function SetRef(ref) {
 }
 function arrCopy(arr, offset4 = 0) {
   return arr.slice(offset4);
+}
+function is(a, b) {
+  return a === b || a !== a && b !== b;
 }
 var OwnerID = class {
 };
@@ -15054,7 +14905,7 @@ var ArrayMapNode = class _ArrayMapNode {
   get(_shift, _keyHash, key, notSetValue) {
     const entries = this.entries;
     for (let ii = 0, len = entries.length; ii < len; ii++) {
-      if (Object.is(key, entries[ii][0])) {
+      if (is(key, entries[ii][0])) {
         return entries[ii][1];
       }
     }
@@ -15066,7 +14917,7 @@ var ArrayMapNode = class _ArrayMapNode {
     let idx = 0;
     const len = entries.length;
     for (; idx < len; idx++) {
-      if (Object.is(key, entries[idx][0])) {
+      if (is(key, entries[idx][0])) {
         break;
       }
     }
@@ -15240,7 +15091,7 @@ var HashCollisionNode = class _HashCollisionNode {
   get(shift5, keyHash, key, notSetValue) {
     const entries = this.entries;
     for (let ii = 0, len = entries.length; ii < len; ii++) {
-      if (Object.is(key, entries[ii][0])) {
+      if (is(key, entries[ii][0])) {
         return entries[ii][1];
       }
     }
@@ -15263,7 +15114,7 @@ var HashCollisionNode = class _HashCollisionNode {
     let idx = 0;
     const len = entries.length;
     for (; idx < len; idx++) {
-      if (Object.is(key, entries[idx][0])) {
+      if (is(key, entries[idx][0])) {
         break;
       }
     }
@@ -15308,11 +15159,11 @@ var ValueNode = class _ValueNode {
   keyHash;
   entry;
   get(shift5, keyHash, key, notSetValue) {
-    return Object.is(key, this.entry[0]) ? this.entry[1] : notSetValue;
+    return is(key, this.entry[0]) ? this.entry[1] : notSetValue;
   }
   update(ownerID, shift5, keyHash, key, value, didChangeSize, didAlter) {
     const removed = value === NOT_SET;
-    const keyMatch = Object.is(key, this.entry[0]);
+    const keyMatch = is(key, this.entry[0]);
     if (keyMatch ? value === this.entry[1] : removed) {
       return this;
     }
@@ -15701,6 +15552,47 @@ var AtomMap = class {
     return this;
   }
   /**
+   * Gets the value associated with a key, inserting `defaultValue` first if the key doesn't exist.
+   * This method is reactive and will cause reactive contexts to update when the value changes.
+   *
+   * @param key - The key to retrieve the value for
+   * @param defaultValue - The value to insert if the key doesn't exist
+   * @returns The existing value, or `defaultValue` if the key was missing
+   * @example
+   * ```ts
+   * const map = new AtomMap('myMap')
+   * console.log(map.getOrInsert('count', 0)) // 0, and 'count' is now set
+   * console.log(map.getOrInsert('count', 10)) // 0
+   * ```
+   */
+  getOrInsert(key, defaultValue) {
+    return this.getOrInsertComputed(key, () => defaultValue);
+  }
+  /**
+   * Gets the value associated with a key, inserting the result of `callback` first if the key
+   * doesn't exist. The callback only runs when the key is missing.
+   * This method is reactive and will cause reactive contexts to update when the value changes.
+   *
+   * @param key - The key to retrieve the value for
+   * @param callback - Called with the key to produce the value to insert
+   * @returns The existing value, or the newly computed value if the key was missing
+   * @example
+   * ```ts
+   * const map = new AtomMap<string, string[]>('myMap')
+   * map.getOrInsertComputed('tags', () => []).push('new')
+   * ```
+   */
+  getOrInsertComputed(key, callback) {
+    const valueAtom = this.getAtom(key);
+    if (valueAtom) {
+      const value2 = valueAtom.get();
+      if (value2 !== UNINITIALIZED) return value2;
+    }
+    const value = callback(key);
+    this.set(key, value);
+    return value;
+  }
+  /**
    * Updates an existing value using an updater function.
    *
    * @param key - The key of the value to update
@@ -15817,7 +15709,7 @@ var AtomMap = class {
   *entries() {
     for (const [key, valueAtom] of this.atoms.get()) {
       const value = valueAtom.get();
-      assert(value !== UNINITIALIZED);
+      if (value === UNINITIALIZED) continue;
       yield [key, value];
     }
   }
@@ -15836,7 +15728,8 @@ var AtomMap = class {
    * ```
    */
   *keys() {
-    for (const key of this.atoms.get().keys()) {
+    for (const [key, valueAtom] of this.atoms.get()) {
+      if (valueAtom.__unsafe__getWithoutCapture() === UNINITIALIZED) continue;
       yield key;
     }
   }
@@ -15857,7 +15750,7 @@ var AtomMap = class {
   *values() {
     for (const valueAtom of this.atoms.get().values()) {
       const value = valueAtom.get();
-      assert(value !== UNINITIALIZED);
+      if (value === UNINITIALIZED) continue;
       yield value;
     }
   }
@@ -16068,6 +15961,8 @@ var IncrementalSetConstructor = class {
     if (numRemoved === 0 && numAdded === 0) {
       return void 0;
     }
+    if (numAdded === 0) delete this.diff.added;
+    if (numRemoved === 0) delete this.diff.removed;
     return { value: this.nextValue, diff: this.diff };
   }
   /**
@@ -16210,13 +16105,11 @@ function createRecordMigrationSequence(opts) {
   return createMigrationSequence({
     sequenceId,
     retroactive: opts.retroactive ?? true,
-    sequence: opts.sequence.map(
-      (m) => "id" in m ? {
-        ...m,
-        scope: "record",
-        filter: (r) => r.typeName === opts.recordType && (m.filter?.(r) ?? true) && (opts.filter?.(r) ?? true)
-      } : m
-    )
+    sequence: opts.sequence.map((m) => ({
+      ...m,
+      scope: "record",
+      filter: (r) => r.typeName === opts.recordType && (m.filter?.(r) ?? true) && (opts.filter?.(r) ?? true)
+    }))
   });
 }
 function sortMigrations(migrations) {
@@ -16239,11 +16132,12 @@ function sortMigrations(migrations) {
     }
     if (m.dependsOn) {
       for (const depId of m.dependsOn) {
-        if (byId.has(depId)) {
-          dependents.get(depId).add(m.id);
-          explicitDeps.get(m.id).add(depId);
-          inDegree.set(m.id, inDegree.get(m.id) + 1);
-        }
+        if (!byId.has(depId)) continue;
+        explicitDeps.get(m.id).add(depId);
+        const dependentsOfDep = dependents.get(depId);
+        if (dependentsOfDep.has(m.id)) continue;
+        dependentsOfDep.add(m.id);
+        inDegree.set(m.id, inDegree.get(m.id) + 1);
       }
     }
   }
@@ -16342,8 +16236,12 @@ function createEmptyRecordsDiff() {
   return { added: {}, updated: {}, removed: {} };
 }
 function reverseRecordsDiff(diff) {
-  const result = { added: diff.removed, removed: diff.added, updated: {} };
-  for (const [from2, to] of Object.values(diff.updated)) {
+  const result = {
+    added: { ...diff.removed },
+    removed: { ...diff.added },
+    updated: {}
+  };
+  for (const [from2, to] of objectMapValues(diff.updated)) {
     result.updated[from2.id] = [to, from2];
   }
   return result;
@@ -16356,23 +16254,47 @@ function hasAnyKey(obj) {
   return false;
 }
 function squashRecordDiffs(diffs, options) {
-  const result = options?.mutateFirstDiff ? diffs[0] : { added: {}, removed: {}, updated: {} };
-  squashRecordDiffsMutable(result, options?.mutateFirstDiff ? diffs.slice(1) : diffs);
+  if (options?.mutateFirstDiff) {
+    const result2 = diffs[0];
+    if (!result2) return createEmptyRecordsDiff();
+    for (const _id in result2.updated) {
+      const id = _id;
+      const [from2, to] = result2.updated[id];
+      result2.updated[id] = [from2, to];
+    }
+    squashRecordDiffsMutable(result2, diffs, 1);
+    return result2;
+  }
+  const result = { added: {}, removed: {}, updated: {} };
+  squashRecordDiffsMutable(result, diffs);
   return result;
 }
-function squashRecordDiffsMutable(target, diffs) {
-  for (const diff of diffs) {
+function squashRecordDiffsMutable(target, diffs, fromIndex = 0) {
+  squashRecordDiffsMutableImpl(target, diffs, fromIndex);
+}
+function squashRecordDiffsMutableByType(target, diffs, typeName) {
+  return squashRecordDiffsMutableImpl(target, diffs, 0, typeName);
+}
+function squashRecordDiffsMutableImpl(target, diffs, fromIndex, typeName) {
+  let sizeChange = 0;
+  const trackSize = typeName !== void 0;
+  for (let i = fromIndex; i < diffs.length; i++) {
+    const diff = diffs[i];
     const targetHasRemoved = hasAnyKey(target.removed);
     for (const _id in diff.added) {
       const id = _id;
       const value = diff.added[id];
+      if (typeName !== void 0 && value.typeName !== typeName) continue;
       if (targetHasRemoved && target.removed[id]) {
         const original = target.removed[id];
         delete target.removed[id];
+        if (trackSize) sizeChange--;
         if (original !== value) {
           target.updated[id] = [original, value];
+          if (trackSize) sizeChange++;
         }
       } else {
+        if (trackSize && !target.added[id]) sizeChange++;
         target.added[id] = value;
       }
     }
@@ -16380,33 +16302,49 @@ function squashRecordDiffsMutable(target, diffs) {
     for (const _id in diff.updated) {
       const id = _id;
       const to = diff.updated[id][1];
+      if (typeName !== void 0 && to.typeName !== typeName) continue;
       if (targetHasAdded && target.added[id]) {
         target.added[id] = to;
+        if (trackSize && target.updated[id]) sizeChange--;
         delete target.updated[id];
-        if (targetHasRemoved) delete target.removed[id];
+        if (targetHasRemoved) {
+          if (trackSize && target.removed[id]) sizeChange--;
+          delete target.removed[id];
+        }
         continue;
       }
       const existing = target.updated[id];
       if (existing) {
         existing[1] = to;
-        if (targetHasRemoved) delete target.removed[id];
+        if (targetHasRemoved) {
+          if (trackSize && target.removed[id]) sizeChange--;
+          delete target.removed[id];
+        }
         continue;
       }
       target.updated[id] = [diff.updated[id][0], to];
-      if (targetHasRemoved) delete target.removed[id];
+      if (trackSize) sizeChange++;
+      if (targetHasRemoved) {
+        if (trackSize && target.removed[id]) sizeChange--;
+        delete target.removed[id];
+      }
     }
     for (const _id in diff.removed) {
       const id = _id;
+      if (typeName !== void 0 && diff.removed[id].typeName !== typeName) continue;
       if (target.added[id]) {
         delete target.added[id];
+        if (trackSize) sizeChange--;
       } else if (target.updated[id]) {
         target.removed[id] = target.updated[id][0];
         delete target.updated[id];
       } else {
+        if (trackSize && !target.removed[id]) sizeChange++;
         target.removed[id] = diff.removed[id];
       }
     }
   }
+  return sizeChange;
 }
 
 // node_modules/@tldraw/store/dist-esm/lib/RecordType.mjs
@@ -16488,7 +16426,7 @@ var RecordType = class _RecordType {
       ...this.createDefaultProperties(),
       id: properties.id ?? this.createId()
     };
-    for (const [k, v] of Object.entries(properties)) {
+    for (const [k, v] of objectMapEntries(properties)) {
       if (v !== void 0) {
         result[k] = v;
       }
@@ -16734,7 +16672,9 @@ function objectMatchesQuery(query, object2) {
 }
 function executeQuery(store, typeName, query) {
   const matcherPaths = extractMatcherPaths(query);
-  const matchIds = Object.fromEntries(matcherPaths.map(({ path }) => [path, /* @__PURE__ */ new Set()]));
+  const matchIds = objectMapFromEntries(
+    matcherPaths.map(({ path }) => [path, /* @__PURE__ */ new Set()])
+  );
   for (const { path, matcher } of matcherPaths) {
     const index2 = store.index(typeName, path);
     if ("eq" in matcher) {
@@ -16765,7 +16705,7 @@ function executeQuery(store, typeName, query) {
       return /* @__PURE__ */ new Set();
     }
   }
-  return intersectSets(Object.values(matchIds));
+  return intersectSets(objectMapValues(matchIds));
 }
 
 // node_modules/@tldraw/store/dist-esm/lib/StoreQueries.mjs
@@ -16865,56 +16805,8 @@ var StoreQueries = class {
         const diff = this.history.getDiffSince(lastComputedEpoch);
         if (diff === RESET_VALUE) return this.history.get();
         const res = { added: {}, removed: {}, updated: {} };
-        let numAdded = 0;
-        let numRemoved = 0;
-        let numUpdated = 0;
-        for (const changes of diff) {
-          for (const added of objectMapValues(changes.added)) {
-            if (added.typeName === typeName) {
-              if (res.removed[added.id]) {
-                const original = res.removed[added.id];
-                delete res.removed[added.id];
-                numRemoved--;
-                if (original !== added) {
-                  res.updated[added.id] = [original, added];
-                  numUpdated++;
-                }
-              } else {
-                res.added[added.id] = added;
-                numAdded++;
-              }
-            }
-          }
-          for (const [from2, to] of objectMapValues(changes.updated)) {
-            if (to.typeName === typeName) {
-              if (res.added[to.id]) {
-                res.added[to.id] = to;
-              } else if (res.updated[to.id]) {
-                res.updated[to.id] = [res.updated[to.id][0], to];
-              } else {
-                res.updated[to.id] = [from2, to];
-                numUpdated++;
-              }
-            }
-          }
-          for (const removed of objectMapValues(changes.removed)) {
-            if (removed.typeName === typeName) {
-              if (res.added[removed.id]) {
-                delete res.added[removed.id];
-                numAdded--;
-              } else if (res.updated[removed.id]) {
-                res.removed[removed.id] = res.updated[removed.id][0];
-                delete res.updated[removed.id];
-                numUpdated--;
-                numRemoved++;
-              } else {
-                res.removed[removed.id] = removed;
-                numRemoved++;
-              }
-            }
-          }
-        }
-        if (numAdded || numRemoved || numUpdated) {
+        const size4 = squashRecordDiffsMutableByType(res, diff, typeName);
+        if (size4) {
           return withDiff(this.history.get(), res);
         } else {
           return lastValue;
@@ -17093,7 +16985,7 @@ var StoreQueries = class {
    *
    * @public
    */
-  record(typeName, queryCreator = () => ({}), name = "record:" + typeName + (queryCreator ? ":" + queryCreator.toString() : "")) {
+  record(typeName, queryCreator = () => ({}), name = "record:" + typeName + ":" + queryCreator.toString()) {
     const ids = this.ids(typeName, queryCreator, name);
     return computed(name, () => {
       for (const id of ids.get()) {
@@ -17126,7 +17018,7 @@ var StoreQueries = class {
    *
    * @public
    */
-  records(typeName, queryCreator = () => ({}), name = "records:" + typeName + (queryCreator ? ":" + queryCreator.toString() : "")) {
+  records(typeName, queryCreator = () => ({}), name = "records:" + typeName + ":" + queryCreator.toString()) {
     const ids = this.ids(typeName, queryCreator, "ids:" + name);
     return computed(
       name,
@@ -17163,12 +17055,12 @@ var StoreQueries = class {
    *
    * @public
    */
-  ids(typeName, queryCreator = () => ({}), name = "ids:" + typeName + (queryCreator ? ":" + queryCreator.toString() : "")) {
+  ids(typeName, queryCreator = () => ({}), name = "ids:" + typeName + ":" + queryCreator.toString()) {
     const typeHistory = this.filterHistory(typeName);
     const fromScratch3 = () => {
       typeHistory.get();
       const query = queryCreator();
-      if (Object.keys(query).length === 0) {
+      if (!hasAnyKey(query)) {
         return this.getAllIdsForType(typeName);
       }
       return executeQuery(this, typeName, query);
@@ -17182,7 +17074,7 @@ var StoreQueries = class {
         return prevValue;
       }
     };
-    const cachedQuery = computed("ids_query:" + name, queryCreator, {
+    const cachedQuery = computed("ids_query:" + name, () => queryCreator(), {
       isEqual: import_lodash2.default
     });
     return computed(
@@ -17843,46 +17735,35 @@ var Store = class {
       },
       { scheduleEffect: (cb) => this.cancelHistoryReactor = throttleToNextFrame(cb) }
     );
-    this.scopedTypes = {
-      document: new Set(
-        objectMapValues(this.schema.types).filter((t2) => t2.scope === "document").map((t2) => t2.typeName)
-      ),
-      session: new Set(
-        objectMapValues(this.schema.types).filter((t2) => t2.scope === "session").map((t2) => t2.typeName)
-      ),
-      presence: new Set(
-        objectMapValues(this.schema.types).filter((t2) => t2.scope === "presence").map((t2) => t2.typeName)
-      )
+    const scopedTypes = {
+      document: /* @__PURE__ */ new Set(),
+      session: /* @__PURE__ */ new Set(),
+      presence: /* @__PURE__ */ new Set()
     };
+    for (const type of objectMapValues(this.schema.types)) {
+      scopedTypes[type.scope].add(type.typeName);
+    }
+    this.scopedTypes = scopedTypes;
   }
   _flushHistory() {
     if (this.historyAccumulator.hasChanges()) {
       const entries = this.historyAccumulator.flush();
       for (const { changes, source } of entries) {
-        let instanceChanges = null;
-        let documentChanges = null;
-        let presenceChanges = null;
+        const scopedChanges = /* @__PURE__ */ new Map();
         for (const { onHistory, filters } of this.listeners) {
           if (filters.source !== "all" && filters.source !== source) {
             continue;
           }
-          if (filters.scope !== "all") {
-            if (filters.scope === "document") {
-              documentChanges ??= this.filterChangesByScope(changes, "document");
-              if (!documentChanges) continue;
-              onHistory({ changes: documentChanges, source });
-            } else if (filters.scope === "session") {
-              instanceChanges ??= this.filterChangesByScope(changes, "session");
-              if (!instanceChanges) continue;
-              onHistory({ changes: instanceChanges, source });
-            } else {
-              presenceChanges ??= this.filterChangesByScope(changes, "presence");
-              if (!presenceChanges) continue;
-              onHistory({ changes: presenceChanges, source });
-            }
-          } else {
+          if (filters.scope === "all") {
             onHistory({ changes, source });
+            continue;
           }
+          if (!scopedChanges.has(filters.scope)) {
+            scopedChanges.set(filters.scope, this.filterChangesByScope(changes, filters.scope));
+          }
+          const filtered = scopedChanges.get(filters.scope);
+          if (!filtered) continue;
+          onHistory({ changes: filtered, source });
         }
       }
     }
@@ -17902,7 +17783,7 @@ var Store = class {
       updated: filterEntries(change.updated, (_, r) => this.scopedTypes[scope].has(r[1].typeName)),
       removed: filterEntries(change.removed, (_, r) => this.scopedTypes[scope].has(r.typeName))
     };
-    if (!hasAnyKey(result.added) && !hasAnyKey(result.updated) && !hasAnyKey(result.removed)) {
+    if (isRecordsDiffEmpty(result)) {
       return null;
     }
     return result;
@@ -18351,6 +18232,11 @@ var Store = class {
             if (!changed) changed = { ...existing };
             changed[key] = value;
           }
+          for (const key of Object.keys(existing)) {
+            if (type.ephemeralKeySet.has(key) || Object.hasOwn(to, key)) continue;
+            if (!changed) changed = { ...existing };
+            delete changed[key];
+          }
           if (changed) toPut.push(changed);
         } else {
           toPut.push(to);
@@ -18456,9 +18342,8 @@ var Store = class {
       }
       if (!this.pendingAfterEvents) {
         this.sideEffects.handleOperationComplete(source);
-      } else {
-        source = "user";
       }
+      source = "user";
     }
   }
   _isInAtomicOp = false;
@@ -18745,9 +18630,13 @@ var StoreSchema = class _StoreSchema {
     if (cached) {
       return cached;
     }
+    const result = this.computeMigrationsSince(persistedSchema);
+    this.migrationCache.set(persistedSchema, result);
+    return result;
+  }
+  computeMigrationsSince(persistedSchema) {
     const upgradeResult = upgradeSchema(persistedSchema);
     if (!upgradeResult.ok) {
-      this.migrationCache.set(persistedSchema, upgradeResult);
       return upgradeResult;
     }
     const schema = upgradeResult.value;
@@ -18761,9 +18650,7 @@ var StoreSchema = class _StoreSchema {
       }
     }
     if (sequenceIdsToInclude.size === 0) {
-      const result2 = Result.ok([]);
-      this.migrationCache.set(persistedSchema, result2);
-      return result2;
+      return Result.ok([]);
     }
     const allMigrationsToInclude = /* @__PURE__ */ new Set();
     for (const sequenceId of sequenceIdsToInclude) {
@@ -18777,19 +18664,13 @@ var StoreSchema = class _StoreSchema {
       const theirVersionId = `${sequenceId}/${theirVersion}`;
       const idx = this.migrations[sequenceId].sequence.findIndex((m) => m.id === theirVersionId);
       if (idx === -1) {
-        const result2 = Result.err("Incompatible schema?");
-        this.migrationCache.set(persistedSchema, result2);
-        return result2;
+        return Result.err("Incompatible schema?");
       }
       for (const migration of this.migrations[sequenceId].sequence.slice(idx + 1)) {
         allMigrationsToInclude.add(migration.id);
       }
     }
-    const result = Result.ok(
-      this.sortedMigrations.filter(({ id }) => allMigrationsToInclude.has(id))
-    );
-    this.migrationCache.set(persistedSchema, result);
-    return result;
+    return Result.ok(this.sortedMigrations.filter(({ id }) => allMigrationsToInclude.has(id)));
   }
   /**
    * Migrates a single persisted record to match the current schema version.
@@ -18915,10 +18796,14 @@ var StoreSchema = class _StoreSchema {
         exhaustiveSwitchError(migration);
       }
     }
+    const idsToDelete = [];
     for (const [id, state] of storage.entries()) {
       if (this.getType(state.typeName).scope !== "document") {
-        storage.delete(id);
+        idsToDelete.push(id);
       }
+    }
+    for (const id of idsToDelete) {
+      storage.delete(id);
     }
   }
   /**
@@ -19091,7 +18976,7 @@ var StoreSchema = class _StoreSchema {
 // node_modules/@tldraw/store/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "@tldraw/store",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -20244,7 +20129,7 @@ function or(v1, v2) {
 // node_modules/@tldraw/validate/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "@tldraw/validate",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -21691,7 +21576,7 @@ function createInstanceRecordType(stylesById) {
         rotation: 0
       },
       isFocusMode: false,
-      exportBackground: false,
+      exportBackground: true,
       isDebugMode: false,
       isToolLocked: false,
       screenBounds: { x: 0, y: 0, w: 1080, h: 720 },
@@ -24317,8 +24202,7 @@ function createIntegrityChecker(store) {
       store.put([
         store.schema.types.instance.create({
           id: TLINSTANCE_ID,
-          currentPageId: getFirstPageId(),
-          exportBackground: true
+          currentPageId: getFirstPageId()
         })
       ]);
       return ensureStoreIsUsable();
@@ -24729,7 +24613,7 @@ function getSupportedLocale(locale) {
 // node_modules/@tldraw/tlschema/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "@tldraw/tlschema",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -25237,6 +25121,7 @@ function useCanvasEvents() {
         }
         if (e.dataTransfer?.files?.length) {
           const files = Array.from(e.dataTransfer.files);
+          editor.markHistoryStoppingPoint("drop");
           await editor.putExternalContent({
             type: "files",
             files,
@@ -25246,6 +25131,7 @@ function useCanvasEvents() {
         }
         const url = e.dataTransfer.getData("url");
         if (url) {
+          editor.markHistoryStoppingPoint("drop");
           await editor.putExternalContent({
             type: "url",
             url,
@@ -25343,13 +25229,15 @@ function useDocumentEvents() {
   const container = useContainer();
   const isEditing = useValue("isEditing", () => editor.getEditingShapeId(), [editor]);
   const isAppFocused = useValue("isFocused", () => editor.getIsFocused(), [editor]);
+  const heldKeysRef = (0, import_react13.useRef)(/* @__PURE__ */ new Map());
   (0, import_react13.useEffect)(() => {
     if (!container) return;
     function onDrop(e) {
       if (e.isSpecialRedispatchedEvent) return;
       preventDefault(e);
-      e.stopPropagation();
       const cvs = container.querySelector(".tl-canvas");
+      if (cvs?.contains(e.target)) return;
+      e.stopPropagation();
       if (!cvs) return;
       const newEvent = new DragEvent(e.type, e);
       newEvent.isSpecialRedispatchedEvent = true;
@@ -25470,6 +25358,7 @@ function useDocumentEvents() {
         metaKey: e.metaKey,
         accelKey: isAccelKey(e)
       };
+      heldKeysRef.current.set(e.code, e.key);
       editor.dispatch(info);
     };
     const handleKeyUp = (e) => {
@@ -25492,6 +25381,7 @@ function useDocumentEvents() {
         metaKey: e.metaKey,
         accelKey: isAccelKey(e)
       };
+      heldKeysRef.current.delete(e.code);
       editor.dispatch(info);
     };
     function handleTouchStart(e) {
@@ -25515,22 +25405,47 @@ function useDocumentEvents() {
     };
     container.addEventListener("touchstart", handleTouchStart, { passive: false });
     container.addEventListener("wheel", handleWheel, { passive: false });
+    const handleGesture = (e) => preventDefault(e);
     const ownerDoc = container.ownerDocument;
-    ownerDoc.addEventListener("gesturestart", preventDefault);
-    ownerDoc.addEventListener("gesturechange", preventDefault);
-    ownerDoc.addEventListener("gestureend", preventDefault);
+    ownerDoc.addEventListener("gesturestart", handleGesture);
+    ownerDoc.addEventListener("gesturechange", handleGesture);
+    ownerDoc.addEventListener("gestureend", handleGesture);
     container.addEventListener("keydown", handleKeyDown2);
     container.addEventListener("keyup", handleKeyUp);
     return () => {
       container.removeEventListener("touchstart", handleTouchStart);
       container.removeEventListener("wheel", handleWheel);
-      ownerDoc.removeEventListener("gesturestart", preventDefault);
-      ownerDoc.removeEventListener("gesturechange", preventDefault);
-      ownerDoc.removeEventListener("gestureend", preventDefault);
+      ownerDoc.removeEventListener("gesturestart", handleGesture);
+      ownerDoc.removeEventListener("gesturechange", handleGesture);
+      ownerDoc.removeEventListener("gestureend", handleGesture);
       container.removeEventListener("keydown", handleKeyDown2);
       container.removeEventListener("keyup", handleKeyUp);
     };
   }, [editor, container, isAppFocused, isEditing]);
+  (0, import_react13.useEffect)(() => {
+    const win = editor.getContainerWindow();
+    const handleWindowBlur = () => {
+      const heldKeys = heldKeysRef.current;
+      for (const code of [...editor.inputs.keys]) {
+        editor.dispatch({
+          type: "keyboard",
+          name: "key_up",
+          key: heldKeys.get(code) ?? code,
+          code,
+          shiftKey: false,
+          altKey: false,
+          ctrlKey: false,
+          metaKey: false,
+          accelKey: false
+        });
+      }
+      heldKeys.clear();
+    };
+    win.addEventListener("blur", handleWindowBlur);
+    return () => {
+      win.removeEventListener("blur", handleWindowBlur);
+    };
+  }, [editor]);
 }
 function areShortcutsDisabled(editor) {
   return editor.menus.hasOpenMenus() || activeElementShouldCaptureKeys(true, editor.getContainerDocument());
@@ -25725,8 +25640,9 @@ var Vec = class _Vec {
     return this;
   }
   cross(V) {
-    this.x = this.y * V.z - this.z * V.y;
-    this.y = this.z * V.x - this.x * V.z;
+    const { x, y, z } = this;
+    this.x = y * V.z - z * V.y;
+    this.y = z * V.x - x * V.z;
     return this;
   }
   dpr(V) {
@@ -25982,7 +25898,7 @@ var Vec = class _Vec {
     return _Vec.From(A);
   }
   static Slope(A, B) {
-    if (A.x === B.y) return NaN;
+    if (A.x === B.x) return NaN;
     return (A.y - B.y) / (A.x - B.x);
   }
   static IsNaN(A) {
@@ -26115,6 +26031,8 @@ init_define_import_meta();
 var MAX_ZOOM_STEP = 10;
 function normalizeWheel(event) {
   let { deltaY, deltaX } = event;
+  if (!Number.isFinite(deltaX)) deltaX = 0;
+  if (!Number.isFinite(deltaY)) deltaY = 0;
   let deltaZ = 0;
   if (event.ctrlKey || event.altKey || event.metaKey) {
     deltaZ = (Math.abs(deltaY) > MAX_ZOOM_STEP ? MAX_ZOOM_STEP * Math.sign(deltaY) : deltaY) / 100;
@@ -26613,7 +26531,8 @@ function snapAngle(r, segments) {
   return ang;
 }
 function areAnglesCompatible(a, b) {
-  return a === b || approximately(a % (Math.PI / 2) - b % (Math.PI / 2), 0);
+  const d = Math.abs(a - b) % (Math.PI / 2);
+  return approximately(d, 0) || approximately(d, Math.PI / 2);
 }
 function degreesToRadians(d) {
   return d * PI / 180;
@@ -26871,6 +26790,12 @@ function MenuClickCapture() {
     (e) => {
       const button = getPointerEventButton(e);
       if (button !== 0 && button !== 2) return;
+      if (button === 2 && editor.options.rightClickPanning) {
+        const canvas = editor.getContainer().querySelector(".tl-canvas") ?? e.currentTarget;
+        canvasEvents.onPointerDown?.({ ...e, currentTarget: canvas });
+        swallowNextNativeContextMenu();
+        return;
+      }
       (0, import_react_dom.flushSync)(() => setIsPointing(true));
       setPointerCapture(e.currentTarget, e);
       rPointerState.current = {
@@ -26880,15 +26805,7 @@ function MenuClickCapture() {
         start: new Vec(e.clientX, e.clientY)
       };
       if (button === 2) {
-        if (!editor.options.rightClickPanning) {
-          swallowNextNativeContextMenu();
-          editor.menus.clearOpenMenus();
-          return;
-        }
-        const canvas = editor.getContainer().querySelector(".tl-canvas") ?? e.currentTarget;
-        canvasEvents.onPointerDown?.({ ...e, currentTarget: canvas });
         swallowNextNativeContextMenu();
-        return;
       }
       editor.menus.clearOpenMenus();
     },
@@ -27514,7 +27431,8 @@ function rotateSelectionHandle(handle, rotation) {
   rotation = rotation % PI2;
   const numSteps = Math.round(rotation / (PI / 4));
   const currentIndex = ORDERED_SELECTION_HANDLES.indexOf(handle);
-  return ORDERED_SELECTION_HANDLES[(currentIndex + numSteps) % ORDERED_SELECTION_HANDLES.length];
+  const n = ORDERED_SELECTION_HANDLES.length;
+  return ORDERED_SELECTION_HANDLES[((currentIndex + numSteps) % n + n) % n];
 }
 function isSelectionCorner(selection) {
   return selection === "top_left" || selection === "top_right" || selection === "bottom_right" || selection === "bottom_left";
@@ -28570,7 +28488,15 @@ var Group2d = class _Group2d extends Geometry2d {
   }
   getVertices(filters) {
     if (this.isExcludedByFilter(filters)) return [];
-    return this.children.filter((c) => !c.isExcludedByFilter(filters)).flatMap((c) => c.getVertices(filters));
+    const vertices = [];
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      const childVertices = child.getVertices(filters);
+      for (let i = 0, n = childVertices.length; i < n; i++) {
+        vertices.push(childVertices[i]);
+      }
+    }
+    return vertices;
   }
   nearestPoint(point, filters) {
     let dist = Infinity;
@@ -28605,38 +28531,73 @@ var Group2d = class _Group2d extends Geometry2d {
     return smallestDistance;
   }
   hitTestPoint(point, margin, hitInside, filters = Geometry2dFilters.EXCLUDE_LABELS) {
-    return !!this.children.filter((c) => !c.isExcludedByFilter(filters)).find((c) => c.hitTestPoint(point, margin, hitInside));
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      if (child.hitTestPoint(point, margin, hitInside)) return true;
+    }
+    return false;
   }
   hitTestLineSegment(A, B, zoom, filters = Geometry2dFilters.EXCLUDE_LABELS) {
-    return !!this.children.filter((c) => !c.isExcludedByFilter(filters)).find((c) => c.hitTestLineSegment(A, B, zoom));
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      if (child.hitTestLineSegment(A, B, zoom)) return true;
+    }
+    return false;
   }
   intersectLineSegment(A, B, filters) {
-    return this.children.flatMap((child) => {
-      if (child.isExcludedByFilter(filters)) return EMPTY_ARRAY;
-      return child.intersectLineSegment(A, B, filters);
-    });
+    const result = [];
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      const hits = child.intersectLineSegment(A, B, filters);
+      for (let i = 0, n = hits.length; i < n; i++) {
+        result.push(hits[i]);
+      }
+    }
+    return result;
   }
   intersectCircle(center, radius, filters) {
-    return this.children.flatMap((child) => {
-      if (child.isExcludedByFilter(filters)) return EMPTY_ARRAY;
-      return child.intersectCircle(center, radius, filters);
-    });
+    const result = [];
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      const hits = child.intersectCircle(center, radius, filters);
+      for (let i = 0, n = hits.length; i < n; i++) {
+        result.push(hits[i]);
+      }
+    }
+    return result;
   }
   getBoundsVertices() {
     if (this.excludeFromShapeBounds) return [];
-    return this.children.flatMap((child) => child.getBoundsVertices());
+    const vertices = [];
+    for (const child of this.children) {
+      const childVertices = child.getBoundsVertices();
+      for (let i = 0, n = childVertices.length; i < n; i++) {
+        vertices.push(childVertices[i]);
+      }
+    }
+    return vertices;
   }
   intersectPolygon(polygon, filters) {
-    return this.children.flatMap((child) => {
-      if (child.isExcludedByFilter(filters)) return EMPTY_ARRAY;
-      return child.intersectPolygon(polygon, filters);
-    });
+    const result = [];
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      const hits = child.intersectPolygon(polygon, filters);
+      for (let i = 0, n = hits.length; i < n; i++) {
+        result.push(hits[i]);
+      }
+    }
+    return result;
   }
   intersectPolyline(polyline, filters) {
-    return this.children.flatMap((child) => {
-      if (child.isExcludedByFilter(filters)) return EMPTY_ARRAY;
-      return child.intersectPolyline(polyline, filters);
-    });
+    const result = [];
+    for (const child of this.children) {
+      if (child.isExcludedByFilter(filters)) continue;
+      const hits = child.intersectPolyline(polyline, filters);
+      for (let i = 0, n = hits.length; i < n; i++) {
+        result.push(hits[i]);
+      }
+    }
+    return result;
   }
   interpolateAlongEdge(t2, filters) {
     const totalLength = this.getLength(filters);
@@ -28784,10 +28745,8 @@ var CanvasOverlays = (0, import_react20.memo)(function CanvasOverlays2() {
           const shape = editor.getShape(result.id);
           if (!shape || shape.type === "group") continue;
           const geometry = editor.getShapeGeometry(shape);
-          const pageTransform = editor.getShapePageTransform(shape);
-          if (!pageTransform) continue;
+          const m = editor.getShapePageTransform(shape);
           ctx.save();
-          const m = pageTransform;
           ctx.transform(m.a, m.b, m.c, m.d, m.e, m.f);
           ctx.strokeStyle = geometry.debugColor ?? "red";
           ctx.lineWidth = 2 / zoom;
@@ -29873,7 +29832,7 @@ My browser: ${navigator.userAgent}`
                       children: "Reset data"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "tlui-button tl-error-boundary__refresh", onClick: refresh, children: "Refresh Page" })
+                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "tlui-button tl-error-boundary__refresh", onClick: refresh, children: "Refresh page" })
                 ] })
               ] })
             ] })
@@ -30176,15 +30135,19 @@ function migrateUserPreferences(userData) {
     return getFreshUserPreferences();
   }
   const snapshot = structuredClone(userData);
-  migrateSnapshot(snapshot);
   try {
+    migrateSnapshot(snapshot);
     return userTypeValidator.validate(snapshot.user);
   } catch {
     return getFreshUserPreferences();
   }
 }
 function loadUserPreferences() {
-  const userData = JSON.parse(getFromLocalStorage(USER_DATA_KEY) || "null") ?? null;
+  let userData = null;
+  try {
+    userData = JSON.parse(getFromLocalStorage(USER_DATA_KEY) || "null");
+  } catch {
+  }
   return migrateUserPreferences(userData);
 }
 var globalUserPreferences = atom("globalUserData", null);
@@ -30929,6 +30892,7 @@ function getPerfectDashProps(totalLength, strokeWidth, opts = {}) {
   }
   dashCount = Math.floor(totalLength / dashLength / (2 * ratio));
   dashCount -= dashCount % snap;
+  if (!(dashCount >= 1)) dashCount = 1;
   if (dashCount < 3 && style2 === "dashed") {
     if (totalLength / strokeWidth < 4) {
       dashLength = totalLength;
@@ -33461,6 +33425,20 @@ async function trimSvgToContent(svgString, options) {
   return { svg: newSvgString, width: newWidth, height: newHeight };
 }
 
+// node_modules/@tldraw/editor/dist-esm/lib/globals/editors.mjs
+init_define_import_meta();
+var mounted = atom("mounted editors", []);
+function registerMountedEditor(editor) {
+  const current = mounted.get();
+  if (current.includes(editor)) return;
+  mounted.set([...current, editor]);
+}
+function unregisterMountedEditor(editor) {
+  const current = mounted.get();
+  if (!current.includes(editor)) return;
+  mounted.set(current.filter((e) => e !== editor));
+}
+
 // node_modules/@tldraw/editor/dist-esm/lib/globals/menus.mjs
 init_define_import_meta();
 var tlmenus = {
@@ -33565,7 +33543,7 @@ var tlmenus = {
     this._hiddenMenus = [...this.getOpenMenus(contextId)];
     if (this._hiddenMenus.length === 0) return;
     for (const menu of this._hiddenMenus) {
-      this.deleteOpenMenu(menu, contextId);
+      this.deleteOpenMenu(menu);
     }
   },
   /**
@@ -33583,10 +33561,15 @@ var tlmenus = {
    */
   showOpenMenus(contextId) {
     if (this._hiddenMenus.length === 0) return;
+    const stillHidden = [];
     for (const menu of this._hiddenMenus) {
-      this.addOpenMenu(menu, contextId);
+      if (!contextId || menu.endsWith("-" + contextId)) {
+        this.addOpenMenu(menu);
+      } else {
+        stillHidden.push(menu);
+      }
     }
-    this._hiddenMenus = [];
+    this._hiddenMenus = stillHidden;
   },
   /**
    * Get whether a menu is open for a given context.
@@ -33602,7 +33585,7 @@ var tlmenus = {
    * @public
    */
   isMenuOpen(id, contextId) {
-    return this.getOpenMenus(contextId).includes(`${id}-${contextId}`);
+    return this.getOpenMenus(contextId).includes(contextId ? `${id}-${contextId}` : id);
   },
   /**
    * Get whether any menus are open for a given context.
@@ -33730,11 +33713,11 @@ init_define_import_meta();
 
 // node_modules/@tldraw/editor/dist-esm/version.mjs
 init_define_import_meta();
-var version = "5.3.2";
+var version = "5.4.0";
 var publishDates = {
   major: "2026-05-06T16:28:18.473Z",
-  minor: "2026-08-05T11:39:54.978Z",
-  patch: "2026-08-18T09:59:40.172Z"
+  minor: "2026-09-02T11:04:02.901Z",
+  patch: "2026-09-02T11:04:02.901Z"
 };
 
 // node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs
@@ -33784,9 +33767,13 @@ function parseDeepLinkString(deepLinkString) {
     }
     case "v": {
       const [x, y, w, h2, pageId] = deepLinkString.slice(1).split(".");
+      const bounds = new Box(Number(x), Number(y), Number(w), Number(h2));
+      if (![bounds.x, bounds.y, bounds.w, bounds.h].every(Number.isFinite)) {
+        throw Error("Invalid deep link string");
+      }
       return {
         type: "viewport",
-        bounds: new Box(Number(x), Number(y), Number(w), Number(h2)),
+        bounds,
         pageId: pageId ? PageRecordType.createId(decodeURIComponent(pageId)) : void 0
       };
     }
@@ -34202,14 +34189,8 @@ function applyRotationToSnapshotShapes({
   const { initialPageCenter, shapeSnapshots } = snapshot;
   editor.updateShapes(
     shapeSnapshots.map(({ shape, initialPagePoint }) => {
-      const parentTransform = isShapeId(shape.parentId) ? editor.getShapePageTransform(shape.parentId) : Mat.Identity();
       const newPagePoint = Vec.RotWith(initialPagePoint, centerOverride ?? initialPageCenter, delta);
-      const newLocalPoint = Mat.applyToPoint(
-        // use the current parent transform in case it has moved/resized since the start
-        // (e.g. if rotating a shape at the edge of a group)
-        Mat.Inverse(parentTransform),
-        newPagePoint
-      );
+      const newLocalPoint = editor.getPointInParentSpace(shape.id, newPagePoint);
       const newRotation = canonicalizeRotation(shape.rotation + delta);
       return {
         id: shape.id,
@@ -34559,9 +34540,13 @@ function deriveShapeIdsInCurrentPage(store, getCurrentPageId) {
   function fromScratch3() {
     const currentPageId = getCurrentPageId();
     lastPageId = currentPageId;
-    return new Set(
-      [...shapesIndex.get()].filter((id) => isShapeInPage(store, currentPageId, store.get(id)))
-    );
+    const result = /* @__PURE__ */ new Set();
+    for (const id of shapesIndex.get()) {
+      if (isShapeInPage(store, currentPageId, store.get(id))) {
+        result.add(id);
+      }
+    }
+    return result;
   }
   return computed("_shapeIdsInCurrentPage", (prevValue, lastComputedEpoch) => {
     if (isUninitialized(prevValue)) {
@@ -34685,7 +34670,7 @@ var ClickManager = class {
         switch (this._clickState) {
           case "pendingDouble": {
             this._clickState = "pendingOverflow";
-            this._clickTimeout = this._getClickTimeout(this._clickState);
+            this._getClickTimeout(this._clickState);
             return {
               ...info,
               type: "click",
@@ -34704,7 +34689,7 @@ var ClickManager = class {
           default: {
           }
         }
-        this._clickTimeout = this._getClickTimeout(this._clickState);
+        this._getClickTimeout(this._clickState);
         return info;
       }
       case "pointer_up": {
@@ -34726,7 +34711,7 @@ var ClickManager = class {
         return info;
       }
       case "pointer_move": {
-        if (this._clickState !== "idle" && this._clickScreenPoint && Vec.Dist2(this._clickScreenPoint, this.editor.inputs.getCurrentScreenPoint()) > (this.editor.getInstanceState().isCoarsePointer ? this.editor.options.coarseDragDistanceSquared : this.editor.options.dragDistanceSquared)) {
+        if (this._clickState !== "idle" && this._clickScreenPoint && Vec.Dist2(this._clickScreenPoint, info.point) > (this.editor.getInstanceState().isCoarsePointer ? this.editor.options.coarseDragDistanceSquared : this.editor.options.dragDistanceSquared)) {
           this.cancelDoubleClickTimeout();
         }
         return info;
@@ -34785,14 +34770,14 @@ var CollaboratorsManager = class {
   getCollaborators() {
     const allPresenceRecords = this._getCollaboratorsQuery().get();
     if (!allPresenceRecords.length) return EMPTY_ARRAY;
-    const userIds = [...new Set(allPresenceRecords.map((c) => c.userId))].sort();
-    return userIds.map((id) => {
-      const latestPresence = maxBy(
-        allPresenceRecords.filter((c) => c.userId === id),
-        (p) => p.lastActivityTimestamp ?? 0
-      );
-      return latestPresence;
-    });
+    const latestByUserId = /* @__PURE__ */ new Map();
+    for (const presence of allPresenceRecords) {
+      const latest = latestByUserId.get(presence.userId);
+      if (!latest || (presence.lastActivityTimestamp ?? 0) > (latest.lastActivityTimestamp ?? 0)) {
+        latestByUserId.set(presence.userId, presence);
+      }
+    }
+    return [...latestByUserId.keys()].sort().map((id) => latestByUserId.get(id));
   }
   getCollaboratorsOnCurrentPage() {
     const currentPageId = this.editor.getCurrentPageId();
@@ -35083,7 +35068,7 @@ var FontManager = class {
       },
       {
         areResultsEqual: areArraysShallowEqual,
-        areRecordsEqual: (a, b) => a.props === b.props && a.meta === b.meta
+        areRecordsEqual: areShapesContentEqual
       }
     );
     this.shapeFontLoadStateCache = editor.store.createCache(
@@ -35604,10 +35589,58 @@ var __decorateClass6 = (decorators, target, key, kind) => {
 };
 var POINTER_VELOCITY_REFERENCE_INTERVAL_MS = 16;
 var POINTER_VELOCITY_REFERENCE_SMOOTHING = 0.5;
+var ACTIVITY_TIMESTAMP_THROTTLE_MS = 1e3;
+var ACTIVITY_TIMESTAMP_THROTTLE_FLOOR_MS = 100;
+var ACTIVITY_EVENTS = [
+  "pointerdown",
+  "pointermove",
+  "pointerup",
+  "keydown",
+  "beforeinput",
+  "wheel",
+  "gesturestart",
+  "gesturechange"
+];
 var InputsManager = class extends EditorManager {
   constructor(editor) {
     super(editor);
     this.addEditorEvent("frame", this._onFrame);
+    this.register(
+      react("presence activity listeners", () => {
+        if (this.editor.getIsMounted() && this._getHasCollaborators()) {
+          this._attachActivityListeners();
+        } else {
+          this._detachActivityListeners();
+        }
+      })
+    );
+    this.register(() => {
+      this._detachActivityListeners();
+      this._throttledActivityStamp.cancel();
+    });
+  }
+  _detachActivityListenersFn = null;
+  /**
+   * User input anywhere in the editor's tab counts as activity for collaborator presence —
+   * presence means "this person is here", whether or not the input lands on the editor itself
+   * (e.g. typing in a sidebar next to the canvas). Listen in the capture phase so input that
+   * other handlers swallow still counts.
+   */
+  _attachActivityListeners() {
+    if (this._detachActivityListenersFn) return;
+    const win = this.editor.getContainerWindow();
+    for (const name of ACTIVITY_EVENTS) {
+      win.addEventListener(name, this.markActivity, { capture: true });
+    }
+    this._detachActivityListenersFn = () => {
+      for (const name of ACTIVITY_EVENTS) {
+        win.removeEventListener(name, this.markActivity, { capture: true });
+      }
+    };
+  }
+  _detachActivityListeners() {
+    this._detachActivityListenersFn?.();
+    this._detachActivityListenersFn = null;
   }
   _onFrame(elapsed) {
     this.updatePointerVelocity(elapsed);
@@ -36025,6 +36058,29 @@ var InputsManager = class extends EditorManager {
   _getHasCollaborators() {
     return this.editor.getCollaborators().length > 0;
   }
+  _throttledActivityStamp = (0, import_lodash4.default)(
+    () => {
+      const pointer = this.editor.store.unsafeGetWithoutCapture(TLPOINTER_ID);
+      if (!pointer) return;
+      this.editor.run(
+        () => {
+          this.editor.store.put([{ ...pointer, lastActivityTimestamp: Date.now() }]);
+        },
+        { history: "ignore" }
+      );
+    },
+    // Stay comfortably below the idle timeout so a continuously-active peer
+    // never flickers to idle between throttled stamps.
+    Math.max(
+      ACTIVITY_TIMESTAMP_THROTTLE_FLOOR_MS,
+      Math.min(ACTIVITY_TIMESTAMP_THROTTLE_MS, this.editor.options.collaboratorIdleTimeoutMs / 3)
+    ),
+    { trailing: false }
+  );
+  markActivity() {
+    if (!this._getHasCollaborators()) return;
+    this._throttledActivityStamp();
+  }
   /**
    * The previous point used for velocity calculation (updated each tick, not each pointer event).
    * @internal
@@ -36093,11 +36149,11 @@ var InputsManager = class extends EditorManager {
               typeName: "pointer",
               x: pagePoint.x,
               y: pagePoint.y,
-              lastActivityTimestamp: (
-                // If our pointer moved only because we're following some other user, then don't
-                // update our last activity timestamp; otherwise, update it to the current timestamp.
-                info.type === "pointer" && info.pointerId === INTERNAL_POINTER_IDS.CAMERA_MOVE ? this.editor.store.unsafeGetWithoutCapture(TLPOINTER_ID)?.lastActivityTimestamp ?? Date.now() : Date.now()
-              ),
+              // The activity timestamp is stamped by the container's input
+              // listeners (see `markActivity`), not by pointer position updates:
+              // synthetic moves, like the camera following another user, don't
+              // count as activity.
+              lastActivityTimestamp: this.editor.store.unsafeGetWithoutCapture(TLPOINTER_ID)?.lastActivityTimestamp ?? 0,
               meta: {}
             }
           ]);
@@ -36137,6 +36193,9 @@ __decorateClass6([
 __decorateClass6([
   computed
 ], InputsManager.prototype, "_getHasCollaborators", 1);
+__decorateClass6([
+  bind
+], InputsManager.prototype, "markActivity", 1);
 
 // node_modules/@tldraw/editor/dist-esm/lib/editor/managers/PerformanceManager/PerformanceManager.mjs
 init_define_import_meta();
@@ -36595,6 +36654,7 @@ var ScribbleManager = class {
     const id = options.id ?? uniqueId();
     const session = {
       id,
+      pageId: this.editor.getCurrentPageId(),
       items: [],
       state: "active",
       options: {
@@ -36835,6 +36895,12 @@ var ScribbleManager = class {
     const currentScribbles = this.editor.getInstanceState().scribbles;
     if (this.sessions.size === 0 && currentScribbles.length === 0) return;
     this.editor.run(() => {
+      const currentPageId = this.editor.getCurrentPageId();
+      for (const session of this.sessions.values()) {
+        if (session.pageId !== currentPageId) {
+          this.clearSession(session.id);
+        }
+      }
       for (const session of this.sessions.values()) {
         this.tickSession(session, elapsed);
       }
@@ -37092,10 +37158,8 @@ var BoundsSnaps = class {
     const { editor } = this;
     return editor.store.createComputedCache("snapPoints", (shape) => {
       const pageTransform = editor.getShapePageTransform(shape.id);
-      if (!pageTransform) return void 0;
       const boundsSnapGeometry = editor.getShapeUtil(shape).getBoundsSnapGeometry(shape);
       const snapPoints = boundsSnapGeometry.points ?? editor.getShapeGeometry(shape).bounds.cornersAndCenter;
-      if (!pageTransform || !snapPoints) return void 0;
       return snapPoints.map((point, i) => {
         const { x, y } = Mat.applyToPoint(pageTransform, point);
         return { x, y, id: `${shape.id}:${i}` };
@@ -38462,7 +38526,6 @@ var textAlignmentsForLtr = {
   "end-legacy": "right"
 };
 var spaceCharacterRegex = /\s/;
-var graphemeSegmenter2 = new Intl.Segmenter(void 0, { granularity: "grapheme" });
 var initialDefaultStyles = Object.freeze({
   "overflow-wrap": "break-word",
   "word-break": "auto",
@@ -38634,7 +38697,7 @@ var TextManager = class extends EditorManager {
     let didTruncate = false;
     for (const childNode of element.childNodes) {
       if (childNode.nodeType !== Node.TEXT_NODE) continue;
-      for (const { segment } of graphemeSegmenter2.segment(childNode.textContent ?? "")) {
+      for (const segment of iterateGraphemes(childNode.textContent ?? "")) {
         range.setStart(textNode, idx);
         range.setEnd(textNode, idx + segment.length);
         const rects = range.getClientRects();
@@ -38721,13 +38784,17 @@ var TextManager = class extends EditorManager {
       });
       if (opts.overflow === "truncate-ellipsis" && didTruncate) {
         elm.textContent = "\u2026";
-        const ellipsisWidth = Math.ceil(this.measureElementTextNodeSpans(elm).spans[0].box.w);
+        const ellipsisSpan = this.measureElementTextNodeSpans(elm).spans[0];
+        const ellipsisWidth = ellipsisSpan ? Math.ceil(ellipsisSpan.box.w) : 0;
         elm.style.setProperty("width", `${elementWidth - ellipsisWidth}px`);
         elm.textContent = normalizedText;
         const truncatedSpans = this.measureElementTextNodeSpans(elm, {
           shouldTruncateToFirstLine: true
         }).spans;
         const lastSpan = truncatedSpans[truncatedSpans.length - 1];
+        if (!lastSpan) {
+          return truncatedSpans;
+        }
         truncatedSpans.push({
           text: "\u2026",
           box: {
@@ -38871,9 +38938,12 @@ var TickManager = class extends EditorManager {
     const now = Date.now();
     const elapsed = now - this.now;
     this.now = now;
-    this.editor.emit("frame", elapsed);
-    this.editor.emit("tick", elapsed);
-    this.cancelRaf = throttleToNextFrame2(this.tick);
+    try {
+      this.editor.emit("frame", elapsed);
+      this.editor.emit("tick", elapsed);
+    } finally {
+      this.cancelRaf = throttleToNextFrame2(this.tick);
+    }
   }
   dispose() {
     this.isPaused = true;
@@ -38915,13 +38985,24 @@ var UserPreferencesManager = class {
     };
     darkModeMediaQuery?.addEventListener("change", handleChange);
     this.disposables.add(() => darkModeMediaQuery?.removeEventListener("change", handleChange));
+    const reducedMotionMediaQuery = getGlobalWindow().matchMedia("(prefers-reduced-motion: reduce)");
+    this.systemPrefersReducedMotion.set(!!reducedMotionMediaQuery?.matches);
+    const handleReducedMotionChange = (e) => {
+      this.systemPrefersReducedMotion.set(e.matches);
+    };
+    reducedMotionMediaQuery?.addEventListener("change", handleReducedMotionChange);
+    this.disposables.add(
+      () => reducedMotionMediaQuery?.removeEventListener("change", handleReducedMotionChange)
+    );
   }
   user;
   colorScheme;
   systemColorScheme = atom("systemColorScheme", "light");
+  systemPrefersReducedMotion = atom("systemPrefersReducedMotion", false);
   disposables = /* @__PURE__ */ new Set();
   dispose() {
     this.disposables.forEach((d) => d());
+    this.disposables.clear();
   }
   updateUserPreferences(userPreferences) {
     this.user.setUserPreferences({
@@ -38965,7 +39046,7 @@ var UserPreferencesManager = class {
     return this.user.userPreferences.get().edgeScrollSpeed ?? defaultUserPreferences.edgeScrollSpeed;
   }
   getAnimationSpeed() {
-    return this.user.userPreferences.get().animationSpeed ?? defaultUserPreferences.animationSpeed;
+    return this.user.userPreferences.get().animationSpeed ?? (this.systemPrefersReducedMotion.get() ? 0 : 1);
   }
   getAreKeyboardShortcutsEnabled() {
     return this.user.userPreferences.get().areKeyboardShortcutsEnabled ?? defaultUserPreferences.areKeyboardShortcutsEnabled;
@@ -39132,7 +39213,7 @@ var OverlayManager = class {
   // while getActiveOverlayEntries() keeps returning the same overlay
   // instances; when its reactive deps change, getOverlays() emits fresh
   // objects and stale entries fall out by GC.
-  _geometryCache = /* @__PURE__ */ new WeakMap();
+  _geometryCache = new WeakCache();
   /**
    * Get hit-test geometry for an overlay, cached by overlay identity. Lets
    * hit-testing on a pointermove storm skip the per-overlay geometry
@@ -39142,12 +39223,7 @@ var OverlayManager = class {
    * @public
    */
   getOverlayGeometry(overlay) {
-    const cached = this._geometryCache.get(overlay);
-    if (cached !== void 0) return cached;
-    const util = this.getOverlayUtil(overlay);
-    const geometry = util.getGeometry(overlay);
-    this._geometryCache.set(overlay, geometry);
-    return geometry;
+    return this._geometryCache.get(overlay, (o) => this.getOverlayUtil(o).getGeometry(o));
   }
   /**
    * The currently hovered overlay id.
@@ -39337,7 +39413,7 @@ var StateNode = class {
         throw Error(`${currState.id} - no child state exists with the id ${id2}.`);
       }
       if (prevChildState?.id !== nextChildState.id) {
-        prevChildState?.exit(info, id2);
+        if (prevChildState?.getIsActive()) prevChildState.exit(info, id2);
         currState._current.set(nextChildState);
         nextChildState.enter(info, prevChildState?.id || "initial");
         if (!nextChildState.getIsActive()) break;
@@ -39363,9 +39439,10 @@ var StateNode = class {
       }
       this.editor.performance._notifyInteractionStart(this.id, this.getPath());
     }
+    const currentBeforeEnter = this.getCurrent();
     this._isActive.set(true);
     this.onEnter?.(info, from2);
-    if (this.children && this.initial && this.getIsActive()) {
+    if (this.children && this.initial && this.getIsActive() && this.getCurrent() === currentBeforeEnter) {
       const initial = this.children[this.initial];
       this._current.set(initial);
       initial.enter(info, from2);
@@ -39606,6 +39683,10 @@ var Editor = class extends import_eventemitter32.default {
       if (prevPageState.editingShapeId && shapesNoLongerInPage.has(prevPageState.editingShapeId)) {
         if (!nextPageState) nextPageState = { ...prevPageState };
         nextPageState.editingShapeId = null;
+      }
+      if (prevPageState.croppingShapeId && shapesNoLongerInPage.has(prevPageState.croppingShapeId)) {
+        if (!nextPageState) nextPageState = { ...prevPageState };
+        nextPageState.croppingShapeId = null;
       }
       const hintingShapeIds = prevPageState.hintingShapeIds.filter(
         (id) => !shapesNoLongerInPage.has(id)
@@ -39849,10 +39930,11 @@ var Editor = class extends import_eventemitter32.default {
               this.cancelDoubleClick();
             }
             if (prev?.selectedShapeIds !== next?.selectedShapeIds) {
+              const selectedShapeIds = new Set(next.selectedShapeIds);
               const filtered = next.selectedShapeIds.filter((id) => {
                 let parentId = this.getShape(id)?.parentId;
                 while (isShapeId(parentId)) {
-                  if (next.selectedShapeIds.includes(parentId)) {
+                  if (selectedShapeIds.has(parentId)) {
                     return false;
                   }
                   parentId = this.getShape(parentId)?.parentId;
@@ -39922,9 +40004,11 @@ var Editor = class extends import_eventemitter32.default {
     this.on("tick", this._flushEventsForTick);
     this.on("mount", () => {
       this._isMounted.set(true);
+      registerMountedEditor(this);
     });
     this.on("unmount", () => {
       this._isMounted.set(false);
+      unregisterMountedEditor(this);
     });
     this.timers.requestAnimationFrame(() => {
       this._tickManager.start();
@@ -39934,7 +40018,10 @@ var Editor = class extends import_eventemitter32.default {
       const mode = this.store.props.collaboration.mode;
       this.disposables.add(
         react("update collaboration mode", () => {
-          this.store.put([{ ...this.getInstanceState(), isReadonly: mode.get() === "readonly" }]);
+          const isReadonly = mode.get() === "readonly";
+          unsafe__withoutCapture(
+            () => this._updateInstanceState({ isReadonly }, { history: "ignore" })
+          );
         })
       );
     }
@@ -40166,6 +40253,7 @@ var Editor = class extends import_eventemitter32.default {
     if (this._isMounted.get()) {
       this.emit("unmount");
     }
+    unregisterMountedEditor(this);
     this.stopCameraAnimation();
     if (this.getInstanceState().followingUserId) {
       this.stopFollowingUser();
@@ -40291,7 +40379,7 @@ var Editor = class extends import_eventemitter32.default {
   getShapeUtil(arg) {
     const type = typeof arg === "string" ? arg : arg.type;
     const shapeUtil = getOwnProperty(this.shapeUtils, type);
-    assert(shapeUtil, `No shape util found for type "${type}"`);
+    if (!shapeUtil) throw new Error(`No shape util found for type "${type}"`);
     return shapeUtil;
   }
   hasShapeUtil(arg) {
@@ -41080,7 +41168,9 @@ var Editor = class extends import_eventemitter32.default {
     const selectedShapes = this.getSelectedShapes();
     if (!selectedShapes.length) return;
     const selectedShape = selectedShapes[0];
-    const children = this.getSortedChildIdsForParent(selectedShape.id).map((id) => this.getShape(id)).filter((i) => i);
+    const children = compact(
+      this.getSortedChildIdsForParent(selectedShape.id).map((id) => this.getShape(id))
+    );
     const sortedChildren = this._getShapesInReadingOrder(children);
     if (sortedChildren.length === 0) return;
     this._selectShapesAndZoom([sortedChildren[0].id]);
@@ -41147,18 +41237,13 @@ var Editor = class extends import_eventemitter32.default {
    * @internal
    */
   getShapesSharedRotation(shapeIds) {
-    let foundFirst = false;
     let rotation = 0;
     for (let i = 0, n = shapeIds.length; i < n; i++) {
-      const pageTransform = this.getShapePageTransform(shapeIds[i]);
-      if (!pageTransform) continue;
-      if (foundFirst) {
-        if (pageTransform.rotation() !== rotation) {
-          return 0;
-        }
-      } else {
-        foundFirst = true;
-        rotation = pageTransform.rotation();
+      const pageRotation = this.getShapePageTransform(shapeIds[i]).rotation();
+      if (i === 0) {
+        rotation = pageRotation;
+      } else if (pageRotation !== rotation) {
+        return 0;
       }
     }
     return rotation;
@@ -41184,11 +41269,9 @@ var Editor = class extends import_eventemitter32.default {
       return bounds;
     }
     const boxFromRotatedVertices = Box.FromPoints(
-      shapeIds.flatMap((id) => {
-        const pageTransform = this.getShapePageTransform(id);
-        if (!pageTransform) return [];
-        return pageTransform.applyToPoints(this.getShapeGeometry(id).bounds.corners);
-      }).map((p) => p.rot(-selectionRotation))
+      shapeIds.flatMap(
+        (id) => this.getShapePageTransform(id).applyToPoints(this.getShapeGeometry(id).bounds.corners)
+      ).map((p) => p.rot(-selectionRotation))
     );
     boxFromRotatedVertices.point = boxFromRotatedVertices.point.rot(selectionRotation);
     return boxFromRotatedVertices;
@@ -41199,9 +41282,14 @@ var Editor = class extends import_eventemitter32.default {
   getSelectionRotatedScreenBounds() {
     const bounds = this.getSelectionRotatedPageBounds();
     if (!bounds) return void 0;
-    const { x, y } = this.pageToScreen(bounds.point);
-    const zoom = this.getZoomLevel();
-    return new Box(x, y, bounds.width * zoom, bounds.height * zoom);
+    const screenBounds = this.getViewportScreenBounds();
+    const { x: cx, y: cy, z: zoom } = this.getCamera();
+    return new Box(
+      (bounds.x + cx) * zoom + screenBounds.x,
+      (bounds.y + cy) * zoom + screenBounds.y,
+      bounds.width * zoom,
+      bounds.height * zoom
+    );
   }
   getFocusedGroupId() {
     return this.getCurrentPageState().focusedGroupId ?? this.getCurrentPageId();
@@ -41302,42 +41390,28 @@ var Editor = class extends import_eventemitter32.default {
    */
   setEditingShape(shape) {
     const id = typeof shape === "string" ? shape : shape?.id ?? null;
-    if (!id) {
+    if (id && !this.canEditShape(id)) return this;
+    this.run(() => {
+      const prevEditingShapeId = this.getEditingShapeId();
+      if (prevEditingShapeId) {
+        const prevEditingShape = this.getShape(prevEditingShapeId);
+        if (prevEditingShape) {
+          this.getShapeUtil(prevEditingShape).onEditEnd?.(prevEditingShape);
+        }
+      }
       this.run(
         () => {
-          const prevEditingShapeId = this.getEditingShapeId();
-          if (prevEditingShapeId) {
-            const prevEditingShape = this.getShape(prevEditingShapeId);
-            if (prevEditingShape) {
-              this.getShapeUtil(prevEditingShape).onEditEnd?.(prevEditingShape);
-            }
-          }
           this._updateCurrentPageState({ editingShapeId: null });
           this._currentRichTextEditor.set(null);
+          if (!id) return;
+          this.select(id);
+          this._updateCurrentPageState({ editingShapeId: id });
+          const nextEditingShape = this.getShape(id);
+          this.getShapeUtil(nextEditingShape).onEditStart?.(nextEditingShape);
         },
         { history: "ignore" }
       );
-      return this;
-    }
-    if (!this.canEditShape(id)) return this;
-    this.run(
-      () => {
-        const prevEditingShapeId = this.getEditingShapeId();
-        if (prevEditingShapeId) {
-          const prevEditingShape = this.getShape(prevEditingShapeId);
-          if (prevEditingShape) {
-            this.getShapeUtil(prevEditingShape).onEditEnd?.(prevEditingShape);
-          }
-        }
-        this._updateCurrentPageState({ editingShapeId: null });
-        this._currentRichTextEditor.set(null);
-        this.select(id);
-        this._updateCurrentPageState({ editingShapeId: id });
-        const nextEditingShape = this.getShape(id);
-        this.getShapeUtil(nextEditingShape).onEditStart?.(nextEditingShape);
-      },
-      { history: "ignore" }
-    );
+    });
     return this;
   }
   // Rich text editor
@@ -41443,19 +41517,12 @@ var Editor = class extends import_eventemitter32.default {
    * @public
    */
   setErasingShapes(shapes) {
-    const ids = typeof shapes[0] === "string" ? shapes : shapes.map((shape) => shape.id);
+    const ids = typeof shapes[0] === "string" ? shapes.slice() : shapes.map((shape) => shape.id);
     ids.sort();
     const erasingShapeIds = this.getErasingShapeIds();
     this.run(
       () => {
-        if (ids.length === erasingShapeIds.length) {
-          for (let i = 0; i < ids.length; i++) {
-            if (ids[i] !== erasingShapeIds[i]) {
-              this._updateCurrentPageState({ erasingShapeIds: ids });
-              break;
-            }
-          }
-        } else {
+        if (!areArraysShallowEqual(ids, erasingShapeIds)) {
           this._updateCurrentPageState({ erasingShapeIds: ids });
         }
       },
@@ -41488,6 +41555,7 @@ var Editor = class extends import_eventemitter32.default {
     if (!_shape) return false;
     const util = this.getShapeUtil(_shape);
     if (!util.canCrop(_shape)) return false;
+    if (this.getIsReadonly()) return false;
     if (this.isShapeOrAncestorLocked(_shape)) return false;
     return true;
   }
@@ -41552,11 +41620,11 @@ var Editor = class extends import_eventemitter32.default {
     const collaborators = this.getCollaborators();
     let leaderPresence = null;
     while (targetUserId && !visited.includes(targetUserId)) {
-      leaderPresence = collaborators.find((c) => c.userId === targetUserId) ?? null;
-      targetUserId = leaderPresence?.followingUserId ?? null;
-      if (leaderPresence) {
-        visited.push(leaderPresence.userId);
-      }
+      const nextPresence = collaborators.find((c) => c.userId === targetUserId);
+      if (!nextPresence) break;
+      leaderPresence = nextPresence;
+      targetUserId = nextPresence.followingUserId ?? null;
+      visited.push(nextPresence.userId);
     }
     return leaderPresence;
   }
@@ -41619,39 +41687,7 @@ var Editor = class extends import_eventemitter32.default {
    *
    * @public */
   getInitialZoom() {
-    const cameraOptions = this.getCameraOptions();
-    if (!cameraOptions.constraints) return 1;
-    if (cameraOptions.constraints.initialZoom === "default") return 1;
-    const { zx, zy } = getCameraFitXFitY(this, cameraOptions);
-    switch (cameraOptions.constraints.initialZoom) {
-      case "fit-min": {
-        return Math.max(zx, zy);
-      }
-      case "fit-max": {
-        return Math.min(zx, zy);
-      }
-      case "fit-x": {
-        return zx;
-      }
-      case "fit-y": {
-        return zy;
-      }
-      case "fit-min-100": {
-        return Math.min(1, Math.max(zx, zy));
-      }
-      case "fit-max-100": {
-        return Math.min(1, Math.min(zx, zy));
-      }
-      case "fit-x-100": {
-        return Math.min(1, zx);
-      }
-      case "fit-y-100": {
-        return Math.min(1, zy);
-      }
-      default: {
-        throw exhaustiveSwitchError(cameraOptions.constraints.initialZoom);
-      }
-    }
+    return this._getFitZoom(this.getCameraOptions().constraints?.initialZoom ?? "default");
   }
   /**
    * Get the camera's base level for calculating actual zoom levels based on the zoom steps.
@@ -41663,11 +41699,13 @@ var Editor = class extends import_eventemitter32.default {
    *
    * @public */
   getBaseZoom() {
+    return this._getFitZoom(this.getCameraOptions().constraints?.baseZoom ?? "default");
+  }
+  _getFitZoom(fit) {
     const cameraOptions = this.getCameraOptions();
-    if (!cameraOptions.constraints) return 1;
-    if (cameraOptions.constraints.baseZoom === "default") return 1;
+    if (!cameraOptions.constraints || fit === "default") return 1;
     const { zx, zy } = getCameraFitXFitY(this, cameraOptions);
-    switch (cameraOptions.constraints.baseZoom) {
+    switch (fit) {
       case "fit-min": {
         return Math.max(zx, zy);
       }
@@ -41693,7 +41731,7 @@ var Editor = class extends import_eventemitter32.default {
         return Math.min(1, zy);
       }
       default: {
-        throw exhaustiveSwitchError(cameraOptions.constraints.baseZoom);
+        throw exhaustiveSwitchError(fit);
       }
     }
   }
@@ -41727,7 +41765,7 @@ var Editor = class extends import_eventemitter32.default {
       ...this._cameraOptions.__unsafe__getWithoutCapture(),
       ...opts
     });
-    if (next.zoomSteps?.length < 1) next.zoomSteps = [1];
+    if (!next.zoomSteps || next.zoomSteps.length < 1) next.zoomSteps = [1];
     this._cameraOptions.set(next);
     this.setCamera(this.getCamera());
     return this;
@@ -41748,8 +41786,8 @@ var Editor = class extends import_eventemitter32.default {
       const vsb = this.getViewportScreenBounds();
       if (cameraOptions.constraints) {
         const { constraints } = cameraOptions;
-        const py = Math.min(constraints.padding.y, vsb.w / 2);
-        const px = Math.min(constraints.padding.x, vsb.h / 2);
+        const px = Math.min(constraints.padding.x, vsb.w / 2);
+        const py = Math.min(constraints.padding.y, vsb.h / 2);
         const bounds = Box.From(cameraOptions.constraints.bounds);
         const zx = (vsb.w - px * 2) / bounds.w;
         const zy = (vsb.h - py * 2) / bounds.h;
@@ -41788,12 +41826,12 @@ var Editor = class extends import_eventemitter32.default {
               break;
             }
             case "inside": {
-              if (z < zx) x = clamp2(x, minX, (vsb.w - px) / z - bounds.w);
+              if (z < zx) x = clamp2(x, minX, (vsb.w - px) / z - bounds.w - bounds.x);
               else x = clamp2(x, minX + freeW, minX);
               break;
             }
             case "outside": {
-              x = clamp2(x, px / z - bounds.w, (vsb.w - px) / z);
+              x = clamp2(x, px / z - bounds.w - bounds.x, (vsb.w - px) / z - bounds.x);
               break;
             }
             case "free": {
@@ -41814,12 +41852,12 @@ var Editor = class extends import_eventemitter32.default {
               break;
             }
             case "inside": {
-              if (z < zy) y = clamp2(y, minY, (vsb.h - py) / z - bounds.h);
+              if (z < zy) y = clamp2(y, minY, (vsb.h - py) / z - bounds.h - bounds.y);
               else y = clamp2(y, minY + freeH, minY);
               break;
             }
             case "outside": {
-              y = clamp2(y, py / z - bounds.h, (vsb.h - py) / z);
+              y = clamp2(y, py / z - bounds.h - bounds.y, (vsb.h - py) / z - bounds.y);
               break;
             }
             case "free": {
@@ -42187,9 +42225,9 @@ var Editor = class extends import_eventemitter32.default {
     }
     const remaining = duration - elapsed;
     const t2 = easing(1 - remaining / duration);
-    const left = start.minX + (end.minX - start.minX) * t2;
-    const top = start.minY + (end.minY - start.minY) * t2;
-    const right = start.maxX + (end.maxX - start.maxX) * t2;
+    const left = lerp(start.minX, end.minX, t2);
+    const top = lerp(start.minY, end.minY, t2);
+    const right = lerp(start.maxX, end.maxX, t2);
     this._setCamera(new Vec(-left, -top, this.getViewportScreenBounds().width / (right - left)), {
       force: true
     });
@@ -42267,7 +42305,7 @@ var Editor = class extends import_eventemitter32.default {
       let newCy = cy + dy;
       let newCz = cz;
       if (dirZ !== 0) {
-        newCz = cz * (1 + dirZ * currentSpeed * elapsed);
+        newCz = cz * Math.exp(dirZ * currentSpeed * elapsed);
         const center = this.getViewportScreenCenter();
         newCx += center.x / newCz - center.x / cz;
         newCy += center.y / newCz - center.y / cz;
@@ -42705,12 +42743,12 @@ var Editor = class extends import_eventemitter32.default {
     const renderingShapes = [];
     let nextIndex = this.options.maxShapesPerPage * 2;
     let nextBackgroundIndex = this.options.maxShapesPerPage;
-    const erasingShapeIds = this.getErasingShapeIds();
+    const erasingShapeIds = new Set(this.getErasingShapeIds());
     const addShapeById = (id, opacity, isAncestorErasing) => {
       const shape = this.getShape(id);
       if (!shape) return;
       if (this.isShapeHidden(shape)) {
-        const isErasing = isAncestorErasing || erasingShapeIds.includes(id);
+        const isErasing = isAncestorErasing || erasingShapeIds.has(id);
         for (const childId of this.getSortedChildIdsForParent(id)) {
           addShapeById(childId, opacity, isErasing);
         }
@@ -42720,7 +42758,7 @@ var Editor = class extends import_eventemitter32.default {
       let isShapeErasing = false;
       const util = this.getShapeUtil(shape);
       if (useEditorState) {
-        isShapeErasing = !isAncestorErasing && erasingShapeIds.includes(id);
+        isShapeErasing = !isAncestorErasing && erasingShapeIds.has(id);
         if (isShapeErasing) {
           opacity *= 0.32;
         }
@@ -43312,10 +43350,8 @@ var Editor = class extends import_eventemitter32.default {
   }
   _getShapePageBoundsCache() {
     return this.store.createComputedCache("pageBoundsCache", (shape) => {
-      const pageTransform = this.getShapePageTransform(shape);
-      if (!pageTransform) return void 0;
       return Box.FromPoints(
-        pageTransform.applyToPoints(this.getShapeGeometry(shape).boundsVertices)
+        this.getShapePageTransform(shape).applyToPoints(this.getShapeGeometry(shape).boundsVertices)
       );
     });
   }
@@ -43433,7 +43469,9 @@ var Editor = class extends import_eventemitter32.default {
       if (pageMask) {
         if (pageMask.length === 0) return void 0;
         const { corners } = pageBounds;
-        if (corners.every((p, i) => p && Vec.Equals(p, pageMask[i]))) return pageBounds.clone();
+        if (pageMask.length === corners.length && corners.every((p, i) => Vec.Equals(p, pageMask[i]))) {
+          return pageBounds.clone();
+        }
         const intersection = intersectPolygonPolygon(pageMask, corners);
         if (!intersection) return;
         return Box.FromPoints(intersection);
@@ -43657,23 +43695,22 @@ var Editor = class extends import_eventemitter32.default {
     let inMarginClosestToEdgeHit = null;
     const searchMargin = Math.max(innerMargin, outerMargin, this.getHitTestMargin());
     const candidateIds = this._spatialIndex.getShapeIdsAtPoint(point, searchMargin);
-    const shapesToCheck = (opts.renderingOnly ? this.getCurrentPageRenderingShapesSorted() : this.getCurrentPageShapesSorted()).filter((shape) => {
-      if (!candidateIds.has(shape.id) && !this.isShapeFrameLike(shape)) return false;
-      if (shape.isLocked && !hitLocked || this.isShapeHidden(shape) || this.isShapeOfType(shape, "group"))
-        return false;
-      const pageMask = this.getShapeMask(shape);
-      if (pageMask && !pointInPolygon(point, pageMask)) return false;
-      if (filter && !filter(shape)) return false;
-      return true;
-    });
+    const shapesToCheck = opts.renderingOnly ? this.getCurrentPageRenderingShapesSorted() : this.getCurrentPageShapesSorted();
     for (let i = shapesToCheck.length - 1; i >= 0; i--) {
       const shape = shapesToCheck[i];
+      if (!candidateIds.has(shape.id) && !this.isShapeFrameLike(shape)) continue;
+      if (shape.isLocked && !hitLocked || this.isShapeHidden(shape) || this.isShapeOfType(shape, "group")) {
+        continue;
+      }
+      const pageMask = this.getShapeMask(shape);
+      if (pageMask && !pointInPolygon(point, pageMask)) continue;
+      if (filter && !filter(shape)) continue;
       const geometry = this.getShapeGeometry(shape);
       const isGroup = geometry instanceof Group2d;
       const pointInShapeSpace = this.getPointInShapeSpace(shape, point);
       const shapeUtil = this.getShapeUtil(shape);
       const isShapeFrameLike = this.isShapeFrameLike(shape);
-      if (isShapeFrameLike || (this.isShapeOfType(shape, "note") || this.isShapeOfType(shape, "arrow") || this.isShapeOfType(shape, "geo") && shape.props.fill === "none") && shapeUtil.getText(shape)?.trim()) {
+      if (isGroup && (isShapeFrameLike || (this.isShapeOfType(shape, "note") || this.isShapeOfType(shape, "arrow") || this.isShapeOfType(shape, "geo") && shape.props.fill === "none") && shapeUtil.getText(shape)?.trim())) {
         for (const childGeometry of geometry.children) {
           if (childGeometry.isLabel && childGeometry.isPointInBounds(pointInShapeSpace)) {
             return shape;
@@ -43772,11 +43809,15 @@ var Editor = class extends import_eventemitter32.default {
   getShapesAtPoint(point, opts = {}) {
     const margin = opts.margin ?? 0;
     const candidateIds = this._spatialIndex.getShapeIdsAtPoint(point, margin);
-    return this.getCurrentPageShapesSorted().filter((shape) => {
-      if (this.isShapeHidden(shape)) return false;
-      if (!candidateIds.has(shape.id) && !this.isShapeFrameLike(shape)) return false;
-      return this.isPointInShape(shape, point, opts);
-    }).reverse();
+    const sorted = this.getCurrentPageShapesSorted();
+    const result = [];
+    for (let i = sorted.length - 1; i >= 0; i--) {
+      const shape = sorted[i];
+      if (this.isShapeHidden(shape)) continue;
+      if (!candidateIds.has(shape.id) && !this.isShapeFrameLike(shape)) continue;
+      if (this.isPointInShape(shape, point, opts)) result.push(shape);
+    }
+    return result;
   }
   /**
    * Get shape IDs within the given bounds.
@@ -43861,9 +43902,7 @@ var Editor = class extends import_eventemitter32.default {
     const freshShape = this.getShape(id);
     if (!freshShape) return new Vec(0, 0);
     if (isPageId(freshShape.parentId)) return Vec.From(point);
-    const parentTransform = this.getShapePageTransform(freshShape.parentId);
-    if (!parentTransform) return Vec.From(point);
-    return parentTransform.clone().invert().applyToPoint(point);
+    return this.getShapePageTransform(freshShape.parentId).clone().invert().applyToPoint(point);
   }
   getCurrentPageShapes() {
     return Array.from(this.getCurrentPageShapeIds(), (id) => this.store.get(id));
@@ -43975,23 +44014,7 @@ var Editor = class extends import_eventemitter32.default {
    * @public
    */
   isShapeInPage(shape, pageId = this.getCurrentPageId()) {
-    const id = typeof shape === "string" ? shape : shape.id;
-    const shapeToCheck = this.getShape(id);
-    if (!shapeToCheck) return false;
-    let shapeIsInPage = false;
-    if (shapeToCheck.parentId === pageId) {
-      shapeIsInPage = true;
-    } else {
-      let parent = this.getShape(shapeToCheck.parentId);
-      isInPageSearch: while (parent) {
-        if (parent.parentId === pageId) {
-          shapeIsInPage = true;
-          break isInPageSearch;
-        }
-        parent = this.getShape(parent.parentId);
-      }
-    }
-    return shapeIsInPage;
+    return this.getAncestorPageId(shape) === pageId;
   }
   /**
    * Get the id of the containing page for a given shape.
@@ -44072,10 +44095,7 @@ var Editor = class extends import_eventemitter32.default {
         for (let i = 0; i < shapesToReparent.length; i++) {
           const shape = shapesToReparent[i];
           const pageTransform = this.getShapePageTransform(shape);
-          if (!pageTransform) continue;
-          const pagePoint = pageTransform.point();
-          if (!pagePoint) continue;
-          const newPoint = invertedParentTransform.applyToPoint(pagePoint);
+          const newPoint = invertedParentTransform.applyToPoint(pageTransform.point());
           const newRotation = pageTransform.rotation() - parentPageRotation;
           if (shape.id === parentId) {
             throw Error("Attempted to reparent a shape to itself!");
@@ -44164,7 +44184,7 @@ var Editor = class extends import_eventemitter32.default {
    */
   getShapeAndDescendantIds(ids) {
     const shapeIds = /* @__PURE__ */ new Set();
-    for (const shape of ids.map((id) => this.getShape(id)).sort(sortByIndex)) {
+    for (const shape of compact(ids.map((id) => this.getShape(id))).sort(sortByIndex)) {
       shapeIds.add(shape.id);
       this.visitDescendants(shape, (descendantId) => {
         shapeIds.add(descendantId);
@@ -44186,11 +44206,12 @@ var Editor = class extends import_eventemitter32.default {
     const draggingShapes = compact(droppingShapes.map((s) => this.getShape(s))).filter(
       (s) => !s.isLocked && !this.isShapeHidden(s)
     );
+    const excludedIds = this.getShapeAndDescendantIds(draggingShapes.map((s) => s.id));
     const maybeDraggingOverShapes = this.getShapesAtPoint(point, {
       hitInside: true,
       margin: 0
     }).filter(
-      (s) => !droppingShapes.includes(s) && !s.isLocked && !this.isShapeHidden(s) && !draggingShapes.includes(s)
+      (s) => !droppingShapes.includes(s) && !s.isLocked && !this.isShapeHidden(s) && !excludedIds.has(s.id)
     );
     for (const maybeDraggingOverShape of maybeDraggingOverShapes) {
       const shapeUtil = this.getShapeUtil(maybeDraggingOverShape);
@@ -44443,8 +44464,7 @@ var Editor = class extends import_eventemitter32.default {
     for (const id of ids) {
       const shape = this.getShape(id);
       const localDelta = Vec.From(offset4);
-      const parentTransform = this.getShapeParentTransform(shape);
-      if (parentTransform) localDelta.rot(-parentTransform.rotation());
+      localDelta.rot(-this.getShapeParentTransform(shape).rotation());
       changes.push(this.getChangesToTranslateShape(shape, localDelta.add(shape)));
     }
     this.updateShapes(changes);
@@ -44499,7 +44519,7 @@ var Editor = class extends import_eventemitter32.default {
             if (!originalShape) continue;
             let ox = 0;
             let oy = 0;
-            if (offset4 && initialIds.has(originalId)) {
+            if (offset4 && initialIds.has(originalId) && !shapeIdSet.has(originalShape.parentId)) {
               const parentTransform = this.getShapeParentTransform(originalShape);
               const vec = new Vec(offset4.x, offset4.y).rot(-parentTransform.rotation());
               ox = vec.x;
@@ -44613,26 +44633,17 @@ var Editor = class extends import_eventemitter32.default {
   toggleLock(shapes) {
     const ids = typeof shapes[0] === "string" ? shapes : shapes.map((s) => s.id);
     if (this.getIsReadonly() || ids.length === 0) return this;
-    let allLocked = true, allUnlocked = true;
+    let allLocked = true;
     const shapesToToggle = [];
     for (const id of ids) {
       const shape = this.getShape(id);
       if (shape) {
         shapesToToggle.push(shape);
-        if (shape.isLocked) {
-          allUnlocked = false;
-        } else {
-          allLocked = false;
-        }
+        if (!shape.isLocked) allLocked = false;
       }
     }
     this.run(() => {
-      if (allUnlocked) {
-        this.updateShapes(
-          shapesToToggle.map((shape) => ({ id: shape.id, type: shape.type, isLocked: true }))
-        );
-        this.setSelectedShapes([]);
-      } else if (allLocked) {
+      if (allLocked) {
         this.updateShapes(
           shapesToToggle.map((shape) => ({ id: shape.id, type: shape.type, isLocked: false }))
         );
@@ -44640,6 +44651,7 @@ var Editor = class extends import_eventemitter32.default {
         this.updateShapes(
           shapesToToggle.map((shape) => ({ id: shape.id, type: shape.type, isLocked: true }))
         );
+        this.setSelectedShapes([]);
       }
     });
     return this;
@@ -44750,9 +44762,10 @@ var Editor = class extends import_eventemitter32.default {
     const ids = typeof shapes[0] === "string" ? shapes : shapes.map((s) => s.id);
     let freshShapes = compact(ids.map((id) => this.getShape(id)));
     if (opts?.filterAxisAligned) {
-      freshShapes = freshShapes.filter(
-        (s) => this.getShapePageTransform(s)?.rotation() % (PI / 2) === 0
-      );
+      freshShapes = freshShapes.filter((s) => {
+        const remainder = Math.abs(this.getShapePageTransform(s).rotation() % HALF_PI);
+        return Math.min(remainder, HALF_PI - remainder) < 1e-9;
+      });
     }
     const clusters = [];
     const allBounds = [];
@@ -44917,9 +44930,9 @@ var Editor = class extends import_eventemitter32.default {
       dim = "height";
     }
     let shapeGap = 0;
+    shapeClustersToStack.sort((a, b) => a.pageBounds[min3] - b.pageBounds[min3]);
     if (_gap === 0) {
       const gaps = {};
-      shapeClustersToStack.sort((a, b) => a.pageBounds[min3] - b.pageBounds[min3]);
       for (let i = 0; i < len - 1; i++) {
         const currCluster = shapeClustersToStack[i];
         const nextCluster = shapeClustersToStack[i + 1];
@@ -44957,8 +44970,7 @@ var Editor = class extends import_eventemitter32.default {
         const shapeDelta = delta.clone();
         const parent = this.getShapeParent(shape);
         if (parent) {
-          const parentTransform = this.getShapePageTransform(parent);
-          if (parentTransform) shapeDelta.rot(-parentTransform.rotation());
+          shapeDelta.rot(-this.getShapePageTransform(parent).rotation());
         }
         shapeDelta.add(shape);
         changes.push(this.getChangesToTranslateShape(shape, shapeDelta));
@@ -44996,7 +45008,7 @@ var Editor = class extends import_eventemitter32.default {
     }
     const commonBounds = Box.Common(allBounds);
     const maxWidth = commonBounds.width;
-    shapeClustersToPack.sort((a, b) => a.pageBounds.width - b.pageBounds.width).sort((a, b) => a.pageBounds.height - b.pageBounds.height);
+    shapeClustersToPack.sort((a, b) => b.pageBounds.width - a.pageBounds.width).sort((a, b) => b.pageBounds.height - a.pageBounds.height);
     const startWidth = Math.max(Math.ceil(Math.sqrt(area / 0.95)), maxWidth);
     const spaces = [new Box(commonBounds.x, commonBounds.y, startWidth, Infinity)];
     let width = 0;
@@ -45044,8 +45056,7 @@ var Editor = class extends import_eventemitter32.default {
         const shapeDelta = delta.clone();
         const parent = this.getShapeParent(shape);
         if (parent) {
-          const parentTransform = this.getShapeParentTransform(shape);
-          if (parentTransform) shapeDelta.rot(-parentTransform.rotation());
+          shapeDelta.rot(-this.getShapeParentTransform(shape).rotation());
         }
         shapeDelta.add(shape);
         changes.push(this.getChangesToTranslateShape(shape, shapeDelta));
@@ -45072,6 +45083,9 @@ var Editor = class extends import_eventemitter32.default {
    */
   alignShapes(shapes, operation) {
     if (this.getIsReadonly()) return this;
+    if (operation === "center") {
+      return this.alignShapes(shapes, "center-horizontal").alignShapes(shapes, "center-vertical");
+    }
     const { clusters: shapeClustersToAlign, allBounds } = this.getShapeClusters(shapes, "align");
     if (shapeClustersToAlign.length < 2) return this;
     const commonBounds = Box.Common(allBounds);
@@ -45108,8 +45122,7 @@ var Editor = class extends import_eventemitter32.default {
         const shapeDelta = delta.clone();
         const parent = this.getShapeParent(shape);
         if (parent) {
-          const parentTransform = this.getShapePageTransform(parent);
-          if (parentTransform) shapeDelta.rot(-parentTransform.rotation());
+          shapeDelta.rot(-this.getShapePageTransform(parent).rotation());
         }
         shapeDelta.add(shape);
         changes.push(this.getChangesToTranslateShape(shape, shapeDelta));
@@ -45183,8 +45196,7 @@ var Editor = class extends import_eventemitter32.default {
         const shapeDelta = delta.clone();
         const parent = this.getShapeParent(shape);
         if (parent) {
-          const parentTransform = this.getShapePageTransform(parent);
-          if (parentTransform) shapeDelta.rot(-parentTransform.rotation());
+          shapeDelta.rot(-this.getShapePageTransform(parent).rotation());
         }
         shapeDelta.add(shape);
         changes.push(this.getChangesToTranslateShape(shape, shapeDelta));
@@ -45239,8 +45251,7 @@ var Editor = class extends import_eventemitter32.default {
         scale[val] = commonBounds[dim] / pageBounds[dim];
         for (const shape of shapes2) {
           const shapeLocalOffset = localOffset.clone();
-          const parentTransform = this.getShapeParentTransform(shape);
-          if (parentTransform) shapeLocalOffset.rot(-parentTransform.rotation());
+          shapeLocalOffset.rot(-this.getShapeParentTransform(shape).rotation());
           shapeLocalOffset.add(shape);
           const changes = this.getChangesToTranslateShape(shape, shapeLocalOffset);
           this.updateShape(changes);
@@ -45296,8 +45307,7 @@ var Editor = class extends import_eventemitter32.default {
       );
       for (const shape of shapes2) {
         const shapeLocalOffset = localOffset.clone();
-        const parentTransform = this.getShapeParentTransform(shape);
-        if (parentTransform) shapeLocalOffset.rot(-parentTransform.rotation());
+        shapeLocalOffset.rot(-this.getShapeParentTransform(shape).rotation());
         shapeLocalOffset.add(shape);
         const changes = this.getChangesToTranslateShape(shape, shapeLocalOffset);
         this.updateShape(changes);
@@ -45346,9 +45356,7 @@ var Editor = class extends import_eventemitter32.default {
     const scaleOrigin = opts.scaleOrigin ?? this.getShapePageBounds(id)?.center;
     if (!scaleOrigin) return null;
     const pageTransform = opts.initialPageTransform ? Mat.Cast(opts.initialPageTransform) : this.getShapePageTransform(id);
-    if (!pageTransform) return null;
     const pageRotation = pageTransform.rotation();
-    if (pageRotation == null) return null;
     const scaleAxisRotation = opts.scaleAxisRotation ?? pageRotation;
     const initialBounds = opts.initialBounds ?? this.getShapeGeometry(id).bounds;
     if (!initialBounds) return null;
@@ -45499,7 +45507,6 @@ var Editor = class extends import_eventemitter32.default {
     const currentLocalBounds = this.getShapeGeometry(id).bounds;
     const currentPageCenter = Mat.applyToPoint(pageTransform, currentLocalBounds.center);
     const shapePageTransformOrigin = pageTransform.point();
-    if (!currentPageCenter || !shapePageTransformOrigin) return this;
     const pageDelta = Vec.Sub(postScaleShapePageCenter, currentPageCenter);
     const postScaleShapePagePoint = Vec.Add(shapePageTransformOrigin, pageDelta);
     const { x, y } = this.getPointInParentSpace(id, postScaleShapePagePoint);
@@ -45758,10 +45765,10 @@ var Editor = class extends import_eventemitter32.default {
         if (animationIdForShape !== animationId) continue;
         updates.push({
           ...end,
-          x: start.x + (end.x - start.x) * t2,
-          y: start.y + (end.y - start.y) * t2,
-          opacity: start.opacity + (end.opacity - start.opacity) * t2,
-          rotation: start.rotation + (end.rotation - start.rotation) * t2,
+          x: lerp(start.x, end.x, t2),
+          y: lerp(start.y, end.y, t2),
+          opacity: lerp(start.opacity, end.opacity, t2),
+          rotation: lerp(start.rotation, end.rotation, t2),
           props: this.getShapeUtil(end).getInterpolatedProps?.(start, end, t2) ?? end.props
         });
       }
@@ -45887,7 +45894,7 @@ var Editor = class extends import_eventemitter32.default {
    * @public
    */
   updateShapes(partials) {
-    const compactedPartials = Array(partials.length);
+    const compactedPartials = [];
     for (let i = 0, n = partials.length; i < n; i++) {
       const partial = partials[i];
       if (!partial) continue;
@@ -45958,28 +45965,32 @@ var Editor = class extends import_eventemitter32.default {
   }
   /* --------------------- Styles --------------------- */
   /**
-   * Get all the current styles among the users selected shapes
+   * Groups have no styles of their own: a style read or write on a selection applies to the
+   * non-group shapes beneath each group, however deeply nested. Returns those shapes.
    *
    * @internal
    */
-  _extractSharedStyles(shape, sharedStyleMap) {
-    if (this.isShapeOfType(shape, "group")) {
-      const childIds = this._parentIdsToChildIds.get()[shape.id];
-      if (!childIds) return;
-      for (let i = 0, n = childIds.length; i < n; i++) {
-        this._extractSharedStyles(this.getShape(childIds[i]), sharedStyleMap);
+  _getStyleableShapes(shapes) {
+    const result = [];
+    const visit = (shape) => {
+      if (this.isShapeOfType(shape, "group")) {
+        for (const childId of this.getSortedChildIdsForParent(shape.id)) {
+          const child = this.getShape(childId);
+          if (child) visit(child);
+        }
+      } else {
+        result.push(shape);
       }
-    } else {
-      for (const [style2, propKey] of this.styleProps[shape.type]) {
-        sharedStyleMap.applyValue(style2, getOwnProperty(shape.props, propKey));
-      }
-    }
+    };
+    for (const shape of shapes) visit(shape);
+    return result;
   }
   _getSelectionSharedStyles() {
-    const selectedShapes = this.getSelectedShapes();
     const sharedStyles = new SharedStyleMap();
-    for (const selectedShape of selectedShapes) {
-      this._extractSharedStyles(selectedShape, sharedStyles);
+    for (const shape of this._getStyleableShapes(this.getSelectedShapes())) {
+      for (const [style2, propKey] of this.styleProps[shape.type]) {
+        sharedStyles.applyValue(style2, getOwnProperty(shape.props, propKey));
+      }
     }
     return sharedStyles;
   }
@@ -46011,38 +46022,16 @@ var Editor = class extends import_eventemitter32.default {
     const styles = new SharedStyleMap();
     if (!currentTool) return styles;
     if (currentTool.shapeType) {
-      if (currentTool.shapeType === "frame" && !this.getShapeUtil("frame").options.showColors) {
-        for (const style2 of this.styleProps[currentTool.shapeType].keys()) {
-          if (style2.id === "tldraw:color") continue;
-          styles.applyValue(style2, this.getStyleForNextShape(style2));
-        }
-      } else {
-        for (const style2 of this.styleProps[currentTool.shapeType].keys()) {
-          styles.applyValue(style2, this.getStyleForNextShape(style2));
-        }
+      for (const style2 of this.styleProps[currentTool.shapeType].keys()) {
+        styles.applyValue(style2, this.getStyleForNextShape(style2));
       }
     }
     return styles;
   }
   getSharedOpacity() {
     if (this.isIn("select") && this.getSelectedShapeIds().length > 0) {
-      const shapesToCheck = [];
-      const addShape = (shapeId) => {
-        const shape = this.getShape(shapeId);
-        if (!shape) return;
-        if (this.isShapeOfType(shape, "group")) {
-          for (const childId of this.getSortedChildIdsForParent(shape.id)) {
-            addShape(childId);
-          }
-        } else {
-          shapesToCheck.push(shape);
-        }
-      };
-      for (const shapeId of this.getSelectedShapeIds()) {
-        addShape(shapeId);
-      }
       let opacity = null;
-      for (const shape of shapesToCheck) {
+      for (const shape of this._getStyleableShapes(this.getSelectedShapes())) {
         if (opacity === null) {
           opacity = shape.opacity;
         } else if (opacity !== shape.opacity) {
@@ -46081,28 +46070,12 @@ var Editor = class extends import_eventemitter32.default {
   setOpacityForSelectedShapes(opacity) {
     const selectedShapes = this.getSelectedShapes();
     if (selectedShapes.length > 0) {
-      const shapesToUpdate = [];
-      const addShapeById = (shape) => {
-        if (this.isShapeOfType(shape, "group")) {
-          const childIds = this.getSortedChildIdsForParent(shape);
-          for (const childId of childIds) {
-            addShapeById(this.getShape(childId));
-          }
-        } else {
-          shapesToUpdate.push(shape);
-        }
-      };
-      for (const id of selectedShapes) {
-        addShapeById(id);
-      }
       this.updateShapes(
-        shapesToUpdate.map((shape) => {
-          return {
-            id: shape.id,
-            type: shape.type,
-            opacity
-          };
-        })
+        this._getStyleableShapes(selectedShapes).map((shape) => ({
+          id: shape.id,
+          type: shape.type,
+          opacity
+        }))
       );
     }
     return this;
@@ -46147,33 +46120,17 @@ var Editor = class extends import_eventemitter32.default {
     const selectedShapes = this.getSelectedShapes();
     if (selectedShapes.length > 0) {
       const updates = [];
-      const addShapeById = (shape) => {
-        if (this.isShapeOfType(shape, "group")) {
-          const childIds = this.getSortedChildIdsForParent(shape.id);
-          for (const childId of childIds) {
-            addShapeById(this.getShape(childId));
-          }
-        } else {
-          const util = this.getShapeUtil(shape);
-          const stylePropKey = this.styleProps[shape.type].get(style2);
-          if (stylePropKey) {
-            const shapePartial = {
-              id: shape.id,
-              type: shape.type,
-              props: { [stylePropKey]: value }
-            };
-            updates.push({
-              util,
-              originalShape: shape,
-              updatePartial: shapePartial
-            });
-          }
+      for (const shape of this._getStyleableShapes(selectedShapes)) {
+        const stylePropKey = this.styleProps[shape.type].get(style2);
+        if (stylePropKey) {
+          updates.push({
+            id: shape.id,
+            type: shape.type,
+            props: { [stylePropKey]: value }
+          });
         }
-      };
-      for (const shape of selectedShapes) {
-        addShapeById(shape);
       }
-      this.updateShapes(updates.map(({ updatePartial }) => updatePartial));
+      this.updateShapes(updates);
     }
     return this;
   }
@@ -46569,7 +46526,6 @@ var Editor = class extends import_eventemitter32.default {
       if (shapeIdMap.has(newShape.parentId)) {
         newShape.parentId = shapeIdMap.get(oldShape.parentId);
       } else {
-        rootShapeIds.push(newShape.id);
         newShape.index = index2;
         index2 = getIndexAbove(index2);
       }
@@ -46594,8 +46550,11 @@ var Editor = class extends import_eventemitter32.default {
         continue;
       }
       if (asset.type === "image" && asset.props.src?.startsWith("data:image") || asset.type === "video" && asset.props.src?.startsWith("data:video")) {
-        assetsToUpdate.push(structuredClone(asset));
-        asset.props.src = null;
+        assetsToUpdate.push(asset);
+        const assetWithoutSrc = structuredClone(asset);
+        assetWithoutSrc.props.src = null;
+        assetsToCreate.push(assetWithoutSrc);
+        continue;
       }
       assetsToCreate.push(asset);
     }
@@ -47217,7 +47176,8 @@ var Editor = class extends import_eventemitter32.default {
   _prevCursor = "default";
   /** @internal */
   _shiftKeyTimeout = -1;
-  _setShiftKeyTimeout() {
+  _releaseShiftKey() {
+    this._shiftKeyTimeout = -1;
     this.inputs.setShiftKey(false);
     this.dispatch({
       type: "keyboard",
@@ -47233,7 +47193,8 @@ var Editor = class extends import_eventemitter32.default {
   }
   /** @internal */
   _altKeyTimeout = -1;
-  _setAltKeyTimeout() {
+  _releaseAltKey() {
+    this._altKeyTimeout = -1;
     this.inputs.setAltKey(false);
     this.dispatch({
       type: "keyboard",
@@ -47249,7 +47210,8 @@ var Editor = class extends import_eventemitter32.default {
   }
   /** @internal */
   _ctrlKeyTimeout = -1;
-  _setCtrlKeyTimeout() {
+  _releaseCtrlKey() {
+    this._ctrlKeyTimeout = -1;
     this.inputs.setCtrlKey(false);
     this.dispatch({
       type: "keyboard",
@@ -47265,7 +47227,8 @@ var Editor = class extends import_eventemitter32.default {
   }
   /** @internal */
   _metaKeyTimeout = -1;
-  _setMetaKeyTimeout() {
+  _releaseMetaKey() {
+    this._metaKeyTimeout = -1;
     this.inputs.setMetaKey(false);
     this.dispatch({
       type: "keyboard",
@@ -47278,6 +47241,51 @@ var Editor = class extends import_eventemitter32.default {
       accelKey: this.inputs.getAccelKey(),
       code: "MetaLeft"
     });
+  }
+  /**
+   * Flush any modifier still sitting in its 150ms release-debounce window, so a new
+   * interaction (a pointer down) starts with correct modifier state instead of a
+   * just-released key still being counted as held. A pending timer is exactly
+   * "released but still counted as held"; a genuinely-held modifier has no timer
+   * (-1) and is left alone.
+   *
+   * Each modifier is released through the same path its timer would have taken
+   * (`_releaseShiftKey` and friends), which dispatches the synthetic `key_up` so
+   * stale codes (e.g. `ShiftLeft`) leave `inputs.keys` and tool `onKeyUp` handlers run.
+   * We clear every pending modifier atom and timer *first*, then dispatch: a synthetic
+   * `key_up` reports all currently-held modifiers, so releasing them one at a time
+   * would make each event re-confirm the not-yet-released ones and cancel their flush.
+   * @internal
+   */
+  _releaseDebouncedModifiers() {
+    const releaseShift = this._shiftKeyTimeout !== -1;
+    const releaseAlt = this._altKeyTimeout !== -1;
+    const releaseCtrl = this._ctrlKeyTimeout !== -1;
+    const releaseMeta = this._metaKeyTimeout !== -1;
+    if (releaseShift) {
+      clearTimeout(this._shiftKeyTimeout);
+      this._shiftKeyTimeout = -1;
+      this.inputs.setShiftKey(false);
+    }
+    if (releaseAlt) {
+      clearTimeout(this._altKeyTimeout);
+      this._altKeyTimeout = -1;
+      this.inputs.setAltKey(false);
+    }
+    if (releaseCtrl) {
+      clearTimeout(this._ctrlKeyTimeout);
+      this._ctrlKeyTimeout = -1;
+      this.inputs.setCtrlKey(false);
+    }
+    if (releaseMeta) {
+      clearTimeout(this._metaKeyTimeout);
+      this._metaKeyTimeout = -1;
+      this.inputs.setMetaKey(false);
+    }
+    if (releaseShift) this._releaseShiftKey();
+    if (releaseAlt) this._releaseAltKey();
+    if (releaseCtrl) this._releaseCtrlKey();
+    if (releaseMeta) this._releaseMetaKey();
   }
   /** @internal */
   _restoreToolId = "select";
@@ -47373,7 +47381,7 @@ var Editor = class extends import_eventemitter32.default {
     if (info.type === "misc") {
       if (info.name === "cancel" || info.name === "complete") {
         this.inputs.setIsDragging(false);
-        if (this.inputs.getIsPanning()) {
+        if (this.inputs.getIsPanning() && !this.inputs.keys.has("Space")) {
           this.inputs.setIsPanning(false);
           this.inputs.setIsSpacebarPanning(false);
           this.setCursor({ type: this._prevCursor, rotation: 0 });
@@ -47388,28 +47396,28 @@ var Editor = class extends import_eventemitter32.default {
       this._shiftKeyTimeout = -1;
       inputs.setShiftKey(true);
     } else if (!info.shiftKey && inputs.getShiftKey() && this._shiftKeyTimeout === -1) {
-      this._shiftKeyTimeout = this.timers.setTimeout(this._setShiftKeyTimeout, 150);
+      this._shiftKeyTimeout = this.timers.setTimeout(this._releaseShiftKey, 150);
     }
     if (info.altKey) {
       clearTimeout(this._altKeyTimeout);
       this._altKeyTimeout = -1;
       inputs.setAltKey(true);
     } else if (!info.altKey && inputs.getAltKey() && this._altKeyTimeout === -1) {
-      this._altKeyTimeout = this.timers.setTimeout(this._setAltKeyTimeout, 150);
+      this._altKeyTimeout = this.timers.setTimeout(this._releaseAltKey, 150);
     }
     if (info.ctrlKey) {
       clearTimeout(this._ctrlKeyTimeout);
       this._ctrlKeyTimeout = -1;
       inputs.setCtrlKey(true);
     } else if (!info.ctrlKey && inputs.getCtrlKey() && this._ctrlKeyTimeout === -1) {
-      this._ctrlKeyTimeout = this.timers.setTimeout(this._setCtrlKeyTimeout, 150);
+      this._ctrlKeyTimeout = this.timers.setTimeout(this._releaseCtrlKey, 150);
     }
     if (info.metaKey && info.name !== "key_up") {
       clearTimeout(this._metaKeyTimeout);
       this._metaKeyTimeout = -1;
       inputs.setMetaKey(true);
     } else if (!info.metaKey && inputs.getMetaKey() && this._metaKeyTimeout === -1) {
-      this._metaKeyTimeout = this.timers.setTimeout(this._setMetaKeyTimeout, 150);
+      this._metaKeyTimeout = this.timers.setTimeout(this._releaseMetaKey, 150);
     }
     if (!inputs.getIsPointing()) {
       inputs.setIsDragging(false);
@@ -47554,6 +47562,7 @@ var Editor = class extends import_eventemitter32.default {
         switch (info.name) {
           case "pointer_down": {
             if (isPenMode && !isPen) return;
+            this._releaseDebouncedModifiers();
             if (!this.inputs.getIsPanning()) {
               this._longPressTimeout = this.timers.setTimeout(() => {
                 const vsb = this.getViewportScreenBounds();
@@ -48036,16 +48045,16 @@ __decorateClass15([
 ], Editor.prototype, "getIsReadonly", 1);
 __decorateClass15([
   bind
-], Editor.prototype, "_setShiftKeyTimeout", 1);
+], Editor.prototype, "_releaseShiftKey", 1);
 __decorateClass15([
   bind
-], Editor.prototype, "_setAltKeyTimeout", 1);
+], Editor.prototype, "_releaseAltKey", 1);
 __decorateClass15([
   bind
-], Editor.prototype, "_setCtrlKeyTimeout", 1);
+], Editor.prototype, "_releaseCtrlKey", 1);
 __decorateClass15([
   bind
-], Editor.prototype, "_setMetaKeyTimeout", 1);
+], Editor.prototype, "_releaseMetaKey", 1);
 function alertMaxShapes(editor, pageId = editor.getCurrentPageId()) {
   const name = editor.getPage(pageId).name;
   editor.emit("max-shapes", { name, pageId, count: editor.options.maxShapesPerPage });
@@ -48124,10 +48133,9 @@ function withIsolatedShapes(editor, shapeIds, callback) {
 }
 function getCameraFitXFitY(editor, cameraOptions) {
   if (!cameraOptions.constraints) throw Error("Should have constraints here");
-  const {
-    padding: { x: px, y: py }
-  } = cameraOptions.constraints;
   const vsb = editor.getViewportScreenBounds();
+  const px = Math.min(cameraOptions.constraints.padding.x, vsb.w / 2);
+  const py = Math.min(cameraOptions.constraints.padding.y, vsb.h / 2);
   const bounds = Box.From(cameraOptions.constraints.bounds);
   const zx = (vsb.w - px * 2) / bounds.w;
   const zy = (vsb.h - py * 2) / bounds.h;
@@ -48198,7 +48206,7 @@ function createTLStore({
       },
       onMount: (editor) => {
         assert(editor instanceof Editor);
-        onMount?.(editor);
+        return onMount?.(editor);
       },
       collaboration
     }
@@ -48444,7 +48452,9 @@ var BaseFrameLikeShapeUtil = class extends BaseBoxShapeUtil {
       const currentChildren = compact(
         editor.getSortedChildIdsForParent(shape).map((id) => editor.getShape(id))
       );
-      if (previousChildren.every((s) => !currentChildren.find((c) => c.index === s.index))) {
+      if (previousChildren.every(
+        (s) => !currentChildren.find((c) => c.index === initialIndices.get(s.id))
+      )) {
         canRestoreOriginalIndices = true;
       }
     }
@@ -48586,7 +48596,6 @@ function strokeShapeIndicators(editor, ctx, shapeIds) {
     const shape = editor.getShape(shapeId);
     if (!shape || shape.isLocked) continue;
     const pageTransform = editor.getShapePageTransform(shape);
-    if (!pageTransform) continue;
     const indicatorPath = indicatorPathCache.get(editor, shape.id);
     if (!indicatorPath) continue;
     if (indicatorPath instanceof Path2D) {
@@ -48740,7 +48749,7 @@ var Pointing = class extends StateNode {
     this.cancel();
   }
   onComplete() {
-    this.complete();
+    this.cancel();
   }
   onInterrupt() {
     this.cancel();
@@ -48999,7 +49008,7 @@ Keep seeing this message?
 }
 function showCantReadFromIndexDbAlert() {
   window.alert(
-    `Oops! We could not access your browser's storage\u2014and the app won't work correctly without that. We now need to reload the page and try again.
+    `Oops! We could not access your browser's storage\u2014and the app won't work correctly without that. Reload the page to try again.
 
 Keep seeing this message?
 \u2022 If you're using tldraw in a private or "incognito" window, try loading tldraw in a regular window or in a different browser.`
@@ -49070,6 +49079,21 @@ var TLLocalSyncClient = class {
         { scope: "session" }
       )
     );
+    if (typeof window !== "undefined") {
+      const flush = () => {
+        if (!this.didLoad) return;
+        this.persistIfNeeded();
+      };
+      const onVisibilityChange = () => {
+        if (document.visibilityState === "hidden") flush();
+      };
+      window.addEventListener("pagehide", flush);
+      document.addEventListener("visibilitychange", onVisibilityChange);
+      this.disposables.add(() => {
+        window.removeEventListener("pagehide", flush);
+        document.removeEventListener("visibilitychange", onVisibilityChange);
+      });
+    }
     this.connect(onLoad, onLoadError);
     this.documentTypes = new Set(
       Object.values(this.store.schema.types).filter((t2) => t2.scope === "document").map((t2) => t2.typeName)
@@ -49080,6 +49104,7 @@ var TLLocalSyncClient = class {
   disposables = /* @__PURE__ */ new Set();
   diffQueue = [];
   didDispose = false;
+  didLoad = false;
   shouldDoFullDBWrite = true;
   isReloading = false;
   persistenceKey;
@@ -49170,6 +49195,7 @@ var TLLocalSyncClient = class {
       this.disposables.add(() => {
         this.channel.close();
       });
+      this.didLoad = true;
       onLoad(this);
     } catch (e) {
       this.debug("error loading data from store", e);
@@ -49316,7 +49342,7 @@ function useLocalStore(options) {
       return;
     }
     setState({ status: "loading" });
-    const objectURLCache = new WeakCache();
+    const objectURLCache = /* @__PURE__ */ new Map();
     const assets = {
       upload: async (asset, file) => {
         await client.db.storeAsset(asset.id, file);
@@ -49325,11 +49351,12 @@ function useLocalStore(options) {
       resolve: async (asset) => {
         if (!asset.props.src) return null;
         if (asset.props.src.startsWith("asset:")) {
-          return await objectURLCache.get(asset, async () => {
-            const blob = await client.db.getAsset(asset.id);
-            if (!blob) return null;
-            return URL.createObjectURL(blob);
-          });
+          let objectURL = objectURLCache.get(asset.id);
+          if (!objectURL) {
+            objectURL = client.db.getAsset(asset.id).then((blob) => blob ? URL.createObjectURL(blob) : null);
+            objectURLCache.set(asset.id, objectURL);
+          }
+          return await objectURL;
         }
         return asset.props.src;
       },
@@ -49355,6 +49382,9 @@ function useLocalStore(options) {
     return () => {
       isClosed = true;
       client.close();
+      for (const objectURL of objectURLCache.values()) {
+        objectURL.then((url) => url && URL.revokeObjectURL(url), noop);
+      }
     };
   }, [options, setState]);
   return state;
@@ -49404,6 +49434,7 @@ function usePassThroughWheelEvents(ref) {
     const newEvent = new WheelEvent("wheel", e);
     newEvent.isSpecialRedispatchedEvent = true;
     cvs.dispatchEvent(newEvent);
+    e.isSpecialRedispatchedEvent = true;
   });
   const attached = (0, import_react37.useRef)(null);
   (0, import_react37.useEffect)(() => {
@@ -49436,7 +49467,7 @@ function usePeerIds() {
   const $userIds = useComputed(
     "userIds",
     () => uniq(editor.getVisibleCollaborators().map((p) => p.userId)).sort(),
-    { isEqual: (a, b) => a.join(",") === b.join?.(",") },
+    { isEqual: areArraysShallowEqual },
     [editor]
   );
   return useValue($userIds);
@@ -50796,11 +50827,13 @@ var TldrawEditorWithLoadingStore = (0, import_react45.memo)(function TldrawEdito
 }) {
   const container = useContainer();
   (0, import_react45.useLayoutEffect)(() => {
-    if (user.userPreferences.get().colorScheme === "dark") {
+    const scheme2 = user.userPreferences.get().colorScheme ?? rest.colorScheme ?? "light";
+    const isDark = scheme2 === "dark" || scheme2 === "system" && typeof window !== "undefined" && !!getGlobalWindow().matchMedia?.("(prefers-color-scheme: dark)").matches;
+    if (isDark) {
       container.classList.remove("tl-theme__light");
       container.classList.add("tl-theme__dark");
     }
-  }, [container, user]);
+  }, [container, user, rest.colorScheme]);
   const { LoadingScreen: LoadingScreen22 } = useEditorComponents();
   switch (store.status) {
     case "error": {
@@ -51146,6 +51179,19 @@ init_define_import_meta();
 
 // node_modules/@tldraw/editor/node_modules/@tiptap/core/dist/index.js
 init_define_import_meta();
+
+// node_modules/@tldraw/editor/node_modules/@tiptap/core/dist/rolldown-runtime-D7D4PA-g.js
+init_define_import_meta();
+var __defProp17 = Object.defineProperty;
+var __exportAll = (all, no_symbols) => {
+  let target = {};
+  for (var name in all) __defProp17(target, name, {
+    get: all[name],
+    enumerable: true
+  });
+  if (!no_symbols) __defProp17(target, Symbol.toStringTag, { value: "Module" });
+  return target;
+};
 
 // node_modules/@tldraw/editor/node_modules/@tiptap/pm/dist/transform/index.js
 init_define_import_meta();
@@ -51668,7 +51714,7 @@ function compareDeep(a, b) {
   }
   return true;
 }
-var Mark = class _Mark4 {
+var Mark = class _Mark3 {
   /**
   @internal
   */
@@ -51780,8 +51826,8 @@ var Mark = class _Mark4 {
   */
   static setFrom(marks) {
     if (!marks || Array.isArray(marks) && marks.length == 0)
-      return _Mark4.none;
-    if (marks instanceof _Mark4)
+      return _Mark3.none;
+    if (marks instanceof _Mark3)
       return [marks];
     let copy2 = marks.slice();
     copy2.sort((a, b) => a.type.rank - b.type.rank);
@@ -58986,7 +59032,8 @@ var WidgetViewDesc = class extends ViewDesc {
         wrap3.appendChild(dom);
         dom = wrap3;
       }
-      dom.contentEditable = "false";
+      if (!dom.hasAttribute("contenteditable"))
+        dom.contentEditable = "false";
       dom.classList.add("ProseMirror-widget");
     }
     super(parent, [], dom, null);
@@ -60648,8 +60695,14 @@ function maybeWrapTrusted(html) {
   let trustedTypes = window.trustedTypes;
   if (!trustedTypes)
     return html;
-  if (!_policy)
-    _policy = trustedTypes.defaultPolicy || trustedTypes.createPolicy("ProseMirrorClipboard", { createHTML: (s) => s });
+  if (!_policy) {
+    if (_policy = trustedTypes.defaultPolicy)
+      try {
+        return _policy.createHTML(html);
+      } catch (_a) {
+      }
+    _policy = trustedTypes.createPolicy("ProseMirrorClipboard", { createHTML: (s) => s });
+  }
   return _policy.createHTML(html);
 }
 function readHTML(html) {
@@ -60699,6 +60752,11 @@ function addContext(slice2, context) {
     let type = schema.nodes[array2[i]];
     if (!type || type.hasRequiredAttrs())
       break;
+    try {
+      type.checkAttrs(array2[i + 1]);
+    } catch (e) {
+      break;
+    }
     content = Fragment9.from(type.create(array2[i + 1], content));
     openStart++;
     openEnd++;
@@ -63436,11 +63494,6 @@ function keydownHandler(bindings) {
 }
 
 // node_modules/@tldraw/editor/node_modules/@tiptap/core/dist/index.js
-var __defProp17 = Object.defineProperty;
-var __export2 = (target, all) => {
-  for (var name in all)
-    __defProp17(target, name, { get: all[name], enumerable: true });
-};
 function createChainableState(config) {
   const { state, transaction: transaction2 } = config;
   let { selection } = transaction2;
@@ -63471,7 +63524,7 @@ function createChainableState(config) {
     }
   };
 }
-var CommandManager = class {
+var CommandManager = class CommandManager2 {
   constructor(props) {
     this.editor = props.editor;
     this.rawCommands = this.editor.extensionManager.commands;
@@ -63488,18 +63541,14 @@ var CommandManager = class {
     const { view } = editor;
     const { tr: tr2 } = state;
     const props = this.buildProps(tr2);
-    return Object.fromEntries(
-      Object.entries(rawCommands).map(([name, command22]) => {
-        const method = (...args) => {
-          const callback = command22(...args)(props);
-          if (!tr2.getMeta("preventDispatch") && !this.hasCustomState) {
-            view.dispatch(tr2);
-          }
-          return callback;
-        };
-        return [name, method];
-      })
-    );
+    return Object.fromEntries(Object.entries(rawCommands).map(([name, command4]) => {
+      const method = (...args) => {
+        const callback = command4(...args)(props);
+        if (!tr2.getMeta("preventDispatch") && !this.hasCustomState) view.dispatch(tr2);
+        return callback;
+      };
+      return [name, method];
+    }));
   }
   get chain() {
     return () => this.createChain();
@@ -63513,26 +63562,37 @@ var CommandManager = class {
     const callbacks = [];
     const hasStartTransaction = !!startTr;
     const tr2 = startTr || state.tr;
-    const run32 = () => {
-      if (!hasStartTransaction && shouldDispatch && !tr2.getMeta("preventDispatch") && !this.hasCustomState) {
-        view.dispatch(tr2);
-      }
+    const run5 = () => {
+      if (!hasStartTransaction && shouldDispatch && !tr2.getMeta("preventDispatch") && !this.hasCustomState) view.dispatch(tr2);
       return callbacks.every((callback) => callback === true);
     };
     const chain = {
-      ...Object.fromEntries(
-        Object.entries(rawCommands).map(([name, command22]) => {
-          const chainedCommand = (...args) => {
-            const props = this.buildProps(tr2, shouldDispatch);
-            const callback = command22(...args)(props);
-            callbacks.push(callback);
-            return chain;
-          };
-          return [name, chainedCommand];
-        })
-      ),
-      run: run32
+      ...Object.fromEntries(Object.entries(rawCommands).map(([name, command4]) => {
+        const chainedCommand = (...args) => {
+          const props = this.buildProps(tr2, shouldDispatch);
+          const callback = command4(...args)(props);
+          callbacks.push(callback);
+          return chain;
+        };
+        return [name, chainedCommand];
+      })),
+      run: run5
     };
+    return chain;
+  }
+  /**
+  * Creates a chain that safely returns `false` when run.
+  * @returns A non-dispatching command chain.
+  * @example
+  * const chain = CommandManager.createFakeChain()
+  * chain.focus().run() // false
+  */
+  static createFakeChain() {
+    const chain = new Proxy({}, { get: (_target, property) => {
+      if (property === "then") return;
+      if (property === "run") return () => false;
+      return () => chain;
+    } });
     return chain;
   }
   createCan(startTr) {
@@ -63540,15 +63600,30 @@ var CommandManager = class {
     const dispatch = false;
     const tr2 = startTr || state.tr;
     const props = this.buildProps(tr2, dispatch);
-    const formattedCommands = Object.fromEntries(
-      Object.entries(rawCommands).map(([name, command22]) => {
-        return [name, (...args) => command22(...args)({ ...props, dispatch: void 0 })];
-      })
-    );
     return {
-      ...formattedCommands,
+      ...Object.fromEntries(Object.entries(rawCommands).map(([name, command4]) => {
+        return [name, (...args) => command4(...args)({
+          ...props,
+          dispatch: void 0
+        })];
+      })),
       chain: () => this.createChain(tr2, dispatch)
     };
+  }
+  /**
+  * Creates capability checks that safely return `false`.
+  * @returns A non-dispatching capability checker.
+  * @example
+  * const can = CommandManager.createFallbackCan()
+  * can.focus() // false
+  */
+  static createFallbackCan() {
+    const chain = CommandManager2.createFakeChain();
+    return new Proxy({ chain: () => chain }, { get: (target, property) => {
+      if (property === "then") return;
+      if (property === "chain") return target.chain;
+      return () => false;
+    } });
   }
   buildProps(tr2, shouldDispatch = true) {
     const { rawCommands, editor, state } = this;
@@ -63565,88 +63640,20 @@ var CommandManager = class {
       chain: () => this.createChain(tr2, shouldDispatch),
       can: () => this.createCan(tr2),
       get commands() {
-        return Object.fromEntries(
-          Object.entries(rawCommands).map(([name, command22]) => {
-            return [name, (...args) => command22(...args)(props)];
-          })
-        );
+        return Object.fromEntries(Object.entries(rawCommands).map(([name, command4]) => {
+          return [name, (...args) => command4(...args)(props)];
+        }));
       }
     };
     return props;
   }
 };
-var commands_exports = {};
-__export2(commands_exports, {
-  blur: () => blur,
-  clearContent: () => clearContent,
-  clearNodes: () => clearNodes,
-  command: () => command,
-  createParagraphNear: () => createParagraphNear2,
-  cut: () => cut,
-  deleteCurrentNode: () => deleteCurrentNode,
-  deleteNode: () => deleteNode,
-  deleteRange: () => deleteRange2,
-  deleteSelection: () => deleteSelection2,
-  enter: () => enter,
-  exitCode: () => exitCode2,
-  extendMarkRange: () => extendMarkRange,
-  first: () => first,
-  focus: () => focus,
-  forEach: () => forEach,
-  insertContent: () => insertContent,
-  insertContentAt: () => insertContentAt,
-  insertDefaultBlock: () => insertDefaultBlock,
-  joinBackward: () => joinBackward2,
-  joinDown: () => joinDown2,
-  joinForward: () => joinForward2,
-  joinItemBackward: () => joinItemBackward,
-  joinItemForward: () => joinItemForward,
-  joinTextblockBackward: () => joinTextblockBackward2,
-  joinTextblockForward: () => joinTextblockForward2,
-  joinUp: () => joinUp2,
-  keyboardShortcut: () => keyboardShortcut,
-  lift: () => lift3,
-  liftEmptyBlock: () => liftEmptyBlock2,
-  liftListItem: () => liftListItem2,
-  newlineInCode: () => newlineInCode2,
-  resetAttributes: () => resetAttributes,
-  scrollIntoView: () => scrollIntoView,
-  selectAll: () => selectAll2,
-  selectNodeBackward: () => selectNodeBackward2,
-  selectNodeForward: () => selectNodeForward2,
-  selectParentNode: () => selectParentNode2,
-  selectTextblockEnd: () => selectTextblockEnd2,
-  selectTextblockStart: () => selectTextblockStart2,
-  setContent: () => setContent,
-  setMark: () => setMark,
-  setMeta: () => setMeta,
-  setNode: () => setNode,
-  setNodeSelection: () => setNodeSelection,
-  setTextDirection: () => setTextDirection,
-  setTextSelection: () => setTextSelection,
-  sinkListItem: () => sinkListItem2,
-  splitBlock: () => splitBlock2,
-  splitListItem: () => splitListItem,
-  toggleList: () => toggleList,
-  toggleMark: () => toggleMark,
-  toggleNode: () => toggleNode,
-  toggleWrap: () => toggleWrap,
-  undoInputRule: () => undoInputRule,
-  unsetAllMarks: () => unsetAllMarks,
-  unsetMark: () => unsetMark,
-  unsetTextDirection: () => unsetTextDirection,
-  updateAttributes: () => updateAttributes,
-  updateDecorations: () => updateDecorations,
-  wrapIn: () => wrapIn2,
-  wrapInList: () => wrapInList2
-});
 var blur = () => ({ editor, view }) => {
   requestAnimationFrame(() => {
-    var _a;
     if (!editor.isDestroyed) {
-      ;
+      var _window;
       view.dom.blur();
-      (_a = window == null ? void 0 : window.getSelection()) == null ? void 0 : _a.removeAllRanges();
+      (_window = window) === null || _window === void 0 || (_window = _window.getSelection()) === null || _window === void 0 || _window.removeAllRanges();
     }
   });
   return true;
@@ -63657,29 +63664,21 @@ var clearContent = (emitUpdate = true) => ({ commands }) => {
 var clearNodes = () => ({ state, tr: tr2, dispatch }) => {
   const { selection } = tr2;
   const { ranges } = selection;
-  if (!dispatch) {
-    return true;
-  }
+  if (!dispatch) return true;
   ranges.forEach(({ $from, $to }) => {
     state.doc.nodesBetween($from.pos, $to.pos, (node, pos2) => {
-      if (node.type.isText) {
-        return;
-      }
+      if (node.type.isText) return;
       const { doc: doc3, mapping } = tr2;
       const $mappedFrom = doc3.resolve(mapping.map(pos2));
       const $mappedTo = doc3.resolve(mapping.map(pos2 + node.nodeSize));
       const nodeRange = $mappedFrom.blockRange($mappedTo);
-      if (!nodeRange) {
-        return;
-      }
+      if (!nodeRange) return;
       const targetLiftDepth = liftTarget(nodeRange);
       if (node.type.isTextblock) {
         const { defaultType } = $mappedFrom.parent.contentMatchAt($mappedFrom.index());
         tr2.setNodeMarkup(nodeRange.start, defaultType);
       }
-      if (targetLiftDepth || targetLiftDepth === 0) {
-        tr2.lift(nodeRange, targetLiftDepth);
-      }
+      if (targetLiftDepth || targetLiftDepth === 0) tr2.lift(nodeRange, targetLiftDepth);
     });
   });
   return true;
@@ -63687,7 +63686,7 @@ var clearNodes = () => ({ state, tr: tr2, dispatch }) => {
 var command = (fn) => (props) => {
   return fn(props);
 };
-var createParagraphNear2 = () => ({ state, dispatch }) => {
+var createParagraphNear$1 = () => ({ state, dispatch }) => {
   return createParagraphNear(state, dispatch);
 };
 var cut = (originRange, targetPos) => ({ editor, tr: tr2 }) => {
@@ -63702,30 +63701,21 @@ var cut = (originRange, targetPos) => ({ editor, tr: tr2 }) => {
 var deleteCurrentNode = () => ({ tr: tr2, dispatch }) => {
   const { selection } = tr2;
   const currentNode = selection.$anchor.node();
-  if (currentNode.content.size > 0) {
-    return false;
-  }
+  if (currentNode.content.size > 0) return false;
   const $pos = tr2.selection.$anchor;
-  for (let depth = $pos.depth; depth > 0; depth -= 1) {
-    const node = $pos.node(depth);
-    if (node.type === currentNode.type) {
-      if (dispatch) {
-        const from2 = $pos.before(depth);
-        const to = $pos.after(depth);
-        tr2.delete(from2, to).scrollIntoView();
-      }
-      return true;
+  for (let depth = $pos.depth; depth > 0; depth -= 1) if ($pos.node(depth).type === currentNode.type) {
+    if (dispatch) {
+      const from2 = $pos.before(depth);
+      const to = $pos.after(depth);
+      tr2.delete(from2, to).scrollIntoView();
     }
+    return true;
   }
   return false;
 };
 function getNodeType(nameOrType, schema) {
   if (typeof nameOrType === "string") {
-    if (!schema.nodes[nameOrType]) {
-      throw Error(
-        `There is no node type named '${nameOrType}'. Maybe you forgot to add the extension?`
-      );
-    }
+    if (!schema.nodes[nameOrType]) throw Error(`There is no node type named '${nameOrType}'. Maybe you forgot to add the extension?`);
     return schema.nodes[nameOrType];
   }
   return nameOrType;
@@ -63733,55 +63723,40 @@ function getNodeType(nameOrType, schema) {
 var deleteNode = (typeOrName) => ({ tr: tr2, state, dispatch }) => {
   const type = getNodeType(typeOrName, state.schema);
   const $pos = tr2.selection.$anchor;
-  for (let depth = $pos.depth; depth > 0; depth -= 1) {
-    const node = $pos.node(depth);
-    if (node.type === type) {
-      if (dispatch) {
-        const from2 = $pos.before(depth);
-        const to = $pos.after(depth);
-        tr2.delete(from2, to).scrollIntoView();
-      }
-      return true;
+  for (let depth = $pos.depth; depth > 0; depth -= 1) if ($pos.node(depth).type === type) {
+    if (dispatch) {
+      const from2 = $pos.before(depth);
+      const to = $pos.after(depth);
+      tr2.delete(from2, to).scrollIntoView();
     }
+    return true;
   }
   return false;
 };
 var deleteRange2 = (range) => ({ tr: tr2, dispatch }) => {
   const { from: from2, to } = range;
-  if (dispatch) {
-    tr2.delete(from2, to);
-  }
+  if (dispatch) tr2.delete(from2, to);
   return true;
 };
 var hasTextContent = (nodeSpec) => {
-  if (!nodeSpec.content) {
-    return false;
-  }
-  const textRegex = /^text(\*|\+)/;
-  return textRegex.test(nodeSpec.content);
+  if (!nodeSpec.content) return false;
+  return /^text(\*|\+)/.test(nodeSpec.content);
 };
 var expandSelectionForSide = ($pos, schema, side) => {
-  if (!$pos.parent.isInline) {
-    return $pos.pos;
-  }
-  if (side === "left" && $pos.pos > $pos.start() || side === "right" && $pos.pos < $pos.end()) {
-    return $pos.pos;
-  }
+  if (!$pos.parent.isInline) return $pos.pos;
+  if (side === "left" && $pos.pos > $pos.start() || side === "right" && $pos.pos < $pos.end()) return $pos.pos;
   const parentContent = schema.nodes[$pos.parent.type.name].spec;
-  if (!hasTextContent(parentContent)) {
-    return $pos.pos;
-  }
+  if (!hasTextContent(parentContent)) return $pos.pos;
   return side === "left" ? $pos.start() - 1 : $pos.end() + 1;
 };
 var expandSelectionForInlineText = ($from, $to, schema) => {
-  const from2 = expandSelectionForSide($from, schema, "left");
-  const to = expandSelectionForSide($to, schema, "right");
-  return { from: from2, to };
+  return {
+    from: expandSelectionForSide($from, schema, "left"),
+    to: expandSelectionForSide($to, schema, "right")
+  };
 };
 var deleteSelection2 = () => ({ state, dispatch }) => {
-  if (state.selection.empty) {
-    return false;
-  }
+  if (state.selection.empty) return false;
   if (dispatch) {
     const tr2 = state.tr;
     const { ranges } = state.selection;
@@ -63793,9 +63768,7 @@ var deleteSelection2 = () => ({ state, dispatch }) => {
       const { from: from2, to } = expandSelectionForInlineText($from, $to, state.schema);
       tr2.deleteRange(from2, to);
     });
-    if (!tr2.selection.empty) {
-      tr2.setSelection(TextSelection.near(tr2.doc.resolve(tr2.selection.from)));
-    }
+    if (!tr2.selection.empty) tr2.setSelection(TextSelection.near(tr2.doc.resolve(tr2.selection.from)));
     tr2.scrollIntoView();
     dispatch(tr2);
   }
@@ -63804,7 +63777,7 @@ var deleteSelection2 = () => ({ state, dispatch }) => {
 var enter = () => ({ commands }) => {
   return commands.keyboardShortcut("Enter");
 };
-var exitCode2 = () => ({ state, dispatch }) => {
+var exitCode$1 = () => ({ state, dispatch }) => {
   return exitCode(state, dispatch);
 };
 function isRegExp(value) {
@@ -63812,52 +63785,31 @@ function isRegExp(value) {
 }
 function objectIncludes(object1, object2, options = { strict: true }) {
   const keys2 = Object.keys(object2);
-  if (!keys2.length) {
-    return true;
-  }
+  if (!keys2.length) return true;
   return keys2.every((key) => {
-    if (options.strict) {
-      return object2[key] === object1[key];
-    }
-    if (isRegExp(object2[key])) {
-      return object2[key].test(object1[key]);
-    }
+    if (options.strict) return object2[key] === object1[key];
+    if (isRegExp(object2[key])) return object2[key].test(object1[key]);
     return object2[key] === object1[key];
   });
 }
 function findMarkInSet(marks, type, attributes = {}) {
   return marks.find((item) => {
-    return item.type === type && objectIncludes(
-      // Only check equality for the attributes that are provided
-      Object.fromEntries(Object.keys(attributes).map((k) => [k, item.attrs[k]])),
-      attributes
-    );
+    return item.type === type && objectIncludes(Object.fromEntries(Object.keys(attributes).map((k) => [k, item.attrs[k]])), attributes);
   });
 }
 function isMarkInSet(marks, type, attributes = {}) {
   return !!findMarkInSet(marks, type, attributes);
 }
 function getMarkRange($pos, type, attributes) {
-  if (!$pos || !type) {
-    return;
-  }
+  if (!$pos || !type) return;
   let start = $pos.parent.childAfter($pos.parentOffset);
-  if (!start.node || !start.node.marks.some((mark2) => mark2.type === type)) {
-    start = $pos.parent.childBefore($pos.parentOffset);
-  }
-  if (!start.node || !start.node.marks.some((mark2) => mark2.type === type)) {
-    return;
-  }
+  if (!start.node || !start.node.marks.some((mark) => mark.type === type)) start = $pos.parent.childBefore($pos.parentOffset);
+  if (!start.node || !start.node.marks.some((mark) => mark.type === type)) return;
   if (!attributes) {
-    const firstMark = start.node.marks.find((mark2) => mark2.type === type);
-    if (firstMark) {
-      attributes = firstMark.attrs;
-    }
+    const firstMark = start.node.marks.find((mark) => mark.type === type);
+    if (firstMark) attributes = firstMark.attrs;
   }
-  const mark = findMarkInSet([...start.node.marks], type, attributes);
-  if (!mark) {
-    return;
-  }
+  if (!findMarkInSet([...start.node.marks], type, attributes)) return;
   let startIndex = start.index;
   let startPos = $pos.start() + start.offset;
   let endIndex = startIndex + 1;
@@ -63877,11 +63829,7 @@ function getMarkRange($pos, type, attributes) {
 }
 function getMarkType(nameOrType, schema) {
   if (typeof nameOrType === "string") {
-    if (!schema.marks[nameOrType]) {
-      throw Error(
-        `There is no mark type named '${nameOrType}'. Maybe you forgot to add the extension?`
-      );
-    }
+    if (!schema.marks[nameOrType]) throw Error(`There is no mark type named '${nameOrType}'. Maybe you forgot to add the extension?`);
     return schema.marks[nameOrType];
   }
   return nameOrType;
@@ -63901,11 +63849,7 @@ var extendMarkRange = (typeOrName, attributes) => ({ tr: tr2, state, dispatch })
 };
 var first = (commands) => (props) => {
   const items = typeof commands === "function" ? commands(props) : commands;
-  for (let i = 0; i < items.length; i += 1) {
-    if (items[i](props)) {
-      return true;
-    }
-  }
+  for (let i = 0; i < items.length; i += 1) if (items[i](props)) return true;
   return false;
 };
 function isTextSelection(value) {
@@ -63915,40 +63859,28 @@ function minMax(value = 0, min3 = 0, max2 = 0) {
   return Math.min(Math.max(value, min3), max2);
 }
 function resolveFocusPosition(doc3, position = null) {
-  if (!position) {
-    return null;
-  }
+  if (!position) return null;
   const selectionAtStart = Selection.atStart(doc3);
   const selectionAtEnd = Selection.atEnd(doc3);
-  if (position === "start" || position === true) {
-    return selectionAtStart;
-  }
-  if (position === "end") {
-    return selectionAtEnd;
-  }
+  if (position === "start" || position === true) return selectionAtStart;
+  if (position === "end") return selectionAtEnd;
   const minPos = selectionAtStart.from;
   const maxPos = selectionAtEnd.to;
-  if (position === "all") {
-    return TextSelection.create(
-      doc3,
-      minMax(0, minPos, maxPos),
-      minMax(doc3.content.size, minPos, maxPos)
-    );
-  }
-  return TextSelection.create(
-    doc3,
-    minMax(position, minPos, maxPos),
-    minMax(position, minPos, maxPos)
-  );
+  if (position === "all") return TextSelection.create(doc3, minMax(0, minPos, maxPos), minMax(doc3.content.size, minPos, maxPos));
+  return TextSelection.create(doc3, minMax(position, minPos, maxPos), minMax(position, minPos, maxPos));
 }
 function isAndroid() {
   return ["Android"].includes(navigator.platform) || /android/i.test(navigator.userAgent);
 }
 function isiOS() {
-  return ["iPad Simulator", "iPhone Simulator", "iPod Simulator", "iPad", "iPhone", "iPod"].includes(
-    navigator.platform
-  ) || // iPad on iOS 13 detection
-  navigator.userAgent.includes("Mac") && "ontouchend" in document;
+  return [
+    "iPad Simulator",
+    "iPhone Simulator",
+    "iPod Simulator",
+    "iPad",
+    "iPhone",
+    "iPod"
+  ].includes(navigator.platform) || navigator.userAgent.includes("Mac") && "ontouchend" in document;
 }
 function isSafari() {
   return typeof navigator !== "undefined" ? /^((?!chrome|android).)*safari/i.test(navigator.userAgent) : false;
@@ -63959,27 +63891,17 @@ var focus = (position = null, options = {}) => ({ editor, view, tr: tr2, dispatc
     ...options
   };
   const delayedFocus = () => {
-    if (isiOS() || isAndroid()) {
-      ;
-      view.dom.focus();
-    }
-    if (isSafari() && !isiOS() && !isAndroid()) {
-      ;
-      view.dom.focus({ preventScroll: true });
-    }
+    if (isiOS() || isAndroid()) view.dom.focus();
+    if (isSafari() && !isiOS() && !isAndroid()) view.dom.focus({ preventScroll: true });
     requestAnimationFrame(() => {
       if (!editor.isDestroyed) {
         view.focus();
-        if (options == null ? void 0 : options.scrollIntoView) {
-          editor.commands.scrollIntoView();
-        }
+        if (options === null || options === void 0 ? void 0 : options.scrollIntoView) editor.commands.scrollIntoView();
       }
     });
   };
   try {
-    if (view.hasFocus() && position === null || position === false) {
-      return true;
-    }
+    if (view.hasFocus() && position === null || position === false) return true;
   } catch {
     return false;
   }
@@ -63990,55 +63912,44 @@ var focus = (position = null, options = {}) => ({ editor, view, tr: tr2, dispatc
   const selection = resolveFocusPosition(tr2.doc, position) || editor.state.selection;
   const isSameSelection = editor.state.selection.eq(selection);
   if (dispatch) {
-    if (!isSameSelection) {
-      tr2.setSelection(selection);
-    }
-    if (isSameSelection && tr2.storedMarks) {
-      tr2.setStoredMarks(tr2.storedMarks);
-    }
+    if (!isSameSelection) tr2.setSelection(selection);
+    if (isSameSelection && tr2.storedMarks) tr2.setStoredMarks(tr2.storedMarks);
     delayedFocus();
   }
   return true;
 };
 var forEach = (items, fn) => (props) => {
-  return items.every((item, index2) => fn(item, { ...props, index: index2 }));
+  return items.every((item, index2) => fn(item, {
+    ...props,
+    index: index2
+  }));
 };
 var insertContent = (value, options) => ({ tr: tr2, commands }) => {
-  return commands.insertContentAt(
-    { from: tr2.selection.from, to: tr2.selection.to },
-    value,
-    options
-  );
+  return commands.insertContentAt({
+    from: tr2.selection.from,
+    to: tr2.selection.to
+  }, value, options);
 };
 var removeWhitespaces = (node) => {
   const children = node.childNodes;
   for (let i = children.length - 1; i >= 0; i -= 1) {
     const child = children[i];
-    if (child.nodeType === 3 && child.nodeValue && /^(\n\s\s|\n)$/.test(child.nodeValue)) {
-      node.removeChild(child);
-    } else if (child.nodeType === 1) {
-      removeWhitespaces(child);
-    }
+    if (child.nodeType === 3 && child.nodeValue && /^(\n\s\s|\n)$/.test(child.nodeValue)) node.removeChild(child);
+    else if (child.nodeType === 1) removeWhitespaces(child);
   }
   return node;
 };
 function elementFromString(value) {
-  if (typeof window === "undefined") {
-    throw new Error(
-      "[tiptap error]: there is no window object available, so this function cannot be used"
-    );
-  }
+  if (typeof window === "undefined") throw new Error("[tiptap error]: there is no window object available, so this function cannot be used");
   const wrappedValue = `<body>${value}</body>`;
   const html = new window.DOMParser().parseFromString(wrappedValue, "text/html").body;
   return removeWhitespaces(html);
 }
 function isProseMirrorContent(value) {
-  return typeof (value == null ? void 0 : value.nodesBetween) === "function";
+  return typeof (value === null || value === void 0 ? void 0 : value.nodesBetween) === "function";
 }
 function createNodeFromContent(content, schema, options) {
-  if (isProseMirrorContent(content)) {
-    return content;
-  }
+  if (isProseMirrorContent(content)) return content;
   const isJSONContent = typeof content === "object" && content !== null;
   options = {
     slice: true,
@@ -64046,24 +63957,15 @@ function createNodeFromContent(content, schema, options) {
     ...options
   };
   const isTextContent = typeof content === "string";
-  if (isJSONContent) {
-    try {
-      const isArrayContent = Array.isArray(content) && content.length > 0;
-      if (isArrayContent) {
-        return Fragment9.fromArray(content.map((item) => schema.nodeFromJSON(item)));
-      }
-      const node = schema.nodeFromJSON(content);
-      if (options.errorOnInvalidContent) {
-        node.check();
-      }
-      return node;
-    } catch (error) {
-      if (options.errorOnInvalidContent) {
-        throw new Error("[tiptap error]: Invalid JSON content", { cause: error });
-      }
-      console.warn("[tiptap warn]: Invalid content.", "Passed value:", content, "Error:", error);
-      return createNodeFromContent("", schema, options);
-    }
+  if (isJSONContent) try {
+    if (Array.isArray(content) && content.length > 0) return Fragment9.fromArray(content.map((item) => schema.nodeFromJSON(item)));
+    const node = schema.nodeFromJSON(content);
+    if (options.errorOnInvalidContent) node.check();
+    return node;
+  } catch (error) {
+    if (options.errorOnInvalidContent) throw new Error("[tiptap error]: Invalid JSON content", { cause: error });
+    console.warn("[tiptap warn]: Invalid content.", "Passed value:", content, "Error:", error);
+    return createNodeFromContent("", schema, options);
   }
   if (isTextContent) {
     if (options.errorOnInvalidContent) {
@@ -64072,46 +63974,25 @@ function createNodeFromContent(content, schema, options) {
       const contentCheckSchema = new Schema({
         topNode: schema.spec.topNode,
         marks: schema.spec.marks,
-        // Prosemirror's schemas are executed such that: the last to execute, matches last
-        // This means that we can add a catch-all node at the end of the schema to catch any content that we don't know how to handle
-        nodes: schema.spec.nodes.append({
-          __tiptap__private__unknown__catch__all__node: {
-            content: "inline*",
-            group: "block",
-            parseDOM: [
-              {
-                tag: "*",
-                getAttrs: (e) => {
-                  hasInvalidContent = true;
-                  invalidContent = typeof e === "string" ? e : e.outerHTML;
-                  return null;
-                }
-              }
-            ]
-          }
-        })
+        nodes: schema.spec.nodes.append({ __tiptap__private__unknown__catch__all__node: {
+          content: "inline*",
+          group: "block",
+          parseDOM: [{
+            tag: "*",
+            getAttrs: (e) => {
+              hasInvalidContent = true;
+              invalidContent = typeof e === "string" ? e : e.outerHTML;
+              return null;
+            }
+          }]
+        } })
       });
-      if (options.slice) {
-        DOMParser2.fromSchema(contentCheckSchema).parseSlice(
-          elementFromString(content),
-          options.parseOptions
-        );
-      } else {
-        DOMParser2.fromSchema(contentCheckSchema).parse(
-          elementFromString(content),
-          options.parseOptions
-        );
-      }
-      if (options.errorOnInvalidContent && hasInvalidContent) {
-        throw new Error("[tiptap error]: Invalid HTML content", {
-          cause: new Error(`Invalid element found: ${invalidContent}`)
-        });
-      }
+      if (options.slice) DOMParser2.fromSchema(contentCheckSchema).parseSlice(elementFromString(content), options.parseOptions);
+      else DOMParser2.fromSchema(contentCheckSchema).parse(elementFromString(content), options.parseOptions);
+      if (options.errorOnInvalidContent && hasInvalidContent) throw new Error("[tiptap error]: Invalid HTML content", { cause: /* @__PURE__ */ new Error(`Invalid element found: ${invalidContent}`) });
     }
     const parser = DOMParser2.fromSchema(schema);
-    if (options.slice) {
-      return parser.parseSlice(elementFromString(content), options.parseOptions).content;
-    }
+    if (options.slice) return parser.parseSlice(elementFromString(content), options.parseOptions).content;
     return parser.parse(elementFromString(content), options.parseOptions);
   }
   return createNodeFromContent("", schema, options);
@@ -64121,24 +64002,17 @@ function isFragment(nodeOrFragment) {
 }
 function selectionToInsertionEnd2(tr2, startLen, bias) {
   const last2 = tr2.steps.length - 1;
-  if (last2 < startLen) {
-    return;
-  }
+  if (last2 < startLen) return;
   const step = tr2.steps[last2];
-  if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep)) {
-    return;
-  }
+  if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep)) return;
   const map2 = tr2.mapping.maps[last2];
   let end = 0;
   map2.forEach((_from, _to, _newFrom, newTo) => {
-    if (end === 0) {
-      end = newTo;
-    }
+    if (end === 0) end = newTo;
   });
   tr2.setSelection(Selection.near(tr2.doc.resolve(end), bias));
 }
 var insertContentAt = (position, value, options) => ({ tr: tr2, dispatch, editor }) => {
-  var _a;
   if (dispatch) {
     options = {
       parseOptions: editor.options.parseOptions,
@@ -64153,10 +64027,7 @@ var insertContentAt = (position, value, options) => ({ tr: tr2, dispatch, editor
         editor,
         error,
         disableCollaboration: () => {
-          if ("collaboration" in editor.storage && typeof editor.storage.collaboration === "object" && editor.storage.collaboration) {
-            ;
-            editor.storage.collaboration.isDisabled = true;
-          }
+          if ("collaboration" in editor.storage && typeof editor.storage.collaboration === "object" && editor.storage.collaboration) editor.storage.collaboration.isDisabled = true;
         }
       });
     };
@@ -64164,26 +64035,31 @@ var insertContentAt = (position, value, options) => ({ tr: tr2, dispatch, editor
       preserveWhitespace: "full",
       ...options.parseOptions
     };
-    if (!options.errorOnInvalidContent && !editor.options.enableContentCheck && editor.options.emitContentError) {
-      try {
-        createNodeFromContent(value, editor.schema, {
-          parseOptions,
-          errorOnInvalidContent: true
-        });
-      } catch (e) {
-        emitContentError(e);
-      }
+    if (!options.errorOnInvalidContent && !editor.options.enableContentCheck && editor.options.emitContentError) try {
+      createNodeFromContent(value, editor.schema, {
+        parseOptions,
+        errorOnInvalidContent: true
+      });
+    } catch (e) {
+      emitContentError(e);
     }
     try {
+      var _options$errorOnInval;
       content = createNodeFromContent(value, editor.schema, {
         parseOptions,
-        errorOnInvalidContent: (_a = options.errorOnInvalidContent) != null ? _a : editor.options.enableContentCheck
+        errorOnInvalidContent: (_options$errorOnInval = options.errorOnInvalidContent) !== null && _options$errorOnInval !== void 0 ? _options$errorOnInval : editor.options.enableContentCheck
       });
     } catch (e) {
       emitContentError(e);
       return false;
     }
-    let { from: from2, to } = typeof position === "number" ? { from: position, to: position } : { from: position.from, to: position.to };
+    let { from: from2, to } = typeof position === "number" ? {
+      from: position,
+      to: position
+    } : {
+      from: position.from,
+      to: position.to
+    };
     let isOnlyTextContent = true;
     let isOnlyBlockContent = true;
     const nodes = isFragment(content) ? content.content : [content];
@@ -64194,116 +64070,90 @@ var insertContentAt = (position, value, options) => ({ tr: tr2, dispatch, editor
     });
     if (from2 === to && isOnlyBlockContent) {
       const { parent } = tr2.doc.resolve(from2);
-      const isEmptyTextBlock = parent.isTextblock && !parent.type.spec.code && !parent.childCount;
-      if (isEmptyTextBlock) {
+      if (parent.isTextblock && !parent.type.spec.code && !parent.childCount) {
         from2 -= 1;
         to += 1;
       }
     }
     let newContent;
     if (isOnlyTextContent) {
-      if (Array.isArray(value)) {
-        newContent = value.map((item) => item.text || "").join("");
-      } else if (isProseMirrorContent(value)) {
-        newContent = nodes.map((node) => {
-          var _a2;
-          return (_a2 = node.text) != null ? _a2 : "";
-        }).join("");
-      } else if (typeof value === "object" && !!value && !!value.text) {
-        newContent = value.text;
-      } else {
-        newContent = value;
-      }
+      if (Array.isArray(value)) newContent = value.map((item) => item.text || "").join("");
+      else if (isProseMirrorContent(value)) newContent = nodes.map((node) => {
+        var _node$text;
+        return (_node$text = node.text) !== null && _node$text !== void 0 ? _node$text : "";
+      }).join("");
+      else if (typeof value === "object" && !!value && !!value.text) newContent = value.text;
+      else newContent = value;
       tr2.insertText(newContent, from2, to);
     } else {
       newContent = Fragment9.from(nodes);
       const $from = tr2.doc.resolve(from2);
       const $fromNode = $from.node();
       const fromSelectionAtStart = $from.parentOffset === 0;
-      const isTextSelection22 = $fromNode.isText || $fromNode.isTextblock;
+      const isTextSelection4 = $fromNode.isText || $fromNode.isTextblock;
       const hasContent = $fromNode.content.size > 0;
-      if (fromSelectionAtStart && isTextSelection22 && hasContent && isOnlyBlockContent) {
-        from2 = Math.max(0, from2 - 1);
-      }
+      if (fromSelectionAtStart && isTextSelection4 && hasContent && isOnlyBlockContent) from2 = Math.max(0, from2 - 1);
       tr2.replaceWith(from2, to, nodes);
     }
-    if (options.updateSelection) {
-      selectionToInsertionEnd2(tr2, tr2.steps.length - 1, -1);
-    }
-    if (options.applyInputRules) {
-      tr2.setMeta("applyInputRules", { from: from2, text: newContent });
-    }
-    if (options.applyPasteRules) {
-      tr2.setMeta("applyPasteRules", { from: from2, text: newContent });
-    }
+    if (options.updateSelection) selectionToInsertionEnd2(tr2, tr2.steps.length - 1, -1);
+    if (options.applyInputRules) tr2.setMeta("applyInputRules", {
+      from: from2,
+      text: newContent
+    });
+    if (options.applyPasteRules) tr2.setMeta("applyPasteRules", {
+      from: from2,
+      text: newContent
+    });
   }
   return true;
 };
 function defaultBlockAt2(match) {
   for (let i = 0; i < match.edgeCount; i += 1) {
     const { type } = match.edge(i);
-    if (type.isTextblock && !type.hasRequiredAttrs()) {
-      return type;
-    }
+    if (type.isTextblock && !type.hasRequiredAttrs()) return type;
   }
   return null;
 }
 var insertDefaultBlock = (options = {}) => ({ tr: tr2, dispatch, editor }) => {
   const { pos: pos2, attrs, content, updateSelection: updateSelection2 = true } = options;
   let $pos;
-  if (typeof pos2 === "number") {
-    $pos = tr2.doc.resolve(pos2);
-  } else if (pos2) {
-    $pos = pos2;
-  } else {
-    $pos = tr2.selection.$from;
-  }
+  if (typeof pos2 === "number") $pos = tr2.doc.resolve(pos2);
+  else if (pos2) $pos = pos2;
+  else $pos = tr2.selection.$from;
   const defaultType = defaultBlockAt2($pos.parent.contentMatchAt($pos.index()));
-  if (!defaultType) {
-    return false;
-  }
+  if (!defaultType) return false;
   const validAttrKeys = Object.keys(defaultType.spec.attrs || {});
   const filteredAttrs = attrs ? Object.fromEntries(Object.entries(attrs).filter(([key]) => validAttrKeys.includes(key))) : {};
   let node;
   if (content) {
     const parsed = createNodeFromContent(content, editor.schema);
     node = defaultType.createAndFill(filteredAttrs, parsed);
-  } else {
-    node = defaultType.createAndFill(filteredAttrs);
-  }
-  if (!node) {
-    return false;
-  }
+  } else node = defaultType.createAndFill(filteredAttrs);
+  if (!node) return false;
   if (dispatch) {
     tr2.insert($pos.pos, node);
-    if (updateSelection2) {
-      selectionToInsertionEnd2(tr2, tr2.steps.length - 1, -1);
-    }
+    if (updateSelection2) selectionToInsertionEnd2(tr2, tr2.steps.length - 1, -1);
   }
   return true;
 };
-var joinUp2 = () => ({ state, dispatch }) => {
+var joinUp$1 = () => ({ state, dispatch }) => {
   return joinUp(state, dispatch);
 };
-var joinDown2 = () => ({ state, dispatch }) => {
+var joinDown$1 = () => ({ state, dispatch }) => {
   return joinDown(state, dispatch);
 };
-var joinBackward2 = () => ({ state, dispatch }) => {
+var joinBackward$1 = () => ({ state, dispatch }) => {
   return joinBackward(state, dispatch);
 };
-var joinForward2 = () => ({ state, dispatch }) => {
+var joinForward$1 = () => ({ state, dispatch }) => {
   return joinForward(state, dispatch);
 };
 var joinItemBackward = () => ({ state, dispatch, tr: tr2 }) => {
   try {
     const point = joinPoint(state.doc, state.selection.$from.pos, -1);
-    if (point === null || point === void 0) {
-      return false;
-    }
+    if (point === null || point === void 0) return false;
     tr2.join(point, 2);
-    if (dispatch) {
-      dispatch(tr2);
-    }
+    if (dispatch) dispatch(tr2);
     return true;
   } catch {
     return false;
@@ -64312,22 +64162,18 @@ var joinItemBackward = () => ({ state, dispatch, tr: tr2 }) => {
 var joinItemForward = () => ({ state, dispatch, tr: tr2 }) => {
   try {
     const point = joinPoint(state.doc, state.selection.$from.pos, 1);
-    if (point === null || point === void 0) {
-      return false;
-    }
+    if (point === null || point === void 0) return false;
     tr2.join(point, 2);
-    if (dispatch) {
-      dispatch(tr2);
-    }
+    if (dispatch) dispatch(tr2);
     return true;
   } catch {
     return false;
   }
 };
-var joinTextblockBackward2 = () => ({ state, dispatch }) => {
+var joinTextblockBackward$1 = () => ({ state, dispatch }) => {
   return joinTextblockBackward(state, dispatch);
 };
-var joinTextblockForward2 = () => ({ state, dispatch }) => {
+var joinTextblockForward$1 = () => ({ state, dispatch }) => {
   return joinTextblockForward(state, dispatch);
 };
 function isMacOS() {
@@ -64336,50 +64182,36 @@ function isMacOS() {
 function normalizeKeyName2(name) {
   const parts = name.split(/-(?!$)/);
   let result = parts[parts.length - 1];
-  if (result === "Space") {
-    result = " ";
-  }
+  if (result === "Space") result = " ";
   let alt;
   let ctrl;
   let shift5;
   let meta;
   for (let i = 0; i < parts.length - 1; i += 1) {
     const mod = parts[i];
-    if (/^(cmd|meta|m)$/i.test(mod)) {
-      meta = true;
-    } else if (/^a(lt)?$/i.test(mod)) {
-      alt = true;
-    } else if (/^(c|ctrl|control)$/i.test(mod)) {
-      ctrl = true;
-    } else if (/^s(hift)?$/i.test(mod)) {
-      shift5 = true;
-    } else if (/^mod$/i.test(mod)) {
-      if (isiOS() || isMacOS()) {
-        meta = true;
-      } else {
-        ctrl = true;
-      }
-    } else {
-      throw new Error(`Unrecognized modifier name: ${mod}`);
-    }
+    if (/^(cmd|meta|m)$/i.test(mod)) meta = true;
+    else if (/^a(lt)?$/i.test(mod)) alt = true;
+    else if (/^(c|ctrl|control)$/i.test(mod)) ctrl = true;
+    else if (/^s(hift)?$/i.test(mod)) shift5 = true;
+    else if (/^mod$/i.test(mod)) {
+      if (isiOS() || isMacOS()) meta = true;
+      else ctrl = true;
+    } else throw new Error(`Unrecognized modifier name: ${mod}`);
   }
-  if (alt) {
-    result = `Alt-${result}`;
-  }
-  if (ctrl) {
-    result = `Ctrl-${result}`;
-  }
-  if (meta) {
-    result = `Meta-${result}`;
-  }
-  if (shift5) {
-    result = `Shift-${result}`;
-  }
+  if (alt) result = `Alt-${result}`;
+  if (ctrl) result = `Ctrl-${result}`;
+  if (meta) result = `Meta-${result}`;
+  if (shift5) result = `Shift-${result}`;
   return result;
 }
 var keyboardShortcut = (name) => ({ editor, view, tr: tr2, dispatch }) => {
   const keys2 = normalizeKeyName2(name).split(/-(?!$)/);
-  const key = keys2.find((item) => !["Alt", "Ctrl", "Meta", "Shift"].includes(item));
+  const key = keys2.find((item) => ![
+    "Alt",
+    "Ctrl",
+    "Meta",
+    "Shift"
+  ].includes(item));
   const event = new KeyboardEvent("keydown", {
     key: key === "Space" ? " " : key,
     altKey: keys2.includes("Alt"),
@@ -64392,11 +64224,9 @@ var keyboardShortcut = (name) => ({ editor, view, tr: tr2, dispatch }) => {
   const capturedTransaction = editor.captureTransaction(() => {
     view.someProp("handleKeyDown", (f) => f(view, event));
   });
-  capturedTransaction == null ? void 0 : capturedTransaction.steps.forEach((step) => {
+  capturedTransaction === null || capturedTransaction === void 0 || capturedTransaction.steps.forEach((step) => {
     const newStep = step.map(tr2.mapping);
-    if (newStep && dispatch) {
-      tr2.maybeStep(newStep);
-    }
+    if (newStep && dispatch) tr2.maybeStep(newStep);
   });
   return true;
 };
@@ -64405,9 +64235,7 @@ function isNodeActive(state, typeOrName, attributes = {}) {
   const type = typeOrName ? getNodeType(typeOrName, state.schema) : null;
   const nodeRanges = [];
   state.doc.nodesBetween(from2, to, (node, pos2) => {
-    if (node.isText) {
-      return;
-    }
+    if (node.isText) return;
     const relativeFrom = Math.max(from2, pos2);
     const relativeTo = Math.min(to, pos2 + node.nodeSize);
     nodeRanges.push({
@@ -64418,100 +64246,64 @@ function isNodeActive(state, typeOrName, attributes = {}) {
   });
   const selectionRange = to - from2;
   const matchedNodeRanges = nodeRanges.filter((nodeRange) => {
-    if (!type) {
-      return true;
-    }
+    if (!type) return true;
     return type.name === nodeRange.node.type.name;
   }).filter((nodeRange) => objectIncludes(nodeRange.node.attrs, attributes, { strict: false }));
-  if (empty2) {
-    return !!matchedNodeRanges.length;
-  }
-  const range = matchedNodeRanges.reduce((sum, nodeRange) => sum + nodeRange.to - nodeRange.from, 0);
-  return range >= selectionRange;
+  if (empty2) return !!matchedNodeRanges.length;
+  return matchedNodeRanges.reduce((sum, nodeRange) => sum + nodeRange.to - nodeRange.from, 0) >= selectionRange;
 }
-var lift3 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
-  const type = getNodeType(typeOrName, state.schema);
-  const isActive2 = isNodeActive(state, type, attributes);
-  if (!isActive2) {
-    return false;
-  }
+var lift$1 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+  if (!isNodeActive(state, getNodeType(typeOrName, state.schema), attributes)) return false;
   return lift2(state, dispatch);
 };
-var liftEmptyBlock2 = () => ({ state, dispatch }) => {
+var liftEmptyBlock$1 = () => ({ state, dispatch }) => {
   return liftEmptyBlock(state, dispatch);
 };
-var liftListItem2 = (typeOrName) => ({ state, dispatch }) => {
+var liftListItem$1 = (typeOrName) => ({ state, dispatch }) => {
   const type = getNodeType(typeOrName, state.schema);
   return liftListItem(type)(state, dispatch);
 };
-var newlineInCode2 = () => ({ state, dispatch }) => {
+var newlineInCode$1 = () => ({ state, dispatch }) => {
   return newlineInCode(state, dispatch);
 };
 function getSchemaTypeNameByName(name, schema) {
-  if (schema.nodes[name]) {
-    return "node";
-  }
-  if (schema.marks[name]) {
-    return "mark";
-  }
+  if (schema.nodes[name]) return "node";
+  if (schema.marks[name]) return "mark";
   return null;
 }
 function deleteProps(obj, propOrProps) {
   const props = typeof propOrProps === "string" ? [propOrProps] : propOrProps;
   return Object.keys(obj).reduce((newObj, prop) => {
-    if (!props.includes(prop)) {
-      newObj[prop] = obj[prop];
-    }
+    if (!props.includes(prop)) newObj[prop] = obj[prop];
     return newObj;
   }, {});
 }
 var resetAttributes = (typeOrName, attributes) => ({ tr: tr2, state, dispatch }) => {
   let nodeType = null;
   let markType = null;
-  const schemaType = getSchemaTypeNameByName(
-    typeof typeOrName === "string" ? typeOrName : typeOrName.name,
-    state.schema
-  );
-  if (!schemaType) {
-    return false;
-  }
-  if (schemaType === "node") {
-    nodeType = getNodeType(typeOrName, state.schema);
-  }
-  if (schemaType === "mark") {
-    markType = getMarkType(typeOrName, state.schema);
-  }
+  const schemaType = getSchemaTypeNameByName(typeof typeOrName === "string" ? typeOrName : typeOrName.name, state.schema);
+  if (!schemaType) return false;
+  if (schemaType === "node") nodeType = getNodeType(typeOrName, state.schema);
+  if (schemaType === "mark") markType = getMarkType(typeOrName, state.schema);
   let canReset = false;
   tr2.selection.ranges.forEach((range) => {
     state.doc.nodesBetween(range.$from.pos, range.$to.pos, (node, pos2) => {
       if (nodeType && nodeType === node.type) {
         canReset = true;
-        if (dispatch) {
-          tr2.setNodeMarkup(pos2, void 0, deleteProps(node.attrs, attributes));
+        if (dispatch) tr2.setNodeMarkup(pos2, void 0, deleteProps(node.attrs, attributes));
+      }
+      if (markType && node.marks.length) node.marks.forEach((mark) => {
+        if (markType === mark.type) {
+          canReset = true;
+          if (dispatch) tr2.addMark(pos2, pos2 + node.nodeSize, markType.create(deleteProps(mark.attrs, attributes)));
         }
-      }
-      if (markType && node.marks.length) {
-        node.marks.forEach((mark) => {
-          if (markType === mark.type) {
-            canReset = true;
-            if (dispatch) {
-              tr2.addMark(
-                pos2,
-                pos2 + node.nodeSize,
-                markType.create(deleteProps(mark.attrs, attributes))
-              );
-            }
-          }
-        });
-      }
+      });
     });
   });
   return canReset;
 };
 var scrollIntoView = () => ({ tr: tr2, dispatch }) => {
-  if (dispatch) {
-    tr2.scrollIntoView();
-  }
+  if (dispatch) tr2.scrollIntoView();
   return true;
 };
 var selectAll2 = () => ({ tr: tr2, dispatch }) => {
@@ -64521,19 +64313,19 @@ var selectAll2 = () => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var selectNodeBackward2 = () => ({ state, dispatch }) => {
+var selectNodeBackward$1 = () => ({ state, dispatch }) => {
   return selectNodeBackward(state, dispatch);
 };
-var selectNodeForward2 = () => ({ state, dispatch }) => {
+var selectNodeForward$1 = () => ({ state, dispatch }) => {
   return selectNodeForward(state, dispatch);
 };
-var selectParentNode2 = () => ({ state, dispatch }) => {
+var selectParentNode$1 = () => ({ state, dispatch }) => {
   return selectParentNode(state, dispatch);
 };
-var selectTextblockEnd2 = () => ({ state, dispatch }) => {
+var selectTextblockEnd$1 = () => ({ state, dispatch }) => {
   return selectTextblockEnd(state, dispatch);
 };
-var selectTextblockStart2 = () => ({ state, dispatch }) => {
+var selectTextblockStart$1 = () => ({ state, dispatch }) => {
   return selectTextblockStart(state, dispatch);
 };
 function createDocument(content, schema, parseOptions = {}, options = {}) {
@@ -64546,21 +64338,20 @@ function createDocument(content, schema, parseOptions = {}, options = {}) {
 var setContent = (content, { errorOnInvalidContent, emitUpdate = true, parseOptions = {} } = {}) => ({ editor, tr: tr2, dispatch, commands }) => {
   const { doc: doc3 } = tr2;
   if (parseOptions.preserveWhitespace !== "full") {
-    const document2 = createDocument(content, editor.schema, parseOptions, {
-      errorOnInvalidContent: errorOnInvalidContent != null ? errorOnInvalidContent : editor.options.enableContentCheck
-    });
+    const document2 = createDocument(content, editor.schema, parseOptions, { errorOnInvalidContent: errorOnInvalidContent !== null && errorOnInvalidContent !== void 0 ? errorOnInvalidContent : editor.options.enableContentCheck });
     if (dispatch) {
       const nodes = isFragment(document2) ? document2.content : [document2];
       tr2.replaceWith(0, doc3.content.size, nodes).setMeta("preventUpdate", !emitUpdate);
     }
     return true;
   }
-  if (dispatch) {
-    tr2.setMeta("preventUpdate", !emitUpdate);
-  }
-  return commands.insertContentAt({ from: 0, to: doc3.content.size }, content, {
+  if (dispatch) tr2.setMeta("preventUpdate", !emitUpdate);
+  return commands.insertContentAt({
+    from: 0,
+    to: doc3.content.size
+  }, content, {
     parseOptions,
-    errorOnInvalidContent: errorOnInvalidContent != null ? errorOnInvalidContent : editor.options.enableContentCheck
+    errorOnInvalidContent: errorOnInvalidContent !== null && errorOnInvalidContent !== void 0 ? errorOnInvalidContent : editor.options.enableContentCheck
   });
 };
 function getMarkAttributes(state, typeOrName) {
@@ -64568,19 +64359,13 @@ function getMarkAttributes(state, typeOrName) {
   const { from: from2, to, empty: empty2 } = state.selection;
   const marks = [];
   if (empty2) {
-    if (state.storedMarks) {
-      marks.push(...state.storedMarks);
-    }
+    if (state.storedMarks) marks.push(...state.storedMarks);
     marks.push(...state.selection.$head.marks());
-  } else {
-    state.doc.nodesBetween(from2, to, (node) => {
-      marks.push(...node.marks);
-    });
-  }
+  } else state.doc.nodesBetween(from2, to, (node) => {
+    marks.push(...node.marks);
+  });
   const mark = marks.find((markItem) => markItem.type.name === type.name);
-  if (!mark) {
-    return {};
-  }
+  if (!mark) return {};
   return { ...mark.attrs };
 }
 function combineTransactionSteps(oldDoc, transactions) {
@@ -64595,54 +64380,39 @@ function combineTransactionSteps(oldDoc, transactions) {
 function findParentNodeClosestToPos($pos, predicate) {
   for (let i = $pos.depth; i > 0; i -= 1) {
     const node = $pos.node(i);
-    if (predicate(node)) {
-      return {
-        pos: i > 0 ? $pos.before(i) : 0,
-        start: $pos.start(i),
-        depth: i,
-        node
-      };
-    }
+    if (predicate(node)) return {
+      pos: i > 0 ? $pos.before(i) : 0,
+      start: $pos.start(i),
+      depth: i,
+      node
+    };
   }
 }
 function findParentNode(predicate) {
   return (selection) => findParentNodeClosestToPos(selection.$from, predicate);
 }
 function getExtensionField(extension, field, context) {
-  if (extension.config[field] === void 0 && extension.parent) {
-    return getExtensionField(extension.parent, field, context);
-  }
-  if (typeof extension.config[field] === "function") {
-    const value = extension.config[field].bind({
-      ...context,
-      parent: extension.parent ? getExtensionField(extension.parent, field, context) : null
-    });
-    return value;
-  }
+  if (extension.config[field] === void 0 && extension.parent) return getExtensionField(extension.parent, field, context);
+  if (typeof extension.config[field] === "function") return extension.config[field].bind({
+    ...context,
+    parent: extension.parent ? getExtensionField(extension.parent, field, context) : null
+  });
   return extension.config[field];
 }
 function flattenExtensions(extensions) {
   return extensions.map((extension) => {
-    const context = {
+    const addExtensions = getExtensionField(extension, "addExtensions", {
       name: extension.name,
       options: extension.options,
       storage: extension.storage
-    };
-    const addExtensions = getExtensionField(
-      extension,
-      "addExtensions",
-      context
-    );
-    if (addExtensions) {
-      return [extension, ...flattenExtensions(addExtensions())];
-    }
+    });
+    if (addExtensions) return [extension, ...flattenExtensions(addExtensions())];
     return extension;
   }).flat(10);
 }
 function getHTMLFromFragment(fragment, schema) {
   const documentFragment = DOMSerializer.fromSchema(schema).serializeFragment(fragment);
-  const temporaryDocument = document.implementation.createHTMLDocument();
-  const container = temporaryDocument.createElement("div");
+  const container = document.implementation.createHTMLDocument().createElement("div");
   container.appendChild(documentFragment);
   return container.innerHTML;
 }
@@ -64651,9 +64421,7 @@ function isFunction(value) {
 }
 function callOrReturn(value, context = void 0, ...props) {
   if (isFunction(value)) {
-    if (context) {
-      return value.bind(context)(...props);
-    }
+    if (context) return value.bind(context)(...props);
     return value(...props);
   }
   return value;
@@ -64662,15 +64430,10 @@ function isEmptyObject(value = {}) {
   return Object.keys(value).length === 0 && value.constructor === Object;
 }
 function splitExtensions(extensions) {
-  const baseExtensions = extensions.filter(
-    (extension) => extension.type === "extension"
-  );
-  const nodeExtensions = extensions.filter((extension) => extension.type === "node");
-  const markExtensions = extensions.filter((extension) => extension.type === "mark");
   return {
-    baseExtensions,
-    nodeExtensions,
-    markExtensions
+    baseExtensions: extensions.filter((extension) => extension.type === "extension"),
+    nodeExtensions: extensions.filter((extension) => extension.type === "node"),
+    markExtensions: extensions.filter((extension) => extension.type === "mark")
   };
 }
 function getAttributesFromExtensions(extensions) {
@@ -64690,34 +64453,20 @@ function getAttributesFromExtensions(extensions) {
   const markExtensionTypes = markExtensions.map((ext) => ext.name);
   const allExtensionTypes = [...nodeExtensionTypes, ...markExtensionTypes];
   extensions.forEach((extension) => {
-    const context = {
+    const addGlobalAttributes = getExtensionField(extension, "addGlobalAttributes", {
       name: extension.name,
       options: extension.options,
       storage: extension.storage,
       extensions: nodeAndMarkExtensions
-    };
-    const addGlobalAttributes = getExtensionField(
-      extension,
-      "addGlobalAttributes",
-      context
-    );
-    if (!addGlobalAttributes) {
-      return;
-    }
-    const globalAttributes = addGlobalAttributes();
-    globalAttributes.forEach((globalAttribute) => {
+    });
+    if (!addGlobalAttributes) return;
+    addGlobalAttributes().forEach((globalAttribute) => {
       let resolvedTypes;
-      if (Array.isArray(globalAttribute.types)) {
-        resolvedTypes = globalAttribute.types;
-      } else if (globalAttribute.types === "*") {
-        resolvedTypes = allExtensionTypes;
-      } else if (globalAttribute.types === "nodes") {
-        resolvedTypes = nodeExtensionTypes;
-      } else if (globalAttribute.types === "marks") {
-        resolvedTypes = markExtensionTypes;
-      } else {
-        resolvedTypes = [];
-      }
+      if (Array.isArray(globalAttribute.types)) resolvedTypes = globalAttribute.types;
+      else if (globalAttribute.types === "*") resolvedTypes = allExtensionTypes;
+      else if (globalAttribute.types === "nodes") resolvedTypes = nodeExtensionTypes;
+      else if (globalAttribute.types === "marks") resolvedTypes = markExtensionTypes;
+      else resolvedTypes = [];
       resolvedTypes.forEach((type) => {
         Object.entries(globalAttribute.attributes).forEach(([name, attribute]) => {
           extensionAttributes.push({
@@ -64733,27 +64482,20 @@ function getAttributesFromExtensions(extensions) {
     });
   });
   nodeAndMarkExtensions.forEach((extension) => {
-    const context = {
+    const addAttributes = getExtensionField(extension, "addAttributes", {
       name: extension.name,
       options: extension.options,
       storage: extension.storage
-    };
-    const addAttributes = getExtensionField(extension, "addAttributes", context);
-    if (!addAttributes) {
-      return;
-    }
+    });
+    if (!addAttributes) return;
     const attributes = addAttributes();
     Object.entries(attributes).forEach(([name, attribute]) => {
       const mergedAttr = {
         ...defaultAttribute,
         ...attribute
       };
-      if (typeof (mergedAttr == null ? void 0 : mergedAttr.default) === "function") {
-        mergedAttr.default = mergedAttr.default();
-      }
-      if ((mergedAttr == null ? void 0 : mergedAttr.isRequired) && (mergedAttr == null ? void 0 : mergedAttr.default) === void 0) {
-        delete mergedAttr.default;
-      }
+      if (typeof (mergedAttr === null || mergedAttr === void 0 ? void 0 : mergedAttr.default) === "function") mergedAttr.default = mergedAttr.default();
+      if ((mergedAttr === null || mergedAttr === void 0 ? void 0 : mergedAttr.isRequired) && (mergedAttr === null || mergedAttr === void 0 ? void 0 : mergedAttr.default) === void 0) delete mergedAttr.default;
       extensionAttributes.push({
         type: extension.name,
         name,
@@ -64801,9 +64543,7 @@ function splitStyleDeclarations(styles) {
     }
     current += char;
   }
-  if (current) {
-    result.push(current);
-  }
+  if (current) result.push(current);
   return result;
 }
 function parseStyleEntries(styles) {
@@ -64813,14 +64553,10 @@ function parseStyleEntries(styles) {
   for (let i = 0; i < numDeclarations; i += 1) {
     const declaration = declarations[i];
     const firstColonIndex = declaration.indexOf(":");
-    if (firstColonIndex === -1) {
-      continue;
-    }
+    if (firstColonIndex === -1) continue;
     const property = declaration.slice(0, firstColonIndex).trim();
     const value = declaration.slice(firstColonIndex + 1).trim();
-    if (property && value) {
-      pairs.push([property, value]);
-    }
+    if (property && value) pairs.push([property, value]);
   }
   return pairs;
 }
@@ -64828,253 +64564,158 @@ function mergeAttributes(...objects) {
   return objects.filter((item) => !!item).reduce((items, item) => {
     const mergedAttributes = { ...items };
     Object.entries(item).forEach(([key, value]) => {
-      const exists = mergedAttributes[key];
-      if (!exists) {
+      if (key === "__proto__") {
+        Object.defineProperty(mergedAttributes, key, {
+          configurable: true,
+          enumerable: true,
+          value,
+          writable: true
+        });
+        return;
+      }
+      if (!mergedAttributes[key]) {
         mergedAttributes[key] = value;
         return;
       }
       if (key === "class") {
         const valueClasses = value ? String(value).split(" ") : [];
         const existingClasses = mergedAttributes[key] ? mergedAttributes[key].split(" ") : [];
-        const insertClasses = valueClasses.filter(
-          (valueClass) => !existingClasses.includes(valueClass)
-        );
+        const insertClasses = valueClasses.filter((valueClass) => !existingClasses.includes(valueClass));
         mergedAttributes[key] = [...existingClasses, ...insertClasses].join(" ");
       } else if (key === "style") {
-        const styleMap = new Map([
-          ...parseStyleEntries(mergedAttributes[key]),
-          ...parseStyleEntries(value)
-        ]);
+        const styleMap = new Map([...parseStyleEntries(mergedAttributes[key]), ...parseStyleEntries(value)]);
         mergedAttributes[key] = Array.from(styleMap.entries()).map(([property, val]) => `${property}: ${val}`).join("; ");
-      } else {
-        mergedAttributes[key] = value;
-      }
+      } else mergedAttributes[key] = value;
     });
     return mergedAttributes;
   }, {});
 }
 function getRenderedAttributes(nodeOrMark, extensionAttributes) {
   return extensionAttributes.filter((attribute) => attribute.type === nodeOrMark.type.name).filter((item) => item.attribute.rendered).map((item) => {
-    if (!item.attribute.renderHTML) {
-      return {
-        [item.name]: nodeOrMark.attrs[item.name]
-      };
-    }
+    if (!item.attribute.renderHTML) return { [item.name]: nodeOrMark.attrs[item.name] };
     return item.attribute.renderHTML(nodeOrMark.attrs) || {};
   }).reduce((attributes, attribute) => mergeAttributes(attributes, attribute), {});
 }
 function fromString(value) {
-  if (typeof value !== "string") {
-    return value;
-  }
-  if (value.match(/^[+-]?(?:\d*\.)?\d+$/)) {
-    return Number(value);
-  }
-  if (value === "true") {
-    return true;
-  }
-  if (value === "false") {
-    return false;
-  }
+  if (typeof value !== "string") return value;
+  if (value.match(/^[+-]?(?:\d*\.)?\d+$/)) return Number(value);
+  if (value === "true") return true;
+  if (value === "false") return false;
   return value;
 }
 function injectExtensionAttributesToParseRule(parseRule, extensionAttributes) {
-  if ("style" in parseRule) {
-    return parseRule;
-  }
+  if ("style" in parseRule) return parseRule;
   return {
     ...parseRule,
     getAttrs: (node) => {
       const oldAttributes = parseRule.getAttrs ? parseRule.getAttrs(node) : parseRule.attrs;
-      if (oldAttributes === false) {
-        return false;
-      }
+      if (oldAttributes === false) return false;
       const newAttributes = extensionAttributes.reduce((items, item) => {
         const value = item.attribute.parseHTML ? item.attribute.parseHTML(node) : fromString(node.getAttribute(item.name));
-        if (value === null || value === void 0) {
-          return items;
-        }
+        if (value === null || value === void 0) return items;
         return {
           ...items,
           [item.name]: value
         };
       }, {});
-      return { ...oldAttributes, ...newAttributes };
+      return {
+        ...oldAttributes,
+        ...newAttributes
+      };
     }
   };
 }
 function cleanUpSchemaItem(data) {
-  return Object.fromEntries(
-    // @ts-ignore
-    Object.entries(data).filter(([key, value]) => {
-      if (key === "attrs" && isEmptyObject(value)) {
-        return false;
-      }
-      return value !== null && value !== void 0;
-    })
-  );
+  return Object.fromEntries(Object.entries(data).filter(([key, value]) => {
+    if (key === "attrs" && isEmptyObject(value)) return false;
+    return value !== null && value !== void 0;
+  }));
 }
 function buildAttributeSpec(extensionAttribute) {
-  var _a, _b;
+  var _extensionAttribute$a, _extensionAttribute$a2;
   const spec = {};
-  if (!((_a = extensionAttribute == null ? void 0 : extensionAttribute.attribute) == null ? void 0 : _a.isRequired) && "default" in ((extensionAttribute == null ? void 0 : extensionAttribute.attribute) || {})) {
-    spec.default = extensionAttribute.attribute.default;
-  }
-  if (((_b = extensionAttribute == null ? void 0 : extensionAttribute.attribute) == null ? void 0 : _b.validate) !== void 0) {
-    spec.validate = extensionAttribute.attribute.validate;
-  }
+  if (!(extensionAttribute === null || extensionAttribute === void 0 || (_extensionAttribute$a = extensionAttribute.attribute) === null || _extensionAttribute$a === void 0 ? void 0 : _extensionAttribute$a.isRequired) && "default" in ((extensionAttribute === null || extensionAttribute === void 0 ? void 0 : extensionAttribute.attribute) || {})) spec.default = extensionAttribute.attribute.default;
+  if ((extensionAttribute === null || extensionAttribute === void 0 || (_extensionAttribute$a2 = extensionAttribute.attribute) === null || _extensionAttribute$a2 === void 0 ? void 0 : _extensionAttribute$a2.validate) !== void 0) spec.validate = extensionAttribute.attribute.validate;
   return [extensionAttribute.name, spec];
 }
 function getSchemaByResolvedExtensions(extensions, editor) {
-  var _a;
+  var _nodeExtensions$find;
   const allAttributes = getAttributesFromExtensions(extensions);
   const { nodeExtensions, markExtensions } = splitExtensions(extensions);
-  const topNode = (_a = nodeExtensions.find((extension) => getExtensionField(extension, "topNode"))) == null ? void 0 : _a.name;
-  const nodes = Object.fromEntries(
-    nodeExtensions.map((extension) => {
-      const extensionAttributes = allAttributes.filter(
-        (attribute) => attribute.type === extension.name
-      );
-      const context = {
-        name: extension.name,
-        options: extension.options,
-        storage: extension.storage,
-        editor
-      };
-      const extraNodeFields = extensions.reduce((fields, e) => {
-        const extendNodeSchema = getExtensionField(
-          e,
-          "extendNodeSchema",
-          context
-        );
+  const topNode = (_nodeExtensions$find = nodeExtensions.find((extension) => getExtensionField(extension, "topNode"))) === null || _nodeExtensions$find === void 0 ? void 0 : _nodeExtensions$find.name;
+  const nodes = Object.fromEntries(nodeExtensions.map((extension) => {
+    const extensionAttributes = allAttributes.filter((attribute) => attribute.type === extension.name);
+    const context = {
+      name: extension.name,
+      options: extension.options,
+      storage: extension.storage,
+      editor
+    };
+    const schema = cleanUpSchemaItem({
+      ...extensions.reduce((fields, e) => {
+        const extendNodeSchema = getExtensionField(e, "extendNodeSchema", context);
         return {
           ...fields,
           ...extendNodeSchema ? extendNodeSchema(extension) : {}
         };
-      }, {});
-      const schema = cleanUpSchemaItem({
-        ...extraNodeFields,
-        content: callOrReturn(
-          getExtensionField(extension, "content", context)
-        ),
-        marks: callOrReturn(getExtensionField(extension, "marks", context)),
-        group: callOrReturn(getExtensionField(extension, "group", context)),
-        inline: callOrReturn(getExtensionField(extension, "inline", context)),
-        atom: callOrReturn(getExtensionField(extension, "atom", context)),
-        selectable: callOrReturn(
-          getExtensionField(extension, "selectable", context)
-        ),
-        draggable: callOrReturn(
-          getExtensionField(extension, "draggable", context)
-        ),
-        code: callOrReturn(getExtensionField(extension, "code", context)),
-        whitespace: callOrReturn(
-          getExtensionField(extension, "whitespace", context)
-        ),
-        linebreakReplacement: callOrReturn(
-          getExtensionField(
-            extension,
-            "linebreakReplacement",
-            context
-          )
-        ),
-        defining: callOrReturn(
-          getExtensionField(extension, "defining", context)
-        ),
-        isolating: callOrReturn(
-          getExtensionField(extension, "isolating", context)
-        ),
-        attrs: Object.fromEntries(extensionAttributes.map(buildAttributeSpec))
-      });
-      const parseHTML = callOrReturn(
-        getExtensionField(extension, "parseHTML", context)
-      );
-      if (parseHTML) {
-        schema.parseDOM = parseHTML.map(
-          (parseRule) => injectExtensionAttributesToParseRule(parseRule, extensionAttributes)
-        );
-      }
-      const renderHTML = getExtensionField(
-        extension,
-        "renderHTML",
-        context
-      );
-      if (renderHTML) {
-        schema.toDOM = (node) => renderHTML({
-          node,
-          HTMLAttributes: getRenderedAttributes(node, extensionAttributes)
-        });
-      }
-      const renderText = getExtensionField(
-        extension,
-        "renderText",
-        context
-      );
-      if (renderText) {
-        schema.toText = renderText;
-      }
-      return [extension.name, schema];
-    })
-  );
-  const marks = Object.fromEntries(
-    markExtensions.map((extension) => {
-      const extensionAttributes = allAttributes.filter(
-        (attribute) => attribute.type === extension.name
-      );
-      const context = {
-        name: extension.name,
-        options: extension.options,
-        storage: extension.storage,
-        editor
-      };
-      const extraMarkFields = extensions.reduce((fields, e) => {
-        const extendMarkSchema = getExtensionField(
-          e,
-          "extendMarkSchema",
-          context
-        );
+      }, {}),
+      content: callOrReturn(getExtensionField(extension, "content", context)),
+      marks: callOrReturn(getExtensionField(extension, "marks", context)),
+      group: callOrReturn(getExtensionField(extension, "group", context)),
+      inline: callOrReturn(getExtensionField(extension, "inline", context)),
+      atom: callOrReturn(getExtensionField(extension, "atom", context)),
+      selectable: callOrReturn(getExtensionField(extension, "selectable", context)),
+      draggable: callOrReturn(getExtensionField(extension, "draggable", context)),
+      code: callOrReturn(getExtensionField(extension, "code", context)),
+      whitespace: callOrReturn(getExtensionField(extension, "whitespace", context)),
+      linebreakReplacement: callOrReturn(getExtensionField(extension, "linebreakReplacement", context)),
+      defining: callOrReturn(getExtensionField(extension, "defining", context)),
+      isolating: callOrReturn(getExtensionField(extension, "isolating", context)),
+      attrs: Object.fromEntries(extensionAttributes.map(buildAttributeSpec))
+    });
+    const parseHTML = callOrReturn(getExtensionField(extension, "parseHTML", context));
+    if (parseHTML) schema.parseDOM = parseHTML.map((parseRule) => injectExtensionAttributesToParseRule(parseRule, extensionAttributes));
+    const renderHTML = getExtensionField(extension, "renderHTML", context);
+    if (renderHTML) schema.toDOM = (node) => renderHTML({
+      node,
+      HTMLAttributes: getRenderedAttributes(node, extensionAttributes)
+    });
+    const renderText = getExtensionField(extension, "renderText", context);
+    if (renderText) schema.toText = renderText;
+    return [extension.name, schema];
+  }));
+  const marks = Object.fromEntries(markExtensions.map((extension) => {
+    const extensionAttributes = allAttributes.filter((attribute) => attribute.type === extension.name);
+    const context = {
+      name: extension.name,
+      options: extension.options,
+      storage: extension.storage,
+      editor
+    };
+    const schema = cleanUpSchemaItem({
+      ...extensions.reduce((fields, e) => {
+        const extendMarkSchema = getExtensionField(e, "extendMarkSchema", context);
         return {
           ...fields,
           ...extendMarkSchema ? extendMarkSchema(extension) : {}
         };
-      }, {});
-      const schema = cleanUpSchemaItem({
-        ...extraMarkFields,
-        inclusive: callOrReturn(
-          getExtensionField(extension, "inclusive", context)
-        ),
-        excludes: callOrReturn(
-          getExtensionField(extension, "excludes", context)
-        ),
-        group: callOrReturn(getExtensionField(extension, "group", context)),
-        spanning: callOrReturn(
-          getExtensionField(extension, "spanning", context)
-        ),
-        code: callOrReturn(getExtensionField(extension, "code", context)),
-        attrs: Object.fromEntries(extensionAttributes.map(buildAttributeSpec))
-      });
-      const parseHTML = callOrReturn(
-        getExtensionField(extension, "parseHTML", context)
-      );
-      if (parseHTML) {
-        schema.parseDOM = parseHTML.map(
-          (parseRule) => injectExtensionAttributesToParseRule(parseRule, extensionAttributes)
-        );
-      }
-      const renderHTML = getExtensionField(
-        extension,
-        "renderHTML",
-        context
-      );
-      if (renderHTML) {
-        schema.toDOM = (mark) => renderHTML({
-          mark,
-          HTMLAttributes: getRenderedAttributes(mark, extensionAttributes)
-        });
-      }
-      return [extension.name, schema];
-    })
-  );
+      }, {}),
+      inclusive: callOrReturn(getExtensionField(extension, "inclusive", context)),
+      excludes: callOrReturn(getExtensionField(extension, "excludes", context)),
+      group: callOrReturn(getExtensionField(extension, "group", context)),
+      spanning: callOrReturn(getExtensionField(extension, "spanning", context)),
+      code: callOrReturn(getExtensionField(extension, "code", context)),
+      attrs: Object.fromEntries(extensionAttributes.map(buildAttributeSpec))
+    });
+    const parseHTML = callOrReturn(getExtensionField(extension, "parseHTML", context));
+    if (parseHTML) schema.parseDOM = parseHTML.map((parseRule) => injectExtensionAttributesToParseRule(parseRule, extensionAttributes));
+    const renderHTML = getExtensionField(extension, "renderHTML", context);
+    if (renderHTML) schema.toDOM = (mark) => renderHTML({
+      mark,
+      HTMLAttributes: getRenderedAttributes(mark, extensionAttributes)
+    });
+    return [extension.name, schema];
+  }));
   return new Schema({
     topNode,
     nodes,
@@ -65090,61 +64731,46 @@ function sortExtensions(extensions) {
   return extensions.sort((a, b) => {
     const priorityA = getExtensionField(a, "priority") || defaultPriority;
     const priorityB = getExtensionField(b, "priority") || defaultPriority;
-    if (priorityA > priorityB) {
-      return -1;
-    }
-    if (priorityA < priorityB) {
-      return 1;
-    }
+    if (priorityA > priorityB) return -1;
+    if (priorityA < priorityB) return 1;
     return 0;
   });
 }
 function resolveExtensions(extensions) {
   const resolvedExtensions = sortExtensions(flattenExtensions(extensions));
   const duplicatedNames = findDuplicates(resolvedExtensions.map((extension) => extension.name));
-  if (duplicatedNames.length) {
-    console.warn(
-      `[tiptap warn]: Duplicate extension names found: [${duplicatedNames.map((item) => `'${item}'`).join(", ")}]. This can lead to issues.`
-    );
-  }
+  if (duplicatedNames.length) console.warn(`[tiptap warn]: Duplicate extension names found: [${duplicatedNames.map((item) => `'${item}'`).join(", ")}]. This can lead to issues.`);
   return resolvedExtensions;
 }
 function getSchema(extensions, editor) {
-  const resolvedExtensions = resolveExtensions(extensions);
-  return getSchemaByResolvedExtensions(resolvedExtensions, editor);
+  return getSchemaByResolvedExtensions(resolveExtensions(extensions), editor);
 }
 function getTextBetween(startNode, range, options) {
   const { from: from2, to } = range;
   const { blockSeparator = "\n\n", textSerializers = {} } = options || {};
   let text = "";
   startNode.nodesBetween(from2, to, (node, pos2, parent, index2) => {
-    var _a;
-    if (node.isBlock && pos2 > from2) {
-      text += blockSeparator;
-    }
-    const textSerializer = textSerializers == null ? void 0 : textSerializers[node.type.name];
+    if (node.isBlock && pos2 > from2) text += blockSeparator;
+    const textSerializer = textSerializers === null || textSerializers === void 0 ? void 0 : textSerializers[node.type.name];
     if (textSerializer) {
-      if (parent) {
-        text += textSerializer({
-          node,
-          pos: pos2,
-          parent,
-          index: index2,
-          range
-        });
-      }
+      if (parent) text += textSerializer({
+        node,
+        pos: pos2,
+        parent,
+        index: index2,
+        range
+      });
       return false;
     }
     if (node.isText) {
-      text += (_a = node == null ? void 0 : node.text) == null ? void 0 : _a.slice(Math.max(from2, pos2) - pos2, to - pos2);
+      var _node$text;
+      text += node === null || node === void 0 || (_node$text = node.text) === null || _node$text === void 0 ? void 0 : _node$text.slice(Math.max(from2, pos2) - pos2, to - pos2);
     }
   });
   return text;
 }
 function getTextSerializersFromSchema(schema) {
-  return Object.fromEntries(
-    Object.entries(schema.nodes).filter(([, node]) => node.spec.toText).map(([name, node]) => [name, node.spec.toText])
-  );
+  return Object.fromEntries(Object.entries(schema.nodes).filter(([, node]) => node.spec.toText).map(([name, node]) => [name, node.spec.toText]));
 }
 function removeDuplicates(array2, by = JSON.stringify) {
   const seen = {};
@@ -65156,8 +64782,7 @@ function removeDuplicates(array2, by = JSON.stringify) {
 function simplifyChangedRanges(changes) {
   const uniqueChanges = removeDuplicates(changes);
   return uniqueChanges.length === 1 ? uniqueChanges : uniqueChanges.filter((change, index2) => {
-    const rest = uniqueChanges.filter((_, i) => i !== index2);
-    return !rest.some((otherChange) => {
+    return !uniqueChanges.filter((_, i) => i !== index2).some((otherChange) => {
       return change.oldRange.from >= otherChange.oldRange.from && change.oldRange.to <= otherChange.oldRange.to && change.newRange.from >= otherChange.newRange.from && change.newRange.to <= otherChange.newRange.to;
     });
   });
@@ -65169,15 +64794,17 @@ function getChangedRanges(transform) {
     const ranges = [];
     if (!stepMap.ranges.length) {
       const { from: from2, to } = steps[index2];
-      if (from2 === void 0 || to === void 0) {
-        return;
-      }
-      ranges.push({ from: from2, to });
-    } else {
-      stepMap.forEach((from2, to) => {
-        ranges.push({ from: from2, to });
+      if (from2 === void 0 || to === void 0) return;
+      ranges.push({
+        from: from2,
+        to
       });
-    }
+    } else stepMap.forEach((from2, to) => {
+      ranges.push({
+        from: from2,
+        to
+      });
+    });
     ranges.forEach(({ from: from2, to }) => {
       const newStart = mapping.slice(index2).map(from2, -1);
       const newEnd = mapping.slice(index2).map(to);
@@ -65201,172 +64828,122 @@ function getSchemaTypeByName(name, schema) {
   return schema.nodes[name] || schema.marks[name] || null;
 }
 function getSplittedAttributes(extensionAttributes, typeName, attributes) {
-  return Object.fromEntries(
-    Object.entries(attributes).filter(([name]) => {
-      const extensionAttribute = extensionAttributes.find((item) => {
-        return item.type === typeName && item.name === name;
-      });
-      if (!extensionAttribute) {
-        return false;
-      }
-      return extensionAttribute.attribute.keepOnSplit;
-    })
-  );
+  return Object.fromEntries(Object.entries(attributes).filter(([name]) => {
+    const extensionAttribute = extensionAttributes.find((item) => {
+      return item.type === typeName && item.name === name;
+    });
+    if (!extensionAttribute) return false;
+    return extensionAttribute.attribute.keepOnSplit;
+  }));
 }
 var getTextContentFromNodes = ($from, maxMatch = 500) => {
   let textBefore = "";
   const sliceEndPos = $from.parentOffset;
-  $from.parent.nodesBetween(
-    Math.max(0, sliceEndPos - maxMatch),
-    sliceEndPos,
-    (node, pos2, parent, index2) => {
-      var _a, _b;
-      const chunk = ((_b = (_a = node.type.spec).toText) == null ? void 0 : _b.call(_a, {
-        node,
-        pos: pos2,
-        parent,
-        index: index2
-      })) || node.textContent || "%leaf%";
-      textBefore += node.isAtom && !node.isText ? chunk : chunk.slice(0, Math.max(0, sliceEndPos - pos2));
-    }
-  );
+  $from.parent.nodesBetween(Math.max(0, sliceEndPos - maxMatch), sliceEndPos, (node, pos2, parent, index2) => {
+    var _node$type$spec$toTex, _node$type$spec;
+    const chunk = ((_node$type$spec$toTex = (_node$type$spec = node.type.spec).toText) === null || _node$type$spec$toTex === void 0 ? void 0 : _node$type$spec$toTex.call(_node$type$spec, {
+      node,
+      pos: pos2,
+      parent,
+      index: index2
+    })) || node.textContent || "%leaf%";
+    textBefore += node.isAtom && !node.isText ? chunk : chunk.slice(0, Math.max(0, sliceEndPos - pos2));
+  });
   return textBefore;
 };
 function isMarkActive(state, typeOrName, attributes = {}) {
   const { empty: empty2, ranges } = state.selection;
   const type = typeOrName ? getMarkType(typeOrName, state.schema) : null;
-  if (empty2) {
-    return !!(state.storedMarks || state.selection.$from.marks()).filter((mark) => {
-      if (!type) {
-        return true;
-      }
-      return type.name === mark.type.name;
-    }).find((mark) => objectIncludes(mark.attrs, attributes, { strict: false }));
-  }
+  if (empty2) return !!(state.storedMarks || state.selection.$from.marks()).filter((mark) => {
+    if (!type) return true;
+    return type.name === mark.type.name;
+  }).find((mark) => objectIncludes(mark.attrs, attributes, { strict: false }));
   let selectionRange = 0;
   const markRanges = [];
   ranges.forEach(({ $from, $to }) => {
     const from2 = $from.pos;
     const to = $to.pos;
     state.doc.nodesBetween(from2, to, (node, pos2) => {
-      if (type && node.inlineContent && !node.type.allowsMarkType(type)) {
-        return false;
-      }
-      if (!node.isText && !node.marks.length) {
-        return;
-      }
+      if (type && node.inlineContent && !node.type.allowsMarkType(type)) return false;
+      if (!node.isText && !node.marks.length) return;
       const relativeFrom = Math.max(from2, pos2);
       const relativeTo = Math.min(to, pos2 + node.nodeSize);
-      const range2 = relativeTo - relativeFrom;
-      selectionRange += range2;
-      markRanges.push(
-        ...node.marks.map((mark) => ({
-          mark,
-          from: relativeFrom,
-          to: relativeTo
-        }))
-      );
+      const range = relativeTo - relativeFrom;
+      selectionRange += range;
+      markRanges.push(...node.marks.map((mark) => ({
+        mark,
+        from: relativeFrom,
+        to: relativeTo
+      })));
     });
   });
-  if (selectionRange === 0) {
-    return false;
-  }
+  if (selectionRange === 0) return false;
   const matchedRange = markRanges.filter((markRange) => {
-    if (!type) {
-      return true;
-    }
+    if (!type) return true;
     return type.name === markRange.mark.type.name;
   }).filter((markRange) => objectIncludes(markRange.mark.attrs, attributes, { strict: false })).reduce((sum, markRange) => sum + markRange.to - markRange.from, 0);
   const excludedRange = markRanges.filter((markRange) => {
-    if (!type) {
-      return true;
-    }
+    if (!type) return true;
     return markRange.mark.type !== type && markRange.mark.type.excludes(type);
   }).reduce((sum, markRange) => sum + markRange.to - markRange.from, 0);
-  const range = matchedRange > 0 ? matchedRange + excludedRange : matchedRange;
-  return range >= selectionRange;
+  return (matchedRange > 0 ? matchedRange + excludedRange : matchedRange) >= selectionRange;
 }
 function isExtensionRulesEnabled(extension, enabled) {
-  if (Array.isArray(enabled)) {
-    return enabled.some((enabledExtension) => {
-      const name = typeof enabledExtension === "string" ? enabledExtension : enabledExtension.name;
-      return name === extension.name;
-    });
-  }
+  if (Array.isArray(enabled)) return enabled.some((enabledExtension) => {
+    return (typeof enabledExtension === "string" ? enabledExtension : enabledExtension.name) === extension.name;
+  });
   return enabled;
 }
 function isList(name, extensions) {
   const { nodeExtensions } = splitExtensions(extensions);
   const extension = nodeExtensions.find((item) => item.name === name);
-  if (!extension) {
-    return false;
-  }
-  const context = {
+  if (!extension) return false;
+  const group = callOrReturn(getExtensionField(extension, "group", {
     name: extension.name,
     options: extension.options,
     storage: extension.storage
-  };
-  const group = callOrReturn(getExtensionField(extension, "group", context));
-  if (typeof group !== "string") {
-    return false;
-  }
+  }));
+  if (typeof group !== "string") return false;
   return group.split(" ").includes("list");
 }
-function isNodeEmpty(node, {
-  checkChildren = true,
-  ignoreWhitespace = false
-} = {}) {
-  var _a;
+function isNodeEmpty(node, { checkChildren = true, ignoreWhitespace = false } = {}) {
   if (ignoreWhitespace) {
-    if (node.type.name === "hardBreak") {
-      return true;
-    }
+    if (node.type.name === "hardBreak") return true;
     if (node.isText) {
-      return !/\S/.test((_a = node.text) != null ? _a : "");
+      var _node$text;
+      return !/\S/.test((_node$text = node.text) !== null && _node$text !== void 0 ? _node$text : "");
     }
   }
-  if (node.isText) {
-    return !node.text;
-  }
-  if (node.isAtom || node.isLeaf) {
-    return false;
-  }
-  if (node.content.childCount === 0) {
-    return true;
-  }
+  if (node.isText) return !node.text;
+  if (node.isAtom || node.isLeaf) return false;
+  if (node.content.childCount === 0) return true;
   if (checkChildren) {
     let isContentEmpty = true;
     node.content.forEach((childNode) => {
-      if (isContentEmpty === false) {
-        return;
-      }
-      if (!isNodeEmpty(childNode, { ignoreWhitespace, checkChildren })) {
-        isContentEmpty = false;
-      }
+      if (isContentEmpty === false) return;
+      if (!isNodeEmpty(childNode, {
+        ignoreWhitespace,
+        checkChildren
+      })) isContentEmpty = false;
     });
     return isContentEmpty;
   }
   return false;
 }
 function canSetMark(state, tr2, newMarkType) {
-  var _a;
   const { selection } = tr2;
   let cursor = null;
-  if (isTextSelection(selection)) {
-    cursor = selection.$cursor;
-  }
+  if (isTextSelection(selection)) cursor = selection.$cursor;
   if (cursor) {
-    const currentMarks = (_a = state.storedMarks) != null ? _a : cursor.marks();
-    const parentAllowsMarkType = cursor.parent.type.allowsMarkType(newMarkType);
-    return parentAllowsMarkType && (!!newMarkType.isInSet(currentMarks) || !currentMarks.some((mark) => mark.type.excludes(newMarkType)));
+    var _state$storedMarks;
+    const currentMarks = (_state$storedMarks = state.storedMarks) !== null && _state$storedMarks !== void 0 ? _state$storedMarks : cursor.marks();
+    return cursor.parent.type.allowsMarkType(newMarkType) && (!!newMarkType.isInSet(currentMarks) || !currentMarks.some((mark) => mark.type.excludes(newMarkType)));
   }
   const { ranges } = selection;
   return ranges.some(({ $from, $to }) => {
     let someNodeSupportsMark = $from.depth === 0 ? state.doc.inlineContent && state.doc.type.allowsMarkType(newMarkType) : false;
     state.doc.nodesBetween($from.pos, $to.pos, (node, _pos, parent) => {
-      if (someNodeSupportsMark) {
-        return false;
-      }
+      if (someNodeSupportsMark) return false;
       if (node.isInline) {
         const parentAllowsMarkType = !parent || parent.type.allowsMarkType(newMarkType);
         const currentMarksAllowMarkType = !!newMarkType.isInSet(node.marks) || !node.marks.some((otherMark) => otherMark.type.excludes(newMarkType));
@@ -65384,39 +64961,25 @@ var setMark = (typeOrName, attributes = {}) => ({ tr: tr2, state, dispatch }) =>
   if (dispatch) {
     if (empty2) {
       const oldAttributes = getMarkAttributes(state, type);
-      tr2.addStoredMark(
-        type.create({
-          ...oldAttributes,
-          ...attributes
-        })
-      );
-    } else {
-      ranges.forEach((range) => {
-        const from2 = range.$from.pos;
-        const to = range.$to.pos;
-        state.doc.nodesBetween(from2, to, (node, pos2) => {
-          const trimmedFrom = Math.max(pos2, from2);
-          const trimmedTo = Math.min(pos2 + node.nodeSize, to);
-          const someHasMark = node.marks.find((mark) => mark.type === type);
-          if (someHasMark) {
-            node.marks.forEach((mark) => {
-              if (type === mark.type) {
-                tr2.addMark(
-                  trimmedFrom,
-                  trimmedTo,
-                  type.create({
-                    ...mark.attrs,
-                    ...attributes
-                  })
-                );
-              }
-            });
-          } else {
-            tr2.addMark(trimmedFrom, trimmedTo, type.create(attributes));
-          }
+      tr2.addStoredMark(type.create({
+        ...oldAttributes,
+        ...attributes
+      }));
+    } else ranges.forEach((range) => {
+      const from2 = range.$from.pos;
+      const to = range.$to.pos;
+      state.doc.nodesBetween(from2, to, (node, pos2) => {
+        const trimmedFrom = Math.max(pos2, from2);
+        const trimmedTo = Math.min(pos2 + node.nodeSize, to);
+        if (node.marks.find((mark) => mark.type === type)) node.marks.forEach((mark) => {
+          if (type === mark.type) tr2.addMark(trimmedFrom, trimmedTo, type.create({
+            ...mark.attrs,
+            ...attributes
+          }));
         });
+        else tr2.addMark(trimmedFrom, trimmedTo, type.create(attributes));
       });
-    }
+    });
   }
   return canSetMark(state, tr2, type);
 };
@@ -65427,21 +64990,22 @@ var setMeta = (key, value) => ({ tr: tr2 }) => {
 var setNode = (typeOrName, attributes = {}) => ({ state, dispatch, chain }) => {
   const type = getNodeType(typeOrName, state.schema);
   let attributesToCopy;
-  if (state.selection.$anchor.sameParent(state.selection.$head)) {
-    attributesToCopy = state.selection.$anchor.parent.attrs;
-  }
+  if (state.selection.$anchor.sameParent(state.selection.$head)) attributesToCopy = state.selection.$anchor.parent.attrs;
   if (!type.isTextblock) {
     console.warn('[tiptap warn]: Currently "setNode()" only supports text block nodes.');
     return false;
   }
   return chain().command(({ commands }) => {
-    const canSetBlock = setBlockType2(type, { ...attributesToCopy, ...attributes })(state);
-    if (canSetBlock) {
-      return true;
-    }
+    if (setBlockType2(type, {
+      ...attributesToCopy,
+      ...attributes
+    })(state)) return true;
     return commands.clearNodes();
   }).command(({ state: updatedState }) => {
-    return setBlockType2(type, { ...attributesToCopy, ...attributes })(updatedState, dispatch);
+    return setBlockType2(type, {
+      ...attributesToCopy,
+      ...attributes
+    })(updatedState, dispatch);
   }).run();
 };
 var setNodeSelection = (position) => ({ tr: tr2, dispatch }) => {
@@ -65467,23 +65031,22 @@ var setTextDirection = (direction, position) => ({ tr: tr2, state, dispatch }) =
     from2 = selection.from;
     to = selection.to;
   }
-  if (dispatch) {
-    tr2.doc.nodesBetween(from2, to, (node, pos2) => {
-      if (node.isText) {
-        return;
-      }
-      tr2.setNodeMarkup(pos2, void 0, {
-        ...node.attrs,
-        dir: direction
-      });
+  if (dispatch) tr2.doc.nodesBetween(from2, to, (node, pos2) => {
+    if (node.isText) return;
+    tr2.setNodeMarkup(pos2, void 0, {
+      ...node.attrs,
+      dir: direction
     });
-  }
+  });
   return true;
 };
 var setTextSelection = (position) => ({ tr: tr2, dispatch }) => {
   if (dispatch) {
     const { doc: doc3 } = tr2;
-    const { from: from2, to } = typeof position === "number" ? { from: position, to: position } : position;
+    const { from: from2, to } = typeof position === "number" ? {
+      from: position,
+      to: position
+    } : position;
     const minPos = TextSelection.atStart(doc3).from;
     const maxPos = TextSelection.atEnd(doc3).to;
     const resolvedFrom = minMax(from2, minPos, maxPos);
@@ -65493,14 +65056,14 @@ var setTextSelection = (position) => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var sinkListItem2 = (typeOrName) => ({ state, dispatch }) => {
+var sinkListItem$1 = (typeOrName) => ({ state, dispatch }) => {
   const type = getNodeType(typeOrName, state.schema);
   return sinkListItem(type)(state, dispatch);
 };
 function ensureMarks(state, splittableMarks) {
   const marks = state.storedMarks || state.selection.$to.parentOffset && state.selection.$from.marks();
   if (marks) {
-    const filteredMarks = marks.filter((mark) => splittableMarks == null ? void 0 : splittableMarks.includes(mark.type.name));
+    const filteredMarks = marks.filter((mark) => splittableMarks === null || splittableMarks === void 0 ? void 0 : splittableMarks.includes(mark.type.name));
     state.tr.ensureMarks(filteredMarks);
   }
 }
@@ -65508,112 +65071,75 @@ var splitBlock2 = ({ keepMarks = true } = {}) => ({ tr: tr2, state, dispatch, ed
   const { selection, doc: doc3 } = tr2;
   const { $from, $to } = selection;
   const extensionAttributes = editor.extensionManager.attributes;
-  const newAttributes = getSplittedAttributes(
-    extensionAttributes,
-    $from.node().type.name,
-    $from.node().attrs
-  );
+  const newAttributes = getSplittedAttributes(extensionAttributes, $from.node().type.name, $from.node().attrs);
   if (selection instanceof NodeSelection && selection.node.isBlock) {
-    if (!$from.parentOffset || !canSplit(doc3, $from.pos)) {
-      return false;
-    }
+    if (!$from.parentOffset || !canSplit(doc3, $from.pos)) return false;
     if (dispatch) {
-      if (keepMarks) {
-        ensureMarks(state, editor.extensionManager.splittableMarks);
-      }
+      if (keepMarks) ensureMarks(state, editor.extensionManager.splittableMarks);
       tr2.split($from.pos).scrollIntoView();
     }
     return true;
   }
-  if (!$from.parent.isBlock) {
-    return false;
-  }
+  if (!$from.parent.isBlock) return false;
   const atEnd = $to.parentOffset === $to.parent.content.size;
   const deflt = $from.depth === 0 ? void 0 : defaultBlockAt2($from.node(-1).contentMatchAt($from.indexAfter(-1)));
-  let types = atEnd && deflt ? [
-    {
-      type: deflt,
-      attrs: newAttributes
-    }
-  ] : void 0;
+  let types = atEnd && deflt ? [{
+    type: deflt,
+    attrs: newAttributes
+  }] : void 0;
   let can = canSplit(tr2.doc, tr2.mapping.map($from.pos), 1, types);
   if (!types && !can && canSplit(tr2.doc, tr2.mapping.map($from.pos), 1, deflt ? [{ type: deflt }] : void 0)) {
     can = true;
-    types = deflt ? [
-      {
-        type: deflt,
-        attrs: newAttributes
-      }
-    ] : void 0;
+    types = deflt ? [{
+      type: deflt,
+      attrs: newAttributes
+    }] : void 0;
   }
   if (dispatch) {
     if (can) {
-      if (selection instanceof TextSelection) {
-        tr2.deleteSelection();
-      }
+      if (selection instanceof TextSelection) tr2.deleteSelection();
       tr2.split(tr2.mapping.map($from.pos), 1, types);
       if (deflt && !atEnd && !$from.parentOffset && $from.parent.type !== deflt) {
-        const first22 = tr2.mapping.map($from.before());
-        const $first = tr2.doc.resolve(first22);
-        if ($from.node(-1).canReplaceWith($first.index(), $first.index() + 1, deflt)) {
-          tr2.setNodeMarkup(tr2.mapping.map($from.before()), deflt);
-        }
+        const first4 = tr2.mapping.map($from.before());
+        const $first = tr2.doc.resolve(first4);
+        if ($from.node(-1).canReplaceWith($first.index(), $first.index() + 1, deflt)) tr2.setNodeMarkup(tr2.mapping.map($from.before()), deflt);
       }
     }
-    if (keepMarks) {
-      ensureMarks(state, editor.extensionManager.splittableMarks);
-    }
+    if (keepMarks) ensureMarks(state, editor.extensionManager.splittableMarks);
     tr2.scrollIntoView();
   }
   return can;
 };
 var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr: tr2, state, dispatch, editor }) => {
-  var _a;
   const type = getNodeType(typeOrName, state.schema);
   const { $from, $to } = state.selection;
   const node = state.selection.node;
-  if (node && node.isBlock || $from.depth < 2 || !$from.sameParent($to)) {
-    return false;
-  }
+  if (node && node.isBlock || $from.depth < 2 || !$from.sameParent($to)) return false;
   const grandParent = $from.node(-1);
-  if (grandParent.type !== type) {
-    return false;
-  }
+  if (grandParent.type !== type) return false;
   const extensionAttributes = editor.extensionManager.attributes;
   if ($from.parent.content.size === 0 && $from.node(-1).childCount === $from.indexAfter(-1)) {
-    if ($from.depth === 2 || $from.node(-3).type !== type || $from.index(-2) !== $from.node(-2).childCount - 1) {
-      return false;
-    }
+    if ($from.depth === 2 || $from.node(-3).type !== type || $from.index(-2) !== $from.node(-2).childCount - 1) return false;
     if (dispatch) {
+      var _type$contentMatch$de;
       let wrap3 = Fragment9.empty;
       const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
-      for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d -= 1) {
-        wrap3 = Fragment9.from($from.node(d).copy(wrap3));
-      }
-      const depthAfter = (
-        // oxlint-disable-next-line no-nested-ternary
-        $from.indexAfter(-1) < $from.node(-2).childCount ? 1 : $from.indexAfter(-2) < $from.node(-3).childCount ? 2 : 3
-      );
+      for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d -= 1) wrap3 = Fragment9.from($from.node(d).copy(wrap3));
+      const depthAfter = $from.indexAfter(-1) < $from.node(-2).childCount ? 1 : $from.indexAfter(-2) < $from.node(-3).childCount ? 2 : 3;
       const newNextTypeAttributes2 = {
         ...getSplittedAttributes(extensionAttributes, $from.node().type.name, $from.node().attrs),
         ...overrideAttrs
       };
-      const nextType2 = ((_a = type.contentMatch.defaultType) == null ? void 0 : _a.createAndFill(newNextTypeAttributes2)) || void 0;
+      const nextType2 = ((_type$contentMatch$de = type.contentMatch.defaultType) === null || _type$contentMatch$de === void 0 ? void 0 : _type$contentMatch$de.createAndFill(newNextTypeAttributes2)) || void 0;
       wrap3 = wrap3.append(Fragment9.from(type.createAndFill(null, nextType2) || void 0));
       const start = $from.before($from.depth - (depthBefore - 1));
       tr2.replace(start, $from.after(-depthAfter), new Slice(wrap3, 4 - depthBefore, 0));
       let sel = -1;
       tr2.doc.nodesBetween(start, tr2.doc.content.size, (n, pos2) => {
-        if (sel > -1) {
-          return false;
-        }
-        if (n.isTextblock && n.content.size === 0) {
-          sel = pos2 + 1;
-        }
+        if (sel > -1) return false;
+        if (n.isTextblock && n.content.size === 0) sel = pos2 + 1;
       });
-      if (sel > -1) {
-        tr2.setSelection(TextSelection.near(tr2.doc.resolve(sel)));
-      }
+      if (sel > -1) tr2.setSelection(TextSelection.near(tr2.doc.resolve(sel)));
       tr2.scrollIntoView();
     }
     return true;
@@ -65628,21 +65154,23 @@ var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr: tr2, state, dispa
     ...overrideAttrs
   };
   tr2.delete($from.pos, $to.pos);
-  const types = nextType ? [
-    { type, attrs: newTypeAttributes },
-    { type: nextType, attrs: newNextTypeAttributes }
-  ] : [{ type, attrs: newTypeAttributes }];
-  if (!canSplit(tr2.doc, $from.pos, 2)) {
-    return false;
-  }
+  const types = nextType ? [{
+    type,
+    attrs: newTypeAttributes
+  }, {
+    type: nextType,
+    attrs: newNextTypeAttributes
+  }] : [{
+    type,
+    attrs: newTypeAttributes
+  }];
+  if (!canSplit(tr2.doc, $from.pos, 2)) return false;
   if (dispatch) {
     const { selection, storedMarks } = state;
     const { splittableMarks } = editor.extensionManager;
     const marks = storedMarks || selection.$to.parentOffset && selection.$from.marks();
     tr2.split($from.pos, 2, types).scrollIntoView();
-    if (!marks || !dispatch) {
-      return true;
-    }
+    if (!marks || !dispatch) return true;
     const filteredMarks = marks.filter((mark) => splittableMarks.includes(mark.type.name));
     tr2.ensureMarks(filteredMarks);
   }
@@ -65656,50 +65184,30 @@ function areListTypesCompatible(typeA, typeB) {
 }
 var joinListBackwards = (tr2, listType) => {
   const list = findParentNode((node) => node.type === listType)(tr2.selection);
-  if (!list) {
-    return true;
-  }
+  if (!list) return true;
   const before = tr2.doc.resolve(Math.max(0, list.pos - 1)).before(list.depth);
-  if (before === void 0) {
-    return true;
-  }
+  if (before === void 0) return true;
   const nodeBefore = tr2.doc.nodeAt(before);
-  const canJoinBackwards = list.node.type === (nodeBefore == null ? void 0 : nodeBefore.type) && canJoin(tr2.doc, list.pos);
-  if (!canJoinBackwards) {
-    return true;
-  }
-  if (!areListTypesCompatible(list.node.attrs.type, nodeBefore == null ? void 0 : nodeBefore.attrs.type)) {
-    return true;
-  }
+  if (!(list.node.type === (nodeBefore === null || nodeBefore === void 0 ? void 0 : nodeBefore.type) && canJoin(tr2.doc, list.pos))) return true;
+  if (!areListTypesCompatible(list.node.attrs.type, nodeBefore === null || nodeBefore === void 0 ? void 0 : nodeBefore.attrs.type)) return true;
   tr2.join(list.pos);
   return true;
 };
 var joinListForwards = (tr2, listType) => {
   const list = findParentNode((node) => node.type === listType)(tr2.selection);
-  if (!list) {
-    return true;
-  }
+  if (!list) return true;
   const after = tr2.doc.resolve(list.start).after(list.depth);
-  if (after === void 0) {
-    return true;
-  }
+  if (after === void 0) return true;
   const nodeAfter = tr2.doc.nodeAt(after);
-  const canJoinForwards = list.node.type === (nodeAfter == null ? void 0 : nodeAfter.type) && canJoin(tr2.doc, after);
-  if (!canJoinForwards) {
-    return true;
-  }
-  if (!areListTypesCompatible(list.node.attrs.type, nodeAfter == null ? void 0 : nodeAfter.attrs.type)) {
-    return true;
-  }
+  if (!(list.node.type === (nodeAfter === null || nodeAfter === void 0 ? void 0 : nodeAfter.type) && canJoin(tr2.doc, after))) return true;
+  if (!areListTypesCompatible(list.node.attrs.type, nodeAfter === null || nodeAfter === void 0 ? void 0 : nodeAfter.attrs.type)) return true;
   tr2.join(after);
   return true;
 };
 function createInnerSelectionForWholeDocList(tr2) {
   const doc3 = tr2.doc;
   const list = doc3.firstChild;
-  if (!list) {
-    return null;
-  }
+  if (!list) return null;
   const $start = doc3.resolve(1);
   const $end = doc3.resolve(list.nodeSize - 1);
   return TextSelection.between($start, $end);
@@ -65712,9 +65220,7 @@ var toggleList = (listTypeOrName, itemTypeOrName, keepMarks, attributes = {}) =>
   const { $from, $to } = selection;
   const range = $from.blockRange($to);
   const marks = storedMarks || selection.$to.parentOffset && selection.$from.marks();
-  if (!range) {
-    return false;
-  }
+  if (!range) return false;
   const parentList = findParentNode((node) => isList(node.type.name, extensions))(selection);
   const isAllSelection = selection.from === 0 && selection.to === state.doc.content.size;
   const topLevelNodes = state.doc.content.content;
@@ -65724,59 +65230,41 @@ var toggleList = (listTypeOrName, itemTypeOrName, keepMarks, attributes = {}) =>
     pos: 0,
     depth: 0
   } : null;
-  const currentList = parentList != null ? parentList : allSelectionList;
+  const currentList = parentList !== null && parentList !== void 0 ? parentList : allSelectionList;
   const isInsideExistingList = !!parentList && range.depth >= 1 && range.depth - parentList.depth <= 1;
   const hasWholeDocSelectedList = !!allSelectionList;
   if ((isInsideExistingList || hasWholeDocSelectedList) && currentList) {
     if (currentList.node.type === listType) {
-      if (isAllSelection && hasWholeDocSelectedList) {
-        return chain().command(({ tr: trx, dispatch: disp }) => {
-          const nextSelection = createInnerSelectionForWholeDocList(trx);
-          if (!nextSelection) {
-            return false;
-          }
-          trx.setSelection(nextSelection);
-          if (disp) {
-            disp(trx);
-          }
-          return true;
-        }).liftListItem(itemType).run();
-      }
+      if (isAllSelection && hasWholeDocSelectedList) return chain().command(({ tr: trx, dispatch: disp }) => {
+        const nextSelection = createInnerSelectionForWholeDocList(trx);
+        if (!nextSelection) return false;
+        trx.setSelection(nextSelection);
+        if (disp) disp(trx);
+        return true;
+      }).liftListItem(itemType).run();
       return commands.liftListItem(itemType);
     }
-    if (isList(currentList.node.type.name, extensions) && listType.validContent(currentList.node.content)) {
-      return chain().command(() => {
-        tr2.setNodeMarkup(currentList.pos, listType);
-        return true;
-      }).command(() => joinListBackwards(tr2, listType)).command(() => joinListForwards(tr2, listType)).run();
-    }
+    if (isList(currentList.node.type.name, extensions) && listType.validContent(currentList.node.content)) return chain().command(() => {
+      tr2.setNodeMarkup(currentList.pos, listType);
+      return true;
+    }).command(() => joinListBackwards(tr2, listType)).command(() => joinListForwards(tr2, listType)).run();
   }
-  if (!keepMarks || !marks || !dispatch) {
-    return chain().command(() => {
-      const canWrapInList = can().wrapInList(listType, attributes);
-      if (canWrapInList) {
-        return true;
-      }
-      return commands.clearNodes();
-    }).wrapInList(listType, attributes).command(() => joinListBackwards(tr2, listType)).command(() => joinListForwards(tr2, listType)).run();
-  }
+  if (!keepMarks || !marks || !dispatch) return chain().command(() => {
+    if (can().wrapInList(listType, attributes)) return true;
+    return commands.clearNodes();
+  }).wrapInList(listType, attributes).command(() => joinListBackwards(tr2, listType)).command(() => joinListForwards(tr2, listType)).run();
   return chain().command(() => {
     const canWrapInList = can().wrapInList(listType, attributes);
     const filteredMarks = marks.filter((mark) => splittableMarks.includes(mark.type.name));
     tr2.ensureMarks(filteredMarks);
-    if (canWrapInList) {
-      return true;
-    }
+    if (canWrapInList) return true;
     return commands.clearNodes();
   }).wrapInList(listType, attributes).command(() => joinListBackwards(tr2, listType)).command(() => joinListForwards(tr2, listType)).run();
 };
 var toggleMark = (typeOrName, attributes = {}, options = {}) => ({ state, commands }) => {
   const { extendEmptyMarkRange = false } = options;
   const type = getMarkType(typeOrName, state.schema);
-  const isActive2 = isMarkActive(state, type, attributes);
-  if (isActive2) {
-    return commands.unsetMark(type, { extendEmptyMarkRange });
-  }
+  if (isMarkActive(state, type, attributes)) return commands.unsetMark(type, { extendEmptyMarkRange });
   return commands.setMark(type, attributes);
 };
 var toggleNode = (typeOrName, toggleTypeOrName, attributes = {}) => ({ state, commands }) => {
@@ -65784,20 +65272,16 @@ var toggleNode = (typeOrName, toggleTypeOrName, attributes = {}) => ({ state, co
   const toggleType = getNodeType(toggleTypeOrName, state.schema);
   const isActive2 = isNodeActive(state, type, attributes);
   let attributesToCopy;
-  if (state.selection.$anchor.sameParent(state.selection.$head)) {
-    attributesToCopy = state.selection.$anchor.parent.attrs;
-  }
-  if (isActive2) {
-    return commands.setNode(toggleType, attributesToCopy);
-  }
-  return commands.setNode(type, { ...attributesToCopy, ...attributes });
+  if (state.selection.$anchor.sameParent(state.selection.$head)) attributesToCopy = state.selection.$anchor.parent.attrs;
+  if (isActive2) return commands.setNode(toggleType, attributesToCopy);
+  return commands.setNode(type, {
+    ...attributesToCopy,
+    ...attributes
+  });
 };
 var toggleWrap = (typeOrName, attributes = {}) => ({ state, commands }) => {
   const type = getNodeType(typeOrName, state.schema);
-  const isActive2 = isNodeActive(state, type, attributes);
-  if (isActive2) {
-    return commands.lift(type);
-  }
+  if (isNodeActive(state, type, attributes)) return commands.lift(type);
   return commands.wrapIn(type, attributes);
 };
 var undoInputRule = () => ({ state, dispatch }) => {
@@ -65809,15 +65293,11 @@ var undoInputRule = () => ({ state, dispatch }) => {
       if (dispatch) {
         const tr2 = state.tr;
         const toUndo = undoable.transform;
-        for (let j = toUndo.steps.length - 1; j >= 0; j -= 1) {
-          tr2.step(toUndo.steps[j].invert(toUndo.docs[j]));
-        }
+        for (let j = toUndo.steps.length - 1; j >= 0; j -= 1) tr2.step(toUndo.steps[j].invert(toUndo.docs[j]));
         if (undoable.text) {
           const marks = tr2.doc.resolve(undoable.from).marks();
           tr2.replaceWith(undoable.from, undoable.to, state.schema.text(undoable.text, marks));
-        } else {
-          tr2.delete(undoable.from, undoable.to);
-        }
+        } else tr2.delete(undoable.from, undoable.to);
       }
       return true;
     }
@@ -65828,45 +65308,34 @@ var unsetAllMarks = (options = {}) => ({ tr: tr2, dispatch, editor }) => {
   const { ignoreClearable = false } = options;
   const { selection } = tr2;
   const { empty: empty2, ranges } = selection;
-  if (empty2) {
-    return true;
-  }
+  if (empty2) return true;
   const { nonClearableMarks } = editor.extensionManager;
   if (dispatch) {
-    const clearableMarkTypes = Object.values(editor.schema.marks).filter(
-      (markType) => ignoreClearable || !nonClearableMarks.includes(markType.name)
-    );
+    const clearableMarkTypes = Object.values(editor.schema.marks).filter((markType) => ignoreClearable || !nonClearableMarks.includes(markType.name));
     ranges.forEach((range) => {
-      for (const markType of clearableMarkTypes) {
-        tr2.removeMark(range.$from.pos, range.$to.pos, markType);
-      }
+      for (const markType of clearableMarkTypes) tr2.removeMark(range.$from.pos, range.$to.pos, markType);
     });
   }
   return true;
 };
 var unsetMark = (typeOrName, options = {}) => ({ tr: tr2, state, dispatch }) => {
-  var _a;
   const { extendEmptyMarkRange = false } = options;
   const { selection } = tr2;
   const type = getMarkType(typeOrName, state.schema);
   const { $from, empty: empty2, ranges } = selection;
-  if (!dispatch) {
-    return true;
-  }
+  if (!dispatch) return true;
   if (empty2 && extendEmptyMarkRange) {
+    var _$from$marks$find;
     let { from: from2, to } = selection;
-    const attrs = (_a = $from.marks().find((mark) => mark.type === type)) == null ? void 0 : _a.attrs;
-    const range = getMarkRange($from, type, attrs);
+    const range = getMarkRange($from, type, (_$from$marks$find = $from.marks().find((mark) => mark.type === type)) === null || _$from$marks$find === void 0 ? void 0 : _$from$marks$find.attrs);
     if (range) {
       from2 = range.from;
       to = range.to;
     }
     tr2.removeMark(from2, to, type);
-  } else {
-    ranges.forEach((range) => {
-      tr2.removeMark(range.$from.pos, range.$to.pos, type);
-    });
-  }
+  } else ranges.forEach((range) => {
+    tr2.removeMark(range.$from.pos, range.$to.pos, type);
+  });
   tr2.removeStoredMark(type);
   return true;
 };
@@ -65884,34 +65353,21 @@ var unsetTextDirection = (position) => ({ tr: tr2, state, dispatch }) => {
     from2 = selection.from;
     to = selection.to;
   }
-  if (dispatch) {
-    tr2.doc.nodesBetween(from2, to, (node, pos2) => {
-      if (node.isText) {
-        return;
-      }
-      const newAttrs = { ...node.attrs };
-      delete newAttrs.dir;
-      tr2.setNodeMarkup(pos2, void 0, newAttrs);
-    });
-  }
+  if (dispatch) tr2.doc.nodesBetween(from2, to, (node, pos2) => {
+    if (node.isText) return;
+    const newAttrs = { ...node.attrs };
+    delete newAttrs.dir;
+    tr2.setNodeMarkup(pos2, void 0, newAttrs);
+  });
   return true;
 };
 var updateAttributes = (typeOrName, attributes = {}) => ({ tr: tr2, state, dispatch }) => {
   let nodeType = null;
   let markType = null;
-  const schemaType = getSchemaTypeNameByName(
-    typeof typeOrName === "string" ? typeOrName : typeOrName.name,
-    state.schema
-  );
-  if (!schemaType) {
-    return false;
-  }
-  if (schemaType === "node") {
-    nodeType = getNodeType(typeOrName, state.schema);
-  }
-  if (schemaType === "mark") {
-    markType = getMarkType(typeOrName, state.schema);
-  }
+  const schemaType = getSchemaTypeNameByName(typeof typeOrName === "string" ? typeOrName : typeOrName.name, state.schema);
+  if (!schemaType) return false;
+  if (schemaType === "node") nodeType = getNodeType(typeOrName, state.schema);
+  if (schemaType === "mark") markType = getMarkType(typeOrName, state.schema);
   let canUpdate = false;
   tr2.selection.ranges.forEach((range) => {
     const from2 = range.$from.pos;
@@ -65920,113 +65376,152 @@ var updateAttributes = (typeOrName, attributes = {}) => ({ tr: tr2, state, dispa
     let lastNode;
     let trimmedFrom;
     let trimmedTo;
-    if (tr2.selection.empty) {
-      state.doc.nodesBetween(from2, to, (node, pos2) => {
+    if (tr2.selection.empty) state.doc.nodesBetween(from2, to, (node, pos2) => {
+      if (nodeType && nodeType === node.type) {
+        canUpdate = true;
+        trimmedFrom = Math.max(pos2, from2);
+        trimmedTo = Math.min(pos2 + node.nodeSize, to);
+        lastPos = pos2;
+        lastNode = node;
+      }
+    });
+    else state.doc.nodesBetween(from2, to, (node, pos2) => {
+      if (pos2 < from2 && nodeType && nodeType === node.type) {
+        canUpdate = true;
+        trimmedFrom = Math.max(pos2, from2);
+        trimmedTo = Math.min(pos2 + node.nodeSize, to);
+        lastPos = pos2;
+        lastNode = node;
+      }
+      if (pos2 >= from2 && pos2 <= to) {
         if (nodeType && nodeType === node.type) {
           canUpdate = true;
-          trimmedFrom = Math.max(pos2, from2);
-          trimmedTo = Math.min(pos2 + node.nodeSize, to);
-          lastPos = pos2;
-          lastNode = node;
+          if (dispatch) tr2.setNodeMarkup(pos2, void 0, {
+            ...node.attrs,
+            ...attributes
+          });
         }
-      });
-    } else {
-      state.doc.nodesBetween(from2, to, (node, pos2) => {
-        if (pos2 < from2 && nodeType && nodeType === node.type) {
-          canUpdate = true;
-          trimmedFrom = Math.max(pos2, from2);
-          trimmedTo = Math.min(pos2 + node.nodeSize, to);
-          lastPos = pos2;
-          lastNode = node;
-        }
-        if (pos2 >= from2 && pos2 <= to) {
-          if (nodeType && nodeType === node.type) {
+        if (markType && node.marks.length) node.marks.forEach((mark) => {
+          if (markType === mark.type) {
             canUpdate = true;
             if (dispatch) {
-              tr2.setNodeMarkup(pos2, void 0, {
-                ...node.attrs,
-                ...attributes
-              });
-            }
-          }
-          if (markType && node.marks.length) {
-            node.marks.forEach((mark) => {
-              if (markType === mark.type) {
-                canUpdate = true;
-                if (dispatch) {
-                  const trimmedFrom2 = Math.max(pos2, from2);
-                  const trimmedTo2 = Math.min(pos2 + node.nodeSize, to);
-                  tr2.addMark(
-                    trimmedFrom2,
-                    trimmedTo2,
-                    markType.create({
-                      ...mark.attrs,
-                      ...attributes
-                    })
-                  );
-                }
-              }
-            });
-          }
-        }
-      });
-    }
-    if (lastNode) {
-      if (lastPos !== void 0 && dispatch) {
-        tr2.setNodeMarkup(lastPos, void 0, {
-          ...lastNode.attrs,
-          ...attributes
-        });
-      }
-      if (markType && lastNode.marks.length) {
-        lastNode.marks.forEach((mark) => {
-          if (markType === mark.type && dispatch) {
-            tr2.addMark(
-              trimmedFrom,
-              trimmedTo,
-              markType.create({
+              const trimmedFrom2 = Math.max(pos2, from2);
+              const trimmedTo2 = Math.min(pos2 + node.nodeSize, to);
+              tr2.addMark(trimmedFrom2, trimmedTo2, markType.create({
                 ...mark.attrs,
                 ...attributes
-              })
-            );
+              }));
+            }
           }
         });
       }
+    });
+    if (lastNode) {
+      if (lastPos !== void 0 && dispatch) tr2.setNodeMarkup(lastPos, void 0, {
+        ...lastNode.attrs,
+        ...attributes
+      });
+      if (markType && lastNode.marks.length) lastNode.marks.forEach((mark) => {
+        if (markType === mark.type && dispatch) tr2.addMark(trimmedFrom, trimmedTo, markType.create({
+          ...mark.attrs,
+          ...attributes
+        }));
+      });
     }
   });
   return canUpdate;
 };
-var DECORATION_MANAGER_PLUGIN_KEY_NAME = "__tiptap_decorations__";
-var DECORATION_MANAGER_PLUGIN_KEY = new PluginKey(
-  DECORATION_MANAGER_PLUGIN_KEY_NAME
-);
+var DECORATION_MANAGER_PLUGIN_KEY = new PluginKey("__tiptap_decorations__");
 var updateDecorations = (extensionName) => ({ tr: tr2, dispatch }) => {
-  if (dispatch) {
-    tr2.setMeta(DECORATION_MANAGER_PLUGIN_KEY, { type: "force", name: extensionName });
-  }
+  if (dispatch) tr2.setMeta(DECORATION_MANAGER_PLUGIN_KEY, {
+    type: "force",
+    name: extensionName
+  });
   return true;
 };
-var wrapIn2 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var wrapIn$1 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType(typeOrName, state.schema);
   return wrapIn(type, attributes)(state, dispatch);
 };
-var wrapInList2 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var wrapInList$1 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType(typeOrName, state.schema);
   return wrapInList(type, attributes)(state, dispatch);
 };
+var commands_exports = /* @__PURE__ */ __exportAll({
+  blur: () => blur,
+  clearContent: () => clearContent,
+  clearNodes: () => clearNodes,
+  command: () => command,
+  createParagraphNear: () => createParagraphNear$1,
+  cut: () => cut,
+  deleteCurrentNode: () => deleteCurrentNode,
+  deleteNode: () => deleteNode,
+  deleteRange: () => deleteRange2,
+  deleteSelection: () => deleteSelection2,
+  enter: () => enter,
+  exitCode: () => exitCode$1,
+  extendMarkRange: () => extendMarkRange,
+  first: () => first,
+  focus: () => focus,
+  forEach: () => forEach,
+  insertContent: () => insertContent,
+  insertContentAt: () => insertContentAt,
+  insertDefaultBlock: () => insertDefaultBlock,
+  joinBackward: () => joinBackward$1,
+  joinDown: () => joinDown$1,
+  joinForward: () => joinForward$1,
+  joinItemBackward: () => joinItemBackward,
+  joinItemForward: () => joinItemForward,
+  joinTextblockBackward: () => joinTextblockBackward$1,
+  joinTextblockForward: () => joinTextblockForward$1,
+  joinUp: () => joinUp$1,
+  keyboardShortcut: () => keyboardShortcut,
+  lift: () => lift$1,
+  liftEmptyBlock: () => liftEmptyBlock$1,
+  liftListItem: () => liftListItem$1,
+  newlineInCode: () => newlineInCode$1,
+  resetAttributes: () => resetAttributes,
+  scrollIntoView: () => scrollIntoView,
+  selectAll: () => selectAll2,
+  selectNodeBackward: () => selectNodeBackward$1,
+  selectNodeForward: () => selectNodeForward$1,
+  selectParentNode: () => selectParentNode$1,
+  selectTextblockEnd: () => selectTextblockEnd$1,
+  selectTextblockStart: () => selectTextblockStart$1,
+  setContent: () => setContent,
+  setMark: () => setMark,
+  setMeta: () => setMeta,
+  setNode: () => setNode,
+  setNodeSelection: () => setNodeSelection,
+  setTextDirection: () => setTextDirection,
+  setTextSelection: () => setTextSelection,
+  sinkListItem: () => sinkListItem$1,
+  splitBlock: () => splitBlock2,
+  splitListItem: () => splitListItem,
+  toggleList: () => toggleList,
+  toggleMark: () => toggleMark,
+  toggleNode: () => toggleNode,
+  toggleWrap: () => toggleWrap,
+  undoInputRule: () => undoInputRule,
+  unsetAllMarks: () => unsetAllMarks,
+  unsetMark: () => unsetMark,
+  unsetTextDirection: () => unsetTextDirection,
+  updateAttributes: () => updateAttributes,
+  updateDecorations: () => updateDecorations,
+  wrapIn: () => wrapIn$1,
+  wrapInList: () => wrapInList$1
+});
 var depthByEditor = /* @__PURE__ */ new WeakMap();
 function runInDecorationApplyScope(editor, callback) {
-  var _a, _b;
-  depthByEditor.set(editor, ((_a = depthByEditor.get(editor)) != null ? _a : 0) + 1);
+  var _depthByEditor$get;
+  depthByEditor.set(editor, ((_depthByEditor$get = depthByEditor.get(editor)) !== null && _depthByEditor$get !== void 0 ? _depthByEditor$get : 0) + 1);
   try {
     return callback();
   } finally {
-    const remaining = ((_b = depthByEditor.get(editor)) != null ? _b : 1) - 1;
-    if (remaining > 0) {
-      depthByEditor.set(editor, remaining);
-    } else {
-      depthByEditor.delete(editor);
-    }
+    var _depthByEditor$get2;
+    const remaining = ((_depthByEditor$get2 = depthByEditor.get(editor)) !== null && _depthByEditor$get2 !== void 0 ? _depthByEditor$get2 : 1) - 1;
+    if (remaining > 0) depthByEditor.set(editor, remaining);
+    else depthByEditor.delete(editor);
   }
 }
 var isDev2 = typeof process !== "undefined" && false;
@@ -66038,85 +65533,68 @@ function decorationsToPMDecorations(decorations, extensionName) {
   const widgetKeys = /* @__PURE__ */ new Set();
   for (const decoration of decorations) {
     if (decoration.kind === "widget") {
-      if (isWidgetDecoration(decoration)) {
-        widgetKeys.add(decoration.key);
-      }
+      if (isWidgetDecoration(decoration)) widgetKeys.add(decoration.key);
     }
     pmDecorations.push(decoration.toPMDecoration(extensionName));
   }
-  return { decorations: pmDecorations, widgetKeys };
+  return {
+    decorations: pmDecorations,
+    widgetKeys
+  };
 }
 function buildDecorationSet(doc3, decorations, extensionName) {
-  const { decorations: pmDecorations, widgetKeys } = decorationsToPMDecorations(
-    decorations,
-    extensionName
-  );
-  return { set: DecorationSet.create(doc3, pmDecorations), widgetKeys };
+  const { decorations: pmDecorations, widgetKeys } = decorationsToPMDecorations(decorations, extensionName);
+  return {
+    set: DecorationSet.create(doc3, pmDecorations),
+    widgetKeys
+  };
 }
-function rangeOwnsPosition({
-  position,
-  from: from2,
-  to,
-  docSize
-}) {
-  if (position < from2) {
-    return false;
-  }
-  if (position < to) {
-    return true;
-  }
+function rangeOwnsPosition({ position, from: from2, to, docSize }) {
+  if (position < from2) return false;
+  if (position < to) return true;
   return position === to && to === docSize;
 }
-function filterOutOfRangeDecorations({
-  decorations,
-  from: from2,
-  to,
-  docSize,
-  extensionName,
-  warnedExtensions
-}) {
+function filterOutOfRangeDecorations({ decorations, from: from2, to, docSize, extensionName, warnedExtensions }) {
   return decorations.filter((decoration) => {
-    if (rangeOwnsPosition({ position: decoration.anchor, from: from2, to, docSize })) {
-      return true;
-    }
-    if (decoration.anchor === to) {
-      return false;
-    }
+    if (rangeOwnsPosition({
+      position: decoration.anchor,
+      from: from2,
+      to,
+      docSize
+    })) return true;
+    if (decoration.anchor === to) return false;
     if (!warnedExtensions.has(extensionName)) {
       warnedExtensions.add(extensionName);
-      console.warn(
-        `[tiptap warn]: Extension "${extensionName}" returned a decoration outside the requested range [${from2}, ${to}). It was ignored.`
-      );
+      console.warn(`[tiptap warn]: Extension "${extensionName}" returned a decoration outside the requested range [${from2}, ${to}). It was ignored.`);
     }
     return false;
   });
 }
 function widgetKeyOf(decoration) {
-  var _a;
-  const key = (_a = decoration.spec) == null ? void 0 : _a.key;
+  var _decoration$spec;
+  const key = (_decoration$spec = decoration.spec) === null || _decoration$spec === void 0 ? void 0 : _decoration$spec.key;
   return typeof key === "string" ? key : void 0;
 }
 function findDuplicateWidgetKeys(decorationSet) {
-  var _a, _b, _c;
   const extensionsByKey = /* @__PURE__ */ new Map();
   const counts = /* @__PURE__ */ new Map();
   for (const decoration of decorationSet.find()) {
+    var _extensionName, _extensionsByKey$get, _counts$get;
     const key = widgetKeyOf(decoration);
-    if (!key) {
-      continue;
-    }
-    const extension = (_a = decoration.spec.extensionName) != null ? _a : "unknown";
-    const extensions = (_b = extensionsByKey.get(key)) != null ? _b : /* @__PURE__ */ new Set();
+    if (!key) continue;
+    const extension = (_extensionName = decoration.spec.extensionName) !== null && _extensionName !== void 0 ? _extensionName : "unknown";
+    const extensions = (_extensionsByKey$get = extensionsByKey.get(key)) !== null && _extensionsByKey$get !== void 0 ? _extensionsByKey$get : /* @__PURE__ */ new Set();
     extensions.add(extension);
     extensionsByKey.set(key, extensions);
-    counts.set(key, ((_c = counts.get(key)) != null ? _c : 0) + 1);
+    counts.set(key, ((_counts$get = counts.get(key)) !== null && _counts$get !== void 0 ? _counts$get : 0) + 1);
   }
-  return Array.from(extensionsByKey, ([key, extensions]) => ({ key, extensions })).filter(
-    ({ key }) => {
-      var _a2;
-      return ((_a2 = counts.get(key)) != null ? _a2 : 0) > 1;
-    }
-  );
+  return Array.from(extensionsByKey, ([key, extensions]) => ({
+    key,
+    extensions
+  })).filter(({ key }) => {
+    var _counts$get2;
+    return ((_counts$get2 = counts.get(key)) !== null && _counts$get2 !== void 0 ? _counts$get2 : 0) > 1;
+  });
 }
 function isAttrStep(step) {
   return step.jsonID === "attr";
@@ -66126,9 +65604,7 @@ function hasResolvableChangedRange(step) {
   step.getMap().forEach(() => {
     hasMappedRange = true;
   });
-  if (hasMappedRange || isAttrStep(step)) {
-    return true;
-  }
+  if (hasMappedRange || isAttrStep(step)) return true;
   const positionalStep = step;
   return typeof positionalStep.from === "number" && typeof positionalStep.to === "number";
 }
@@ -66137,67 +65613,61 @@ function blockRangeFor(doc3, changed) {
   let to = 0;
   let nodeStart = 0;
   for (let index2 = 0; index2 < doc3.childCount; index2 += 1) {
-    if (nodeStart > changed.to) {
-      break;
-    }
+    if (nodeStart > changed.to) break;
     const nodeEnd = nodeStart + doc3.child(index2).nodeSize;
     if (nodeEnd >= changed.from) {
-      if (from2 === null) {
-        from2 = nodeStart;
-      }
+      if (from2 === null) from2 = nodeStart;
       to = nodeEnd;
     }
     nodeStart = nodeEnd;
   }
-  return from2 === null ? null : { from: from2, to };
+  return from2 === null ? null : {
+    from: from2,
+    to
+  };
 }
 function getRebuildRanges(tr2, doc3) {
-  if (tr2.steps.some((step) => !hasResolvableChangedRange(step))) {
-    return { type: "full" };
-  }
+  if (tr2.steps.some((step) => !hasResolvableChangedRange(step))) return { type: "full" };
   const newRanges = getChangedRanges(tr2).map(({ newRange }) => newRange);
   tr2.steps.forEach((step, index2) => {
-    if (!isAttrStep(step)) {
-      return;
-    }
+    if (!isAttrStep(step)) return;
     const mapping = tr2.mapping.slice(index2);
-    newRanges.push({ from: mapping.map(step.pos, -1), to: mapping.map(step.pos + 1) });
+    newRanges.push({
+      from: mapping.map(step.pos, -1),
+      to: mapping.map(step.pos + 1)
+    });
   });
   const ranges = [];
   for (const newRange of newRanges) {
     const blockRange = blockRangeFor(doc3, newRange);
-    if (blockRange) {
-      ranges.push(blockRange);
-    }
+    if (blockRange) ranges.push(blockRange);
   }
   ranges.sort((a, b) => a.from - b.from);
   const merged = [];
   for (const range of ranges) {
     const last2 = merged[merged.length - 1];
-    if (last2 && range.from <= last2.to) {
-      last2.to = Math.max(last2.to, range.to);
-    } else {
-      merged.push({ ...range });
-    }
+    if (last2 && range.from <= last2.to) last2.to = Math.max(last2.to, range.to);
+    else merged.push({ ...range });
   }
-  return { type: "ranges", ranges: merged };
+  return {
+    type: "ranges",
+    ranges: merged
+  };
 }
 function mapDecorationSet(set, mapping, doc3, widgetKeys) {
-  return set.map(mapping, doc3, {
-    onRemove: (removedSpec) => {
-      const key = removedSpec == null ? void 0 : removedSpec.key;
-      if (typeof key === "string") {
-        widgetKeys.delete(key);
-      }
-    }
-  });
+  return set.map(mapping, doc3, { onRemove: (removedSpec) => {
+    const key = removedSpec === null || removedSpec === void 0 ? void 0 : removedSpec.key;
+    if (typeof key === "string") widgetKeys.delete(key);
+  } });
 }
 function mapDecorations(name, previous, tr2) {
-  var _a, _b;
-  const previousSet = (_a = previous.decorationSetsByExtension[name]) != null ? _a : DecorationSet.empty;
-  const widgetKeys = new Set((_b = previous.widgetKeysByExtension[name]) != null ? _b : []);
-  const set = mapDecorationSet(previousSet, tr2.mapping, tr2.doc, widgetKeys);
-  return { set, widgetKeys };
+  var _previous$decorationS, _previous$widgetKeysB;
+  const previousSet = (_previous$decorationS = previous.decorationSetsByExtension[name]) !== null && _previous$decorationS !== void 0 ? _previous$decorationS : DecorationSet.empty;
+  const widgetKeys = new Set((_previous$widgetKeysB = previous.widgetKeysByExtension[name]) !== null && _previous$widgetKeysB !== void 0 ? _previous$widgetKeysB : []);
+  return {
+    set: mapDecorationSet(previousSet, tr2.mapping, tr2.doc, widgetKeys),
+    widgetKeys
+  };
 }
 function mergeDecorationSets(doc3, decorationSetsByExtension) {
   const allDecorations = Object.values(decorationSetsByExtension).flatMap((set) => set.find());
@@ -66205,56 +65675,29 @@ function mergeDecorationSets(doc3, decorationSetsByExtension) {
 }
 function unionWidgetKeys(widgetKeysByExtension) {
   const merged = /* @__PURE__ */ new Set();
-  for (const keys2 of Object.values(widgetKeysByExtension)) {
-    for (const key of keys2) {
-      merged.add(key);
-    }
-  }
+  for (const keys2 of Object.values(widgetKeysByExtension)) for (const key of keys2) merged.add(key);
   return merged;
 }
 function validateDecorationSpec(name, spec) {
-  var _a;
-  const strategy = (_a = spec.update) != null ? _a : "document";
-  switch (strategy) {
+  var _update;
+  switch ((_update = spec.update) !== null && _update !== void 0 ? _update : "document") {
     case "document":
-      if (spec.createInRange) {
-        throw new Error(
-          `[tiptap error]: Extension "${name}" provides createInRange() but does not use the "changedRanges" decoration update strategy.`
-        );
-      }
+      if (spec.createInRange) throw new Error(`[tiptap error]: Extension "${name}" provides createInRange() but does not use the "changedRanges" decoration update strategy.`);
       return;
     case "changedRanges":
-      if (!spec.createInRange) {
-        throw new Error(
-          `[tiptap error]: Extension "${name}" uses the "changedRanges" decoration update strategy but does not provide createInRange().`
-        );
-      }
+      if (!spec.createInRange) throw new Error(`[tiptap error]: Extension "${name}" uses the "changedRanges" decoration update strategy but does not provide createInRange().`);
       return;
     case "manual":
-      if (spec.createInRange) {
-        throw new Error(
-          `[tiptap error]: Extension "${name}" uses the "manual" decoration update strategy, which is not compatible with createInRange(). createInRange() requires the "changedRanges" strategy.`
-        );
-      }
-      if (spec.shouldUpdate) {
-        throw new Error(
-          `[tiptap error]: Extension "${name}" cannot combine the "manual" decoration update strategy with shouldUpdate().`
-        );
-      }
+      if (spec.createInRange) throw new Error(`[tiptap error]: Extension "${name}" uses the "manual" decoration update strategy, which is not compatible with createInRange(). createInRange() requires the "changedRanges" strategy.`);
+      if (spec.shouldUpdate) throw new Error(`[tiptap error]: Extension "${name}" cannot combine the "manual" decoration update strategy with shouldUpdate().`);
       return;
     default:
-      throw new Error(
-        `[tiptap error]: Extension "${name}" uses an unknown decoration update strategy. Expected "document", "changedRanges", or "manual".`
-      );
+      throw new Error(`[tiptap error]: Extension "${name}" uses an unknown decoration update strategy. Expected "document", "changedRanges", or "manual".`);
   }
 }
 function shouldRecomputeDecoration(spec, props, forced) {
-  if (forced) {
-    return true;
-  }
-  if (spec.update === "manual") {
-    return false;
-  }
+  if (forced) return true;
+  if (spec.update === "manual") return false;
   return spec.shouldUpdate ? spec.shouldUpdate(props) : props.tr.docChanged;
 }
 var EMPTY_KEYS = /* @__PURE__ */ new Set();
@@ -66264,9 +65707,7 @@ var DecorationManager = class {
     this.warnedOutOfRangeExtensions = /* @__PURE__ */ new Set();
     this.handleBeforeTransaction = ({ nextState }) => {
       const state = DECORATION_MANAGER_PLUGIN_KEY.getState(nextState);
-      if (state) {
-        this.warnDuplicateWidgetKeys(state);
-      }
+      if (state) this.warnDuplicateWidgetKeys(state);
     };
     this.editor = options.editor;
     this.entries = this.resolveEntries(options.entries);
@@ -66278,40 +65719,41 @@ var DecorationManager = class {
     this.editor.off("beforeTransaction", this.handleBeforeTransaction);
   }
   /**
-   * Returns the set of live widget keys from all decoration extensions.
-   * @returns A readonly set of widget keys
-   */
+  * Returns the set of live widget keys from all decoration extensions.
+  * @returns A readonly set of widget keys
+  */
   liveWidgetKeys() {
-    var _a, _b;
-    return (_b = (_a = DECORATION_MANAGER_PLUGIN_KEY.getState(this.editor.state)) == null ? void 0 : _a.widgetKeys) != null ? _b : EMPTY_KEYS;
+    var _DECORATION_MANAGER_P, _DECORATION_MANAGER_P2;
+    return (_DECORATION_MANAGER_P = (_DECORATION_MANAGER_P2 = DECORATION_MANAGER_PLUGIN_KEY.getState(this.editor.state)) === null || _DECORATION_MANAGER_P2 === void 0 ? void 0 : _DECORATION_MANAGER_P2.widgetKeys) !== null && _DECORATION_MANAGER_P !== void 0 ? _DECORATION_MANAGER_P : EMPTY_KEYS;
   }
   /**
-   * The mounted editor view, or `null` when destroyed. Decoration callbacks
-   * must never receive the placeholder view `editor.view` falls back to.
-   * @returns The mounted editor view, or `null`
-   */
+  * The mounted editor view, or `null` when destroyed. Decoration callbacks
+  * must never receive the placeholder view `editor.view` falls back to.
+  * @returns The mounted editor view, or `null`
+  */
   get mountedView() {
     return this.editor.isDestroyed ? null : this.editor.view;
   }
   /**
-   * Resolves decoration entries by calling the addDecorations function for each extension entry.
-   * @param entries The decoration manager entries to resolve
-   * @returns An array of resolved decoration entries
-   */
+  * Resolves decoration entries by calling the addDecorations function for each extension entry.
+  * @param entries The decoration manager entries to resolve
+  * @returns An array of resolved decoration entries
+  */
   resolveEntries(entries) {
     const resolved = [];
     for (const { name, addDecorations } of entries) {
       const spec = addDecorations();
-      if (spec) {
-        resolved.push({ name, spec });
-      }
+      if (spec) resolved.push({
+        name,
+        spec
+      });
     }
     return resolved;
   }
   /**
-   * Creates the ProseMirror plugin for managing decorations.
-   * @returns A ProseMirror plugin with state management
-   */
+  * Creates the ProseMirror plugin for managing decorations.
+  * @returns A ProseMirror plugin with state management
+  */
   createPlugin() {
     const { editor, entries } = this;
     return new Plugin({
@@ -66336,20 +65778,20 @@ var DecorationManager = class {
         },
         apply: (tr2, previous, oldState, newState) => {
           const meta = tr2.getMeta(DECORATION_MANAGER_PLUGIN_KEY);
-          const forceAll = (meta == null ? void 0 : meta.type) === "force" && !meta.name;
-          const forceName = (meta == null ? void 0 : meta.type) === "force" ? meta.name : void 0;
+          const forceAll = (meta === null || meta === void 0 ? void 0 : meta.type) === "force" && !meta.name;
+          const forceName = (meta === null || meta === void 0 ? void 0 : meta.type) === "force" ? meta.name : void 0;
           const decorationSetsByExtension = {};
           const widgetKeysByExtension = {};
           const recomputedNames = /* @__PURE__ */ new Set();
           runInDecorationApplyScope(editor, () => {
             for (const { name, spec } of entries) {
               const forced = forceAll || forceName === name;
-              const shouldRecompute = shouldRecomputeDecoration(
-                spec,
-                { editor, tr: tr2, oldState, newState },
-                forced
-              );
-              if (!shouldRecompute) {
+              if (!shouldRecomputeDecoration(spec, {
+                editor,
+                tr: tr2,
+                oldState,
+                newState
+              }, forced)) {
                 const result = mapDecorations(name, previous, tr2);
                 decorationSetsByExtension[name] = result.set;
                 widgetKeysByExtension[name] = result.widgetKeys;
@@ -66366,146 +65808,126 @@ var DecorationManager = class {
               }
             }
           });
-          if (recomputedNames.size === 0 && !tr2.docChanged) {
-            return previous;
-          }
-          const mergedDecorationSet = this.mergeAfterApply({
-            entries,
-            previous,
-            tr: tr2,
-            decorationSetsByExtension,
-            recomputedNames
-          });
+          if (recomputedNames.size === 0 && !tr2.docChanged) return previous;
           return {
             decorationSetsByExtension,
             widgetKeysByExtension,
-            mergedDecorationSet,
+            mergedDecorationSet: this.mergeAfterApply({
+              entries,
+              previous,
+              tr: tr2,
+              decorationSetsByExtension,
+              recomputedNames
+            }),
             widgetKeys: unionWidgetKeys(widgetKeysByExtension)
           };
         }
       },
-      props: {
-        decorations(state) {
-          var _a, _b;
-          return (_b = (_a = DECORATION_MANAGER_PLUGIN_KEY.getState(state)) == null ? void 0 : _a.mergedDecorationSet) != null ? _b : DecorationSet.empty;
-        }
-      }
+      props: { decorations(state) {
+        var _DECORATION_MANAGER_P3, _DECORATION_MANAGER_P4;
+        return (_DECORATION_MANAGER_P3 = (_DECORATION_MANAGER_P4 = DECORATION_MANAGER_PLUGIN_KEY.getState(state)) === null || _DECORATION_MANAGER_P4 === void 0 ? void 0 : _DECORATION_MANAGER_P4.mergedDecorationSet) !== null && _DECORATION_MANAGER_P3 !== void 0 ? _DECORATION_MANAGER_P3 : DecorationSet.empty;
+      } }
     });
   }
   /**
-   * Applies changed ranges recomputation to a decoration set, dropping stale decorations and rebuilding only the touched blocks.
-   * @param name The name of the decoration extension
-   * @param spec The decoration spec
-   * @param previous The previous decoration manager state
-   * @param tr The transaction to apply
-   * @param newState The new editor state
-   * @returns The updated decoration set and widget keys
-   */
+  * Applies changed ranges recomputation to a decoration set, dropping stale decorations and rebuilding only the touched blocks.
+  * @param name The name of the decoration extension
+  * @param spec The decoration spec
+  * @param previous The previous decoration manager state
+  * @param tr The transaction to apply
+  * @param newState The new editor state
+  * @returns The updated decoration set and widget keys
+  */
   applyChangedRangesRecompute(name, spec, previous, tr2, newState) {
     const resolution = getRebuildRanges(tr2, newState.doc);
-    if (resolution.type === "full") {
-      return this.buildFullSet(name, spec, newState);
-    }
+    if (resolution.type === "full") return this.buildFullSet(name, spec, newState);
     return this.rebuildRanges(name, spec, previous, tr2, newState, resolution.ranges);
   }
   /**
-   * Rebuilds decorations for the changed block ranges: maps the previous set
-   * forward, then for each range removes stale decorations, calls
-   * `createInRange`, and adds the new ones while syncing widget keys.
-   * @param name The extension name.
-   * @param spec The decoration spec.
-   * @param previous The previous decoration manager state.
-   * @param tr The transaction to apply.
-   * @param newState The new editor state.
-   * @param ranges The block ranges to rebuild.
-   * @returns The updated decoration set and widget keys.
-   */
+  * Rebuilds decorations for the changed block ranges: maps the previous set
+  * forward, then for each range removes stale decorations, calls
+  * `createInRange`, and adds the new ones while syncing widget keys.
+  * @param name The extension name.
+  * @param spec The decoration spec.
+  * @param previous The previous decoration manager state.
+  * @param tr The transaction to apply.
+  * @param newState The new editor state.
+  * @param ranges The block ranges to rebuild.
+  * @returns The updated decoration set and widget keys.
+  */
   rebuildRanges(name, spec, previous, tr2, newState, ranges) {
-    var _a, _b;
-    const previousSet = (_a = previous.decorationSetsByExtension[name]) != null ? _a : DecorationSet.empty;
-    const widgetKeys = new Set((_b = previous.widgetKeysByExtension[name]) != null ? _b : []);
+    var _previous$decorationS, _previous$widgetKeysB;
+    const previousSet = (_previous$decorationS = previous.decorationSetsByExtension[name]) !== null && _previous$decorationS !== void 0 ? _previous$decorationS : DecorationSet.empty;
+    const widgetKeys = new Set((_previous$widgetKeysB = previous.widgetKeysByExtension[name]) !== null && _previous$widgetKeysB !== void 0 ? _previous$widgetKeysB : []);
     let set = mapDecorationSet(previousSet, tr2.mapping, tr2.doc, widgetKeys);
     const docSize = newState.doc.content.size;
     for (const { from: from2, to } of ranges) {
-      const stale = set.find(from2, to).filter((decoration) => rangeOwnsPosition({ position: decoration.from, from: from2, to, docSize }));
+      const stale = set.find(from2, to).filter((decoration) => rangeOwnsPosition({
+        position: decoration.from,
+        from: from2,
+        to,
+        docSize
+      }));
       for (const decoration of stale) {
         const key = widgetKeyOf(decoration);
-        if (key) {
-          widgetKeys.delete(key);
-        }
+        if (key) widgetKeys.delete(key);
       }
       set = set.remove(stale);
-      const rangeDecorations = filterOutOfRangeDecorations({
-        decorations: this.runCreate(
-          name,
-          "createInRange",
-          () => spec.createInRange({
-            editor: this.editor,
-            state: newState,
-            view: this.mountedView,
-            from: from2,
-            to
-          })
-        ),
+      const { decorations: pmDecorations, widgetKeys: addedKeys } = decorationsToPMDecorations(filterOutOfRangeDecorations({
+        decorations: this.runCreate(name, "createInRange", () => spec.createInRange({
+          editor: this.editor,
+          state: newState,
+          view: this.mountedView,
+          from: from2,
+          to
+        })),
         from: from2,
         to,
         docSize,
         extensionName: name,
         warnedExtensions: this.warnedOutOfRangeExtensions
-      });
-      const { decorations: pmDecorations, widgetKeys: addedKeys } = decorationsToPMDecorations(
-        rangeDecorations,
-        name
-      );
+      }), name);
       set = set.add(newState.doc, pmDecorations);
-      for (const key of addedKeys) {
-        widgetKeys.add(key);
-      }
+      for (const key of addedKeys) widgetKeys.add(key);
     }
-    return { set, widgetKeys };
+    return {
+      set,
+      widgetKeys
+    };
   }
   /**
-   * Builds a full decoration set for the entire document.
-   * @param name The name of the decoration extension
-   * @param spec The decoration spec
-   * @param state The editor state
-   * @returns The decoration set and widget keys
-   */
+  * Builds a full decoration set for the entire document.
+  * @param name The name of the decoration extension
+  * @param spec The decoration spec
+  * @param state The editor state
+  * @returns The decoration set and widget keys
+  */
   buildFullSet(name, spec, state) {
-    const decorations = this.runCreate(
-      name,
-      "create",
-      () => spec.create({
-        editor: this.editor,
-        state,
-        view: this.mountedView
-      })
-    );
+    const decorations = this.runCreate(name, "create", () => spec.create({
+      editor: this.editor,
+      state,
+      view: this.mountedView
+    }));
     return buildDecorationSet(state.doc, decorations, name);
   }
   /**
-   * Runs a decoration callback and swallows anything it throws. These run inside
-   * `state.apply`, where an uncaught error would abort the whole transaction.
-   * @param name The extension name.
-   * @param method The callback name, used in the error message.
-   * @param create The callback to run.
-   * @returns The decorations, or an empty array if the callback threw.
-   */
+  * Runs a decoration callback and swallows anything it throws. These run inside
+  * `state.apply`, where an uncaught error would abort the whole transaction.
+  * @param name The extension name.
+  * @param method The callback name, used in the error message.
+  * @param create The callback to run.
+  * @returns The decorations, or an empty array if the callback threw.
+  */
   runCreate(name, method, create2) {
     try {
       return create2();
     } catch (error) {
-      console.error(
-        `[tiptap error]: Extension "${name}" threw in \`addDecorations().${method}()\`. Its decorations were dropped for this update.`,
-        error
-      );
+      console.error(`[tiptap error]: Extension "${name}" threw in \`addDecorations().${method}()\`. Its decorations were dropped for this update.`, error);
       return [];
     }
   }
   warnDuplicateWidgetKeys(state) {
-    if (!isDev2) {
-      return;
-    }
+    if (!isDev2) return;
     if (state.widgetKeys.size === 0) {
       this.warnedWidgetKeys.clear();
       return;
@@ -66513,48 +65935,32 @@ var DecorationManager = class {
     const duplicateKeys = findDuplicateWidgetKeys(state.mergedDecorationSet);
     const nextWarningKeys = new Set(duplicateKeys.map(({ key }) => key));
     for (const { key, extensions } of duplicateKeys) {
-      if (this.warnedWidgetKeys.has(key)) {
-        continue;
-      }
+      if (this.warnedWidgetKeys.has(key)) continue;
       const names = Array.from(extensions).map((name) => `"${name}"`).join(", ");
-      console.warn(
-        `[tiptap warn]: Duplicate widget decoration key "${key}" in extension${extensions.size === 1 ? "" : "s"} ${names}. Widget decoration keys must be globally unique, otherwise ProseMirror misplaces the widget DOM. Use a stable, unique key (e.g. \`comment-\${id}\`).`
-      );
+      console.warn(`[tiptap warn]: Duplicate widget decoration key "${key}" in extension${extensions.size === 1 ? "" : "s"} ${names}. Widget decoration keys must be globally unique, otherwise ProseMirror misplaces the widget DOM. Use a stable, unique key (e.g. \`comment-\${id}\`).`);
     }
     this.warnedWidgetKeys = nextWarningKeys;
   }
   /**
-   * Builds the merged DecorationSet during init. Skips the merge for a
-   * single extension since its per-extension set is already correct.
-   * @param doc The document to build the merged set for.
-   * @param decorationSetsByExtension The per-extension decoration sets.
-   * @returns The merged decoration set.
-   */
+  * Builds the merged DecorationSet during init. Skips the merge for a
+  * single extension since its per-extension set is already correct.
+  * @param doc The document to build the merged set for.
+  * @param decorationSetsByExtension The per-extension decoration sets.
+  * @returns The merged decoration set.
+  */
   buildMergedSet(doc3, decorationSetsByExtension) {
     const names = Object.keys(decorationSetsByExtension);
-    if (names.length === 1) {
-      return decorationSetsByExtension[names[0]];
-    }
+    if (names.length === 1) return decorationSetsByExtension[names[0]];
     return mergeDecorationSets(doc3, decorationSetsByExtension);
   }
   /**
-   * Computes the merged DecorationSet after apply. Single extension skips the
-   * merge; nothing recomputed maps the previous merged set forward; otherwise
-   * the merge is rebuilt from the per-extension sets.
-   */
-  mergeAfterApply({
-    entries,
-    previous,
-    tr: tr2,
-    decorationSetsByExtension,
-    recomputedNames
-  }) {
-    if (entries.length === 1) {
-      return decorationSetsByExtension[entries[0].name];
-    }
-    if (recomputedNames.size === 0) {
-      return previous.mergedDecorationSet.map(tr2.mapping, tr2.doc);
-    }
+  * Computes the merged DecorationSet after apply. Single extension skips the
+  * merge; nothing recomputed maps the previous merged set forward; otherwise
+  * the merge is rebuilt from the per-extension sets.
+  */
+  mergeAfterApply({ entries, previous, tr: tr2, decorationSetsByExtension, recomputedNames }) {
+    if (entries.length === 1) return decorationSetsByExtension[entries[0].name];
+    if (recomputedNames.size === 0) return previous.mergedDecorationSet.map(tr2.mapping, tr2.doc);
     return mergeDecorationSets(tr2.doc, decorationSetsByExtension);
   }
 };
@@ -66565,503 +65971,15 @@ function getType(value) {
   return Object.prototype.toString.call(value).slice(8, -1);
 }
 function isPlainObject2(value) {
-  if (getType(value) !== "Object") {
-    return false;
-  }
+  if (getType(value) !== "Object") return false;
   return value.constructor === Object && Object.getPrototypeOf(value) === Object.prototype;
-}
-var markdown_exports = {};
-__export2(markdown_exports, {
-  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec,
-  createBlockMarkdownSpec: () => createBlockMarkdownSpec,
-  createInlineMarkdownSpec: () => createInlineMarkdownSpec,
-  parseAttributes: () => parseAttributes,
-  parseIndentedBlocks: () => parseIndentedBlocks,
-  renderNestedMarkdownContent: () => renderNestedMarkdownContent,
-  serializeAttributes: () => serializeAttributes
-});
-function parseAttributes(attrString) {
-  if (!(attrString == null ? void 0 : attrString.trim())) {
-    return {};
-  }
-  const attributes = {};
-  const quotedStrings = [];
-  const tempString = attrString.replace(/["']([^"']*)["']/g, (match) => {
-    quotedStrings.push(match);
-    return `__QUOTED_${quotedStrings.length - 1}__`;
-  });
-  const classMatches = tempString.match(/(?:^|\s)\.([\w-]+)/g);
-  if (classMatches) {
-    const classes = classMatches.map((match) => match.trim().slice(1));
-    attributes.class = classes.join(" ");
-  }
-  const idMatch = tempString.match(/(?:^|\s)#([\w-]+)/);
-  if (idMatch) {
-    attributes.id = idMatch[1];
-  }
-  const kvRegex = /([a-zA-Z][\w-]*)\s*=\s*(__QUOTED_\d+__)/g;
-  const kvMatches = Array.from(tempString.matchAll(kvRegex));
-  kvMatches.forEach(([, key, quotedRef]) => {
-    var _a;
-    const quotedIndex = parseInt(((_a = quotedRef.match(/__QUOTED_(\d+)__/)) == null ? void 0 : _a[1]) || "0", 10);
-    const quotedValue = quotedStrings[quotedIndex];
-    if (quotedValue) {
-      attributes[key] = quotedValue.slice(1, -1);
-    }
-  });
-  const cleanString = tempString.replace(/(?:^|\s)\.([\w-]+)/g, "").replace(/(?:^|\s)#([\w-]+)/g, "").replace(/([a-zA-Z][\w-]*)\s*=\s*__QUOTED_\d+__/g, "").trim();
-  if (cleanString) {
-    const booleanAttrs = cleanString.split(/\s+/).filter(Boolean);
-    booleanAttrs.forEach((attr) => {
-      if (attr.match(/^[a-zA-Z][\w-]*$/)) {
-        attributes[attr] = true;
-      }
-    });
-  }
-  return attributes;
-}
-function serializeAttributes(attributes) {
-  if (!attributes || Object.keys(attributes).length === 0) {
-    return "";
-  }
-  const parts = [];
-  if (attributes.class) {
-    const classes = String(attributes.class).split(/\s+/).filter(Boolean);
-    classes.forEach((cls) => parts.push(`.${cls}`));
-  }
-  if (attributes.id) {
-    parts.push(`#${attributes.id}`);
-  }
-  Object.entries(attributes).forEach(([key, value]) => {
-    if (key === "class" || key === "id") {
-      return;
-    }
-    if (value === true) {
-      parts.push(key);
-    } else if (value !== false && value != null) {
-      parts.push(`${key}="${String(value)}"`);
-    }
-  });
-  return parts.join(" ");
-}
-function createAtomBlockMarkdownSpec(options) {
-  const {
-    nodeName,
-    name: markdownName,
-    parseAttributes: parseAttributes22 = parseAttributes,
-    serializeAttributes: serializeAttributes22 = serializeAttributes,
-    defaultAttributes = {},
-    requiredAttributes = [],
-    allowedAttributes
-  } = options;
-  const blockName = markdownName || nodeName;
-  const filterAttributes = (attrs) => {
-    if (!allowedAttributes) {
-      return attrs;
-    }
-    const filtered = {};
-    allowedAttributes.forEach((key) => {
-      if (key in attrs) {
-        filtered[key] = attrs[key];
-      }
-    });
-    return filtered;
-  };
-  return {
-    parseMarkdown: (token, h2) => {
-      const attrs = { ...defaultAttributes, ...token.attributes };
-      return h2.createNode(nodeName, attrs, []);
-    },
-    markdownTokenizer: {
-      name: nodeName,
-      level: "block",
-      start(src) {
-        var _a;
-        const regex = new RegExp(`^:::${blockName}(?:\\s|$)`, "m");
-        const index2 = (_a = src.match(regex)) == null ? void 0 : _a.index;
-        return index2 !== void 0 ? index2 : -1;
-      },
-      tokenize(src, _tokens, _lexer) {
-        const regex = new RegExp(`^:::${blockName}(?:\\s+\\{([^}]*)\\})?\\s*:::(?:\\n|$)`);
-        const match = src.match(regex);
-        if (!match) {
-          return void 0;
-        }
-        const attrString = match[1] || "";
-        const attributes = parseAttributes22(attrString);
-        const missingRequired = requiredAttributes.find((required) => !(required in attributes));
-        if (missingRequired) {
-          return void 0;
-        }
-        return {
-          type: nodeName,
-          raw: match[0],
-          attributes
-        };
-      }
-    },
-    renderMarkdown: (node) => {
-      const filteredAttrs = filterAttributes(node.attrs || {});
-      const attrs = serializeAttributes22(filteredAttrs);
-      const attrString = attrs ? ` {${attrs}}` : "";
-      return `:::${blockName}${attrString} :::`;
-    }
-  };
-}
-function createBlockMarkdownSpec(options) {
-  const {
-    nodeName,
-    name: markdownName,
-    getContent,
-    parseAttributes: parseAttributes22 = parseAttributes,
-    serializeAttributes: serializeAttributes22 = serializeAttributes,
-    defaultAttributes = {},
-    content = "block",
-    allowedAttributes
-  } = options;
-  const blockName = markdownName || nodeName;
-  const filterAttributes = (attrs) => {
-    if (!allowedAttributes) {
-      return attrs;
-    }
-    const filtered = {};
-    allowedAttributes.forEach((key) => {
-      if (key in attrs) {
-        filtered[key] = attrs[key];
-      }
-    });
-    return filtered;
-  };
-  return {
-    parseMarkdown: (token, h2) => {
-      let nodeContent;
-      if (getContent) {
-        const contentResult = getContent(token);
-        nodeContent = typeof contentResult === "string" ? [{ type: "text", text: contentResult }] : contentResult;
-      } else if (content === "block") {
-        nodeContent = h2.parseChildren(token.tokens || []);
-      } else {
-        nodeContent = h2.parseInline(token.tokens || []);
-      }
-      const attrs = { ...defaultAttributes, ...token.attributes };
-      return h2.createNode(nodeName, attrs, nodeContent);
-    },
-    markdownTokenizer: {
-      name: nodeName,
-      level: "block",
-      start(src) {
-        var _a;
-        const regex = new RegExp(`^:::${blockName}`, "m");
-        const index2 = (_a = src.match(regex)) == null ? void 0 : _a.index;
-        return index2 !== void 0 ? index2 : -1;
-      },
-      tokenize(src, _tokens, lexer) {
-        var _a;
-        const openingRegex = new RegExp(`^:::${blockName}(?:\\s+\\{([^}]*)\\})?\\s*\\n`);
-        const openingMatch = src.match(openingRegex);
-        if (!openingMatch) {
-          return void 0;
-        }
-        const [openingTag, attrString = ""] = openingMatch;
-        const attributes = parseAttributes22(attrString);
-        let level = 1;
-        const position = openingTag.length;
-        let matchedContent = "";
-        const blockPattern = /^:::([\w-]*)(\s.*)?/gm;
-        const remaining = src.slice(position);
-        blockPattern.lastIndex = 0;
-        for (; ; ) {
-          const match = blockPattern.exec(remaining);
-          if (match === null) {
-            break;
-          }
-          const matchPos = match.index;
-          const blockType = match[1];
-          if ((_a = match[2]) == null ? void 0 : _a.endsWith(":::")) {
-            continue;
-          }
-          if (blockType) {
-            level += 1;
-          } else {
-            level -= 1;
-            if (level === 0) {
-              const rawContent = remaining.slice(0, matchPos);
-              matchedContent = rawContent.trim();
-              const fullMatch = src.slice(0, position + matchPos + match[0].length);
-              let contentTokens = [];
-              if (matchedContent) {
-                if (content === "block") {
-                  contentTokens = lexer.blockTokens(rawContent);
-                  contentTokens.forEach((token) => {
-                    if (token.text && (!token.tokens || token.tokens.length === 0)) {
-                      token.tokens = lexer.inlineTokens(token.text);
-                    }
-                  });
-                  while (contentTokens.length > 0) {
-                    const lastToken = contentTokens[contentTokens.length - 1];
-                    if (lastToken.type === "paragraph" && (!lastToken.text || lastToken.text.trim() === "")) {
-                      contentTokens.pop();
-                    } else {
-                      break;
-                    }
-                  }
-                } else {
-                  contentTokens = lexer.inlineTokens(matchedContent);
-                }
-              }
-              return {
-                type: nodeName,
-                raw: fullMatch,
-                attributes,
-                content: matchedContent,
-                tokens: contentTokens
-              };
-            }
-          }
-        }
-        return void 0;
-      }
-    },
-    renderMarkdown: (node, h2) => {
-      const filteredAttrs = filterAttributes(node.attrs || {});
-      const attrs = serializeAttributes22(filteredAttrs);
-      const attrString = attrs ? ` {${attrs}}` : "";
-      const renderedContent = h2.renderChildren(node.content || [], "\n\n");
-      return `:::${blockName}${attrString}
-
-${renderedContent}
-
-:::`;
-    }
-  };
-}
-function parseShortcodeAttributes(attrString) {
-  if (!attrString.trim()) {
-    return {};
-  }
-  const attributes = {};
-  const regex = /(\w+)=(?:"([^"]*)"|'([^']*)')/g;
-  let match = regex.exec(attrString);
-  while (match !== null) {
-    const [, key, doubleQuoted, singleQuoted] = match;
-    attributes[key] = doubleQuoted || singleQuoted;
-    match = regex.exec(attrString);
-  }
-  return attributes;
-}
-function serializeShortcodeAttributes(attrs) {
-  return Object.entries(attrs).filter(([, value]) => value !== void 0 && value !== null).map(([key, value]) => `${key}="${value}"`).join(" ");
-}
-function createInlineMarkdownSpec(options) {
-  const {
-    nodeName,
-    name: shortcodeName,
-    getContent,
-    parseAttributes: parseAttributes22 = parseShortcodeAttributes,
-    serializeAttributes: serializeAttributes22 = serializeShortcodeAttributes,
-    defaultAttributes = {},
-    selfClosing = false,
-    allowedAttributes
-  } = options;
-  const shortcode = shortcodeName || nodeName;
-  const filterAttributes = (attrs) => {
-    if (!allowedAttributes) {
-      return attrs;
-    }
-    const filtered = {};
-    allowedAttributes.forEach((attr) => {
-      const attrName = typeof attr === "string" ? attr : attr.name;
-      const skipIfDefault = typeof attr === "string" ? void 0 : attr.skipIfDefault;
-      if (attrName in attrs) {
-        const value = attrs[attrName];
-        if (skipIfDefault !== void 0 && value === skipIfDefault) {
-          return;
-        }
-        filtered[attrName] = value;
-      }
-    });
-    return filtered;
-  };
-  const escapedShortcode = shortcode.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return {
-    parseMarkdown: (token, h2) => {
-      const attrs = { ...defaultAttributes, ...token.attributes };
-      if (selfClosing) {
-        return h2.createNode(nodeName, attrs);
-      }
-      const content = getContent ? getContent(token) : token.content || "";
-      if (content) {
-        return h2.createNode(nodeName, attrs, [h2.createTextNode(content)]);
-      }
-      return h2.createNode(nodeName, attrs, []);
-    },
-    markdownTokenizer: {
-      name: nodeName,
-      level: "inline",
-      start(src) {
-        const startPattern = selfClosing ? new RegExp(`\\[${escapedShortcode}\\s*[^\\]]*\\]`) : new RegExp(`\\[${escapedShortcode}\\s*[^\\]]*\\][\\s\\S]*?\\[\\/${escapedShortcode}\\]`);
-        const match = src.match(startPattern);
-        const index2 = match == null ? void 0 : match.index;
-        return index2 !== void 0 ? index2 : -1;
-      },
-      tokenize(src, _tokens, _lexer) {
-        const tokenPattern = selfClosing ? new RegExp(`^\\[${escapedShortcode}\\s*([^\\]]*)\\]`) : new RegExp(
-          `^\\[${escapedShortcode}\\s*([^\\]]*)\\]([\\s\\S]*?)\\[\\/${escapedShortcode}\\]`
-        );
-        const match = src.match(tokenPattern);
-        if (!match) {
-          return void 0;
-        }
-        let content = "";
-        let attrString = "";
-        if (selfClosing) {
-          const [, attrs] = match;
-          attrString = attrs;
-        } else {
-          const [, attrs, contentMatch] = match;
-          attrString = attrs;
-          content = contentMatch || "";
-        }
-        const attributes = parseAttributes22(attrString.trim());
-        return {
-          type: nodeName,
-          raw: match[0],
-          content: content.trim(),
-          attributes
-        };
-      }
-    },
-    renderMarkdown: (node) => {
-      let content = "";
-      if (getContent) {
-        content = getContent(node);
-      } else if (node.content && node.content.length > 0) {
-        content = node.content.filter((child) => child.type === "text").map((child) => child.text).join("");
-      }
-      const filteredAttrs = filterAttributes(node.attrs || {});
-      const attrs = serializeAttributes22(filteredAttrs);
-      const attrString = attrs ? ` ${attrs}` : "";
-      if (selfClosing) {
-        return `[${shortcode}${attrString}]`;
-      }
-      return `[${shortcode}${attrString}]${content}[/${shortcode}]`;
-    }
-  };
-}
-function parseIndentedBlocks(src, config, lexer) {
-  var _a, _b, _c, _d;
-  const lines = src.split("\n");
-  const items = [];
-  let totalRaw = "";
-  let i = 0;
-  const baseIndentSize = config.baseIndentSize || 2;
-  while (i < lines.length) {
-    const currentLine = lines[i];
-    const itemMatch = currentLine.match(config.itemPattern);
-    if (!itemMatch) {
-      if (items.length > 0) {
-        break;
-      } else if (currentLine.trim() === "") {
-        i += 1;
-        totalRaw = `${totalRaw}${currentLine}
-`;
-        continue;
-      } else {
-        return void 0;
-      }
-    }
-    const itemData = config.extractItemData(itemMatch);
-    const { indentLevel, mainContent } = itemData;
-    totalRaw = `${totalRaw}${currentLine}
-`;
-    const itemContent = [mainContent];
-    i += 1;
-    while (i < lines.length) {
-      const nextLine = lines[i];
-      if (nextLine.trim() === "") {
-        const nextNonEmptyIndex = lines.slice(i + 1).findIndex((l) => l.trim() !== "");
-        if (nextNonEmptyIndex === -1) {
-          break;
-        }
-        const nextNonEmpty = lines[i + 1 + nextNonEmptyIndex];
-        const nextIndent2 = ((_b = (_a = nextNonEmpty.match(/^(\s*)/)) == null ? void 0 : _a[1]) == null ? void 0 : _b.length) || 0;
-        if (nextIndent2 > indentLevel) {
-          itemContent.push(nextLine);
-          totalRaw = `${totalRaw}${nextLine}
-`;
-          i += 1;
-          continue;
-        } else {
-          break;
-        }
-      }
-      const nextIndent = ((_d = (_c = nextLine.match(/^(\s*)/)) == null ? void 0 : _c[1]) == null ? void 0 : _d.length) || 0;
-      if (nextIndent > indentLevel) {
-        itemContent.push(nextLine);
-        totalRaw = `${totalRaw}${nextLine}
-`;
-        i += 1;
-      } else {
-        break;
-      }
-    }
-    let nestedTokens;
-    const nestedContent = itemContent.slice(1);
-    if (nestedContent.length > 0) {
-      const dedentedNested = nestedContent.map((nestedLine) => nestedLine.slice(indentLevel + baseIndentSize)).join("\n");
-      if (dedentedNested.trim()) {
-        if (config.customNestedParser) {
-          nestedTokens = config.customNestedParser(dedentedNested);
-        } else {
-          nestedTokens = lexer.blockTokens(dedentedNested);
-        }
-      }
-    }
-    const token = config.createToken(itemData, nestedTokens);
-    items.push(token);
-  }
-  if (items.length === 0) {
-    return void 0;
-  }
-  return {
-    items,
-    raw: totalRaw
-  };
-}
-function renderNestedMarkdownContent(node, h2, prefixOrGenerator, ctx) {
-  if (!node || !Array.isArray(node.content)) {
-    return "";
-  }
-  const prefix = typeof prefixOrGenerator === "function" ? prefixOrGenerator(ctx) : prefixOrGenerator;
-  const [content, ...children] = node.content;
-  const mainContent = h2.renderChildren([content]);
-  let output = `${prefix}${mainContent}`;
-  if (children && children.length > 0) {
-    children.forEach((child, index2) => {
-      var _a, _b;
-      const childContent = (_b = (_a = h2.renderChild) == null ? void 0 : _a.call(h2, child, index2 + 1)) != null ? _b : h2.renderChildren([child]);
-      if (childContent !== void 0 && childContent !== null) {
-        const indentedChild = childContent.split("\n").map((line) => line ? h2.indent(line) : h2.indent("")).join("\n");
-        output += child.type === "paragraph" ? `
-
-${indentedChild}` : `
-${indentedChild}`;
-      }
-    });
-  }
-  return output;
 }
 function mergeDeep(target, source) {
   const output = { ...target };
-  if (isPlainObject2(target) && isPlainObject2(source)) {
-    Object.keys(source).forEach((key) => {
-      if (isPlainObject2(source[key]) && isPlainObject2(target[key])) {
-        output[key] = mergeDeep(target[key], source[key]);
-      } else {
-        output[key] = source[key];
-      }
-    });
-  }
+  if (isPlainObject2(target) && isPlainObject2(source)) Object.keys(source).forEach((key) => {
+    if (isPlainObject2(source[key]) && isPlainObject2(target[key])) output[key] = mergeDeep(target[key], source[key]);
+    else output[key] = source[key];
+  });
   return output;
 }
 function updateMarkViewAttributes(checkMark, editor, attrs = {}) {
@@ -67073,19 +65991,13 @@ function updateMarkViewAttributes(checkMark, editor, attrs = {}) {
     const to = tr2.mapping.map(pos2) + node.nodeSize;
     let foundMark = null;
     node.marks.forEach((mark) => {
-      if (mark !== thisMark) {
-        return false;
-      }
+      if (mark !== thisMark) return false;
       foundMark = mark;
     });
-    if (!foundMark) {
-      return;
-    }
+    if (!foundMark) return;
     let needsUpdate = false;
     Object.keys(attrs).forEach((k) => {
-      if (attrs[k] !== foundMark.attrs[k]) {
-        needsUpdate = true;
-      }
+      if (attrs[k] !== foundMark.attrs[k]) needsUpdate = true;
     });
     if (needsUpdate) {
       const updatedMark = checkMark.type.create({
@@ -67096,63 +66008,39 @@ function updateMarkViewAttributes(checkMark, editor, attrs = {}) {
       tr2.addMark(from2, to, updatedMark);
     }
   });
-  if (tr2.docChanged) {
-    editor.view.dispatch(tr2);
-  }
+  if (tr2.docChanged) editor.view.dispatch(tr2);
 }
 var inputRuleMatcherHandler = (text, find2) => {
-  if (isRegExp(find2)) {
-    return find2.exec(text);
-  }
+  if (isRegExp(find2)) return find2.exec(text);
   const inputRuleMatch = find2(text);
-  if (!inputRuleMatch) {
-    return null;
-  }
+  if (!inputRuleMatch) return null;
   const result = [inputRuleMatch.text];
   result.index = inputRuleMatch.index;
   result.input = text;
   result.data = inputRuleMatch.data;
   if (inputRuleMatch.replaceWith) {
-    if (!inputRuleMatch.text.includes(inputRuleMatch.replaceWith)) {
-      console.warn(
-        '[tiptap warn]: "inputRuleMatch.replaceWith" must be part of "inputRuleMatch.text".'
-      );
-    }
+    if (!inputRuleMatch.text.includes(inputRuleMatch.replaceWith)) console.warn('[tiptap warn]: "inputRuleMatch.replaceWith" must be part of "inputRuleMatch.text".');
     result.push(inputRuleMatch.replaceWith);
   }
   return result;
 };
-function run(config) {
-  var _a;
+function run$1(config) {
+  var _ref;
   const { editor, from: from2, to, text, rules, plugin } = config;
   const { view } = editor;
-  if (view.composing) {
-    return false;
-  }
+  if (view.composing) return false;
   const $from = view.state.doc.resolve(from2);
-  if (
-    // check for code node
-    $from.parent.type.spec.code || // check for code mark
-    !!((_a = $from.nodeBefore || $from.nodeAfter) == null ? void 0 : _a.marks.find((mark) => mark.type.spec.code))
-  ) {
-    return false;
-  }
+  if ($from.parent.type.spec.code || !!((_ref = $from.nodeBefore || $from.nodeAfter) === null || _ref === void 0 ? void 0 : _ref.marks.find((mark) => mark.type.spec.code))) return false;
   let matched = false;
   const textBefore = getTextContentFromNodes($from) + text;
   rules.forEach((rule) => {
-    if (matched) {
-      return;
-    }
+    if (matched) return;
     const match = inputRuleMatcherHandler(textBefore, rule.find);
-    if (!match) {
-      return;
-    }
+    if (!match) return;
     const matchedDocLength = match[0].length - text.length;
     if (matchedDocLength > 0) {
       const matchStartOffset = $from.parentOffset - matchedDocLength;
-      if (matchStartOffset < 0 || $from.parent.textBetween(matchStartOffset, $from.parentOffset) !== match[0].slice(0, matchedDocLength)) {
-        return;
-      }
+      if (matchStartOffset < 0 || $from.parent.textBetween(matchStartOffset, $from.parentOffset) !== match[0].slice(0, matchedDocLength)) return;
     }
     const tr2 = view.state.tr;
     const state = createChainableState({
@@ -67167,25 +66055,20 @@ function run(config) {
       editor,
       state
     });
-    const handler = rule.handler({
+    if (rule.handler({
       state,
       range,
       match,
       commands,
       chain,
       can
+    }) === null || !tr2.steps.length) return;
+    if (rule.undoable) tr2.setMeta(plugin, {
+      transform: tr2,
+      from: from2,
+      to,
+      text
     });
-    if (handler === null || !tr2.steps.length) {
-      return;
-    }
-    if (rule.undoable) {
-      tr2.setMeta(plugin, {
-        transform: tr2,
-        from: from2,
-        to,
-        text
-      });
-    }
     view.dispatch(tr2);
     matched = true;
   });
@@ -67200,37 +66083,29 @@ function inputRulesPlugin(props) {
       },
       apply(tr2, prev, state) {
         const stored = tr2.getMeta(plugin);
-        if (stored) {
-          return stored;
-        }
+        if (stored) return stored;
         const simulatedInputMeta = tr2.getMeta("applyInputRules");
-        const isSimulatedInput = !!simulatedInputMeta;
-        if (isSimulatedInput) {
-          setTimeout(() => {
-            let { text } = simulatedInputMeta;
-            if (typeof text === "string") {
-              text = text;
-            } else {
-              text = getHTMLFromFragment(Fragment9.from(text), state.schema);
-            }
-            const { from: from2 } = simulatedInputMeta;
-            const to = from2 + text.length;
-            run({
-              editor,
-              from: from2,
-              to,
-              text,
-              rules,
-              plugin
-            });
+        if (!!simulatedInputMeta) setTimeout(() => {
+          let { text } = simulatedInputMeta;
+          if (typeof text === "string") text = text;
+          else text = getHTMLFromFragment(Fragment9.from(text), state.schema);
+          const { from: from2 } = simulatedInputMeta;
+          const to = from2 + text.length;
+          run$1({
+            editor,
+            from: from2,
+            to,
+            text,
+            rules,
+            plugin
           });
-        }
+        });
         return tr2.selectionSet || tr2.docChanged ? null : prev;
       }
     },
     props: {
       handleTextInput(view, from2, to, text) {
-        return run({
+        return run$1({
           editor,
           from: from2,
           to,
@@ -67239,45 +66114,34 @@ function inputRulesPlugin(props) {
           plugin
         });
       },
-      handleDOMEvents: {
-        compositionend: (view) => {
-          setTimeout(() => {
-            const { $cursor } = view.state.selection;
-            if ($cursor) {
-              run({
-                editor,
-                from: $cursor.pos,
-                to: $cursor.pos,
-                text: "",
-                rules,
-                plugin
-              });
-            }
-          });
-          return false;
-        }
-      },
-      // add support for input rules to trigger on enter
-      // this is useful for example for code blocks
-      handleKeyDown(view, event) {
-        if (event.key !== "Enter") {
-          return false;
-        }
-        const { $cursor } = view.state.selection;
-        if ($cursor) {
-          return run({
+      handleDOMEvents: { compositionend: (view) => {
+        setTimeout(() => {
+          const { $cursor } = view.state.selection;
+          if ($cursor) run$1({
             editor,
             from: $cursor.pos,
             to: $cursor.pos,
-            text: "\n",
+            text: "",
             rules,
             plugin
           });
-        }
+        });
+        return false;
+      } },
+      handleKeyDown(view, event) {
+        if (event.key !== "Enter") return false;
+        const { $cursor } = view.state.selection;
+        if ($cursor) return run$1({
+          editor,
+          from: $cursor.pos,
+          to: $cursor.pos,
+          text: "\n",
+          rules,
+          plugin
+        });
         return false;
       }
     },
-    // @ts-ignore
     isInputRules: true
   });
   return plugin;
@@ -67288,9 +66152,7 @@ var Extendable = class {
     this.parent = null;
     this.child = null;
     this.name = "";
-    this.config = {
-      name: this.name
-    };
+    this.config = { name: this.name };
     this.config = {
       ...this.config,
       ...config
@@ -67298,23 +66160,13 @@ var Extendable = class {
     this.name = this.config.name;
   }
   get options() {
-    return {
-      ...callOrReturn(
-        getExtensionField(this, "addOptions", {
-          name: this.name
-        })
-      )
-    };
+    return { ...callOrReturn(getExtensionField(this, "addOptions", { name: this.name })) };
   }
   get storage() {
-    return {
-      ...callOrReturn(
-        getExtensionField(this, "addStorage", {
-          name: this.name,
-          options: this.options
-        })
-      )
-    };
+    return { ...callOrReturn(getExtensionField(this, "addStorage", {
+      name: this.name,
+      options: this.options
+    })) };
   }
   configure(options = {}) {
     const extension = this.extend({
@@ -67329,40 +66181,37 @@ var Extendable = class {
     return extension;
   }
   extend(extendedConfig = {}) {
-    const extension = new this.constructor({ ...this.config, ...extendedConfig });
+    const extension = new this.constructor({
+      ...this.config,
+      ...extendedConfig
+    });
     extension.parent = this;
     this.child = extension;
     extension.name = "name" in extendedConfig ? extendedConfig.name : extension.parent.name;
     return extension;
   }
 };
-var Mark2 = class _Mark extends Extendable {
-  constructor() {
-    super(...arguments);
+var Mark2 = class Mark3 extends Extendable {
+  constructor(..._args) {
+    super(..._args);
     this.type = "mark";
   }
   /**
-   * Create a new Mark instance
-   * @param config - Mark configuration object or a function that returns a configuration object
-   */
+  * Create a new Mark instance
+  * @param config - Mark configuration object or a function that returns a configuration object
+  */
   static create(config = {}) {
     const resolvedConfig = typeof config === "function" ? config() : config;
-    return new _Mark(resolvedConfig);
+    return new Mark3(resolvedConfig);
   }
   static handleExit({ editor, mark }) {
     const { tr: tr2 } = editor.state;
     const currentPos = editor.state.selection.$from;
-    const isAtEnd = currentPos.pos === currentPos.end();
-    if (isAtEnd) {
+    if (currentPos.pos === currentPos.end()) {
       const currentMarks = currentPos.marks();
-      const isInMark = !!currentMarks.find((m) => (m == null ? void 0 : m.type.name) === mark.name);
-      if (!isInMark) {
-        return false;
-      }
-      const removeMark2 = currentMarks.find((m) => (m == null ? void 0 : m.type.name) === mark.name);
-      if (removeMark2) {
-        tr2.removeStoredMark(removeMark2);
-      }
+      if (!!!currentMarks.find((m) => (m === null || m === void 0 ? void 0 : m.type.name) === mark.name)) return false;
+      const removeMark2 = currentMarks.find((m) => (m === null || m === void 0 ? void 0 : m.type.name) === mark.name);
+      if (removeMark2) tr2.removeStoredMark(removeMark2);
       tr2.insertText(" ", currentPos.pos);
       editor.view.dispatch(tr2);
       return true;
@@ -67378,30 +66227,22 @@ var Mark2 = class _Mark extends Extendable {
   }
 };
 var pasteRuleMatcherHandler = (text, find2, event) => {
-  if (isRegExp(find2)) {
-    return [...text.matchAll(find2)];
-  }
+  if (isRegExp(find2)) return [...text.matchAll(find2)];
   const matches2 = find2(text, event);
-  if (!matches2) {
-    return [];
-  }
+  if (!matches2) return [];
   return matches2.map((pasteRuleMatch) => {
     const result = [pasteRuleMatch.text];
     result.index = pasteRuleMatch.index;
     result.input = text;
     result.data = pasteRuleMatch.data;
     if (pasteRuleMatch.replaceWith) {
-      if (!pasteRuleMatch.text.includes(pasteRuleMatch.replaceWith)) {
-        console.warn(
-          '[tiptap warn]: "pasteRuleMatch.replaceWith" must be part of "pasteRuleMatch.text".'
-        );
-      }
+      if (!pasteRuleMatch.text.includes(pasteRuleMatch.replaceWith)) console.warn('[tiptap warn]: "pasteRuleMatch.replaceWith" must be part of "pasteRuleMatch.text".');
       result.push(pasteRuleMatch.replaceWith);
     }
     return result;
   });
 };
-function run2(config) {
+function run(config) {
   const { editor, state, from: from2, to, rule, pasteEvent, dropEvent } = config;
   const { commands, chain, can } = new CommandManager({
     editor,
@@ -67409,22 +66250,15 @@ function run2(config) {
   });
   const handlers2 = [];
   state.doc.nodesBetween(from2, to, (node, pos2) => {
-    var _a, _b, _c, _d, _e;
-    if (((_b = (_a = node.type) == null ? void 0 : _a.spec) == null ? void 0 : _b.code) || !(node.isText || node.isTextblock || node.isInline)) {
-      return;
-    }
-    const contentSize = (_e = (_d = (_c = node.content) == null ? void 0 : _c.size) != null ? _d : node.nodeSize) != null ? _e : 0;
+    var _node$type, _ref, _node$content$size, _node$content;
+    if (((_node$type = node.type) === null || _node$type === void 0 || (_node$type = _node$type.spec) === null || _node$type === void 0 ? void 0 : _node$type.code) || !(node.isText || node.isTextblock || node.isInline)) return;
+    const contentSize = (_ref = (_node$content$size = (_node$content = node.content) === null || _node$content === void 0 ? void 0 : _node$content.size) !== null && _node$content$size !== void 0 ? _node$content$size : node.nodeSize) !== null && _ref !== void 0 ? _ref : 0;
     const resolvedFrom = Math.max(from2, pos2);
     const resolvedTo = Math.min(to, pos2 + contentSize);
-    if (resolvedFrom >= resolvedTo) {
-      return;
-    }
+    if (resolvedFrom >= resolvedTo) return;
     const textToMatch = node.isText ? node.text || "" : node.textBetween(resolvedFrom - pos2, resolvedTo - pos2, void 0, "\uFFFC");
-    const matches2 = pasteRuleMatcherHandler(textToMatch, rule.find, pasteEvent);
-    matches2.forEach((match) => {
-      if (match.index === void 0) {
-        return;
-      }
+    pasteRuleMatcherHandler(textToMatch, rule.find, pasteEvent).forEach((match) => {
+      if (match.index === void 0) return;
       const start = resolvedFrom + match.index + 1;
       const end = start + match[0].length;
       const range = {
@@ -67444,16 +66278,13 @@ function run2(config) {
       handlers2.push(handler);
     });
   });
-  const success = handlers2.every((handler) => handler !== null);
-  return success;
+  return handlers2.every((handler) => handler !== null);
 }
 var tiptapDragFromOtherEditor = null;
 var createClipboardPasteEvent = (text) => {
-  var _a;
-  const event = new ClipboardEvent("paste", {
-    clipboardData: new DataTransfer()
-  });
-  (_a = event.clipboardData) == null ? void 0 : _a.setData("text/html", text);
+  var _event$clipboardData;
+  const event = new ClipboardEvent("paste", { clipboardData: new DataTransfer() });
+  (_event$clipboardData = event.clipboardData) === null || _event$clipboardData === void 0 || _event$clipboardData.setData("text/html", text);
   return event;
 };
 function pasteRulesPlugin(props) {
@@ -67468,19 +66299,13 @@ function pasteRulesPlugin(props) {
   } catch {
     dropEvent = null;
   }
-  const processEvent = ({
-    state,
-    from: from2,
-    to,
-    rule,
-    pasteEvt
-  }) => {
+  const processEvent = ({ state, from: from2, to, rule, pasteEvt }) => {
     const tr2 = state.tr;
     const chainableState = createChainableState({
       state,
       transaction: tr2
     });
-    const handler = run2({
+    if (!run({
       editor,
       state: chainableState,
       from: Math.max(from2 - 1, 0),
@@ -67488,10 +66313,7 @@ function pasteRulesPlugin(props) {
       rule,
       pasteEvent: pasteEvt,
       dropEvent
-    });
-    if (!handler || !tr2.steps.length) {
-      return;
-    }
+    }) || !tr2.steps.length) return;
     try {
       dropEvent = typeof DragEvent !== "undefined" ? new DragEvent("drop") : null;
     } catch {
@@ -67500,93 +66322,73 @@ function pasteRulesPlugin(props) {
     pasteEvent = typeof ClipboardEvent !== "undefined" ? new ClipboardEvent("paste") : null;
     return tr2;
   };
-  const plugins = rules.map((rule) => {
+  return rules.map((rule) => {
     return new Plugin({
-      // we register a global drag handler to track the current drag source element
       view(view) {
         const handleDragstart = (event) => {
-          var _a;
-          dragSourceElement = ((_a = view.dom.parentElement) == null ? void 0 : _a.contains(event.target)) ? view.dom.parentElement : null;
-          if (dragSourceElement) {
-            tiptapDragFromOtherEditor = editor;
-          }
+          var _view$dom$parentEleme;
+          dragSourceElement = ((_view$dom$parentEleme = view.dom.parentElement) === null || _view$dom$parentEleme === void 0 ? void 0 : _view$dom$parentEleme.contains(event.target)) ? view.dom.parentElement : null;
+          if (dragSourceElement) tiptapDragFromOtherEditor = editor;
         };
         const handleDragend = () => {
-          if (tiptapDragFromOtherEditor) {
-            tiptapDragFromOtherEditor = null;
-          }
+          if (tiptapDragFromOtherEditor) tiptapDragFromOtherEditor = null;
         };
         window.addEventListener("dragstart", handleDragstart);
         window.addEventListener("dragend", handleDragend);
-        return {
-          destroy() {
-            window.removeEventListener("dragstart", handleDragstart);
-            window.removeEventListener("dragend", handleDragend);
-          }
-        };
+        return { destroy() {
+          window.removeEventListener("dragstart", handleDragstart);
+          window.removeEventListener("dragend", handleDragend);
+        } };
       },
-      props: {
-        handleDOMEvents: {
-          drop: (view, event) => {
-            isDroppedFromProseMirror = dragSourceElement === view.dom.parentElement;
-            dropEvent = event;
-            if (!isDroppedFromProseMirror) {
-              const dragFromOtherEditor = tiptapDragFromOtherEditor;
-              if (dragFromOtherEditor == null ? void 0 : dragFromOtherEditor.isEditable) {
-                setTimeout(() => {
-                  const selection = dragFromOtherEditor.state.selection;
-                  if (selection) {
-                    dragFromOtherEditor.commands.deleteRange({
-                      from: selection.from,
-                      to: selection.to
-                    });
-                  }
-                }, 10);
-              }
-            }
-            return false;
-          },
-          paste: (_view, event) => {
-            var _a;
-            const html = (_a = event.clipboardData) == null ? void 0 : _a.getData("text/html");
-            pasteEvent = event;
-            isPastedFromProseMirror = !!(html == null ? void 0 : html.includes("data-pm-slice"));
-            return false;
+      props: { handleDOMEvents: {
+        drop: (view, event) => {
+          isDroppedFromProseMirror = dragSourceElement === view.dom.parentElement;
+          dropEvent = event;
+          if (!isDroppedFromProseMirror) {
+            const dragFromOtherEditor = tiptapDragFromOtherEditor;
+            if (dragFromOtherEditor === null || dragFromOtherEditor === void 0 ? void 0 : dragFromOtherEditor.isEditable) setTimeout(() => {
+              const selection = dragFromOtherEditor.state.selection;
+              if (selection) dragFromOtherEditor.commands.deleteRange({
+                from: selection.from,
+                to: selection.to
+              });
+            }, 10);
           }
+          return false;
+        },
+        paste: (_view, event) => {
+          var _clipboardData;
+          const html = (_clipboardData = event.clipboardData) === null || _clipboardData === void 0 ? void 0 : _clipboardData.getData("text/html");
+          pasteEvent = event;
+          isPastedFromProseMirror = !!(html === null || html === void 0 ? void 0 : html.includes("data-pm-slice"));
+          return false;
         }
-      },
+      } },
       appendTransaction: (transactions, oldState, state) => {
         const transaction2 = transactions[0];
         const isPaste = transaction2.getMeta("uiEvent") === "paste" && !isPastedFromProseMirror;
         const isDrop = transaction2.getMeta("uiEvent") === "drop" && !isDroppedFromProseMirror;
         const simulatedPasteMeta = transaction2.getMeta("applyPasteRules");
         const isSimulatedPaste = !!simulatedPasteMeta;
-        if (!isPaste && !isDrop && !isSimulatedPaste) {
-          return;
-        }
+        if (!isPaste && !isDrop && !isSimulatedPaste) return;
         if (isSimulatedPaste) {
           let { text } = simulatedPasteMeta;
-          if (typeof text === "string") {
-            text = text;
-          } else {
-            text = getHTMLFromFragment(Fragment9.from(text), state.schema);
-          }
-          const { from: from22 } = simulatedPasteMeta;
-          const to2 = from22 + text.length;
+          if (typeof text === "string") text = text;
+          else text = getHTMLFromFragment(Fragment9.from(text), state.schema);
+          const { from: from3 } = simulatedPasteMeta;
+          const to2 = from3 + text.length;
           const pasteEvt = createClipboardPasteEvent(text);
           return processEvent({
             rule,
             state,
-            from: from22,
+            from: from3,
             to: { b: to2 },
             pasteEvt
           });
         }
         const from2 = oldState.doc.content.findDiffStart(state.doc.content);
         const to = oldState.doc.content.findDiffEnd(state.doc.content);
-        if (!isNumber(from2) || !to || from2 === to.b) {
-          return;
-        }
+        if (!isNumber(from2) || !to || from2 === to.b) return;
         return processEvent({
           rule,
           state,
@@ -67597,7 +66399,6 @@ function pasteRulesPlugin(props) {
       }
     });
   });
-  return plugins;
 }
 var ExtensionManager = class {
   constructor(extensions, editor) {
@@ -67611,26 +66412,19 @@ var ExtensionManager = class {
     this.setupExtensions();
   }
   /**
-   * Get all commands from the extensions.
-   * @returns An object with all commands where the key is the command name and the value is the command function
-   */
+  * Get all commands from the extensions.
+  * @returns An object with all commands where the key is the command name and the value is the command function
+  */
   get commands() {
     return this.extensions.reduce((commands, extension) => {
-      const context = {
+      const addCommands = getExtensionField(extension, "addCommands", {
         name: extension.name,
         options: extension.options,
         storage: this.editor.extensionStorage[extension.name],
         editor: this.editor,
         type: getSchemaTypeByName(extension.name, this.schema)
-      };
-      const addCommands = getExtensionField(
-        extension,
-        "addCommands",
-        context
-      );
-      if (!addCommands) {
-        return commands;
-      }
+      });
+      if (!addCommands) return commands;
       return {
         ...commands,
         ...addCommands()
@@ -67638,13 +66432,12 @@ var ExtensionManager = class {
     }, {});
   }
   /**
-   * Get all registered Prosemirror plugins from the extensions.
-   * @returns An array of Prosemirror plugins
-   */
+  * Get all registered Prosemirror plugins from the extensions.
+  * @returns An array of Prosemirror plugins
+  */
   get plugins() {
     const { editor } = this;
-    const extensions = sortExtensions([...this.extensions].reverse());
-    const allPlugins = extensions.flatMap((extension) => {
+    const allPlugins = sortExtensions([...this.extensions].reverse()).flatMap((extension) => {
       const context = {
         name: extension.name,
         options: extension.options,
@@ -67653,30 +66446,24 @@ var ExtensionManager = class {
         type: getSchemaTypeByName(extension.name, this.schema)
       };
       const plugins = [];
-      const addKeyboardShortcuts = getExtensionField(
-        extension,
-        "addKeyboardShortcuts",
-        context
-      );
+      const addKeyboardShortcuts = getExtensionField(extension, "addKeyboardShortcuts", context);
       let defaultBindings = {};
-      if (extension.type === "mark" && getExtensionField(extension, "exitable", context)) {
-        defaultBindings.ArrowRight = () => Mark2.handleExit({ editor, mark: extension });
-      }
+      if (extension.type === "mark" && getExtensionField(extension, "exitable", context)) defaultBindings.ArrowRight = () => Mark2.handleExit({
+        editor,
+        mark: extension
+      });
       if (addKeyboardShortcuts) {
-        const bindings = Object.fromEntries(
-          Object.entries(addKeyboardShortcuts()).map(([shortcut, method]) => {
-            return [shortcut, () => method({ editor })];
-          })
-        );
-        defaultBindings = { ...defaultBindings, ...bindings };
+        const bindings = Object.fromEntries(Object.entries(addKeyboardShortcuts()).map(([shortcut, method]) => {
+          return [shortcut, () => method({ editor })];
+        }));
+        defaultBindings = {
+          ...defaultBindings,
+          ...bindings
+        };
       }
       const keyMapPlugin = keymap(defaultBindings);
       plugins.push(keyMapPlugin);
-      const addInputRules = getExtensionField(
-        extension,
-        "addInputRules",
-        context
-      );
+      const addInputRules = getExtensionField(extension, "addInputRules", context);
       if (isExtensionRulesEnabled(extension, editor.options.enableInputRules) && addInputRules) {
         const rules = addInputRules();
         if (rules && rules.length) {
@@ -67688,23 +66475,18 @@ var ExtensionManager = class {
           plugins.push(...inputPlugins);
         }
       }
-      const addPasteRules = getExtensionField(
-        extension,
-        "addPasteRules",
-        context
-      );
+      const addPasteRules = getExtensionField(extension, "addPasteRules", context);
       if (isExtensionRulesEnabled(extension, editor.options.enablePasteRules) && addPasteRules) {
         const rules = addPasteRules();
         if (rules && rules.length) {
-          const pasteRules = pasteRulesPlugin({ editor, rules });
+          const pasteRules = pasteRulesPlugin({
+            editor,
+            rules
+          });
           plugins.push(...pasteRules);
         }
       }
-      const addProseMirrorPlugins = getExtensionField(
-        extension,
-        "addProseMirrorPlugins",
-        context
-      );
+      const addProseMirrorPlugins = getExtensionField(extension, "addProseMirrorPlugins", context);
       if (addProseMirrorPlugins) {
         const proseMirrorPlugins = addProseMirrorPlugins();
         plugins.push(...proseMirrorPlugins);
@@ -67712,110 +66494,91 @@ var ExtensionManager = class {
       return plugins;
     });
     const decorationPlugin = this.createDecorationPlugin();
-    if (decorationPlugin) {
-      allPlugins.push(decorationPlugin);
-    }
+    if (decorationPlugin) allPlugins.push(decorationPlugin);
     return allPlugins;
   }
   /**
-   * Aggregates decorations from extensions into a single plugin, or returns null
-   * if none exist. Destroys the previous manager to avoid orphaned listeners.
-   * @returns A ProseMirror plugin or `null`
-   * @example
-   * const plugin = editor.extensionManager.createDecorationPlugin()
-   */
+  * Aggregates decorations from extensions into a single plugin, or returns null
+  * if none exist. Destroys the previous manager to avoid orphaned listeners.
+  * @returns A ProseMirror plugin or `null`
+  * @example
+  * const plugin = editor.extensionManager.createDecorationPlugin()
+  */
   createDecorationPlugin() {
-    var _a;
+    var _this$decorationManag;
     const { editor } = this;
-    (_a = this.decorationManager) == null ? void 0 : _a.destroy();
+    (_this$decorationManag = this.decorationManager) === null || _this$decorationManag === void 0 || _this$decorationManag.destroy();
     const entries = [];
     this.extensions.forEach((extension) => {
-      const context = {
+      const addDecorations = getExtensionField(extension, "addDecorations", {
         name: extension.name,
         options: extension.options,
         storage: this.editor.extensionStorage[extension.name],
         editor,
         type: getSchemaTypeByName(extension.name, this.schema)
-      };
-      const addDecorations = getExtensionField(
-        extension,
-        "addDecorations",
-        context
-      );
-      if (!addDecorations) {
-        return;
-      }
-      entries.push({ name: extension.name, addDecorations });
+      });
+      if (!addDecorations) return;
+      entries.push({
+        name: extension.name,
+        addDecorations
+      });
     });
-    this.decorationManager = new DecorationManager({ editor, entries });
+    this.decorationManager = new DecorationManager({
+      editor,
+      entries
+    });
     return this.decorationManager.plugin;
   }
   /**
-   * Get all attributes from the extensions.
-   * @returns An array of attributes
-   */
+  * Get all attributes from the extensions.
+  * @returns An array of attributes
+  */
   get attributes() {
     return getAttributesFromExtensions(this.extensions);
   }
   /**
-   * Get all node views from the extensions.
-   * @returns An object with all node views where the key is the node name and the value is the node view function
-   */
+  * Get all node views from the extensions.
+  * @returns An object with all node views where the key is the node name and the value is the node view function
+  */
   get nodeViews() {
     const { editor } = this;
     const { nodeExtensions } = splitExtensions(this.extensions);
-    return Object.fromEntries(
-      nodeExtensions.filter((extension) => !!getExtensionField(extension, "addNodeView")).map((extension) => {
-        const extensionAttributes = this.attributes.filter(
-          (attribute) => attribute.type === extension.name
-        );
-        const context = {
-          name: extension.name,
-          options: extension.options,
-          storage: this.editor.extensionStorage[extension.name],
+    return Object.fromEntries(nodeExtensions.filter((extension) => !!getExtensionField(extension, "addNodeView")).map((extension) => {
+      const extensionAttributes = this.attributes.filter((attribute) => attribute.type === extension.name);
+      const addNodeView = getExtensionField(extension, "addNodeView", {
+        name: extension.name,
+        options: extension.options,
+        storage: this.editor.extensionStorage[extension.name],
+        editor,
+        type: getNodeType(extension.name, this.schema)
+      });
+      if (!addNodeView) return [];
+      const nodeViewResult = addNodeView();
+      if (!nodeViewResult) return [];
+      const nodeview = (node, view, getPos, decorations, innerDecorations) => {
+        const HTMLAttributes = getRenderedAttributes(node, extensionAttributes);
+        return nodeViewResult({
+          node,
+          view,
+          getPos,
+          decorations,
+          innerDecorations,
           editor,
-          type: getNodeType(extension.name, this.schema)
-        };
-        const addNodeView = getExtensionField(
           extension,
-          "addNodeView",
-          context
-        );
-        if (!addNodeView) {
-          return [];
-        }
-        const nodeViewResult = addNodeView();
-        if (!nodeViewResult) {
-          return [];
-        }
-        const nodeview = (node, view, getPos, decorations, innerDecorations) => {
-          const HTMLAttributes = getRenderedAttributes(node, extensionAttributes);
-          return nodeViewResult({
-            // pass-through
-            node,
-            view,
-            getPos,
-            decorations,
-            innerDecorations,
-            // tiptap-specific
-            editor,
-            extension,
-            HTMLAttributes
-          });
-        };
-        return [extension.name, nodeview];
-      })
-    );
+          HTMLAttributes
+        });
+      };
+      return [extension.name, nodeview];
+    }));
   }
   /**
-   * Get the composed dispatchTransaction function from all extensions.
-   * @param baseDispatch The base dispatch function (e.g. from the editor or user props)
-   * @returns A composed dispatch function
-   */
+  * Get the composed dispatchTransaction function from all extensions.
+  * @param baseDispatch The base dispatch function (e.g. from the editor or user props)
+  * @returns A composed dispatch function
+  */
   dispatchTransaction(baseDispatch) {
     const { editor } = this;
-    const extensions = sortExtensions([...this.extensions].reverse());
-    return extensions.reduceRight((next, extension) => {
+    return sortExtensions([...this.extensions].reverse()).reduceRight((next, extension) => {
       const context = {
         name: extension.name,
         options: extension.options,
@@ -67823,119 +66586,91 @@ var ExtensionManager = class {
         editor,
         type: getSchemaTypeByName(extension.name, this.schema)
       };
-      const dispatchTransaction = getExtensionField(
-        extension,
-        "dispatchTransaction",
-        context
-      );
-      if (!dispatchTransaction) {
-        return next;
-      }
+      const dispatchTransaction = getExtensionField(extension, "dispatchTransaction", context);
+      if (!dispatchTransaction) return next;
       return (transaction2) => {
-        dispatchTransaction.call(context, { transaction: transaction2, next });
+        dispatchTransaction.call(context, {
+          transaction: transaction2,
+          next
+        });
       };
     }, baseDispatch);
   }
   /**
-   * Get the composed transformPastedHTML function from all extensions.
-   * @param baseTransform The base transform function (e.g. from the editor props)
-   * @returns A composed transform function that chains all extension transforms
-   */
+  * Get the composed transformPastedHTML function from all extensions.
+  * @param baseTransform The base transform function (e.g. from the editor props)
+  * @returns A composed transform function that chains all extension transforms
+  */
   transformPastedHTML(baseTransform) {
     const { editor } = this;
-    const extensions = sortExtensions([...this.extensions]);
-    return extensions.reduce(
-      (transform, extension) => {
-        const context = {
-          name: extension.name,
-          options: extension.options,
-          storage: this.editor.extensionStorage[extension.name],
-          editor,
-          type: getSchemaTypeByName(extension.name, this.schema)
-        };
-        const extensionTransform = getExtensionField(
-          extension,
-          "transformPastedHTML",
-          context
-        );
-        if (!extensionTransform) {
-          return transform;
-        }
-        return (html, view) => {
-          const transformedHtml = transform(html, view);
-          return extensionTransform.call(context, transformedHtml);
-        };
-      },
-      baseTransform || ((html) => html)
-    );
+    return sortExtensions([...this.extensions]).reduce((transform, extension) => {
+      const context = {
+        name: extension.name,
+        options: extension.options,
+        storage: this.editor.extensionStorage[extension.name],
+        editor,
+        type: getSchemaTypeByName(extension.name, this.schema)
+      };
+      const extensionTransform = getExtensionField(extension, "transformPastedHTML", context);
+      if (!extensionTransform) return transform;
+      return (html, view) => {
+        const transformedHtml = transform(html, view);
+        return extensionTransform.call(context, transformedHtml);
+      };
+    }, baseTransform || ((html) => html));
   }
   get markViews() {
     const { editor } = this;
     const { markExtensions } = splitExtensions(this.extensions);
-    return Object.fromEntries(
-      markExtensions.filter((extension) => !!getExtensionField(extension, "addMarkView")).map((extension) => {
-        const extensionAttributes = this.attributes.filter(
-          (attribute) => attribute.type === extension.name
-        );
-        const context = {
-          name: extension.name,
-          options: extension.options,
-          storage: this.editor.extensionStorage[extension.name],
+    return Object.fromEntries(markExtensions.filter((extension) => !!getExtensionField(extension, "addMarkView")).map((extension) => {
+      const extensionAttributes = this.attributes.filter((attribute) => attribute.type === extension.name);
+      const addMarkView = getExtensionField(extension, "addMarkView", {
+        name: extension.name,
+        options: extension.options,
+        storage: this.editor.extensionStorage[extension.name],
+        editor,
+        type: getMarkType(extension.name, this.schema)
+      });
+      if (!addMarkView) return [];
+      const markView = (mark, view, inline3) => {
+        const HTMLAttributes = getRenderedAttributes(mark, extensionAttributes);
+        return addMarkView()({
+          mark,
+          view,
+          inline: inline3,
           editor,
-          type: getMarkType(extension.name, this.schema)
-        };
-        const addMarkView = getExtensionField(
           extension,
-          "addMarkView",
-          context
-        );
-        if (!addMarkView) {
-          return [];
-        }
-        const markView = (mark, view, inline3) => {
-          const HTMLAttributes = getRenderedAttributes(mark, extensionAttributes);
-          return addMarkView()({
-            // pass-through
-            mark,
-            view,
-            inline: inline3,
-            // tiptap-specific
-            editor,
-            extension,
-            HTMLAttributes,
-            updateAttributes: (attrs) => {
-              updateMarkViewAttributes(mark, editor, attrs);
-            }
-          });
-        };
-        return [extension.name, markView];
-      })
-    );
+          HTMLAttributes,
+          updateAttributes: (attrs) => {
+            updateMarkViewAttributes(mark, editor, attrs);
+          }
+        });
+      };
+      return [extension.name, markView];
+    }));
   }
   /**
-   * Destroy the extension manager and clean up all extension references
-   * to prevent memory leaks through parent/child extension chains.
-   *
-   * Walks each extension's full parent chain and nulls every forward
-   * `parent.child → current` link where the parent still points to the
-   * current node. This breaks the retention path from module-scope
-   * singleton roots through deep extend() chains.
-   *
-   * Only ancestor `.child` links matching the current chain are cleared.
-   * The `.parent` pointer on ancestors is never touched — extensions
-   * may be shared across live editors, so their own backward references
-   * and non-matching forward links must remain intact.
-   */
+  * Destroy the extension manager and clean up all extension references
+  * to prevent memory leaks through parent/child extension chains.
+  *
+  * Walks each extension's full parent chain and nulls every forward
+  * `parent.child → current` link where the parent still points to the
+  * current node. This breaks the retention path from module-scope
+  * singleton roots through deep extend() chains.
+  *
+  * Only ancestor `.child` links matching the current chain are cleared.
+  * The `.parent` pointer on ancestors is never touched — extensions
+  * may be shared across live editors, so their own backward references
+  * and non-matching forward links must remain intact.
+  */
   destroy() {
-    var _a;
-    (_a = this.decorationManager) == null ? void 0 : _a.destroy();
+    var _this$decorationManag2;
+    (_this$decorationManag2 = this.decorationManager) === null || _this$decorationManag2 === void 0 || _this$decorationManag2.destroy();
     this.extensions.forEach((extension) => {
       let current = extension;
       while (current.parent) {
         const parent = current.parent;
-        if (parent.child === current) {
-          parent.child = null;
-        }
+        if (parent.child === current) parent.child = null;
         current = parent;
       }
     });
@@ -67946,16 +66681,13 @@ var ExtensionManager = class {
     this.editor = null;
   }
   /**
-   * Go through all extensions, create extension storages & setup marks
-   * & bind editor event listener.
-   */
+  * Go through all extensions, create extension storages & setup marks
+  * & bind editor event listener.
+  */
   setupExtensions() {
     const extensions = this.extensions;
-    this.editor.extensionStorage = Object.fromEntries(
-      extensions.map((extension) => [extension.name, extension.storage])
-    );
+    this.editor.extensionStorage = Object.fromEntries(extensions.map((extension) => [extension.name, extension.storage]));
     extensions.forEach((extension) => {
-      var _a, _b;
       const context = {
         name: extension.name,
         options: extension.options,
@@ -67964,93 +66696,44 @@ var ExtensionManager = class {
         type: getSchemaTypeByName(extension.name, this.schema)
       };
       if (extension.type === "mark") {
-        const keepOnSplit = (_a = callOrReturn(getExtensionField(extension, "keepOnSplit", context))) != null ? _a : true;
-        if (keepOnSplit) {
-          this.splittableMarks.push(extension.name);
-        }
-        const clearable = (_b = callOrReturn(
-          getExtensionField(extension, "clearable", context)
-        )) != null ? _b : true;
-        if (!clearable) {
-          this.nonClearableMarks.push(extension.name);
-        }
+        var _callOrReturn, _callOrReturn2;
+        if ((_callOrReturn = callOrReturn(getExtensionField(extension, "keepOnSplit", context))) !== null && _callOrReturn !== void 0 ? _callOrReturn : true) this.splittableMarks.push(extension.name);
+        if (!((_callOrReturn2 = callOrReturn(getExtensionField(extension, "clearable", context))) !== null && _callOrReturn2 !== void 0 ? _callOrReturn2 : true)) this.nonClearableMarks.push(extension.name);
       }
-      const onBeforeCreate = getExtensionField(
-        extension,
-        "onBeforeCreate",
-        context
-      );
+      const onBeforeCreate = getExtensionField(extension, "onBeforeCreate", context);
       const onCreate = getExtensionField(extension, "onCreate", context);
       const onUpdate = getExtensionField(extension, "onUpdate", context);
-      const onSelectionUpdate = getExtensionField(
-        extension,
-        "onSelectionUpdate",
-        context
-      );
-      const onTransaction = getExtensionField(
-        extension,
-        "onTransaction",
-        context
-      );
+      const onSelectionUpdate = getExtensionField(extension, "onSelectionUpdate", context);
+      const onTransaction = getExtensionField(extension, "onTransaction", context);
       const onFocus = getExtensionField(extension, "onFocus", context);
       const onBlur = getExtensionField(extension, "onBlur", context);
       const onDestroy = getExtensionField(extension, "onDestroy", context);
-      if (onBeforeCreate) {
-        this.editor.on("beforeCreate", onBeforeCreate);
-      }
-      if (onCreate) {
-        this.editor.on("create", onCreate);
-      }
-      if (onUpdate) {
-        this.editor.on("update", onUpdate);
-      }
-      if (onSelectionUpdate) {
-        this.editor.on("selectionUpdate", onSelectionUpdate);
-      }
-      if (onTransaction) {
-        this.editor.on("transaction", onTransaction);
-      }
-      if (onFocus) {
-        this.editor.on("focus", onFocus);
-      }
-      if (onBlur) {
-        this.editor.on("blur", onBlur);
-      }
-      if (onDestroy) {
-        this.editor.on("destroy", onDestroy);
-      }
+      if (onBeforeCreate) this.editor.on("beforeCreate", onBeforeCreate);
+      if (onCreate) this.editor.on("create", onCreate);
+      if (onUpdate) this.editor.on("update", onUpdate);
+      if (onSelectionUpdate) this.editor.on("selectionUpdate", onSelectionUpdate);
+      if (onTransaction) this.editor.on("transaction", onTransaction);
+      if (onFocus) this.editor.on("focus", onFocus);
+      if (onBlur) this.editor.on("blur", onBlur);
+      if (onDestroy) this.editor.on("destroy", onDestroy);
     });
   }
 };
 ExtensionManager.resolve = resolveExtensions;
 ExtensionManager.sort = sortExtensions;
 ExtensionManager.flatten = flattenExtensions;
-var extensions_exports = {};
-__export2(extensions_exports, {
-  ClipboardTextSerializer: () => ClipboardTextSerializer,
-  Commands: () => Commands,
-  Delete: () => Delete,
-  Drop: () => Drop,
-  Editable: () => Editable,
-  FocusEvents: () => FocusEvents,
-  Keymap: () => Keymap,
-  Paste: () => Paste,
-  Tabindex: () => Tabindex,
-  TextDirection: () => TextDirection,
-  focusEventsPluginKey: () => focusEventsPluginKey
-});
-var Extension = class _Extension extends Extendable {
-  constructor() {
-    super(...arguments);
+var Extension = class Extension2 extends Extendable {
+  constructor(..._args) {
+    super(..._args);
     this.type = "extension";
   }
   /**
-   * Create a new Extension instance
-   * @param config - Extension configuration object or a function that returns a configuration object
-   */
+  * Create a new Extension instance
+  * @param config - Extension configuration object or a function that returns a configuration object
+  */
   static create(config = {}) {
     const resolvedConfig = typeof config === "function" ? config() : config;
-    return new _Extension(resolvedConfig);
+    return new Extension2(resolvedConfig);
   }
   configure(options) {
     return super.configure(options);
@@ -68063,93 +66746,73 @@ var Extension = class _Extension extends Extendable {
 var ClipboardTextSerializer = Extension.create({
   name: "clipboardTextSerializer",
   addOptions() {
-    return {
-      blockSeparator: void 0
-    };
+    return { blockSeparator: void 0 };
   },
   addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("clipboardTextSerializer"),
-        props: {
-          clipboardTextSerializer: () => {
-            const { editor } = this;
-            const { state, schema } = editor;
-            const { doc: doc3, selection } = state;
-            const textSerializers = getTextSerializersFromSchema(schema);
-            const { blockSeparator } = this.options;
-            const options = {
-              ...blockSeparator !== void 0 ? { blockSeparator } : {},
-              textSerializers
-            };
-            const sortedRanges = [...selection.ranges].sort((a, b) => a.$from.pos - b.$from.pos);
-            return sortedRanges.map(
-              ({ $from, $to }) => getTextBetween(doc3, { from: $from.pos, to: $to.pos }, options)
-            ).join(blockSeparator != null ? blockSeparator : "\n\n");
-          }
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("clipboardTextSerializer"),
+      props: { clipboardTextSerializer: () => {
+        const { editor } = this;
+        const { state, schema } = editor;
+        const { doc: doc3, selection } = state;
+        const textSerializers = getTextSerializersFromSchema(schema);
+        const { blockSeparator } = this.options;
+        const options = {
+          ...blockSeparator !== void 0 ? { blockSeparator } : {},
+          textSerializers
+        };
+        return [...selection.ranges].sort((a, b) => a.$from.pos - b.$from.pos).map(({ $from, $to }) => getTextBetween(doc3, {
+          from: $from.pos,
+          to: $to.pos
+        }, options)).join(blockSeparator !== null && blockSeparator !== void 0 ? blockSeparator : "\n\n");
+      } }
+    })];
   }
 });
 var Commands = Extension.create({
   name: "commands",
   addCommands() {
-    return {
-      ...commands_exports
-    };
+    return { ...commands_exports };
   }
 });
 var Delete = Extension.create({
   name: "delete",
   onUpdate({ transaction: transaction2, appendedTransactions }) {
-    var _a, _b, _c;
+    var _this$editor$options$4, _this$editor$options$5;
     const callback = () => {
-      var _a2, _b2, _c2, _d;
-      if ((_d = (_c2 = (_b2 = (_a2 = this.editor.options.coreExtensionOptions) == null ? void 0 : _a2.delete) == null ? void 0 : _b2.filterTransaction) == null ? void 0 : _c2.call(_b2, transaction2)) != null ? _d : transaction2.getMeta("y-sync$")) {
-        return;
-      }
-      const nextTransaction = combineTransactionSteps(transaction2.before, [
-        transaction2,
-        ...appendedTransactions
-      ]);
-      const changes = getChangedRanges(nextTransaction);
-      changes.forEach((change) => {
-        if (nextTransaction.mapping.mapResult(change.oldRange.from).deletedAfter && nextTransaction.mapping.mapResult(change.oldRange.to).deletedBefore) {
-          nextTransaction.before.nodesBetween(
-            change.oldRange.from,
-            change.oldRange.to,
-            (node, from2) => {
-              const to = from2 + node.nodeSize - 2;
-              const isFullyWithinRange = change.oldRange.from <= from2 && to <= change.oldRange.to;
-              this.editor.emit("delete", {
-                type: "node",
-                node,
-                from: from2,
-                to,
-                newFrom: nextTransaction.mapping.map(from2),
-                newTo: nextTransaction.mapping.map(to),
-                deletedRange: change.oldRange,
-                newRange: change.newRange,
-                partial: !isFullyWithinRange,
-                editor: this.editor,
-                transaction: transaction2,
-                combinedTransform: nextTransaction
-              });
-            }
-          );
-        }
+      var _this$editor$options$, _this$editor$options$2, _this$editor$options$3;
+      if ((_this$editor$options$ = (_this$editor$options$2 = this.editor.options.coreExtensionOptions) === null || _this$editor$options$2 === void 0 || (_this$editor$options$2 = _this$editor$options$2.delete) === null || _this$editor$options$2 === void 0 || (_this$editor$options$3 = _this$editor$options$2.filterTransaction) === null || _this$editor$options$3 === void 0 ? void 0 : _this$editor$options$3.call(_this$editor$options$2, transaction2)) !== null && _this$editor$options$ !== void 0 ? _this$editor$options$ : transaction2.getMeta("y-sync$")) return;
+      const nextTransaction = combineTransactionSteps(transaction2.before, [transaction2, ...appendedTransactions]);
+      getChangedRanges(nextTransaction).forEach((change) => {
+        if (nextTransaction.mapping.mapResult(change.oldRange.from).deletedAfter && nextTransaction.mapping.mapResult(change.oldRange.to).deletedBefore) nextTransaction.before.nodesBetween(change.oldRange.from, change.oldRange.to, (node, from2) => {
+          const to = from2 + node.nodeSize - 2;
+          const isFullyWithinRange = change.oldRange.from <= from2 && to <= change.oldRange.to;
+          this.editor.emit("delete", {
+            type: "node",
+            node,
+            from: from2,
+            to,
+            newFrom: nextTransaction.mapping.map(from2),
+            newTo: nextTransaction.mapping.map(to),
+            deletedRange: change.oldRange,
+            newRange: change.newRange,
+            partial: !isFullyWithinRange,
+            editor: this.editor,
+            transaction: transaction2,
+            combinedTransform: nextTransaction
+          });
+        });
       });
       const mapping = nextTransaction.mapping;
       nextTransaction.steps.forEach((step, index2) => {
-        var _a3, _b3;
         if (step instanceof RemoveMarkStep) {
+          var _nextTransaction$doc$, _nextTransaction$doc$2;
           const newStart = mapping.slice(index2).map(step.from, -1);
           const newEnd = mapping.slice(index2).map(step.to);
           const oldStart = mapping.invert().map(newStart, -1);
           const oldEnd = mapping.invert().map(newEnd);
-          const foundBeforeMark = newStart > 0 ? (_a3 = nextTransaction.doc.nodeAt(newStart - 1)) == null ? void 0 : _a3.marks.some((mark) => mark.eq(step.mark)) : false;
-          const foundAfterMark = (_b3 = nextTransaction.doc.nodeAt(newEnd)) == null ? void 0 : _b3.marks.some((mark) => mark.eq(step.mark));
+          const foundBeforeMark = newStart > 0 ? (_nextTransaction$doc$ = nextTransaction.doc.nodeAt(newStart - 1)) === null || _nextTransaction$doc$ === void 0 ? void 0 : _nextTransaction$doc$.marks.some((mark) => mark.eq(step.mark)) : false;
+          const foundAfterMark = (_nextTransaction$doc$2 = nextTransaction.doc.nodeAt(newEnd)) === null || _nextTransaction$doc$2 === void 0 ? void 0 : _nextTransaction$doc$2.marks.some((mark) => mark.eq(step.mark));
           this.editor.emit("delete", {
             type: "mark",
             mark: step.mark,
@@ -68171,44 +66834,33 @@ var Delete = Extension.create({
         }
       });
     };
-    if ((_c = (_b = (_a = this.editor.options.coreExtensionOptions) == null ? void 0 : _a.delete) == null ? void 0 : _b.async) != null ? _c : true) {
-      setTimeout(callback, 0);
-    } else {
-      callback();
-    }
+    if ((_this$editor$options$4 = (_this$editor$options$5 = this.editor.options.coreExtensionOptions) === null || _this$editor$options$5 === void 0 || (_this$editor$options$5 = _this$editor$options$5.delete) === null || _this$editor$options$5 === void 0 ? void 0 : _this$editor$options$5.async) !== null && _this$editor$options$4 !== void 0 ? _this$editor$options$4 : true) setTimeout(callback, 0);
+    else callback();
   }
 });
 var Drop = Extension.create({
   name: "drop",
   addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("tiptapDrop"),
-        props: {
-          handleDrop: (_, e, slice2, moved) => {
-            this.editor.emit("drop", {
-              editor: this.editor,
-              event: e,
-              slice: slice2,
-              moved
-            });
-          }
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("tiptapDrop"),
+      props: { handleDrop: (_, e, slice2, moved) => {
+        this.editor.emit("drop", {
+          editor: this.editor,
+          event: e,
+          slice: slice2,
+          moved
+        });
+      } }
+    })];
   }
 });
 var Editable = Extension.create({
   name: "editable",
   addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("editable"),
-        props: {
-          editable: () => this.editor.options.editable
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("editable"),
+      props: { editable: () => this.editor.options.editable }
+    })];
   }
 });
 var focusEventsPluginKey = new PluginKey("focusEvents");
@@ -68216,27 +66868,23 @@ var FocusEvents = Extension.create({
   name: "focusEvents",
   addProseMirrorPlugins() {
     const { editor } = this;
-    return [
-      new Plugin({
-        key: focusEventsPluginKey,
-        props: {
-          handleDOMEvents: {
-            focus: (view, event) => {
-              editor.isFocused = true;
-              const transaction2 = editor.state.tr.setMeta("focus", { event }).setMeta("addToHistory", false);
-              view.dispatch(transaction2);
-              return false;
-            },
-            blur: (view, event) => {
-              editor.isFocused = false;
-              const transaction2 = editor.state.tr.setMeta("blur", { event }).setMeta("addToHistory", false);
-              view.dispatch(transaction2);
-              return false;
-            }
-          }
+    return [new Plugin({
+      key: focusEventsPluginKey,
+      props: { handleDOMEvents: {
+        focus: (view, event) => {
+          editor.isFocused = true;
+          const transaction2 = editor.state.tr.setMeta("focus", { event }).setMeta("addToHistory", false);
+          view.dispatch(transaction2);
+          return false;
+        },
+        blur: (view, event) => {
+          editor.isFocused = false;
+          const transaction2 = editor.state.tr.setMeta("blur", { event }).setMeta("addToHistory", false);
+          view.dispatch(transaction2);
+          return false;
         }
-      })
-    ];
+      } }
+    })];
   }
 });
 var Keymap = Extension.create({
@@ -68244,7 +66892,6 @@ var Keymap = Extension.create({
   addKeyboardShortcuts() {
     const handleBackspace2 = () => this.editor.commands.first(({ commands }) => [
       () => commands.undoInputRule(),
-      // maybe convert first text block node to default node
       () => commands.command(({ tr: tr2 }) => {
         const { selection, doc: doc3 } = tr2;
         const { empty: empty2, $anchor } = selection;
@@ -68253,9 +66900,7 @@ var Keymap = Extension.create({
         const parentIsIsolating = $parentPos.parent.type.spec.isolating;
         const parentPos = $anchor.pos - $anchor.parentOffset;
         const isAtStart = parentIsIsolating && $parentPos.parent.childCount === 1 ? parentPos === $anchor.pos : Selection.atStart(doc3).from === pos2;
-        if (!empty2 || !parent.type.isTextblock || parent.textContent.length || !isAtStart || isAtStart && $anchor.parent.type.name === "paragraph") {
-          return false;
-        }
+        if (!empty2 || !parent.type.isTextblock || parent.textContent.length || !isAtStart || isAtStart && $anchor.parent.type.name === "paragraph") return false;
         return commands.clearNodes();
       }),
       () => commands.deleteSelection(),
@@ -68284,9 +66929,7 @@ var Keymap = Extension.create({
       "Mod-Delete": handleDelete2,
       "Mod-a": () => this.editor.commands.selectAll()
     };
-    const pcKeymap = {
-      ...baseKeymap
-    };
+    const pcKeymap = { ...baseKeymap };
     const macKeymap = {
       ...baseKeymap,
       "Ctrl-h": handleBackspace2,
@@ -68298,159 +66941,102 @@ var Keymap = Extension.create({
       "Ctrl-a": () => this.editor.commands.selectTextblockStart(),
       "Ctrl-e": () => this.editor.commands.selectTextblockEnd()
     };
-    if (isiOS() || isMacOS()) {
-      return macKeymap;
-    }
+    if (isiOS() || isMacOS()) return macKeymap;
     return pcKeymap;
   },
   addProseMirrorPlugins() {
-    return [
-      // With this plugin we check if the whole document was selected and deleted.
-      // In this case we will additionally call `clearNodes()` to convert e.g. a heading
-      // to a paragraph if necessary.
-      // This is an alternative to ProseMirror's `AllSelection`, which doesn’t work well
-      // with many other commands.
-      new Plugin({
-        key: new PluginKey("clearDocument"),
-        appendTransaction: (transactions, oldState, newState) => {
-          if (transactions.some((tr22) => tr22.getMeta("composition"))) {
-            return;
-          }
-          const docChanges = transactions.some((transaction2) => transaction2.docChanged) && !oldState.doc.eq(newState.doc);
-          const ignoreTr = transactions.some(
-            (transaction2) => transaction2.getMeta("preventClearDocument")
-          );
-          if (!docChanges || ignoreTr) {
-            return;
-          }
-          const { empty: empty2, from: from2, to } = oldState.selection;
-          const allFrom = Selection.atStart(oldState.doc).from;
-          const allEnd = Selection.atEnd(oldState.doc).to;
-          const allWasSelected = from2 === allFrom && to === allEnd;
-          if (empty2 || !allWasSelected) {
-            return;
-          }
-          const isEmpty = isNodeEmpty(newState.doc);
-          if (!isEmpty) {
-            return;
-          }
-          const tr2 = newState.tr;
-          const state = createChainableState({
-            state: newState,
-            transaction: tr2
-          });
-          const { commands } = new CommandManager({
-            editor: this.editor,
-            state
-          });
-          commands.clearNodes();
-          if (!tr2.steps.length) {
-            return;
-          }
-          return tr2;
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("clearDocument"),
+      appendTransaction: (transactions, oldState, newState) => {
+        if (transactions.some((tr3) => tr3.getMeta("composition"))) return;
+        const docChanges = transactions.some((transaction2) => transaction2.docChanged) && !oldState.doc.eq(newState.doc);
+        const ignoreTr = transactions.some((transaction2) => transaction2.getMeta("preventClearDocument"));
+        if (!docChanges || ignoreTr) return;
+        const { empty: empty2, from: from2, to } = oldState.selection;
+        const allFrom = Selection.atStart(oldState.doc).from;
+        const allEnd = Selection.atEnd(oldState.doc).to;
+        if (empty2 || !(from2 === allFrom && to === allEnd)) return;
+        if (!isNodeEmpty(newState.doc)) return;
+        const tr2 = newState.tr;
+        const state = createChainableState({
+          state: newState,
+          transaction: tr2
+        });
+        const { commands } = new CommandManager({
+          editor: this.editor,
+          state
+        });
+        commands.clearNodes();
+        if (!tr2.steps.length) return;
+        return tr2;
+      }
+    })];
   }
 });
 var Paste = Extension.create({
   name: "paste",
   addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("tiptapPaste"),
-        props: {
-          handlePaste: (_view, e, slice2) => {
-            this.editor.emit("paste", {
-              editor: this.editor,
-              event: e,
-              slice: slice2
-            });
-          }
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("tiptapPaste"),
+      props: { handlePaste: (_view, e, slice2) => {
+        this.editor.emit("paste", {
+          editor: this.editor,
+          event: e,
+          slice: slice2
+        });
+      } }
+    })];
   }
 });
 var Tabindex = Extension.create({
   name: "tabindex",
   addOptions() {
-    return {
-      value: void 0
-    };
+    return { value: void 0 };
   },
   addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("tabindex"),
-        props: {
-          attributes: () => {
-            var _a;
-            if (!this.editor.isEditable && this.options.value === void 0) {
-              return {};
-            }
-            return { tabindex: (_a = this.options.value) != null ? _a : "0" };
-          }
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("tabindex"),
+      props: { attributes: () => {
+        var _this$options$value;
+        if (!this.editor.isEditable && this.options.value === void 0) return {};
+        return { tabindex: (_this$options$value = this.options.value) !== null && _this$options$value !== void 0 ? _this$options$value : "0" };
+      } }
+    })];
   }
 });
 var TextDirection = Extension.create({
   name: "textDirection",
   addOptions() {
-    return {
-      direction: void 0
-    };
+    return { direction: void 0 };
   },
   addGlobalAttributes() {
-    if (!this.options.direction) {
-      return [];
-    }
+    if (!this.options.direction) return [];
     const { nodeExtensions } = splitExtensions(this.extensions);
-    return [
-      {
-        types: nodeExtensions.filter((extension) => extension.name !== "text").map((extension) => extension.name),
-        attributes: {
-          dir: {
-            default: this.options.direction,
-            parseHTML: (element) => {
-              const dir = element.getAttribute("dir");
-              if (dir && (dir === "ltr" || dir === "rtl" || dir === "auto")) {
-                return dir;
-              }
-              return this.options.direction;
-            },
-            renderHTML: (attributes) => {
-              if (!attributes.dir) {
-                return {};
-              }
-              return {
-                dir: attributes.dir
-              };
-            }
-          }
+    return [{
+      types: nodeExtensions.filter((extension) => extension.name !== "text").map((extension) => extension.name),
+      attributes: { dir: {
+        default: this.options.direction,
+        parseHTML: (element) => {
+          const dir = element.getAttribute("dir");
+          if (dir && (dir === "ltr" || dir === "rtl" || dir === "auto")) return dir;
+          return this.options.direction;
+        },
+        renderHTML: (attributes) => {
+          if (!attributes.dir) return {};
+          return { dir: attributes.dir };
         }
-      }
-    ];
+      } }
+    }];
   },
   addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("textDirection"),
-        props: {
-          attributes: () => {
-            const direction = this.options.direction;
-            if (!direction) {
-              return {};
-            }
-            return {
-              dir: direction
-            };
-          }
-        }
-      })
-    ];
+    return [new Plugin({
+      key: new PluginKey("textDirection"),
+      props: { attributes: () => {
+        const direction = this.options.direction;
+        if (!direction) return {};
+        return { dir: direction };
+      } }
+    })];
   }
 });
 
@@ -68482,7 +67068,7 @@ function getFontsFromRichText(editor, richText, initialState2) {
 // node_modules/@tldraw/editor/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "@tldraw/editor",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -69457,6 +68043,15 @@ function startEditingShapeWithRichText(editor, shapeOrId, options = {}) {
   if (options.selectAll) {
     editor.emit("select-all-text", { shapeId: shape.id });
   }
+}
+function startEditingShape(editor, shape, options = {}) {
+  if (!editor.canEditShape(shape)) return;
+  if (hasRichText(shape)) {
+    startEditingShapeWithRichText(editor, shape, options);
+    return;
+  }
+  editor.setEditingShape(shape);
+  editor.setCurrentTool("select.editing_shape", { ...options.info, target: "shape", shape });
 }
 
 // node_modules/tldraw/dist-esm/lib/ui/components/A11y.mjs
@@ -70733,7 +69328,7 @@ function getCroppedImageDataForReplacedImage(imageShape, newImageWidth, newImage
   let crop = defaultCrop;
   let newDisplayW = origDisplayW;
   let newDisplayH = origDisplayH;
-  const isOriginalCrop = (0, import_lodash2.default)(imageShape.props.crop, defaultCrop);
+  const isOriginalCrop = !!imageShape.props.crop && (0, import_lodash2.default)(imageShape.props.crop.topLeft, defaultCrop.topLeft) && (0, import_lodash2.default)(imageShape.props.crop.bottomRight, defaultCrop.bottomRight) && !imageShape.props.crop.isCircle;
   if (isOriginalCrop) {
     newDisplayW = origDisplayW;
     newDisplayH = origDisplayW * newImageHeight / newImageWidth;
@@ -71393,7 +69988,7 @@ init_define_import_meta();
 
 // node_modules/tldraw/node_modules/@tiptap/core/dist/index.js
 var __defProp18 = Object.defineProperty;
-var __export3 = (target, all) => {
+var __export2 = (target, all) => {
   for (var name in all)
     __defProp18(target, name, { get: all[name], enumerable: true });
 };
@@ -71427,7 +70022,7 @@ function createChainableState2(config) {
     }
   };
 }
-var CommandManager2 = class {
+var CommandManager3 = class {
   constructor(props) {
     this.editor = props.editor;
     this.rawCommands = this.editor.extensionManager.commands;
@@ -71532,19 +70127,19 @@ var CommandManager2 = class {
   }
 };
 var commands_exports2 = {};
-__export3(commands_exports2, {
+__export2(commands_exports2, {
   blur: () => blur2,
   clearContent: () => clearContent2,
   clearNodes: () => clearNodes2,
   command: () => command2,
-  createParagraphNear: () => createParagraphNear3,
+  createParagraphNear: () => createParagraphNear2,
   cut: () => cut2,
   deleteCurrentNode: () => deleteCurrentNode2,
   deleteNode: () => deleteNode2,
   deleteRange: () => deleteRange3,
   deleteSelection: () => deleteSelection3,
   enter: () => enter2,
-  exitCode: () => exitCode3,
+  exitCode: () => exitCode2,
   extendMarkRange: () => extendMarkRange2,
   first: () => first2,
   focus: () => focus2,
@@ -71552,27 +70147,27 @@ __export3(commands_exports2, {
   insertContent: () => insertContent2,
   insertContentAt: () => insertContentAt2,
   insertDefaultBlock: () => insertDefaultBlock2,
-  joinBackward: () => joinBackward3,
-  joinDown: () => joinDown3,
-  joinForward: () => joinForward3,
+  joinBackward: () => joinBackward2,
+  joinDown: () => joinDown2,
+  joinForward: () => joinForward2,
   joinItemBackward: () => joinItemBackward2,
   joinItemForward: () => joinItemForward2,
-  joinTextblockBackward: () => joinTextblockBackward3,
-  joinTextblockForward: () => joinTextblockForward3,
-  joinUp: () => joinUp3,
+  joinTextblockBackward: () => joinTextblockBackward2,
+  joinTextblockForward: () => joinTextblockForward2,
+  joinUp: () => joinUp2,
   keyboardShortcut: () => keyboardShortcut2,
-  lift: () => lift4,
-  liftEmptyBlock: () => liftEmptyBlock3,
-  liftListItem: () => liftListItem3,
-  newlineInCode: () => newlineInCode3,
+  lift: () => lift3,
+  liftEmptyBlock: () => liftEmptyBlock2,
+  liftListItem: () => liftListItem2,
+  newlineInCode: () => newlineInCode2,
   resetAttributes: () => resetAttributes2,
   scrollIntoView: () => scrollIntoView2,
   selectAll: () => selectAll3,
-  selectNodeBackward: () => selectNodeBackward3,
-  selectNodeForward: () => selectNodeForward3,
-  selectParentNode: () => selectParentNode3,
-  selectTextblockEnd: () => selectTextblockEnd3,
-  selectTextblockStart: () => selectTextblockStart3,
+  selectNodeBackward: () => selectNodeBackward2,
+  selectNodeForward: () => selectNodeForward2,
+  selectParentNode: () => selectParentNode2,
+  selectTextblockEnd: () => selectTextblockEnd2,
+  selectTextblockStart: () => selectTextblockStart2,
   setContent: () => setContent2,
   setMark: () => setMark2,
   setMeta: () => setMeta2,
@@ -71580,7 +70175,7 @@ __export3(commands_exports2, {
   setNodeSelection: () => setNodeSelection2,
   setTextDirection: () => setTextDirection2,
   setTextSelection: () => setTextSelection2,
-  sinkListItem: () => sinkListItem3,
+  sinkListItem: () => sinkListItem2,
   splitBlock: () => splitBlock3,
   splitListItem: () => splitListItem2,
   toggleList: () => toggleList2,
@@ -71593,8 +70188,8 @@ __export3(commands_exports2, {
   unsetTextDirection: () => unsetTextDirection2,
   updateAttributes: () => updateAttributes2,
   updateDecorations: () => updateDecorations2,
-  wrapIn: () => wrapIn3,
-  wrapInList: () => wrapInList3
+  wrapIn: () => wrapIn2,
+  wrapInList: () => wrapInList2
 });
 var blur2 = () => ({ editor, view }) => {
   requestAnimationFrame(() => {
@@ -71643,7 +70238,7 @@ var clearNodes2 = () => ({ state, tr: tr2, dispatch }) => {
 var command2 = (fn) => (props) => {
   return fn(props);
 };
-var createParagraphNear3 = () => ({ state, dispatch }) => {
+var createParagraphNear2 = () => ({ state, dispatch }) => {
   return createParagraphNear(state, dispatch);
 };
 var cut2 = (originRange, targetPos) => ({ editor, tr: tr2 }) => {
@@ -71760,7 +70355,7 @@ var deleteSelection3 = () => ({ state, dispatch }) => {
 var enter2 = () => ({ commands }) => {
   return commands.keyboardShortcut("Enter");
 };
-var exitCode3 = () => ({ state, dispatch }) => {
+var exitCode2 = () => ({ state, dispatch }) => {
   return exitCode(state, dispatch);
 };
 function isRegExp2(value) {
@@ -72238,16 +70833,16 @@ var insertDefaultBlock2 = (options = {}) => ({ tr: tr2, dispatch, editor }) => {
   }
   return true;
 };
-var joinUp3 = () => ({ state, dispatch }) => {
+var joinUp2 = () => ({ state, dispatch }) => {
   return joinUp(state, dispatch);
 };
-var joinDown3 = () => ({ state, dispatch }) => {
+var joinDown2 = () => ({ state, dispatch }) => {
   return joinDown(state, dispatch);
 };
-var joinBackward3 = () => ({ state, dispatch }) => {
+var joinBackward2 = () => ({ state, dispatch }) => {
   return joinBackward(state, dispatch);
 };
-var joinForward3 = () => ({ state, dispatch }) => {
+var joinForward2 = () => ({ state, dispatch }) => {
   return joinForward(state, dispatch);
 };
 var joinItemBackward2 = () => ({ state, dispatch, tr: tr2 }) => {
@@ -72280,10 +70875,10 @@ var joinItemForward2 = () => ({ state, dispatch, tr: tr2 }) => {
     return false;
   }
 };
-var joinTextblockBackward3 = () => ({ state, dispatch }) => {
+var joinTextblockBackward2 = () => ({ state, dispatch }) => {
   return joinTextblockBackward(state, dispatch);
 };
-var joinTextblockForward3 = () => ({ state, dispatch }) => {
+var joinTextblockForward2 = () => ({ state, dispatch }) => {
   return joinTextblockForward(state, dispatch);
 };
 function isMacOS2() {
@@ -72385,7 +70980,7 @@ function isNodeActive2(state, typeOrName, attributes = {}) {
   const range = matchedNodeRanges.reduce((sum, nodeRange) => sum + nodeRange.to - nodeRange.from, 0);
   return range >= selectionRange;
 }
-var lift4 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var lift3 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType2(typeOrName, state.schema);
   const isActive2 = isNodeActive2(state, type, attributes);
   if (!isActive2) {
@@ -72393,14 +70988,14 @@ var lift4 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   }
   return lift2(state, dispatch);
 };
-var liftEmptyBlock3 = () => ({ state, dispatch }) => {
+var liftEmptyBlock2 = () => ({ state, dispatch }) => {
   return liftEmptyBlock(state, dispatch);
 };
-var liftListItem3 = (typeOrName) => ({ state, dispatch }) => {
+var liftListItem2 = (typeOrName) => ({ state, dispatch }) => {
   const type = getNodeType2(typeOrName, state.schema);
   return liftListItem(type)(state, dispatch);
 };
-var newlineInCode3 = () => ({ state, dispatch }) => {
+var newlineInCode2 = () => ({ state, dispatch }) => {
   return newlineInCode(state, dispatch);
 };
 function getSchemaTypeNameByName2(name, schema) {
@@ -72477,19 +71072,19 @@ var selectAll3 = () => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var selectNodeBackward3 = () => ({ state, dispatch }) => {
+var selectNodeBackward2 = () => ({ state, dispatch }) => {
   return selectNodeBackward(state, dispatch);
 };
-var selectNodeForward3 = () => ({ state, dispatch }) => {
+var selectNodeForward2 = () => ({ state, dispatch }) => {
   return selectNodeForward(state, dispatch);
 };
-var selectParentNode3 = () => ({ state, dispatch }) => {
+var selectParentNode2 = () => ({ state, dispatch }) => {
   return selectParentNode(state, dispatch);
 };
-var selectTextblockEnd3 = () => ({ state, dispatch }) => {
+var selectTextblockEnd2 = () => ({ state, dispatch }) => {
   return selectTextblockEnd(state, dispatch);
 };
-var selectTextblockStart3 = () => ({ state, dispatch }) => {
+var selectTextblockStart2 = () => ({ state, dispatch }) => {
   return selectTextblockStart(state, dispatch);
 };
 function createDocument2(content, schema, parseOptions = {}, options = {}) {
@@ -73546,7 +72141,7 @@ var setTextSelection2 = (position) => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var sinkListItem3 = (typeOrName) => ({ state, dispatch }) => {
+var sinkListItem2 = (typeOrName) => ({ state, dispatch }) => {
   const type = getNodeType2(typeOrName, state.schema);
   return sinkListItem(type)(state, dispatch);
 };
@@ -74049,9 +72644,9 @@ var updateAttributes2 = (typeOrName, attributes = {}) => ({ tr: tr2, state, disp
   });
   return canUpdate;
 };
-var DECORATION_MANAGER_PLUGIN_KEY_NAME2 = "__tiptap_decorations__";
+var DECORATION_MANAGER_PLUGIN_KEY_NAME = "__tiptap_decorations__";
 var DECORATION_MANAGER_PLUGIN_KEY2 = new PluginKey(
-  DECORATION_MANAGER_PLUGIN_KEY_NAME2
+  DECORATION_MANAGER_PLUGIN_KEY_NAME
 );
 var updateDecorations2 = (extensionName) => ({ tr: tr2, dispatch }) => {
   if (dispatch) {
@@ -74059,11 +72654,11 @@ var updateDecorations2 = (extensionName) => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var wrapIn3 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var wrapIn2 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType2(typeOrName, state.schema);
   return wrapIn(type, attributes)(state, dispatch);
 };
-var wrapInList3 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var wrapInList2 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType2(typeOrName, state.schema);
   return wrapInList(type, attributes)(state, dispatch);
 };
@@ -74680,17 +73275,17 @@ function isPlainObject3(value) {
   }
   return value.constructor === Object && Object.getPrototypeOf(value) === Object.prototype;
 }
-var markdown_exports2 = {};
-__export3(markdown_exports2, {
-  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec2,
-  createBlockMarkdownSpec: () => createBlockMarkdownSpec2,
-  createInlineMarkdownSpec: () => createInlineMarkdownSpec2,
-  parseAttributes: () => parseAttributes2,
-  parseIndentedBlocks: () => parseIndentedBlocks2,
-  renderNestedMarkdownContent: () => renderNestedMarkdownContent2,
-  serializeAttributes: () => serializeAttributes2
+var markdown_exports = {};
+__export2(markdown_exports, {
+  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec,
+  createBlockMarkdownSpec: () => createBlockMarkdownSpec,
+  createInlineMarkdownSpec: () => createInlineMarkdownSpec,
+  parseAttributes: () => parseAttributes,
+  parseIndentedBlocks: () => parseIndentedBlocks,
+  renderNestedMarkdownContent: () => renderNestedMarkdownContent,
+  serializeAttributes: () => serializeAttributes
 });
-function parseAttributes2(attrString) {
+function parseAttributes(attrString) {
   if (!(attrString == null ? void 0 : attrString.trim())) {
     return {};
   }
@@ -74730,7 +73325,7 @@ function parseAttributes2(attrString) {
   }
   return attributes;
 }
-function serializeAttributes2(attributes) {
+function serializeAttributes(attributes) {
   if (!attributes || Object.keys(attributes).length === 0) {
     return "";
   }
@@ -74754,12 +73349,12 @@ function serializeAttributes2(attributes) {
   });
   return parts.join(" ");
 }
-function createAtomBlockMarkdownSpec2(options) {
+function createAtomBlockMarkdownSpec(options) {
   const {
     nodeName,
     name: markdownName,
-    parseAttributes: parseAttributes22 = parseAttributes2,
-    serializeAttributes: serializeAttributes22 = serializeAttributes2,
+    parseAttributes: parseAttributes22 = parseAttributes,
+    serializeAttributes: serializeAttributes22 = serializeAttributes,
     defaultAttributes = {},
     requiredAttributes = [],
     allowedAttributes
@@ -74818,13 +73413,13 @@ function createAtomBlockMarkdownSpec2(options) {
     }
   };
 }
-function createBlockMarkdownSpec2(options) {
+function createBlockMarkdownSpec(options) {
   const {
     nodeName,
     name: markdownName,
     getContent,
-    parseAttributes: parseAttributes22 = parseAttributes2,
-    serializeAttributes: serializeAttributes22 = serializeAttributes2,
+    parseAttributes: parseAttributes22 = parseAttributes,
+    serializeAttributes: serializeAttributes22 = serializeAttributes,
     defaultAttributes = {},
     content = "block",
     allowedAttributes
@@ -74945,7 +73540,7 @@ ${renderedContent}
     }
   };
 }
-function parseShortcodeAttributes2(attrString) {
+function parseShortcodeAttributes(attrString) {
   if (!attrString.trim()) {
     return {};
   }
@@ -74959,16 +73554,16 @@ function parseShortcodeAttributes2(attrString) {
   }
   return attributes;
 }
-function serializeShortcodeAttributes2(attrs) {
+function serializeShortcodeAttributes(attrs) {
   return Object.entries(attrs).filter(([, value]) => value !== void 0 && value !== null).map(([key, value]) => `${key}="${value}"`).join(" ");
 }
-function createInlineMarkdownSpec2(options) {
+function createInlineMarkdownSpec(options) {
   const {
     nodeName,
     name: shortcodeName,
     getContent,
-    parseAttributes: parseAttributes22 = parseShortcodeAttributes2,
-    serializeAttributes: serializeAttributes22 = serializeShortcodeAttributes2,
+    parseAttributes: parseAttributes22 = parseShortcodeAttributes,
+    serializeAttributes: serializeAttributes22 = serializeShortcodeAttributes,
     defaultAttributes = {},
     selfClosing = false,
     allowedAttributes
@@ -75058,7 +73653,7 @@ function createInlineMarkdownSpec2(options) {
     }
   };
 }
-function parseIndentedBlocks2(src, config, lexer) {
+function parseIndentedBlocks(src, config, lexer) {
   var _a, _b, _c, _d;
   const lines = src.split("\n");
   const items = [];
@@ -75138,7 +73733,7 @@ function parseIndentedBlocks2(src, config, lexer) {
     raw: totalRaw
   };
 }
-function renderNestedMarkdownContent2(node, h2, prefixOrGenerator, ctx) {
+function renderNestedMarkdownContent(node, h2, prefixOrGenerator, ctx) {
   if (!node || !Array.isArray(node.content)) {
     return "";
   }
@@ -75232,7 +73827,7 @@ var inputRuleMatcherHandler2 = (text, find2) => {
   }
   return result;
 };
-function run3(config) {
+function run2(config) {
   var _a;
   const { editor, from: from2, to, text, rules, plugin } = config;
   const { view } = editor;
@@ -75273,7 +73868,7 @@ function run3(config) {
       from: from2 - (match[0].length - text.length),
       to
     };
-    const { commands, chain, can } = new CommandManager2({
+    const { commands, chain, can } = new CommandManager3({
       editor,
       state
     });
@@ -75325,7 +73920,7 @@ function inputRulesPlugin2(props) {
             }
             const { from: from2 } = simulatedInputMeta;
             const to = from2 + text.length;
-            run3({
+            run2({
               editor,
               from: from2,
               to,
@@ -75340,7 +73935,7 @@ function inputRulesPlugin2(props) {
     },
     props: {
       handleTextInput(view, from2, to, text) {
-        return run3({
+        return run2({
           editor,
           from: from2,
           to,
@@ -75354,7 +73949,7 @@ function inputRulesPlugin2(props) {
           setTimeout(() => {
             const { $cursor } = view.state.selection;
             if ($cursor) {
-              run3({
+              run2({
                 editor,
                 from: $cursor.pos,
                 to: $cursor.pos,
@@ -75375,7 +73970,7 @@ function inputRulesPlugin2(props) {
         }
         const { $cursor } = view.state.selection;
         if ($cursor) {
-          return run3({
+          return run2({
             editor,
             from: $cursor.pos,
             to: $cursor.pos,
@@ -75446,7 +74041,7 @@ var Extendable2 = class {
     return extension;
   }
 };
-var Mark3 = class _Mark2 extends Extendable2 {
+var Mark4 = class _Mark extends Extendable2 {
   constructor() {
     super(...arguments);
     this.type = "mark";
@@ -75457,7 +74052,7 @@ var Mark3 = class _Mark2 extends Extendable2 {
    */
   static create(config = {}) {
     const resolvedConfig = typeof config === "function" ? config() : config;
-    return new _Mark2(resolvedConfig);
+    return new _Mark(resolvedConfig);
   }
   static handleExit({ editor, mark }) {
     const { tr: tr2 } = editor.state;
@@ -75513,7 +74108,7 @@ var pasteRuleMatcherHandler2 = (text, find2, event) => {
 };
 function run22(config) {
   const { editor, state, from: from2, to, rule, pasteEvent, dropEvent } = config;
-  const { commands, chain, can } = new CommandManager2({
+  const { commands, chain, can } = new CommandManager3({
     editor,
     state
   });
@@ -75770,7 +74365,7 @@ var ExtensionManager2 = class {
       );
       let defaultBindings = {};
       if (extension.type === "mark" && getExtensionField2(extension, "exitable", context)) {
-        defaultBindings.ArrowRight = () => Mark3.handleExit({ editor, mark: extension });
+        defaultBindings.ArrowRight = () => Mark4.handleExit({ editor, mark: extension });
       }
       if (addKeyboardShortcuts) {
         const bindings = Object.fromEntries(
@@ -76135,8 +74730,8 @@ var ExtensionManager2 = class {
 ExtensionManager2.resolve = resolveExtensions2;
 ExtensionManager2.sort = sortExtensions2;
 ExtensionManager2.flatten = flattenExtensions2;
-var extensions_exports2 = {};
-__export3(extensions_exports2, {
+var extensions_exports = {};
+__export2(extensions_exports, {
   ClipboardTextSerializer: () => ClipboardTextSerializer2,
   Commands: () => Commands2,
   Delete: () => Delete2,
@@ -76149,7 +74744,7 @@ __export3(extensions_exports2, {
   TextDirection: () => TextDirection2,
   focusEventsPluginKey: () => focusEventsPluginKey2
 });
-var Extension2 = class _Extension2 extends Extendable2 {
+var Extension3 = class _Extension extends Extendable2 {
   constructor() {
     super(...arguments);
     this.type = "extension";
@@ -76160,7 +74755,7 @@ var Extension2 = class _Extension2 extends Extendable2 {
    */
   static create(config = {}) {
     const resolvedConfig = typeof config === "function" ? config() : config;
-    return new _Extension2(resolvedConfig);
+    return new _Extension(resolvedConfig);
   }
   configure(options) {
     return super.configure(options);
@@ -76170,7 +74765,7 @@ var Extension2 = class _Extension2 extends Extendable2 {
     return super.extend(resolvedConfig);
   }
 };
-var ClipboardTextSerializer2 = Extension2.create({
+var ClipboardTextSerializer2 = Extension3.create({
   name: "clipboardTextSerializer",
   addOptions() {
     return {
@@ -76202,7 +74797,7 @@ var ClipboardTextSerializer2 = Extension2.create({
     ];
   }
 });
-var Commands2 = Extension2.create({
+var Commands2 = Extension3.create({
   name: "commands",
   addCommands() {
     return {
@@ -76210,7 +74805,7 @@ var Commands2 = Extension2.create({
     };
   }
 });
-var Delete2 = Extension2.create({
+var Delete2 = Extension3.create({
   name: "delete",
   onUpdate({ transaction: transaction2, appendedTransactions }) {
     var _a, _b, _c;
@@ -76288,7 +74883,7 @@ var Delete2 = Extension2.create({
     }
   }
 });
-var Drop2 = Extension2.create({
+var Drop2 = Extension3.create({
   name: "drop",
   addProseMirrorPlugins() {
     return [
@@ -76308,7 +74903,7 @@ var Drop2 = Extension2.create({
     ];
   }
 });
-var Editable2 = Extension2.create({
+var Editable2 = Extension3.create({
   name: "editable",
   addProseMirrorPlugins() {
     return [
@@ -76322,7 +74917,7 @@ var Editable2 = Extension2.create({
   }
 });
 var focusEventsPluginKey2 = new PluginKey("focusEvents");
-var FocusEvents2 = Extension2.create({
+var FocusEvents2 = Extension3.create({
   name: "focusEvents",
   addProseMirrorPlugins() {
     const { editor } = this;
@@ -76349,7 +74944,7 @@ var FocusEvents2 = Extension2.create({
     ];
   }
 });
-var Keymap2 = Extension2.create({
+var Keymap2 = Extension3.create({
   name: "keymap",
   addKeyboardShortcuts() {
     const handleBackspace2 = () => this.editor.commands.first(({ commands }) => [
@@ -76449,7 +75044,7 @@ var Keymap2 = Extension2.create({
             state: newState,
             transaction: tr2
           });
-          const { commands } = new CommandManager2({
+          const { commands } = new CommandManager3({
             editor: this.editor,
             state
           });
@@ -76463,7 +75058,7 @@ var Keymap2 = Extension2.create({
     ];
   }
 });
-var Paste2 = Extension2.create({
+var Paste2 = Extension3.create({
   name: "paste",
   addProseMirrorPlugins() {
     return [
@@ -76482,7 +75077,7 @@ var Paste2 = Extension2.create({
     ];
   }
 });
-var Tabindex2 = Extension2.create({
+var Tabindex2 = Extension3.create({
   name: "tabindex",
   addOptions() {
     return {
@@ -76506,7 +75101,7 @@ var Tabindex2 = Extension2.create({
     ];
   }
 });
-var TextDirection2 = Extension2.create({
+var TextDirection2 = Extension3.create({
   name: "textDirection",
   addOptions() {
     return {
@@ -77172,7 +75767,7 @@ var Editor2 = class extends EventEmitter3 {
    * Creates an command manager.
    */
   createCommandManager() {
-    this.commandManager = new CommandManager2({
+    this.commandManager = new CommandManager3({
       editor: this
     });
   }
@@ -77470,7 +76065,7 @@ init_define_import_meta();
 
 // node_modules/@tiptap/core/dist/index.js
 var __defProp19 = Object.defineProperty;
-var __export4 = (target, all) => {
+var __export3 = (target, all) => {
   for (var name in all)
     __defProp19(target, name, { get: all[name], enumerable: true });
 };
@@ -77504,7 +76099,7 @@ function createChainableState3(config) {
     }
   };
 }
-var CommandManager3 = class {
+var CommandManager4 = class {
   constructor(props) {
     this.editor = props.editor;
     this.rawCommands = this.editor.extensionManager.commands;
@@ -77609,19 +76204,19 @@ var CommandManager3 = class {
   }
 };
 var commands_exports3 = {};
-__export4(commands_exports3, {
+__export3(commands_exports3, {
   blur: () => blur3,
   clearContent: () => clearContent3,
   clearNodes: () => clearNodes3,
   command: () => command3,
-  createParagraphNear: () => createParagraphNear4,
+  createParagraphNear: () => createParagraphNear3,
   cut: () => cut3,
   deleteCurrentNode: () => deleteCurrentNode3,
   deleteNode: () => deleteNode3,
   deleteRange: () => deleteRange4,
   deleteSelection: () => deleteSelection4,
   enter: () => enter3,
-  exitCode: () => exitCode4,
+  exitCode: () => exitCode3,
   extendMarkRange: () => extendMarkRange3,
   first: () => first3,
   focus: () => focus3,
@@ -77629,27 +76224,27 @@ __export4(commands_exports3, {
   insertContent: () => insertContent3,
   insertContentAt: () => insertContentAt3,
   insertDefaultBlock: () => insertDefaultBlock3,
-  joinBackward: () => joinBackward4,
-  joinDown: () => joinDown4,
-  joinForward: () => joinForward4,
+  joinBackward: () => joinBackward3,
+  joinDown: () => joinDown3,
+  joinForward: () => joinForward3,
   joinItemBackward: () => joinItemBackward3,
   joinItemForward: () => joinItemForward3,
-  joinTextblockBackward: () => joinTextblockBackward4,
-  joinTextblockForward: () => joinTextblockForward4,
-  joinUp: () => joinUp4,
+  joinTextblockBackward: () => joinTextblockBackward3,
+  joinTextblockForward: () => joinTextblockForward3,
+  joinUp: () => joinUp3,
   keyboardShortcut: () => keyboardShortcut3,
-  lift: () => lift5,
-  liftEmptyBlock: () => liftEmptyBlock4,
-  liftListItem: () => liftListItem4,
-  newlineInCode: () => newlineInCode4,
+  lift: () => lift4,
+  liftEmptyBlock: () => liftEmptyBlock3,
+  liftListItem: () => liftListItem3,
+  newlineInCode: () => newlineInCode3,
   resetAttributes: () => resetAttributes3,
   scrollIntoView: () => scrollIntoView3,
   selectAll: () => selectAll4,
-  selectNodeBackward: () => selectNodeBackward4,
-  selectNodeForward: () => selectNodeForward4,
-  selectParentNode: () => selectParentNode4,
-  selectTextblockEnd: () => selectTextblockEnd4,
-  selectTextblockStart: () => selectTextblockStart4,
+  selectNodeBackward: () => selectNodeBackward3,
+  selectNodeForward: () => selectNodeForward3,
+  selectParentNode: () => selectParentNode3,
+  selectTextblockEnd: () => selectTextblockEnd3,
+  selectTextblockStart: () => selectTextblockStart3,
   setContent: () => setContent3,
   setMark: () => setMark3,
   setMeta: () => setMeta3,
@@ -77657,7 +76252,7 @@ __export4(commands_exports3, {
   setNodeSelection: () => setNodeSelection3,
   setTextDirection: () => setTextDirection3,
   setTextSelection: () => setTextSelection3,
-  sinkListItem: () => sinkListItem4,
+  sinkListItem: () => sinkListItem3,
   splitBlock: () => splitBlock4,
   splitListItem: () => splitListItem3,
   toggleList: () => toggleList3,
@@ -77669,8 +76264,8 @@ __export4(commands_exports3, {
   unsetMark: () => unsetMark3,
   unsetTextDirection: () => unsetTextDirection3,
   updateAttributes: () => updateAttributes3,
-  wrapIn: () => wrapIn4,
-  wrapInList: () => wrapInList4
+  wrapIn: () => wrapIn3,
+  wrapInList: () => wrapInList3
 });
 var blur3 = () => ({ editor, view }) => {
   requestAnimationFrame(() => {
@@ -77719,7 +76314,7 @@ var clearNodes3 = () => ({ state, tr: tr2, dispatch }) => {
 var command3 = (fn) => (props) => {
   return fn(props);
 };
-var createParagraphNear4 = () => ({ state, dispatch }) => {
+var createParagraphNear3 = () => ({ state, dispatch }) => {
   return createParagraphNear(state, dispatch);
 };
 var cut3 = (originRange, targetPos) => ({ editor, tr: tr2 }) => {
@@ -77836,7 +76431,7 @@ var deleteSelection4 = () => ({ state, dispatch }) => {
 var enter3 = () => ({ commands }) => {
   return commands.keyboardShortcut("Enter");
 };
-var exitCode4 = () => ({ state, dispatch }) => {
+var exitCode3 = () => ({ state, dispatch }) => {
   return exitCode(state, dispatch);
 };
 function isRegExp3(value) {
@@ -78314,16 +76909,16 @@ var insertDefaultBlock3 = (options = {}) => ({ tr: tr2, dispatch, editor }) => {
   }
   return true;
 };
-var joinUp4 = () => ({ state, dispatch }) => {
+var joinUp3 = () => ({ state, dispatch }) => {
   return joinUp(state, dispatch);
 };
-var joinDown4 = () => ({ state, dispatch }) => {
+var joinDown3 = () => ({ state, dispatch }) => {
   return joinDown(state, dispatch);
 };
-var joinBackward4 = () => ({ state, dispatch }) => {
+var joinBackward3 = () => ({ state, dispatch }) => {
   return joinBackward(state, dispatch);
 };
-var joinForward4 = () => ({ state, dispatch }) => {
+var joinForward3 = () => ({ state, dispatch }) => {
   return joinForward(state, dispatch);
 };
 var joinItemBackward3 = () => ({ state, dispatch, tr: tr2 }) => {
@@ -78356,10 +76951,10 @@ var joinItemForward3 = () => ({ state, dispatch, tr: tr2 }) => {
     return false;
   }
 };
-var joinTextblockBackward4 = () => ({ state, dispatch }) => {
+var joinTextblockBackward3 = () => ({ state, dispatch }) => {
   return joinTextblockBackward(state, dispatch);
 };
-var joinTextblockForward4 = () => ({ state, dispatch }) => {
+var joinTextblockForward3 = () => ({ state, dispatch }) => {
   return joinTextblockForward(state, dispatch);
 };
 function isMacOS3() {
@@ -78461,7 +77056,7 @@ function isNodeActive3(state, typeOrName, attributes = {}) {
   const range = matchedNodeRanges.reduce((sum, nodeRange) => sum + nodeRange.to - nodeRange.from, 0);
   return range >= selectionRange;
 }
-var lift5 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var lift4 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType3(typeOrName, state.schema);
   const isActive2 = isNodeActive3(state, type, attributes);
   if (!isActive2) {
@@ -78469,14 +77064,14 @@ var lift5 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   }
   return lift2(state, dispatch);
 };
-var liftEmptyBlock4 = () => ({ state, dispatch }) => {
+var liftEmptyBlock3 = () => ({ state, dispatch }) => {
   return liftEmptyBlock(state, dispatch);
 };
-var liftListItem4 = (typeOrName) => ({ state, dispatch }) => {
+var liftListItem3 = (typeOrName) => ({ state, dispatch }) => {
   const type = getNodeType3(typeOrName, state.schema);
   return liftListItem(type)(state, dispatch);
 };
-var newlineInCode4 = () => ({ state, dispatch }) => {
+var newlineInCode3 = () => ({ state, dispatch }) => {
   return newlineInCode(state, dispatch);
 };
 function getSchemaTypeNameByName3(name, schema) {
@@ -78553,19 +77148,19 @@ var selectAll4 = () => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var selectNodeBackward4 = () => ({ state, dispatch }) => {
+var selectNodeBackward3 = () => ({ state, dispatch }) => {
   return selectNodeBackward(state, dispatch);
 };
-var selectNodeForward4 = () => ({ state, dispatch }) => {
+var selectNodeForward3 = () => ({ state, dispatch }) => {
   return selectNodeForward(state, dispatch);
 };
-var selectParentNode4 = () => ({ state, dispatch }) => {
+var selectParentNode3 = () => ({ state, dispatch }) => {
   return selectParentNode(state, dispatch);
 };
-var selectTextblockEnd4 = () => ({ state, dispatch }) => {
+var selectTextblockEnd3 = () => ({ state, dispatch }) => {
   return selectTextblockEnd(state, dispatch);
 };
-var selectTextblockStart4 = () => ({ state, dispatch }) => {
+var selectTextblockStart3 = () => ({ state, dispatch }) => {
   return selectTextblockStart(state, dispatch);
 };
 function createDocument3(content, schema, parseOptions = {}, options = {}) {
@@ -79630,7 +78225,7 @@ var setTextSelection3 = (position) => ({ tr: tr2, dispatch }) => {
   }
   return true;
 };
-var sinkListItem4 = (typeOrName) => ({ state, dispatch }) => {
+var sinkListItem3 = (typeOrName) => ({ state, dispatch }) => {
   const type = getNodeType3(typeOrName, state.schema);
   return sinkListItem(type)(state, dispatch);
 };
@@ -80133,11 +78728,11 @@ var updateAttributes3 = (typeOrName, attributes = {}) => ({ tr: tr2, state, disp
   });
   return canUpdate;
 };
-var wrapIn4 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var wrapIn3 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType3(typeOrName, state.schema);
   return wrapIn(type, attributes)(state, dispatch);
 };
-var wrapInList4 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+var wrapInList3 = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
   const type = getNodeType3(typeOrName, state.schema);
   return wrapInList(type, attributes)(state, dispatch);
 };
@@ -80173,17 +78768,17 @@ function isPlainObject4(value) {
   }
   return value.constructor === Object && Object.getPrototypeOf(value) === Object.prototype;
 }
-var markdown_exports3 = {};
-__export4(markdown_exports3, {
-  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec3,
-  createBlockMarkdownSpec: () => createBlockMarkdownSpec3,
-  createInlineMarkdownSpec: () => createInlineMarkdownSpec3,
-  parseAttributes: () => parseAttributes3,
-  parseIndentedBlocks: () => parseIndentedBlocks3,
-  renderNestedMarkdownContent: () => renderNestedMarkdownContent3,
-  serializeAttributes: () => serializeAttributes3
+var markdown_exports2 = {};
+__export3(markdown_exports2, {
+  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec2,
+  createBlockMarkdownSpec: () => createBlockMarkdownSpec2,
+  createInlineMarkdownSpec: () => createInlineMarkdownSpec2,
+  parseAttributes: () => parseAttributes2,
+  parseIndentedBlocks: () => parseIndentedBlocks2,
+  renderNestedMarkdownContent: () => renderNestedMarkdownContent2,
+  serializeAttributes: () => serializeAttributes2
 });
-function parseAttributes3(attrString) {
+function parseAttributes2(attrString) {
   if (!(attrString == null ? void 0 : attrString.trim())) {
     return {};
   }
@@ -80223,7 +78818,7 @@ function parseAttributes3(attrString) {
   }
   return attributes;
 }
-function serializeAttributes3(attributes) {
+function serializeAttributes2(attributes) {
   if (!attributes || Object.keys(attributes).length === 0) {
     return "";
   }
@@ -80247,12 +78842,12 @@ function serializeAttributes3(attributes) {
   });
   return parts.join(" ");
 }
-function createAtomBlockMarkdownSpec3(options) {
+function createAtomBlockMarkdownSpec2(options) {
   const {
     nodeName,
     name: markdownName,
-    parseAttributes: parseAttributes22 = parseAttributes3,
-    serializeAttributes: serializeAttributes22 = serializeAttributes3,
+    parseAttributes: parseAttributes22 = parseAttributes2,
+    serializeAttributes: serializeAttributes22 = serializeAttributes2,
     defaultAttributes = {},
     requiredAttributes = [],
     allowedAttributes
@@ -80311,13 +78906,13 @@ function createAtomBlockMarkdownSpec3(options) {
     }
   };
 }
-function createBlockMarkdownSpec3(options) {
+function createBlockMarkdownSpec2(options) {
   const {
     nodeName,
     name: markdownName,
     getContent,
-    parseAttributes: parseAttributes22 = parseAttributes3,
-    serializeAttributes: serializeAttributes22 = serializeAttributes3,
+    parseAttributes: parseAttributes22 = parseAttributes2,
+    serializeAttributes: serializeAttributes22 = serializeAttributes2,
     defaultAttributes = {},
     content = "block",
     allowedAttributes
@@ -80438,7 +79033,7 @@ ${renderedContent}
     }
   };
 }
-function parseShortcodeAttributes3(attrString) {
+function parseShortcodeAttributes2(attrString) {
   if (!attrString.trim()) {
     return {};
   }
@@ -80452,16 +79047,16 @@ function parseShortcodeAttributes3(attrString) {
   }
   return attributes;
 }
-function serializeShortcodeAttributes3(attrs) {
+function serializeShortcodeAttributes2(attrs) {
   return Object.entries(attrs).filter(([, value]) => value !== void 0 && value !== null).map(([key, value]) => `${key}="${value}"`).join(" ");
 }
-function createInlineMarkdownSpec3(options) {
+function createInlineMarkdownSpec2(options) {
   const {
     nodeName,
     name: shortcodeName,
     getContent,
-    parseAttributes: parseAttributes22 = parseShortcodeAttributes3,
-    serializeAttributes: serializeAttributes22 = serializeShortcodeAttributes3,
+    parseAttributes: parseAttributes22 = parseShortcodeAttributes2,
+    serializeAttributes: serializeAttributes22 = serializeShortcodeAttributes2,
     defaultAttributes = {},
     selfClosing = false,
     allowedAttributes
@@ -80551,7 +79146,7 @@ function createInlineMarkdownSpec3(options) {
     }
   };
 }
-function parseIndentedBlocks3(src, config, lexer) {
+function parseIndentedBlocks2(src, config, lexer) {
   var _a, _b, _c, _d;
   const lines = src.split("\n");
   const items = [];
@@ -80631,7 +79226,7 @@ function parseIndentedBlocks3(src, config, lexer) {
     raw: totalRaw
   };
 }
-function renderNestedMarkdownContent3(node, h2, prefixOrGenerator, ctx) {
+function renderNestedMarkdownContent2(node, h2, prefixOrGenerator, ctx) {
   if (!node || !Array.isArray(node.content)) {
     return "";
   }
@@ -80733,7 +79328,7 @@ var inputRuleMatcherHandler3 = (text, find2) => {
   }
   return result;
 };
-function run4(config) {
+function run3(config) {
   var _a;
   const { editor, from: from2, to, text, rules, plugin } = config;
   const { view } = editor;
@@ -80774,7 +79369,7 @@ function run4(config) {
       from: from2 - (match[0].length - text.length),
       to
     };
-    const { commands, chain, can } = new CommandManager3({
+    const { commands, chain, can } = new CommandManager4({
       editor,
       state
     });
@@ -80826,7 +79421,7 @@ function inputRulesPlugin3(props) {
             }
             const { from: from2 } = simulatedInputMeta;
             const to = from2 + text.length;
-            run4({
+            run3({
               editor,
               from: from2,
               to,
@@ -80841,7 +79436,7 @@ function inputRulesPlugin3(props) {
     },
     props: {
       handleTextInput(view, from2, to, text) {
-        return run4({
+        return run3({
           editor,
           from: from2,
           to,
@@ -80855,7 +79450,7 @@ function inputRulesPlugin3(props) {
           setTimeout(() => {
             const { $cursor } = view.state.selection;
             if ($cursor) {
-              run4({
+              run3({
                 editor,
                 from: $cursor.pos,
                 to: $cursor.pos,
@@ -80876,7 +79471,7 @@ function inputRulesPlugin3(props) {
         }
         const { $cursor } = view.state.selection;
         if ($cursor) {
-          return run4({
+          return run3({
             editor,
             from: $cursor.pos,
             to: $cursor.pos,
@@ -80947,7 +79542,7 @@ var Extendable3 = class {
     return extension;
   }
 };
-var Mark4 = class _Mark3 extends Extendable3 {
+var Mark5 = class _Mark2 extends Extendable3 {
   constructor() {
     super(...arguments);
     this.type = "mark";
@@ -80958,7 +79553,7 @@ var Mark4 = class _Mark3 extends Extendable3 {
    */
   static create(config = {}) {
     const resolvedConfig = typeof config === "function" ? config() : config;
-    return new _Mark3(resolvedConfig);
+    return new _Mark2(resolvedConfig);
   }
   static handleExit({ editor, mark }) {
     const { tr: tr2 } = editor.state;
@@ -81020,7 +79615,7 @@ var pasteRuleMatcherHandler3 = (text, find2, event) => {
 };
 function run23(config) {
   const { editor, state, from: from2, to, rule, pasteEvent, dropEvent } = config;
-  const { commands, chain, can } = new CommandManager3({
+  const { commands, chain, can } = new CommandManager4({
     editor,
     state
   });
@@ -81276,7 +79871,7 @@ var ExtensionManager3 = class {
       );
       let defaultBindings = {};
       if (extension.type === "mark" && getExtensionField3(extension, "exitable", context)) {
-        defaultBindings.ArrowRight = () => Mark4.handleExit({ editor, mark: extension });
+        defaultBindings.ArrowRight = () => Mark5.handleExit({ editor, mark: extension });
       }
       if (addKeyboardShortcuts) {
         const bindings = Object.fromEntries(
@@ -81601,8 +80196,8 @@ var ExtensionManager3 = class {
 ExtensionManager3.resolve = resolveExtensions3;
 ExtensionManager3.sort = sortExtensions3;
 ExtensionManager3.flatten = flattenExtensions3;
-var extensions_exports3 = {};
-__export4(extensions_exports3, {
+var extensions_exports2 = {};
+__export3(extensions_exports2, {
   ClipboardTextSerializer: () => ClipboardTextSerializer3,
   Commands: () => Commands3,
   Delete: () => Delete3,
@@ -81615,7 +80210,7 @@ __export4(extensions_exports3, {
   TextDirection: () => TextDirection3,
   focusEventsPluginKey: () => focusEventsPluginKey3
 });
-var Extension3 = class _Extension3 extends Extendable3 {
+var Extension4 = class _Extension2 extends Extendable3 {
   constructor() {
     super(...arguments);
     this.type = "extension";
@@ -81626,7 +80221,7 @@ var Extension3 = class _Extension3 extends Extendable3 {
    */
   static create(config = {}) {
     const resolvedConfig = typeof config === "function" ? config() : config;
-    return new _Extension3(resolvedConfig);
+    return new _Extension2(resolvedConfig);
   }
   configure(options) {
     return super.configure(options);
@@ -81636,7 +80231,7 @@ var Extension3 = class _Extension3 extends Extendable3 {
     return super.extend(resolvedConfig);
   }
 };
-var ClipboardTextSerializer3 = Extension3.create({
+var ClipboardTextSerializer3 = Extension4.create({
   name: "clipboardTextSerializer",
   addOptions() {
     return {
@@ -81668,7 +80263,7 @@ var ClipboardTextSerializer3 = Extension3.create({
     ];
   }
 });
-var Commands3 = Extension3.create({
+var Commands3 = Extension4.create({
   name: "commands",
   addCommands() {
     return {
@@ -81676,7 +80271,7 @@ var Commands3 = Extension3.create({
     };
   }
 });
-var Delete3 = Extension3.create({
+var Delete3 = Extension4.create({
   name: "delete",
   onUpdate({ transaction: transaction2, appendedTransactions }) {
     var _a, _b, _c;
@@ -81754,7 +80349,7 @@ var Delete3 = Extension3.create({
     }
   }
 });
-var Drop3 = Extension3.create({
+var Drop3 = Extension4.create({
   name: "drop",
   addProseMirrorPlugins() {
     return [
@@ -81774,7 +80369,7 @@ var Drop3 = Extension3.create({
     ];
   }
 });
-var Editable3 = Extension3.create({
+var Editable3 = Extension4.create({
   name: "editable",
   addProseMirrorPlugins() {
     return [
@@ -81788,7 +80383,7 @@ var Editable3 = Extension3.create({
   }
 });
 var focusEventsPluginKey3 = new PluginKey("focusEvents");
-var FocusEvents3 = Extension3.create({
+var FocusEvents3 = Extension4.create({
   name: "focusEvents",
   addProseMirrorPlugins() {
     const { editor } = this;
@@ -81815,7 +80410,7 @@ var FocusEvents3 = Extension3.create({
     ];
   }
 });
-var Keymap3 = Extension3.create({
+var Keymap3 = Extension4.create({
   name: "keymap",
   addKeyboardShortcuts() {
     const handleBackspace2 = () => this.editor.commands.first(({ commands }) => [
@@ -81915,7 +80510,7 @@ var Keymap3 = Extension3.create({
             state: newState,
             transaction: tr2
           });
-          const { commands } = new CommandManager3({
+          const { commands } = new CommandManager4({
             editor: this.editor,
             state
           });
@@ -81929,7 +80524,7 @@ var Keymap3 = Extension3.create({
     ];
   }
 });
-var Paste3 = Extension3.create({
+var Paste3 = Extension4.create({
   name: "paste",
   addProseMirrorPlugins() {
     return [
@@ -81948,7 +80543,7 @@ var Paste3 = Extension3.create({
     ];
   }
 });
-var Tabindex3 = Extension3.create({
+var Tabindex3 = Extension4.create({
   name: "tabindex",
   addOptions() {
     return {
@@ -81972,7 +80567,7 @@ var Tabindex3 = Extension3.create({
     ];
   }
 });
-var TextDirection3 = Extension3.create({
+var TextDirection3 = Extension4.create({
   name: "textDirection",
   addOptions() {
     return {
@@ -82209,7 +80804,7 @@ function markPasteRule(config) {
 // node_modules/@tiptap/extension-code/dist/index.js
 var inputRegex = /(^|[^`])`([^`]+)`(?!`)$/;
 var pasteRegex = /(^|[^`])`([^`]+)`(?!`)/g;
-var Code = Mark4.create({
+var Code = Mark5.create({
   name: "code",
   addOptions() {
     return {
@@ -82275,7 +80870,7 @@ var Code = Mark4.create({
 init_define_import_meta();
 var inputRegex2 = /(?:^|\s)(==(?!\s+==)((?:[^=]+))==(?!\s+==))$/;
 var pasteRegex2 = /(?:^|\s)(==(?!\s+==)((?:[^=]+))==(?!\s+==))/g;
-var Highlight = Mark4.create({
+var Highlight = Mark5.create({
   name: "highlight",
   addOptions() {
     return {
@@ -82474,7 +81069,7 @@ var starInputRegex = /(?:^|\s)(\*\*(?!\s+\*\*)((?:[^*]+))\*\*(?!\s+\*\*))$/;
 var starPasteRegex = /(?:^|\s)(\*\*(?!\s+\*\*)((?:[^*]+))\*\*(?!\s+\*\*))/g;
 var underscoreInputRegex = /(?:^|\s)(__(?!\s+__)((?:[^_]+))__(?!\s+__))$/;
 var underscorePasteRegex = /(?:^|\s)(__(?!\s+__)((?:[^_]+))__(?!\s+__))/g;
-var Bold = Mark4.create({
+var Bold = Mark5.create({
   name: "bold",
   addOptions() {
     return {
@@ -83112,7 +81707,7 @@ var starInputRegex2 = /(?:^|\s)(\*(?!\s+\*)((?:[^*]+))\*(?!\s+\*))$/;
 var starPasteRegex2 = /(?:^|\s)(\*(?!\s+\*)((?:[^*]+))\*(?!\s+\*))/g;
 var underscoreInputRegex2 = /(?:^|\s)(_(?!\s+_)((?:[^_]+))_(?!\s+_))$/;
 var underscorePasteRegex2 = /(?:^|\s)(_(?!\s+_)((?:[^_]+))_(?!\s+_))/g;
-var Italic = Mark4.create({
+var Italic = Mark5.create({
   name: "italic",
   addOptions() {
     return {
@@ -83703,7 +82298,7 @@ function init$2(customSchemes = []) {
     }, tk)
   };
 }
-function run$1(start, str) {
+function run$12(start, str) {
   const iterable = stringToArray(str.replace(/[A-Z]/g, (c) => c.toLowerCase()));
   const charCount = iterable.length;
   const tokens = [];
@@ -84212,7 +82807,7 @@ function init$1({
     tokens: tk
   };
 }
-function run5(start, input, tokens) {
+function run4(start, input, tokens) {
   let len = tokens.length;
   let cursor = 0;
   let multis = [];
@@ -84322,9 +82917,9 @@ function tokenize(str) {
   if (!INIT.initialized) {
     init();
   }
-  return run5(INIT.parser.start, str, run$1(INIT.scanner.start, str));
+  return run4(INIT.parser.start, str, run$12(INIT.scanner.start, str));
 }
-tokenize.scan = run$1;
+tokenize.scan = run$12;
 function find(str, type = null, opts = null) {
   if (type && typeof type === "object") {
     if (opts) {
@@ -84530,7 +83125,7 @@ function isAllowedUri(uri, protocols) {
     )
   );
 }
-var Link = Mark4.create({
+var Link = Mark5.create({
   name: "link",
   priority: 1e3,
   keepOnSplit: false,
@@ -84763,7 +83358,7 @@ var Link = Mark4.create({
 // node_modules/@tiptap/extension-list/dist/index.js
 init_define_import_meta();
 var __defProp20 = Object.defineProperty;
-var __export5 = (target, all) => {
+var __export4 = (target, all) => {
   for (var name in all)
     __defProp20(target, name, { get: all[name], enumerable: true });
 };
@@ -84909,7 +83504,7 @@ var ListItem = Node3.create({
     };
   },
   renderMarkdown: (node, h2, ctx) => {
-    return renderNestedMarkdownContent3(
+    return renderNestedMarkdownContent2(
       node,
       h2,
       (context) => {
@@ -84935,7 +83530,7 @@ var ListItem = Node3.create({
   }
 });
 var listHelpers_exports = {};
-__export5(listHelpers_exports, {
+__export4(listHelpers_exports, {
   findListItemPos: () => findListItemPos,
   getNextListDepth: () => getNextListDepth,
   handleBackspace: () => handleBackspace,
@@ -85105,7 +83700,7 @@ var hasListItemAfter = (typeOrName, state) => {
   }
   return true;
 };
-var ListKeymap = Extension3.create({
+var ListKeymap = Extension4.create({
   name: "listKeymap",
   addOptions() {
     return {
@@ -85514,7 +84109,7 @@ var TaskItem = Node3.create({
     var _a;
     const checkedChar = ((_a = node.attrs) == null ? void 0 : _a.checked) ? "x" : " ";
     const prefix = `- [${checkedChar}] `;
-    return renderNestedMarkdownContent3(node, h2, prefix);
+    return renderNestedMarkdownContent2(node, h2, prefix);
   },
   addKeyboardShortcuts() {
     const shortcuts = {
@@ -85675,7 +84270,7 @@ var TaskList = Node3.create({
     },
     tokenize(src, tokens, lexer) {
       const parseTaskListContent = (content) => {
-        const nestedResult = parseIndentedBlocks3(
+        const nestedResult = parseIndentedBlocks2(
           content,
           {
             itemPattern: /^(\s*)([-+*])\s+\[([ xX])\]\s+(.*)$/,
@@ -85710,7 +84305,7 @@ var TaskList = Node3.create({
         }
         return lexer.blockTokens(content);
       };
-      const result = parseIndentedBlocks3(
+      const result = parseIndentedBlocks2(
         src,
         {
           itemPattern: /^(\s*)([-+*])\s+\[([ xX])\]\s+(.*)$/,
@@ -85760,7 +84355,7 @@ var TaskList = Node3.create({
     };
   }
 });
-var ListKit = Extension3.create({
+var ListKit = Extension4.create({
   name: "listKit",
   addExtensions() {
     const extensions = [];
@@ -85845,7 +84440,7 @@ var Paragraph = Node3.create({
 init_define_import_meta();
 var inputRegex5 = /(?:^|\s)(~~(?!\s+~~)((?:[^~]+))~~(?!\s+~~))$/;
 var pasteRegex3 = /(?:^|\s)(~~(?!\s+~~)((?:[^~]+))~~(?!\s+~~))/g;
-var Strike = Mark4.create({
+var Strike = Mark5.create({
   name: "strike",
   addOptions() {
     return {
@@ -85932,7 +84527,7 @@ var Text2 = Node3.create({
 
 // node_modules/@tiptap/extension-underline/dist/index.js
 init_define_import_meta();
-var Underline = Mark4.create({
+var Underline = Mark5.create({
   name: "underline",
   addOptions() {
     return {
@@ -86904,7 +85499,7 @@ var undoNoScroll = buildCommand(false, false);
 var redoNoScroll = buildCommand(true, false);
 
 // node_modules/@tiptap/extensions/dist/index.js
-var CharacterCount = Extension3.create({
+var CharacterCount = Extension4.create({
   name: "characterCount",
   addOptions() {
     return {
@@ -86999,7 +85594,7 @@ var CharacterCount = Extension3.create({
     ];
   }
 });
-var Dropcursor = Extension3.create({
+var Dropcursor = Extension4.create({
   name: "dropCursor",
   addOptions() {
     return {
@@ -87012,7 +85607,7 @@ var Dropcursor = Extension3.create({
     return [dropCursor(this.options)];
   }
 });
-var Focus = Extension3.create({
+var Focus = Extension4.create({
   name: "focus",
   addOptions() {
     return {
@@ -87072,7 +85667,7 @@ var Focus = Extension3.create({
     ];
   }
 });
-var Gapcursor = Extension3.create({
+var Gapcursor = Extension4.create({
   name: "gapCursor",
   addProseMirrorPlugins() {
     return [gapCursor()];
@@ -87093,7 +85688,7 @@ var DEFAULT_DATA_ATTRIBUTE = "placeholder";
 function preparePlaceholderAttribute(attr) {
   return attr.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "").replace(/^[0-9-]+/, "").replace(/^-+/, "").toLowerCase();
 }
-var Placeholder = Extension3.create({
+var Placeholder = Extension4.create({
   name: "placeholder",
   addOptions() {
     return {
@@ -87148,7 +85743,7 @@ var Placeholder = Extension3.create({
     ];
   }
 });
-var Selection2 = Extension3.create({
+var Selection2 = Extension4.create({
   name: "selection",
   addOptions() {
     return {
@@ -87179,7 +85774,7 @@ var Selection2 = Extension3.create({
 function nodeEqualsType({ types, node }) {
   return node && Array.isArray(types) && types.includes(node.type) || (node == null ? void 0 : node.type) === types;
 }
-var TrailingNode = Extension3.create({
+var TrailingNode = Extension4.create({
   name: "trailingNode",
   addOptions() {
     return {
@@ -87225,7 +85820,7 @@ var TrailingNode = Extension3.create({
     ];
   }
 });
-var UndoRedo = Extension3.create({
+var UndoRedo = Extension4.create({
   name: "undoRedo",
   addOptions() {
     return {
@@ -87259,7 +85854,7 @@ var UndoRedo = Extension3.create({
 });
 
 // node_modules/@tiptap/starter-kit/dist/index.js
-var StarterKit = Extension3.create({
+var StarterKit = Extension4.create({
   name: "starterKit",
   addExtensions() {
     var _a, _b, _c, _d;
@@ -87474,7 +86069,7 @@ function getThemeFontFaces(theme, font) {
 }
 
 // node_modules/tldraw/dist-esm/lib/utils/text/richText.mjs
-var KeyboardShiftEnterTweakExtension = Extension2.create({
+var KeyboardShiftEnterTweakExtension = Extension3.create({
   name: "keyboardShiftEnterHandler",
   addKeyboardShortcuts() {
     return {
@@ -87506,7 +86101,7 @@ function getTipTapDefaultExtensions(starterKitOptions) {
     // N.B. We disable the text direction core extension in RichTextArea,
     // but we add it back in again here in our own extensions list so that
     // people can omit/override it if they want to.
-    extensions_exports2.TextDirection.configure({ direction: "auto" })
+    extensions_exports.TextDirection.configure({ direction: "auto" })
   ];
 }
 var tipTapDefaultExtensions = getTipTapDefaultExtensions();
@@ -87768,10 +86363,10 @@ async function defaultHandleExternalUrlAsset(editor, { url }, { toasts, msg: msg
       title: doc3.head.querySelector('meta[property="og:title"]')?.getAttribute("content") ?? url,
       description: doc3.head.querySelector('meta[property="og:description"]')?.getAttribute("content") ?? ""
     };
-    if (!meta.image.startsWith("http")) {
+    if (meta.image && !meta.image.startsWith("http")) {
       meta.image = new URL(meta.image, url).href;
     }
-    if (!meta.favicon.startsWith("http")) {
+    if (meta.favicon && !meta.favicon.startsWith("http")) {
       meta.favicon = new URL(meta.favicon, url).href;
     }
   } catch (error) {
@@ -87866,7 +86461,17 @@ async function defaultHandleExternalFileContent(editor, { point, files }, option
       });
       continue;
     }
-    const assetInfo = await getAssetInfo(editor, sanitizedFile);
+    let assetInfo;
+    try {
+      assetInfo = await getAssetInfo(editor, sanitizedFile);
+    } catch (error) {
+      toasts.addToast({
+        title: msg2("assets.files.upload-failed"),
+        severity: "error"
+      });
+      console.error(error);
+      continue;
+    }
     if (!assetInfo) continue;
     if (assetInfo.type === "image") {
       editor.createTemporaryAssetPreview(assetInfo.id, sanitizedFile);
@@ -87947,21 +86552,26 @@ async function defaultHandleExternalTextContent(editor, { point, text, html }) {
   }
   const newPoint = maybeSnapToGrid(new Vec(p.x - w / 2, p.y - h2 / 2), editor);
   const shapeId = createShapeId();
-  editor.createShapes([
-    {
-      id: shapeId,
-      type: "text",
-      x: newPoint.x,
-      y: newPoint.y,
-      props: {
-        richText: richTextToPaste,
-        // if the text has more than one line, align it to the left
-        textAlign: align,
-        autoSize,
-        w
+  editor.run(() => {
+    editor.createShapes([
+      {
+        id: shapeId,
+        type: "text",
+        x: newPoint.x,
+        y: newPoint.y,
+        props: {
+          richText: richTextToPaste,
+          // if the text has more than one line, align it to the left
+          textAlign: align,
+          autoSize,
+          w
+        }
       }
+    ]);
+    if (editor.getShape(shapeId)) {
+      editor.select(shapeId);
     }
-  ]);
+  });
 }
 async function defaultHandleExternalUrlContent(editor, { point, url }, { toasts, msg: msg2 }) {
   if (!validation_exports.linkUrl.isValid(url)) {
@@ -87991,6 +86601,7 @@ async function defaultHandleExternalUrlContent(editor, { point, url }, { toasts,
     });
     return;
   }
+  editor.select(result.value.id);
 }
 async function defaultHandleExternalTldrawContent(editor, { point, content }) {
   editor.run(() => {
@@ -89382,9 +87993,9 @@ var import_jsx_runtime45 = __toESM(require_jsx_runtime(), 1);
 var PORTAL_NAME = "Portal";
 var Portal = React27.forwardRef((props, forwardedRef) => {
   const { container: containerProp, ...portalProps } = props;
-  const [mounted, setMounted] = React27.useState(false);
+  const [mounted2, setMounted] = React27.useState(false);
   useLayoutEffect22(() => setMounted(true), []);
-  const container = containerProp || mounted && globalThis?.document?.body;
+  const container = containerProp || mounted2 && globalThis?.document?.body;
   return container ? import_react_dom5.default.createPortal(/* @__PURE__ */ (0, import_jsx_runtime45.jsx)(Primitive.div, { ...portalProps, ref: forwardedRef }), container) : null;
 });
 Portal.displayName = PORTAL_NAME;
@@ -98779,7 +97390,11 @@ function assertShapeWithUrl(shape) {
 var EditLinkDialog = track(function EditLinkDialog2({ onClose }) {
   const editor = useEditor();
   const selectedShape = editor.getOnlySelectedShape();
-  if (!isShapeWithUrl(selectedShape)) {
+  const hasShapeWithUrl = isShapeWithUrl(selectedShape);
+  (0, import_react57.useEffect)(() => {
+    if (!hasShapeWithUrl) onClose();
+  }, [hasShapeWithUrl, onClose]);
+  if (!hasShapeWithUrl) {
     return null;
   }
   return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(EditLinkDialogInner, { onClose, selectedShape });
@@ -98845,10 +97460,6 @@ var EditLinkDialogInner = track(function EditLinkDialogInner2({
   const handleCancel = (0, import_react57.useCallback)(() => {
     onClose();
   }, [onClose]);
-  if (!selectedShape) {
-    onClose();
-    return null;
-  }
   const isRemoving = rInitialValue.current && !urlInputState.valid;
   return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(import_jsx_runtime70.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(TldrawUiDialogHeader, { children: [
@@ -99786,8 +98397,7 @@ var cmdKey = tlenv.isDarwin ? "\u2318" : "__CTRL__";
 var ctrlKey = tlenv.isDarwin ? "\u2303" : "__CTRL__";
 var altKey = tlenv.isDarwin ? "\u2325" : "__ALT__";
 function kbd(str) {
-  if (str === ",") return [","];
-  return str.split(",")[0].split(/(\[\[[^\]]+\]\])/g).map(
+  return (splitKbd(str)[0] ?? "").split(/(\[\[[^\]]+\]\])/g).map(
     (s) => s.startsWith("[[") ? s.replace(/[[\]]/g, "") : s.replace(/cmd\+/g, cmdKey).replace(/ctrl\+/g, ctrlKey).replace(/alt\+/g, altKey).replace(/shift\+/g, "\u21E7").replace(/\$/g, cmdKey).replace(/\?/g, altKey).replace(/!/g, "\u21E7").match(/__CTRL__|__ALT__|./g) || []
   ).flat().map((sub, index2) => {
     if (sub[0] === "+") return [];
@@ -99801,6 +98411,17 @@ function kbd(str) {
     }
     return tlenv.isDarwin || !index2 ? modifiedKey : ["+", modifiedKey];
   }).flat();
+}
+function splitKbd(key) {
+  if (!key) return [];
+  const keys2 = key.split(",");
+  let index2 = keys2.lastIndexOf("");
+  for (; index2 >= 0; ) {
+    keys2[index2 - 1] += ",";
+    keys2.splice(index2, 1);
+    index2 = keys2.lastIndexOf("");
+  }
+  return keys2;
 }
 function kbdStr(str) {
   return "\u2014 " + kbd(str).join("\u2009");
@@ -101216,6 +99837,7 @@ function useMenuClipboardEvents() {
       if (editor.getSelectedShapeIds().length === 0) return;
       const didCopy = await handleNativeOrMenuCopy(editor, { operation: "cut", source: "menu" });
       if (didCopy) {
+        editor.markHistoryStoppingPoint("cut");
         editor.deleteShapes(editor.getSelectedShapeIds());
         trackEvent("cut", { source });
       }
@@ -101285,6 +99907,7 @@ function useNativeClipboardEvents() {
       preventDefault(e);
       const didCopy = await handleNativeOrMenuCopy(editor, { operation: "cut", source: "native" });
       if (didCopy) {
+        editor.markHistoryStoppingPoint("cut");
         editor.deleteShapes(editor.getSelectedShapeIds());
         trackEvent("cut", { source: "kbd" });
       }
@@ -102551,31 +101174,53 @@ async function flattenShapesToImages(editor, shapeIds, flattenImageBoundsExpand)
         bounds: editor.getShapeMaskedPageBounds(shape).clone().expandBy(flattenImageBoundsExpand)
       };
     });
-    for (let i = 0; i < expandedBounds.length; i++) {
-      const item = expandedBounds[i];
-      if (i === 0) {
-        groups[0] = {
-          shapes: [item.shape],
-          bounds: item.bounds
-        };
-        continue;
+    const parents = expandedBounds.map((_, i) => i);
+    const find2 = (i) => {
+      let root = i;
+      while (parents[root] !== root) root = parents[root];
+      while (parents[i] !== root) {
+        const next = parents[i];
+        parents[i] = root;
+        i = next;
       }
-      let didLand = false;
-      for (const group of groups) {
-        if (group.bounds.includes(item.bounds)) {
-          group.shapes.push(item.shape);
-          group.bounds.expand(item.bounds);
-          didLand = true;
-          break;
+      return root;
+    };
+    const union2 = (i, j) => {
+      const ri = find2(i);
+      const rj = find2(j);
+      if (ri !== rj) parents[ri] = rj;
+    };
+    const order = expandedBounds.map((_, i) => i).sort((a, b) => {
+      return expandedBounds[a].bounds.minX - expandedBounds[b].bounds.minX;
+    });
+    for (let a = 0; a < order.length; a++) {
+      const i = order[a];
+      const boundsI = expandedBounds[i].bounds;
+      for (let b = a + 1; b < order.length; b++) {
+        const j = order[b];
+        if (expandedBounds[j].bounds.minX > boundsI.maxX) break;
+        if (find2(i) === find2(j)) continue;
+        if (boundsI.includes(expandedBounds[j].bounds)) {
+          union2(i, j);
         }
       }
-      if (!didLand) {
-        groups.push({
+    }
+    const groupsByRoot = /* @__PURE__ */ new Map();
+    for (let i = 0; i < expandedBounds.length; i++) {
+      const root = find2(i);
+      const item = expandedBounds[i];
+      const existing = groupsByRoot.get(root);
+      if (existing) {
+        existing.shapes.push(item.shape);
+        existing.bounds.expand(item.bounds);
+      } else {
+        groupsByRoot.set(root, {
           shapes: [item.shape],
-          bounds: item.bounds
+          bounds: item.bounds.clone()
         });
       }
     }
+    groups.push(...groupsByRoot.values());
   } else {
     const bounds = Box.Common(shapes.map((shape) => editor.getShapeMaskedPageBounds(shape)));
     groups.push({
@@ -102609,11 +101254,8 @@ async function flattenShapesToImages(editor, shapeIds, flattenImageBoundsExpand)
       if (!commonAncestorId) continue;
       let index2 = "a1";
       for (const shape of shapes2) {
-        if (shape.parentId === commonAncestorId) {
-          if (shape.index > index2) {
-            index2 = shape.index;
-          }
-          break;
+        if (shape.parentId === commonAncestorId && shape.index > index2) {
+          index2 = shape.index;
         }
       }
       let x;
@@ -103827,16 +102469,8 @@ var DefaultActionsMenu = (0, import_react74.memo)(function DefaultActionsMenu2({
   const breakpoint = useBreakpoint();
   const isReadonlyMode = useReadonly();
   const { orientation } = useTldrawUiOrientation();
-  const ref = (0, import_react74.useRef)(null);
-  usePassThroughWheelEvents(ref);
-  const editor = useEditor();
-  const isInAcceptableReadonlyState = useValue(
-    "should display quick actions when in readonly",
-    () => editor.isInAny("hand", "zoom"),
-    [editor]
-  );
   const content = children ?? /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(DefaultActionsMenuContent, {});
-  if (isReadonlyMode && !isInAcceptableReadonlyState) return;
+  if (isReadonlyMode) return;
   return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)(TldrawUiPopover, { id: "actions-menu", children: [
     /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(TldrawUiPopoverTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(
       TldrawUiToolbarButton,
@@ -103861,7 +102495,6 @@ var DefaultActionsMenu = (0, import_react74.memo)(function DefaultActionsMenu2({
         children: /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(
           TldrawUiToolbar,
           {
-            ref,
             label: msg2("actions-menu.title"),
             className: "tlui-actions-menu",
             "data-testid": "actions-menu.content",
@@ -103889,7 +102522,7 @@ function DefaultContextMenuContent() {
     editor
   ]);
   return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)(import_jsx_runtime95.Fragment, { children: [
-    showCollaborationUi && /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(CursorChatItem, {}),
+    showCollaborationUi && /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(TldrawUiMenuGroup, { id: "cursor-chat", children: /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(CursorChatItem, {}) }),
     /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)(TldrawUiMenuGroup, { id: "modify", children: [
       /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(EditMenuSubmenu, {}),
       /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(ArrangeMenuSubmenu, {}),
@@ -103933,9 +102566,13 @@ var DefaultContextMenu = (0, import_react75.memo)(function DefaultContextMenu2({
     };
   }, [editor, preventEscapeFromLosingShapeFocus]);
   const suppressDismissUntilRef = (0, import_react75.useRef)(0);
+  const rContextMenuPagePoint = (0, import_react75.useContext)(ContextMenuPagePointContext);
   const cb = (0, import_react75.useCallback)(
     (isOpen2) => {
       const body = editor.getContainerDocument().body;
+      if (rContextMenuPagePoint) {
+        rContextMenuPagePoint.current = isOpen2 ? editor.inputs.getCurrentPagePoint().clone() : null;
+      }
       if (!isOpen2) {
         const onlySelectedShape = editor.getOnlySelectedShape();
         if (onlySelectedShape && editor.isShapeOrAncestorLocked(onlySelectedShape)) {
@@ -103968,7 +102605,7 @@ var DefaultContextMenu = (0, import_react75.memo)(function DefaultContextMenu2({
         }
       }
     },
-    [editor, preventEscapeFromLosingShapeFocus]
+    [editor, preventEscapeFromLosingShapeFocus, rContextMenuPagePoint]
   );
   const container = useContainer();
   const dir = useDirection();
@@ -104548,6 +103185,7 @@ var TldrawUiDialog = ({ id, component: ModalContent, preventBackgroundClose }) =
   const { removeDialog } = useDialogs();
   const container = useContainer();
   const dir = useDirection();
+  const contentRef = (0, import_react81.useRef)(null);
   const handleOpenChange = (0, import_react81.useCallback)(
     (isOpen) => {
       if (!isOpen) {
@@ -104561,10 +103199,17 @@ var TldrawUiDialog = ({ id, component: ModalContent, preventBackgroundClose }) =
     /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("div", { dir, className: "tlui-dialog__positioner", children: /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
       dist_exports2.Content,
       {
+        ref: contentRef,
         dir,
         className: "tlui-dialog__content",
         "aria-describedby": void 0,
         onInteractOutside: (e) => {
+          const target = e.detail.originalEvent.target;
+          const pressedDialog = target instanceof Element ? target.closest(".tlui-dialog__content") : null;
+          if (pressedDialog && pressedDialog !== contentRef.current) {
+            e.preventDefault();
+            return;
+          }
           if (preventBackgroundClose) {
             e.preventDefault();
           }
@@ -105159,6 +103804,8 @@ function DefaultMinimap() {
   const editor = useEditor();
   const container = useContainer();
   const msg2 = useTranslation();
+  const rMinimap = React64.useRef(null);
+  usePassThroughWheelEvents(rMinimap);
   const rCanvas = React64.useRef(null);
   const rPointing = React64.useRef(false);
   const rActivePointerId = React64.useRef(null);
@@ -105276,23 +103923,6 @@ function DefaultMinimap() {
     },
     [editor]
   );
-  const onWheel = React64.useCallback(
-    (e) => {
-      const offset4 = normalizeWheel(e);
-      editor.dispatch({
-        type: "wheel",
-        name: "wheel",
-        delta: offset4,
-        point: new Vec(e.clientX, e.clientY),
-        shiftKey: e.shiftKey,
-        altKey: e.altKey,
-        ctrlKey: e.metaKey || e.ctrlKey,
-        metaKey: e.metaKey,
-        accelKey: isAccelKey(e)
-      });
-    },
-    [editor]
-  );
   const colorMode = useColorMode();
   const currentThemeId = useValue("current theme id", () => editor.getCurrentThemeId(), [editor]);
   React64.useEffect(() => {
@@ -105301,7 +103931,7 @@ function DefaultMinimap() {
       minimapRef.current?.render();
     });
   }, [colorMode, currentThemeId, editor]);
-  return /* @__PURE__ */ (0, import_jsx_runtime116.jsx)("div", { className: "tlui-minimap", children: /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime116.jsx)("div", { ref: rMinimap, className: "tlui-minimap", children: /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(
     "canvas",
     {
       ref: rCanvas,
@@ -105311,8 +103941,7 @@ function DefaultMinimap() {
       className: "tlui-minimap__canvas",
       onDoubleClick,
       onPointerMove,
-      onPointerDown,
-      onWheelCapture: onWheel
+      onPointerDown
     }
   ) });
 }
@@ -106344,7 +104973,7 @@ var DefaultPeopleMenuItem = track(function DefaultPeopleMenuItem2({
   const youAreFollowingThem = editor.getInstanceState().followingUserId === userId;
   if (!presence) return null;
   return /* @__PURE__ */ (0, import_jsx_runtime128.jsxs)(
-    TldrawUiRow,
+    "div",
     {
       className: "tlui-people-menu__item",
       "data-follow": youAreFollowingThem || theyAreFollowingYou,
@@ -106885,7 +105514,9 @@ function getXBoxPath(w, h2, sw, dash, isFilled) {
   const inset = dash === "draw" ? 0.62 : 0;
   path.moveTo(clamp2(sw * inset, 0, w), clamp2(sw * inset, 0, h2), {
     geometry: { isInternal: true, isFilled: false }
-  }).lineTo(clamp2(w - sw * inset, 0, w), clamp2(h2 - sw * inset, 0, h2)).moveTo(clamp2(w - sw * inset, 0, w), clamp2(sw * inset, 0, h2)).lineTo(clamp2(sw * inset, 0, w), clamp2(h2 - sw * inset, 0, h2));
+  }).lineTo(clamp2(w - sw * inset, 0, w), clamp2(h2 - sw * inset, 0, h2)).moveTo(clamp2(w - sw * inset, 0, w), clamp2(sw * inset, 0, h2), {
+    geometry: { isInternal: true, isFilled: false }
+  }).lineTo(clamp2(sw * inset, 0, w), clamp2(h2 - sw * inset, 0, h2));
   return path;
 }
 function getStadiumPath(w, h2, isFilled) {
@@ -107207,6 +105838,16 @@ var STYLES = {
 init_define_import_meta();
 var import_jsx_runtime132 = __toESM(require_jsx_runtime(), 1);
 var import_react93 = __toESM(require_react(), 1);
+var SLIDER_VALUE_KEYS = /* @__PURE__ */ new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "PageUp",
+  "PageDown",
+  "Home",
+  "End"
+]);
 var TldrawUiSlider = import_react93.default.forwardRef(function Slider2({
   onHistoryMark,
   title,
@@ -107250,6 +105891,15 @@ var TldrawUiSlider = import_react93.default.forwardRef(function Slider2({
       event.stopPropagation();
     }
   }, []);
+  const handleKeyDown2 = (0, import_react93.useCallback)(
+    (event) => {
+      handleKeyEvent(event);
+      if (SLIDER_VALUE_KEYS.has(event.key) && !event.repeat) {
+        onHistoryMark?.("keyboard slider");
+      }
+    },
+    [handleKeyEvent, onHistoryMark]
+  );
   return /* @__PURE__ */ (0, import_jsx_runtime132.jsx)("div", { className: "tlui-slider__container", children: /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(TldrawUiTooltip, { content: titleAndLabel, children: /* @__PURE__ */ (0, import_jsx_runtime132.jsxs)(
     dist_exports11.Root,
     {
@@ -107262,7 +105912,7 @@ var TldrawUiSlider = import_react93.default.forwardRef(function Slider2({
       value: value !== null ? [value] : void 0,
       onPointerDown: handlePointerDown,
       onValueChange: handleValueChange,
-      onKeyDownCapture: handleKeyEvent,
+      onKeyDownCapture: handleKeyDown2,
       onKeyUpCapture: handleKeyEvent,
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(dist_exports11.Track, { className: "tlui-slider__track", dir, children: value !== null && /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(dist_exports11.Range, { className: "tlui-slider__range", dir }) }),
@@ -107549,6 +106199,7 @@ function StylePanelDoubleDropdownPickerInlineInner(props) {
             "data-testid": `style.${uiTypeA}.${item.value}`,
             type: "icon",
             onClick: () => {
+              ctx.onHistoryMark("select style dropdown item");
               onValueChange(styleA, item.value);
               tlmenus.deleteOpenMenu(idA, editor.contextId);
               setIsOpenA(false);
@@ -107578,6 +106229,7 @@ function StylePanelDoubleDropdownPickerInlineInner(props) {
             title: `${msg2(labelB)} \u2014 ${msg2(`${uiTypeB}-style.${item.value}`)}`,
             "data-testid": `style.${uiTypeB}.${item.value}`,
             onClick: () => {
+              ctx.onHistoryMark("select style dropdown item");
               onValueChange(styleB, item.value);
               tlmenus.deleteOpenMenu(idB, editor.contextId);
               setIsOpenB(false);
@@ -108414,6 +107066,7 @@ function AltTextEditor({ shapeId, onClose, source }) {
     trackEvent("set-alt-text", { source });
     const shape = editor.getShape(shapeId);
     if (!shape) return;
+    editor.markHistoryStoppingPoint("set alt text");
     editor.updateShapes([
       {
         id: shape.id,
@@ -108599,15 +107252,17 @@ var DefaultImageToolbarContent = track(function DefaultImageToolbarContent2({
   }, [editor, isManipulating]);
   (0, import_react101.useEffect)(() => {
     function handleKeyDown2(e) {
-      if (isManipulating) {
-        if (e.key === "Escape") {
-          editor.cancel();
-          onManipulatingEnd();
-        } else if (e.key === "Enter") {
-          editor.complete();
-          onManipulatingEnd();
-        }
+      if (!isManipulating) return;
+      if (e.key === "Escape") {
+        editor.cancel();
+      } else if (e.key === "Enter") {
+        editor.complete();
+      } else {
+        return;
       }
+      onManipulatingEnd();
+      e.stopPropagation();
+      editor.getContainer().focus();
     }
     const elm = sliderRef.current;
     if (elm) {
@@ -109637,7 +108292,7 @@ var PHYSICAL_KEY_MAP = {
 };
 function parseKbd(kbd2) {
   const out = [];
-  for (const shortcut of getKeys(kbd2)) {
+  for (const shortcut of splitKbd(kbd2.replace(/\s/g, ""))) {
     const parsed = parseShortcut(shortcut);
     if (parsed) out.push(parsed);
   }
@@ -109713,7 +108368,7 @@ function shouldSkipEvent(e) {
   return false;
 }
 function getHotkeysStringFromKbd(kbd2) {
-  return getKeys(kbd2).map((kbd22) => {
+  return splitKbd(kbd2.replace(/\s/g, "")).map((kbd22) => {
     let str = "";
     const shift5 = kbd22.includes("!");
     const alt = kbd22.includes("?");
@@ -109738,18 +108393,6 @@ function getHotkeysStringFromKbd(kbd2) {
     }
     return str;
   }).join(",");
-}
-function getKeys(key) {
-  if (typeof key !== "string") key = "";
-  key = key.replace(/\s/g, "");
-  const keys2 = key.split(",");
-  let index2 = keys2.lastIndexOf("");
-  for (; index2 >= 0; ) {
-    keys2[index2 - 1] += ",";
-    keys2.splice(index2, 1);
-    index2 = keys2.lastIndexOf("");
-  }
-  return keys2;
 }
 
 // node_modules/tldraw/dist-esm/lib/ui/components/Toolbar/OverflowingToolbar.mjs
@@ -110350,6 +108993,7 @@ function useTldrawUiComponents() {
 
 // node_modules/tldraw/dist-esm/lib/ui/context/actions.mjs
 var ActionsContext = React71.createContext(null);
+var ContextMenuPagePointContext = React71.createContext(null);
 function supportsDownloadingOriginal(shape, editor) {
   return (editor.isShapeOfType(shape, "image") || editor.isShapeOfType(shape, "video")) && !!shape.props.assetId;
 }
@@ -110372,6 +109016,7 @@ function ActionsProvider({ overrides, children }) {
   const a11y = useA11y();
   const msg2 = useTranslation();
   const defaultDocumentName = helpers.msg("document.default-name");
+  const rContextMenuPagePoint = React71.useRef(null);
   const actions = React71.useMemo(() => {
     const editor = _editor;
     if (!editor) return {};
@@ -110795,7 +109440,7 @@ function ActionsProvider({ overrides, children }) {
       {
         id: "frame-selection",
         label: "action.frame-selection",
-        kbd: "cmd+alt+g",
+        kbd: "cmd+alt+g,ctrl+alt+g",
         onSelect(source) {
           if (!canApplySelectionAction()) return;
           if (mustGoBackToSelectToolFirst()) return;
@@ -111202,7 +109847,6 @@ function ActionsProvider({ overrides, children }) {
         onSelect(source) {
           if (!canApplySelectionAction()) return;
           if (mustGoBackToSelectToolFirst()) return;
-          editor.markHistoryStoppingPoint("cut");
           helpers.cut(source);
         }
       },
@@ -111222,12 +109866,9 @@ function ActionsProvider({ overrides, children }) {
         label: "action.paste",
         kbd: "cmd+v,ctrl+v",
         onSelect(source) {
+          const point = source === "context-menu" ? rContextMenuPagePoint.current ?? editor.inputs.getCurrentPagePoint() : void 0;
           navigator.clipboard?.read().then((clipboardItems) => {
-            helpers.paste(
-              clipboardItems,
-              source,
-              source === "context-menu" ? editor.inputs.getCurrentPagePoint() : void 0
-            );
+            helpers.paste(clipboardItems, source, point);
           }).catch(() => {
             helpers.addToast({
               title: helpers.msg("action.paste-error-title"),
@@ -111633,6 +110274,7 @@ function ActionsProvider({ overrides, children }) {
             }
           }
           if (updates.length > 0) {
+            editor.markHistoryStoppingPoint("unlock all");
             editor.updateShapes(updates);
           }
         }
@@ -112068,7 +110710,7 @@ function ActionsProvider({ overrides, children }) {
     a11y,
     components2
   ]);
-  return /* @__PURE__ */ (0, import_jsx_runtime158.jsx)(ActionsContext.Provider, { value: asActions(actions), children });
+  return /* @__PURE__ */ (0, import_jsx_runtime158.jsx)(ContextMenuPagePointContext.Provider, { value: rContextMenuPagePoint, children: /* @__PURE__ */ (0, import_jsx_runtime158.jsx)(ActionsContext.Provider, { value: asActions(actions), children }) });
 }
 function useActions() {
   const ctx = React71.useContext(ActionsContext);
@@ -112556,12 +111198,12 @@ function getStraightArrowInfo(editor, shape, bindings, arrowStrokeWidth) {
   const didFlip = !Vec.Equals(u, uAB);
   if (!isSelfIntersection) {
     if (relationship !== "start-contains-end" && startShapeInfo && arrowheadStart !== "none" && !startShapeInfo.isExact) {
-      strokeOffsetA = arrowSW / 2 + ("size" in startShapeInfo.shape.props ? theme.strokeWidth * STROKE_SIZES[startShapeInfo.shape.props.size] / 2 : 0);
+      strokeOffsetA = arrowSW / 2 + ("size" in startShapeInfo.shape.props ? theme.strokeWidth * (STROKE_SIZES[startShapeInfo.shape.props.size] ?? 0) / 2 : 0);
       offsetA = (BOUND_ARROW_OFFSET + strokeOffsetA) * shape.props.scale;
       minLength += strokeOffsetA * shape.props.scale;
     }
     if (relationship !== "end-contains-start" && endShapeInfo && arrowheadEnd !== "none" && !endShapeInfo.isExact) {
-      strokeOffsetB = arrowSW / 2 + ("size" in endShapeInfo.shape.props ? theme.strokeWidth * STROKE_SIZES[endShapeInfo.shape.props.size] / 2 : 0);
+      strokeOffsetB = arrowSW / 2 + ("size" in endShapeInfo.shape.props ? theme.strokeWidth * (STROKE_SIZES[endShapeInfo.shape.props.size] ?? 0) / 2 : 0);
       offsetB = (BOUND_ARROW_OFFSET + strokeOffsetB) * shape.props.scale;
       minLength += strokeOffsetB * shape.props.scale;
     }
@@ -112746,7 +111388,7 @@ function getCurvedArrowInfo(editor, shape, bindings, arrowStrokeWidth) {
       );
       startShapeInfo.didIntersect = true;
       if (arrowheadStart !== "none") {
-        const strokeOffset = arrowSW / 2 + ("size" in startShapeInfo.shape.props ? theme.strokeWidth * STROKE_SIZES[startShapeInfo.shape.props.size] / 2 : 0);
+        const strokeOffset = arrowSW / 2 + ("size" in startShapeInfo.shape.props ? theme.strokeWidth * (STROKE_SIZES[startShapeInfo.shape.props.size] ?? 0) / 2 : 0);
         offsetA = (BOUND_ARROW_OFFSET + strokeOffset) * shape.props.scale;
         minLength += strokeOffset * shape.props.scale;
       }
@@ -112800,7 +111442,7 @@ function getCurvedArrowInfo(editor, shape, bindings, arrowStrokeWidth) {
       );
       endShapeInfo.didIntersect = true;
       if (arrowheadEnd !== "none") {
-        const strokeOffset = arrowSW / 2 + ("size" in endShapeInfo.shape.props ? theme.strokeWidth * STROKE_SIZES[endShapeInfo.shape.props.size] / 2 : 0);
+        const strokeOffset = arrowSW / 2 + ("size" in endShapeInfo.shape.props ? theme.strokeWidth * (STROKE_SIZES[endShapeInfo.shape.props.size] ?? 0) / 2 : 0);
         offsetB = (BOUND_ARROW_OFFSET + strokeOffset) * shape.props.scale;
         minLength += strokeOffset * shape.props.scale;
       }
@@ -113618,8 +112260,8 @@ function getElbowArrowInfo(editor, arrow5, bindings, arrowStrokeWidth) {
       left: getUsableEdge(bTerminal, aTerminal, "left", options)
     };
   }
-  const expandedA = aTerminal.isPoint ? aTerminal.bounds : aTerminal.bounds.clone().expandBy(options.expandElbowLegLength);
-  const expandedB = bTerminal.isPoint ? bTerminal.bounds : bTerminal.bounds.clone().expandBy(options.expandElbowLegLength);
+  const expandedA = aTerminal.isPoint ? aTerminal.bounds.clone() : aTerminal.bounds.clone().expandBy(options.expandElbowLegLength);
+  const expandedB = bTerminal.isPoint ? bTerminal.bounds.clone() : bTerminal.bounds.clone().expandBy(options.expandElbowLegLength);
   const common = {
     original: Box.Common([aTerminal.bounds, bTerminal.bounds]),
     expanded: Box.Common([expandedA, expandedB])
@@ -114162,7 +112804,7 @@ var arrowInfoCache = createComputedCache(
   (editor, shape) => {
     const bindings = getArrowBindings(editor, shape);
     const util = editor.getShapeUtil(shape);
-    const sw = "getDisplayValues" in util.options ? getDisplayValues(util, shape).strokeWidth : editor.getCurrentTheme().strokeWidth * STROKE_SIZES[shape.props.size];
+    const sw = "getDefaultDisplayValues" in util.options && "getCustomDisplayValues" in util.options ? getDisplayValues(util, shape).strokeWidth : editor.getCurrentTheme().strokeWidth * STROKE_SIZES[shape.props.size];
     if (shape.props.kind === "elbow") {
       const elbowInfo = getElbowArrowInfo(editor, shape, bindings, sw);
       if (!elbowInfo?.route) return getStraightArrowInfo(editor, shape, bindings, sw);
@@ -117039,9 +115681,8 @@ var Idle2 = class extends StateNode {
     this.update();
     if (info.key === "Enter") {
       const onlySelectedShape = this.editor.getOnlySelectedShape();
-      if (this.editor.canEditShape(onlySelectedShape)) {
-        startEditingShapeWithRichText(this.editor, onlySelectedShape, { selectAll: true });
-      }
+      if (!this.editor.canEditShape(onlySelectedShape)) return;
+      startEditingShape(this.editor, onlySelectedShape, { selectAll: true });
     }
   }
   update() {
@@ -117102,7 +115743,10 @@ var Pointing2 = class extends StateNode {
     this.startPreciseTimeout();
   }
   onExit() {
-    this.shape = void 0;
+    if (this.shape) {
+      this.editor.bailToMark(this.markId);
+      this.shape = void 0;
+    }
     clearArrowTargetState(this.editor);
     this.clearPreciseTimeout();
   }
@@ -117116,8 +115760,10 @@ var Pointing2 = class extends StateNode {
         return;
       }
       this.updateArrowShapeEndHandle();
+      const shape = this.shape;
+      this.shape = void 0;
       this.editor.setCurrentTool("select.dragging_handle", {
-        shape: this.shape,
+        shape,
         handle: { id: "end", type: "vertex", index: "a3", x: 0, y: 0 },
         isCreating: true,
         creatingMarkId: this.markId || void 0,
@@ -117141,9 +115787,6 @@ var Pointing2 = class extends StateNode {
     this.cancel();
   }
   cancel() {
-    if (this.shape) {
-      this.editor.bailToMark(this.markId);
-    }
     this.parent.transition("idle");
   }
   createArrowShape() {
@@ -117382,7 +116025,7 @@ var Drawing = class extends StateNode {
     this.lastRecordedPoint = originPagePoint.clone();
     if (this.initialShape) {
       const shape2 = this.editor.getShape(this.initialShape.id);
-      if (shape2 && this.segmentMode === "straight") {
+      if (shape2 && this.segmentMode === "straight" && this.editor.isShapeInPage(shape2)) {
         this.didJustShiftClickToExtendPreviousShapeLine = true;
         const prevSegment = last(shape2.props.segments);
         if (!prevSegment) throw Error("Expected a previous segment!");
@@ -117467,7 +116110,8 @@ var Drawing = class extends StateNode {
         if (pagePointWhereNextSegmentChanged === null) {
           throw Error("We should have a point where the segment changed");
         }
-        const hasMovedFarEnough = Vec.Dist2(pagePointWhereNextSegmentChanged, inputs.getCurrentPagePoint()) > this.editor.options.dragDistanceSquared;
+        const zoom = this.editor.getZoomLevel();
+        const hasMovedFarEnough = Vec.Dist2(pagePointWhereNextSegmentChanged, inputs.getCurrentPagePoint()) * zoom * zoom > this.editor.options.dragDistanceSquared;
         if (hasMovedFarEnough) {
           this.pagePointWhereCurrentSegmentChanged = this.pagePointWhereNextSegmentChanged.clone();
           this.pagePointWhereNextSegmentChanged = null;
@@ -117510,7 +116154,8 @@ var Drawing = class extends StateNode {
         if (pagePointWhereNextSegmentChanged === null) {
           throw Error("We should have a point where the segment changed");
         }
-        const hasMovedFarEnough = Vec.Dist2(pagePointWhereNextSegmentChanged, inputs.getCurrentPagePoint()) > this.editor.options.dragDistanceSquared;
+        const zoom = this.editor.getZoomLevel();
+        const hasMovedFarEnough = Vec.Dist2(pagePointWhereNextSegmentChanged, inputs.getCurrentPagePoint()) * zoom * zoom > this.editor.options.dragDistanceSquared;
         if (hasMovedFarEnough) {
           this.pagePointWhereCurrentSegmentChanged = this.pagePointWhereNextSegmentChanged.clone();
           this.pagePointWhereNextSegmentChanged = null;
@@ -117710,7 +116355,7 @@ var Drawing = class extends StateNode {
           const props = this.editor.getShape(id).props;
           if (!this.editor.canCreateShapes([newShapeId])) return this.cancel();
           const currentPagePoint2 = inputs.getCurrentPagePoint();
-          const initialPoint = new Vec(0, 0, this.isPenOrStylus ? +(z * 1.25).toFixed() : 0.5);
+          const initialPoint = new Vec(0, 0, this.isPenOrStylus ? +(z * 1.25).toFixed(2) : 0.5);
           this.currentSegmentPoints = [initialPoint];
           this.editor.createShape({
             id: newShapeId,
@@ -117741,10 +116386,10 @@ var Drawing = class extends StateNode {
     for (let j = 0; j < segments.length; j++) {
       const points = b64Vecs.decodePoints(segments[j].path, segments[j].dim);
       for (let i = 0; i < points.length - 1; i++) {
-        length += Vec.Dist2(points[i], points[i + 1]);
+        length += Vec.Dist(points[i], points[i + 1]);
       }
     }
-    return Math.sqrt(length);
+    return length;
   }
   onPointerUp() {
     this.complete();
@@ -117875,9 +116520,8 @@ var Idle4 = class extends StateNode {
     const { editor } = this;
     if (info.key === "Enter") {
       const onlySelectedShape = editor.getOnlySelectedShape();
-      if (editor.canEditShape(onlySelectedShape)) {
-        startEditingShapeWithRichText(editor, onlySelectedShape, { selectAll: true });
-      }
+      if (!editor.canEditShape(onlySelectedShape)) return;
+      startEditingShape(editor, onlySelectedShape, { selectAll: true });
     }
   }
   onCancel() {
@@ -117935,7 +116579,7 @@ var Pointing3 = class extends StateNode {
     this.cancel();
   }
   onComplete() {
-    this.complete();
+    this.cancel();
   }
   onInterrupt() {
     this.cancel();
@@ -118054,7 +116698,7 @@ var Pointing4 = class extends StateNode {
     const currentPagePoint = inputs.getCurrentPagePoint();
     this.markId = void 0;
     const shape = info.shapeId && this.editor.getShape(info.shapeId);
-    if (shape && inputs.getShiftKey()) {
+    if (shape && inputs.getShiftKey() && this.editor.isShapeInPage(shape)) {
       this.markId = this.editor.markHistoryStoppingPoint(`creating_line:${shape.id}`);
       this.shape = shape;
       const handles = this.editor.getShapeHandles(this.shape);
@@ -118062,11 +116706,7 @@ var Pointing4 = class extends StateNode {
       const vertexHandles = handles.filter((h2) => h2.type === "vertex").sort(sortByIndex);
       const endHandle = vertexHandles[vertexHandles.length - 1];
       const prevEndHandle = vertexHandles[vertexHandles.length - 2];
-      const shapePagePoint = Mat.applyToPoint(
-        this.editor.getShapeParentTransform(this.shape),
-        new Vec(this.shape.x, this.shape.y)
-      );
-      const nudgedPoint = Vec.Sub(currentPagePoint, shapePagePoint).addXY(0.1, 0.1);
+      const nudgedPoint = this.editor.getPointInShapeSpace(this.shape, currentPagePoint).addXY(0.1, 0.1);
       const nextPoint = maybeSnapToGrid(nudgedPoint, this.editor);
       const points = structuredClone(this.shape.props.points);
       const minDistance = MINIMUM_DISTANCE_BETWEEN_SHIFT_CLICKED_HANDLES / this.editor.getZoomLevel();
@@ -118253,13 +116893,13 @@ function getNoteAdjacentPositions(editor, opts) {
   );
 }
 function getAvailableNoteAdjacentPositions(editor, opts) {
-  const { rotation, scale, extraHeight, noteWidth, noteHeight } = opts;
-  const selectedShapeIds = new Set(editor.getSelectedShapeIds());
+  const { rotation, scale, extraHeight, noteWidth, noteHeight, excludeShapeIds = [] } = opts;
+  const excludedShapeIds = new Set(excludeShapeIds);
   const minSize = (Math.max(noteWidth, noteHeight) + editor.options.adjacentShapeMargin + extraHeight) ** 2;
   const allCenters = /* @__PURE__ */ new Map();
   const positions = [];
   for (const shape of editor.getCurrentPageShapes()) {
-    if (!editor.isShapeOfType(shape, "note") || scale !== shape.props.scale || selectedShapeIds.has(shape.id)) {
+    if (!editor.isShapeOfType(shape, "note") || scale !== shape.props.scale || excludedShapeIds.has(shape.id)) {
       continue;
     }
     const transform = editor.getShapePageTransform(shape.id);
@@ -118270,7 +116910,8 @@ function getAvailableNoteAdjacentPositions(editor, opts) {
         getNoteAdjacentPositions(editor, {
           pagePoint: transform.point(),
           pageRotation: rotation,
-          growY: shape.props.growY,
+          // page units, like the base positions (see PointingHandle)
+          growY: shape.props.growY * shape.props.scale,
           extraHeight,
           scale,
           noteWidth,
@@ -118297,7 +116938,7 @@ function getNoteShapeForAdjacentPosition(editor, opts) {
   const { shape, center, pageRotation, noteWidth, noteHeight, forceNew = false } = opts;
   let nextNote;
   const allShapesOnPage = editor.getCurrentPageShapesSorted();
-  const minDistance = (Math.max(noteWidth, noteHeight) + editor.options.adjacentShapeMargin ** 2) ** shape.props.scale;
+  const minDistance = ((Math.max(noteWidth, noteHeight) + editor.options.adjacentShapeMargin) * shape.props.scale) ** 2;
   for (let i = allShapesOnPage.length - 1; i >= 0; i--) {
     const otherNote = allShapesOnPage[i];
     if (otherNote.type === "note" && otherNote.id !== shape.id) {
@@ -118428,7 +117069,7 @@ var Pointing5 = class extends StateNode {
     this.cancel();
   }
   onComplete() {
-    this.complete();
+    this.cancel();
   }
   onCancel() {
     this.cancel();
@@ -118602,7 +117243,7 @@ var Idle7 = class extends StateNode {
       const onlySelectedShape = this.editor.getOnlySelectedShape();
       if (!this.editor.canEditShape(onlySelectedShape)) return;
       this.editor.setCurrentTool("select");
-      startEditingShapeWithRichText(this.editor, onlySelectedShape.id, { info });
+      startEditingShape(this.editor, onlySelectedShape, { info });
     }
   }
   onCancel() {
@@ -118619,6 +117260,7 @@ var Pointing6 = class extends StateNode {
   enterTime = 0;
   onEnter() {
     this.enterTime = Date.now();
+    this.markId = "";
   }
   onExit() {
     this.editor.setHintingShapes([]);
@@ -122670,6 +121312,9 @@ function getFrameHeadingSize(editor, shape, opts) {
     const spans = editor.textMeasure.measureTextSpans(frameTitle, opts);
     const firstSpan = spans[0];
     const lastSpan = last(spans);
+    if (!firstSpan || !lastSpan) {
+      return new Box(0, -opts.height, 0, opts.height);
+    }
     width = lastSpan.box.w + lastSpan.box.x - firstSpan.box.x;
     measurementWeakmap.set(shape.props, width);
   }
@@ -125287,12 +123932,12 @@ var NoteShapeUtil = class extends ShapeUtil {
       weight: "normal",
       style: "normal"
     });
-    if (shape.props.textLastEditedBy && !isEmptyRichText(shape.props.richText)) {
-      return [...fonts, DefaultFontFaces.tldraw_sans.normal.normal];
-    }
     const themeFaces = getThemeFontFaces(this.editor.getCurrentTheme(), shape.props.font);
-    if (themeFaces) return [...themeFaces, ...fonts];
-    return fonts.length ? fonts : EMPTY_ARRAY;
+    const textFaces = themeFaces ? [...themeFaces, ...fonts] : fonts;
+    if (shape.props.textLastEditedBy && !isEmptyRichText(shape.props.richText)) {
+      return [...textFaces, DefaultFontFaces.tldraw_sans.normal.normal];
+    }
+    return textFaces.length ? textFaces : EMPTY_ARRAY;
   }
   component(shape) {
     const { id, type, props } = shape;
@@ -125627,14 +124272,14 @@ function getNoteHeight(shape, noteHeight) {
 }
 function getNoteShadow(id, rotation, scale) {
   const random = rng(id);
-  const lift6 = Math.abs(random()) + 0.5;
+  const lift5 = Math.abs(random()) + 0.5;
   const oy = Math.cos(rotation);
   const a = 5 * scale;
   const b = 4 * scale;
   const c = 6 * scale;
   const d = 7 * scale;
-  return `0px ${Math.max(0, a - lift6)}px ${a}px -${a}px rgba(15, 23, 31, .6),
-	0px ${(b + lift6 * d) * Math.max(0, oy)}px ${c + lift6 * d}px -${b + lift6 * c}px rgba(15, 23, 31, ${(0.3 + lift6 * 0.1).toFixed(2)}),
+  return `0px ${Math.max(0, a - lift5)}px ${a}px -${a}px rgba(15, 23, 31, .6),
+	0px ${(b + lift5 * d) * Math.max(0, oy)}px ${c + lift5 * d}px -${b + lift5 * c}px rgba(15, 23, 31, ${(0.3 + lift5 * 0.1).toFixed(2)}),
 	0px ${48 * scale}px ${10 * scale}px -${10 * scale}px inset rgba(15, 23, 44, ${((0.022 + random() * 5e-3) * ((1 + oy) / 2)).toFixed(2)})`;
 }
 
@@ -126042,6 +124687,7 @@ var VideoShape = (0, import_react131.memo)(function VideoShape2({ shape }) {
       }
     }
   }, [isEditing, isLoaded]);
+  const hasVideo = !!asset?.props.src && !!url && isLoaded;
   return /* @__PURE__ */ (0, import_jsx_runtime183.jsxs)(import_jsx_runtime183.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime183.jsx)(
       HTMLContainer,
@@ -126049,8 +124695,8 @@ var VideoShape = (0, import_react131.memo)(function VideoShape2({ shape }) {
         id: shape.id,
         style: {
           color: "var(--tl-color-text-3)",
-          backgroundColor: asset ? "transparent" : "var(--tl-color-low)",
-          border: asset ? "none" : "1px solid var(--tl-color-low-border)"
+          backgroundColor: hasVideo ? "transparent" : "var(--tl-color-low)",
+          border: hasVideo ? "none" : "1px solid var(--tl-color-low-border)"
         },
         children: /* @__PURE__ */ (0, import_jsx_runtime183.jsx)("div", { className: "tl-counter-scaled", children: /* @__PURE__ */ (0, import_jsx_runtime183.jsx)("div", { className: "tl-video-container", children: !asset ? /* @__PURE__ */ (0, import_jsx_runtime183.jsx)(BrokenAssetIcon, {}) : Spinner2 && !asset.props.src ? /* @__PURE__ */ (0, import_jsx_runtime183.jsx)(Spinner2, {}) : url ? /* @__PURE__ */ (0, import_jsx_runtime183.jsxs)(import_jsx_runtime183.Fragment, { children: [
           /* @__PURE__ */ (0, import_jsx_runtime183.jsx)(
@@ -126197,9 +124843,11 @@ var Erasing = class extends StateNode {
     this.markId = this.editor.markHistoryStoppingPoint("erase scribble begin");
     this.info = info;
     const originPagePoint = this.editor.inputs.getOriginPagePoint();
+    const pressedShapeIds = new Set(this.editor.getErasingShapeIds());
     this.excludedShapeIds = new Set(
       this.editor.getCurrentPageShapes().filter((shape) => {
         if (this.editor.isShapeOrAncestorLocked(shape)) return true;
+        if (this.editor.isShapeFrameLike(shape) && pressedShapeIds.has(shape.id)) return false;
         if (this.editor.isShapeOfType(shape, "group") || this.editor.isShapeFrameLike(shape)) {
           const pointInShapeShape = this.editor.getPointInShapeSpace(shape, originPagePoint);
           const geometry = this.editor.getShapeGeometry(shape);
@@ -126525,6 +125173,12 @@ var OneFingerZooming = class extends StateNode {
   onPointerUp(_info) {
     this.complete();
   }
+  onPointerDown() {
+    this.parent.transition("idle");
+  }
+  onComplete() {
+    this.parent.transition("idle");
+  }
   onCancel() {
     this.parent.transition("idle");
   }
@@ -126731,6 +125385,7 @@ var Brushing = class extends StateNode {
     const { editor } = this;
     const altKey2 = editor.inputs.getAltKey();
     this.isWrapMode = editor.user.getIsWrapMode();
+    editor.setCursor({ type: "default", rotation: 0 });
     this.viewportDidChange = false;
     let isInitialCheck = true;
     this.cleanupViewportChangeReactor = react("viewport change while brushing", () => {
@@ -127620,6 +126275,7 @@ var Crop = class extends StateNode {
     }
   }
   onCancel() {
+    if (this.getCurrent()?.id !== "idle") return;
     if (!this.didExit) {
       this.didExit = true;
       this.editor.bailToMark(this.markId);
@@ -127862,11 +126518,9 @@ var DraggingHandle = class extends StateNode {
       canSnap = initialHandle.canSnap || initialHandle.snapType !== void 0;
     }
     if (canSnap && (isSnapMode ? !ctrlKey2 : ctrlKey2)) {
-      const pageTransform = editor.getShapePageTransform(shape.id);
-      if (!pageTransform) throw Error("Expected a page transform");
       const snap = snaps.handles.snapHandle({ currentShapeId: shapeId, handle: nextHandle });
       if (snap) {
-        snap.nudge.rot(-editor.getShapeParentTransform(shape).rotation());
+        snap.nudge.rot(-editor.getShapePageTransform(shape.id).rotation());
         point.add(snap.nudge);
         nextHandle = { ...initialHandle, x: point.x, y: point.y };
       }
@@ -128409,6 +127063,7 @@ var Idle12 = class extends StateNode {
         if (util.onDoubleClick) {
           const change = util.onDoubleClick?.(shape);
           if (change) {
+            this.editor.markHistoryStoppingPoint("double click shape");
             this.editor.updateShapes([change]);
             return;
           }
@@ -128437,6 +127092,7 @@ var Idle12 = class extends StateNode {
         const util = this.editor.getShapeUtil(shape);
         const changes = util.onDoubleClickHandle?.(shape, handle);
         if (changes) {
+          this.editor.markHistoryStoppingPoint("double click handle");
           this.editor.updateShapes([changes]);
         } else {
           if (this.editor.canEditShape(shape)) {
@@ -128533,7 +127189,7 @@ var Idle12 = class extends StateNode {
           }
           return;
         }
-        this.nudgeSelectedShapes(false);
+        this.nudgeSelectedShapes(info, false);
         return;
       }
     }
@@ -128570,7 +127226,7 @@ var Idle12 = class extends StateNode {
           );
           return;
         }
-        this.nudgeSelectedShapes(true);
+        this.nudgeSelectedShapes(info, true);
         break;
       }
       case "Tab": {
@@ -128658,12 +127314,13 @@ var Idle12 = class extends StateNode {
     if (!this.editor.canEditShape(shape)) return;
     startEditingShapeWithRichText(this.editor, id, { info });
   }
-  nudgeSelectedShapes(ephemeral = false) {
+  nudgeSelectedShapes(info, ephemeral = false) {
     const {
       editor: {
         inputs: { keys: keys2 }
       }
     } = this;
+    if (info.altKey || this.editor.inputs.getIsSpacebarPanning()) return;
     const shiftKey = keys2.has("ShiftLeft");
     const delta = new Vec(0, 0);
     if (keys2.has("ArrowLeft")) delta.x -= 1;
@@ -128789,7 +127446,7 @@ var PointingArrowLabel = class extends StateNode {
     this.cancel();
   }
   onComplete() {
-    this.cancel();
+    this.complete();
   }
   onInterrupt() {
     this.cancel();
@@ -128917,6 +127574,9 @@ var PointingCanvas = class extends StateNode {
   onComplete() {
     this.complete();
   }
+  onCancel() {
+    this.parent.transition("idle");
+  }
   onInterrupt() {
     this.parent.transition("idle");
   }
@@ -128957,6 +127617,7 @@ var PointingHandle = class extends StateNode {
   }
   onExit() {
     this.editor.setHintingShapes([]);
+    clearArrowTargetState(this.editor);
     this.editor.setCursor({ type: "default", rotation: 0 });
   }
   onPointerUp() {
@@ -129259,7 +127920,7 @@ var PointingShape = class extends StateNode {
     const selectedShapeIds = this.editor.getSelectedShapeIds();
     const focusedGroupId = this.editor.getFocusedGroupId();
     const currentPagePoint = this.editor.inputs.getCurrentPagePoint();
-    const additiveSelectionKey = info.shiftKey || info.accelKey;
+    const additiveSelectionKey = (info.shiftKey || info.accelKey) && !info.altKey;
     const hitShape = this.editor.getShapeAtPoint(currentPagePoint, {
       margin: this.editor.getHitTestMargin(),
       hitInside: true,
@@ -129415,6 +128076,8 @@ var Resizing = class extends StateNode {
   markId = "";
   // A switch to detect when the user is holding ctrl
   didHoldCommand = false;
+  // Set by complete() and cancel(); see onExit for what happens when neither ran
+  didFinish = false;
   // we transition into the resizing state from the geo pointing state, which starts with a shape of size w: 1, h: 1,
   // so if the user drags x: +50, y: +50 after mouseDown, the shape will be w: 51, h: 51, which is too many pixels, alas
   // so we allow passing a further offset into this state to negate such issues
@@ -129424,6 +128087,7 @@ var Resizing = class extends StateNode {
     const { isCreating = false, creatingMarkId, creationCursorOffset = { x: 0, y: 0 } } = info;
     this.info = info;
     this.didHoldCommand = false;
+    this.didFinish = false;
     if (typeof info.onInteractionEnd === "string") {
       this.parent.setCurrentToolIdMask(info.onInteractionEnd);
     }
@@ -129480,11 +128144,13 @@ var Resizing = class extends StateNode {
     this.cancel();
   }
   cancel() {
+    this.didFinish = true;
     const { shapeSnapshots } = this.snapshot;
     shapeSnapshots.forEach(({ shape }) => {
       const current = this.editor.getShape(shape.id);
       if (current) {
         const util = this.editor.getShapeUtil(shape);
+        if (!util.canResize(shape)) return;
         util.onResizeCancel?.(shape, current);
       }
     });
@@ -129501,6 +128167,7 @@ var Resizing = class extends StateNode {
     this.parent.transition("idle");
   }
   complete() {
+    this.didFinish = true;
     kickoutOccludedShapes(this.editor, this.snapshot.selectedShapeIds);
     this.handleResizeEnd();
     if (this.info.isCreating && this.info.onCreate) {
@@ -129526,6 +128193,7 @@ var Resizing = class extends StateNode {
     const changes = [];
     shapeSnapshots.forEach(({ shape }) => {
       const util = this.editor.getShapeUtil(shape);
+      if (!util.canResize(shape)) return;
       const change = util.onResizeStart?.(shape);
       if (change) {
         changes.push(change);
@@ -129541,6 +128209,7 @@ var Resizing = class extends StateNode {
     shapeSnapshots.forEach(({ shape }) => {
       const current = this.editor.getShape(shape.id);
       const util = this.editor.getShapeUtil(shape);
+      if (!util.canResize(shape)) return;
       const change = util.onResizeEnd?.(shape, current);
       if (change) {
         changes.push(change);
@@ -129583,14 +128252,14 @@ var Resizing = class extends StateNode {
       currentPagePoint.snapToGrid(gridSize);
     }
     const dragHandle = info.handle;
-    const scaleOriginHandle = rotateSelectionHandle2(dragHandle, Math.PI);
+    const scaleOriginHandle = rotateSelectionHandle(dragHandle, Math.PI);
     editor.snaps.clearIndicators();
     const shouldSnap = editor.user.getIsSnapMode() ? !isHoldingAccel : isHoldingAccel;
     if (shouldSnap && selectionRotation % HALF_PI === 0) {
       const { nudge } = editor.snaps.shapeBounds.snapResizeShapes({
         dragDelta: Vec.Sub(currentPagePoint, originPagePoint),
         initialSelectionPageBounds,
-        handle: rotateSelectionHandle2(dragHandle, selectionRotation),
+        handle: rotateSelectionHandle(dragHandle, selectionRotation),
         isAspectRatioLocked,
         isResizingFromCenter: altKey2
       });
@@ -129762,6 +128431,9 @@ var Resizing = class extends StateNode {
     if (this.info.isCreating && this.editor.getHintingShapeIds().length > 0) {
       this.editor.setHintingShapes([]);
     }
+    if (this.info.isCreating && !this.didFinish) {
+      this.editor.bailToMark(this.markId);
+    }
   }
   _createSnapshot() {
     const { editor } = this;
@@ -129782,16 +128454,14 @@ var Resizing = class extends StateNode {
       const shape = editor.getShape(shapeId);
       if (!shape) return false;
       const util = editor.getShapeUtil(shape);
-      if (util.canResize(shape)) {
-        const pageTransform = editor.getShapePageTransform(shape);
-        shapeSnapshots.set(shape.id, {
-          shape,
-          bounds: editor.getShapeGeometry(shape).bounds,
-          pageTransform,
-          pageRotation: Mat.Decompose(pageTransform).rotation,
-          isAspectRatioLocked: util.isAspectRatioLocked(shape)
-        });
-      }
+      const pageTransform = editor.getShapePageTransform(shape);
+      shapeSnapshots.set(shape.id, {
+        shape,
+        bounds: editor.getShapeGeometry(shape).bounds,
+        pageTransform,
+        pageRotation: Mat.Decompose(pageTransform).rotation,
+        isAspectRatioLocked: util.isAspectRatioLocked(shape)
+      });
       if (editor.isShapeFrameLike(shape)) {
         frames.push({
           id: shape.id,
@@ -129846,22 +128516,6 @@ var Resizing = class extends StateNode {
     };
   }
 };
-var ORDERED_SELECTION_HANDLES2 = [
-  "top",
-  "top_right",
-  "right",
-  "bottom_right",
-  "bottom",
-  "bottom_left",
-  "left",
-  "top_left"
-];
-function rotateSelectionHandle2(handle, rotation) {
-  rotation = rotation % PI2;
-  const numSteps = Math.round(rotation / (PI / 4));
-  const currentIndex = ORDERED_SELECTION_HANDLES2.indexOf(handle);
-  return ORDERED_SELECTION_HANDLES2[(currentIndex + numSteps) % ORDERED_SELECTION_HANDLES2.length];
-}
 
 // node_modules/tldraw/dist-esm/lib/tools/SelectTool/childStates/Rotating.mjs
 init_define_import_meta();
@@ -130016,9 +128670,7 @@ var ScribbleBrushing = class extends StateNode {
   initialSelectedShapeIds = /* @__PURE__ */ new Set();
   newlySelectedShapeIds = /* @__PURE__ */ new Set();
   onEnter() {
-    this.initialSelectedShapeIds = new Set(
-      this.editor.inputs.getShiftKey() ? this.editor.getSelectedShapeIds() : []
-    );
+    this.initialSelectedShapeIds = new Set(this.editor.getSelectedShapeIds());
     this.newlySelectedShapeIds = /* @__PURE__ */ new Set();
     this.size = 0;
     this.hits.clear();
@@ -130442,6 +129094,7 @@ var Translating = class extends StateNode {
     this.markId = this.editor.markHistoryStoppingPoint("translate cloning");
     this.editor.duplicateShapes(Array.from(this.editor.getSelectedShapeIds()));
     this.snapshot = getTranslatingSnapshot(this.editor);
+    this.dragAndDropManager.clear();
     this.handleStart();
     this.updateShapes();
   }
@@ -130450,6 +129103,7 @@ var Translating = class extends StateNode {
     this.snapshot = this.selectionSnapshot;
     this.reset();
     this.markId = this.editor.markHistoryStoppingPoint("translate");
+    this.dragAndDropManager.clear();
     this.updateShapes();
   }
   reset() {
@@ -130657,7 +129311,8 @@ function getTranslatingSnapshot(editor) {
       scale: noteSnapshot.shape.props.scale,
       extraHeight: noteSnapshot.shape.props.growY ?? 0,
       noteWidth: dv.noteWidth,
-      noteHeight: dv.noteHeight
+      noteHeight: dv.noteHeight,
+      excludeShapeIds: selectedShapeIds
     });
     noteCenterOffset = new Vec(dv.noteWidth / 2, dv.noteHeight / 2);
   }
@@ -130805,6 +129460,9 @@ var SelectTool = class extends StateNode {
     this.reactor?.();
     if (this.editor.getCurrentPageState().editingShapeId) {
       this.editor.setEditingShape(null);
+    }
+    if (this.editor.getCroppingShapeId()) {
+      this.editor.setCroppingShape(null);
     }
   }
 };
@@ -131554,14 +130212,13 @@ var TldrawUi = import_react137.default.memo(function TldrawUi2({
 });
 var TldrawUiInner = import_react137.default.memo(function TldrawUiInner2({
   children,
-  hideUi,
-  ...rest
+  hideUi
 }) {
   useKeyboardShortcuts();
   useNativeClipboardEvents();
   return /* @__PURE__ */ (0, import_jsx_runtime188.jsxs)(import_jsx_runtime188.Fragment, { children: [
     children,
-    hideUi ? null : /* @__PURE__ */ (0, import_jsx_runtime188.jsx)(TldrawUiContent, { ...rest })
+    hideUi ? null : /* @__PURE__ */ (0, import_jsx_runtime188.jsx)(TldrawUiContent, {})
   ] });
 });
 var TldrawUiContent = import_react137.default.memo(function TldrawUI() {
@@ -132329,7 +130986,7 @@ async function serializeTldrawJsonBlob(editor) {
 // node_modules/tldraw/dist-esm/index.mjs
 registerTldrawLibraryVersion(
   "tldraw",
-  "5.3.2",
+  "5.4.0",
   "esm"
 );
 
@@ -135696,7 +134353,7 @@ init_define_import_meta();
 // node_modules/@obsidian-plugin-toolkit/react/dist/chunk-BMNW75JZ.js
 init_define_import_meta();
 var __defProp24 = Object.defineProperty;
-var __export6 = (target, all) => {
+var __export5 = (target, all) => {
   for (var name in all)
     __defProp24(target, name, { get: all[name], enumerable: true });
 };
@@ -135706,7 +134363,7 @@ var import_obsidian16 = require("obsidian");
 var import_client6 = __toESM(require_client(), 1);
 var import_react164 = __toESM(require_react(), 1);
 var utils_exports = {};
-__export6(utils_exports, {
+__export5(utils_exports, {
   ReactPluginSettingTab: () => ReactPluginSettingTab
 });
 var ReactPluginSettingTab = class extends import_obsidian16.PluginSettingTab {
@@ -135873,7 +134530,7 @@ var import_react174 = __toESM(require_react(), 1);
 var import_react_dom19 = __toESM(require_react_dom(), 1);
 var import_jsx_runtime203 = __toESM(require_jsx_runtime(), 1);
 var components_exports = {};
-__export6(components_exports, {
+__export5(components_exports, {
   Button: () => Button2,
   Dropdown: () => Dropdown,
   ExtraButton: () => ExtraButton,
@@ -136789,9 +135446,9 @@ function updateIconOverrides(original, updates) {
 
 // src/obsidian/settings/tldrawNpmAssets.ts
 init_define_import_meta();
-var TLDRAW_NPM_ASSETS_BASE_URL = `https://cdn.jsdelivr.net/npm/@tldraw/assets@${"5.3.2"}`;
+var TLDRAW_NPM_ASSETS_BASE_URL = `https://cdn.jsdelivr.net/npm/@tldraw/assets@${"5.4.0"}`;
 function tldrawNpmAssetsBrowseUrl(subpath) {
-  const v = encodeURIComponent("5.3.2");
+  const v = encodeURIComponent("5.4.0");
   const p = subpath.replace(/^\/+/, "");
   return `https://unpkg.com/browse/@tldraw/assets@${v}/${p}`;
 }
@@ -138250,7 +136907,7 @@ function TldrawSettingsTabView({
       slots: {
         name: "tldraw version",
         desc: "The version of tldraw that is bundled with the plugin.",
-        control: /* @__PURE__ */ import_react189.default.createElement(Text3, { readonly: true, value: "5.3.2" })
+        control: /* @__PURE__ */ import_react189.default.createElement(Text3, { readonly: true, value: "5.4.0" })
       }
     }
   )), /* @__PURE__ */ import_react189.default.createElement(Group4, { heading: "Plugin information" }, Object.entries(settingsManager.plugin.manifest).map(([key, value]) => /* @__PURE__ */ import_react189.default.createElement(
@@ -140395,7 +139052,7 @@ function tldrawFileToJson(tldrawFile) {
 var getTLMetaTemplate = (pluginVersion, uuid = window.crypto.randomUUID()) => ({
   uuid,
   "plugin-version": pluginVersion,
-  "tldraw-version": "5.3.2"
+  "tldraw-version": "5.4.0"
 });
 var getTLDataTemplate = (pluginVersion, tldrawFile, uuid) => ({
   meta: getTLMetaTemplate(pluginVersion, uuid),
@@ -140537,7 +139194,7 @@ function migrationOld(tldataRaw) {
 
 // src/utils/migrate.ts
 function migrateIfNecessary(currentPluginVersion, tldata) {
-  const currAppVersion = "5.3.2";
+  const currAppVersion = "5.4.0";
   const currFileVersion = tldata.meta["tldraw-version"];
   let tldataRes;
   if (currFileVersion !== "2.0.0-alpha.14") {
@@ -142505,11 +141162,20 @@ tldraw/dist-esm/lib/shapes/shared/PathBuilder.mjs:
    * https://github.com/adobe-webplatform/Snap.svg/blob/c8e483c9694517e24b282f8f59f985629f4994ce/dist/snap.svg.js#L5786
    *)
 
+tldraw/dist-esm/lib/ui/kbd-utils.mjs:
+  (*!
+   * `splitKbd` is adapted from hotkeys-js.
+   *
+   * MIT License: https://github.com/jaywcjlove/hotkeys-js/blob/master/LICENSE
+   * Copyright (c) 2015-present, Kenny Wong
+   * Copyright (c) 2011-2013 Thomas Fuchs (https://github.com/madrobby/keymaster)
+   * Source: https://github.com/jaywcjlove/hotkeys-js
+   *)
+
 tldraw/dist-esm/lib/ui/hooks/useKeyboardShortcuts.mjs:
   (*!
-   * The kbd-string splitter (`getKeys`) and the form-input filter pattern in `shouldSkipEvent`
-   * (including its list of non-text INPUT types) are adapted from hotkeys-js, which this hook
-   * previously depended on.
+   * The form-input filter pattern in `shouldSkipEvent` (including its list of non-text INPUT
+   * types) is adapted from hotkeys-js, which this hook previously depended on.
    *
    * MIT License: https://github.com/jaywcjlove/hotkeys-js/blob/master/LICENSE
    * Copyright (c) 2015-present, Kenny Wong

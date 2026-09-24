@@ -27,7 +27,7 @@ En la ruta superior partes de una imagen conocida. En la inferior partes de un c
 
 ## 3. Por qué el codificador entrega una distribución
 
-Un autocodificador determinista suele asignar un código concreto a una entrada. En el VAE gaussiano habitual, el codificador produce una media y una varianza para cada coordenada del código.
+Un autocodificador determinista suele asignar un código concreto a una entrada. En un VAE gaussiano con covarianza diagonal, el codificador produce una media y una varianza para cada coordenada del código.
 
 La **media** indica alrededor de qué valor se concentra esa coordenada. La **varianza** describe cuánto se dispersan sus valores. Después sorteamos un código usando esa distribución. A sortear siguiendo probabilidades se le llama **muestrear**.
 
@@ -70,7 +70,7 @@ Lee cada parte con calma:
 - $\mathbb E$ significa tomar un promedio sobre los códigos posibles.
 - $\phi$ y $\theta$ son los pesos de las redes; no son el código z.
 
-ELBO significa una **cota inferior**: queda por debajo de la log-probabilidad del dato que querríamos optimizar. Se usa porque calcular esa probabilidad exacta normalmente exige una integral difícil. En programas que minimizan una pérdida se usa a menudo el negativo de ELBO.
+ELBO significa una **cota inferior**: queda por debajo de la log-probabilidad $\log p_\theta(x)$ del dato que querríamos optimizar. La diferencia es $D_{KL}(q_\phi(z\mid x)\Vert p_\theta(z\mid x))$, que no puede ser negativa. La posterior exacta $p_\theta(z\mid x)$ y la integral necesaria para $p_\theta(x)$ suelen ser difíciles de calcular; por eso optimizamos la cota. En programas que minimizan una pérdida se usa a menudo el negativo de ELBO.
 
 ## 7. Cómo muestrear y seguir entrenando
 

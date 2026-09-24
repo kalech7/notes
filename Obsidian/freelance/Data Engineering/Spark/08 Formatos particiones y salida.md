@@ -8,6 +8,22 @@ tags:
 
 # Parquet, JSON, CSV y archivos de salida
 
+## Distingue contenido, formato y distribución
+
+El contenido lógico puede ser dos filas: `(A, 10)` y `(B, 20)`. En CSV se expresa como texto separado por delimitadores; en JSON, como objetos con campos; en Parquet, con una organización binaria por columnas. El formato cambia cómo se guarda y lee, no qué significan esos importes.
+
+Ahora imagina muchas filas repartidas entre tareas. Varias tareas pueden escribir en paralelo en una misma ruta de salida. Por eso `salida/reporte.csv` puede ser el **nombre de un directorio**, dentro del cual aparecen archivos `part-*`.
+
+Las tres expresiones que contienen «partición» responden preguntas diferentes:
+
+| Expresión | Pregunta que resuelve |
+|---|---|
+| `repartition(4)` | ¿Cómo redistribuyo el DataFrame para el trabajo? |
+| `Window.partitionBy("pais")` | ¿Qué filas participan juntas en el cálculo de ventana? |
+| `write.partitionBy("anio")` | ¿Cómo organizo físicamente la salida por valores? |
+
+No puedes inferir una de las otras. Agrupar una competencia por país no promete un archivo por país.
+
 ## El formato determina qué trabajo necesita el lector
 
 CSV guarda texto tabular con un separador. JSON guarda texto con estructura y valores como números, cadenas, booleanos y arrays, pero no trae por sí solo un contrato completo de tipos y dominios. Parquet guarda datos en una organización columnar binaria con esquema y metadatos.

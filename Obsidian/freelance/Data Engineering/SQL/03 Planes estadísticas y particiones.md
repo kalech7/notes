@@ -8,6 +8,19 @@ tags:
 
 # Planes, estadísticas y particionamiento
 
+## Cómo leer un diagnóstico con números
+
+Imagina un filtro que, según el optimizador, devolverá 10 filas. Al ejecutarlo devuelve 100 000. El problema que investigas es la diferencia entre **lo que se esperaba** y **lo que realmente ocurrió**; no que aparezca una palabra concreta en el plan.
+
+1. Localiza dónde surge la primera diferencia grande. Si la entrada al join ya estaba mal estimada, el join hereda esa dificultad.
+2. Mira el trabajo: leer 100 000 filas para devolver 10 puede ser costoso aunque el resultado sea pequeño.
+3. Comprueba si se repite una búsqueda por cada fila. Diez búsquedas pueden ser razonables; cien mil merecen revisión.
+4. Revisa distribución y filtros antes de cambiar índices o estadísticas.
+
+**Cardinalidad** aquí significa cantidad de filas. Si 100 de 10 000 filas pasan un filtro, su fracción seleccionada es `100 / 10 000 = 1 %`. En este sentido es un filtro muy selectivo: deja pasar poco.
+
+Particionar por año responde «¿qué segmentos puedo omitir?». Indexar por cliente responde «¿cómo encuentro este cliente?». Son preguntas diferentes y una consulta puede beneficiarse de ambas.
+
 ## Qué decide el optimizador
 
 El optimizador compara formas de ejecutar una consulta. Las **estadísticas** describen distribuciones: cuántas filas hay, valores frecuentes y rangos de valores, a menudo mediante histogramas. La **cardinalidad** de un operador es cuántas filas produce; la selectividad expresa qué proporción cumple un filtro. Aquí «filtro muy selectivo» significa que deja pocas filas.

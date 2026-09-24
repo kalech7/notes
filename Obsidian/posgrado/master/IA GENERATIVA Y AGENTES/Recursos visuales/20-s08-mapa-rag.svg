@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="739.8pt" height="444.96pt" viewBox="0 0 739.8 444.96" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-23T19:10:06.389207</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 444.96 
+L 739.8 444.96 
+L 739.8 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 16.128 230.4144 
+L 165.672 230.4144 
+Q 172.368 230.4144 172.368 223.7616 
+L 172.368 172.2024 
+Q 172.368 165.5496 165.672 165.5496 
+L 16.128 165.5496 
+Q 9.432 165.5496 9.432 172.2024 
+L 9.432 223.7616 
+Q 9.432 230.4144 16.128 230.4144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 200.268 230.4144 
+L 349.812 230.4144 
+Q 356.508 230.4144 356.508 223.7616 
+L 356.508 172.2024 
+Q 356.508 165.5496 349.812 165.5496 
+L 200.268 165.5496 
+Q 193.572 165.5496 193.572 172.2024 
+L 193.572 223.7616 
+Q 193.572 230.4144 200.268 230.4144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 384.408 230.4144 
+L 533.952 230.4144 
+Q 540.648 230.4144 540.648 223.7616 
+L 540.648 172.2024 
+Q 540.648 165.5496 533.952 165.5496 
+L 384.408 165.5496 
+Q 377.712 165.5496 377.712 172.2024 
+L 377.712 223.7616 
+Q 377.712 230.4144 384.408 230.4144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 568.548 230.4144 
+L 718.092 230.4144 
+Q 724.788 230.4144 724.788 223.7616 
+L 724.788 172.2024 
+Q 724.788 165.5496 718.092 165.5496 
+L 568.548 165.5496 
+Q 561.852 165.5496 561.852 172.2024 
+L 561.852 223.7616 
+Q 561.852 230.4144 568.548 230.4144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 16.128 369.0144 
+L 165.672 369.0144 
+Q 172.368 369.0144 172.368 362.3616 
+L 172.368 310.8024 
+Q 172.368 304.1496 165.672 304.1496 
+L 16.128 304.1496 
+Q 9.432 304.1496 9.432 310.8024 
+L 9.432 362.3616 
+Q 9.432 369.0144 16.128 369.0144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 200.268 369.0144 
+L 349.812 369.0144 
+Q 356.508 369.0144 356.508 362.3616 
+L 356.508 310.8024 
+Q 356.508 304.1496 349.812 304.1496 
+L 200.268 304.1496 
+Q 193.572 304.1496 193.572 310.8024 
+L 193.572 362.3616 
+Q 193.572 369.0144 200.268 369.0144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 384.408 369.0144 
+L 533.952 369.0144 
+Q 540.648 369.0144 540.648 362.3616 
+L 540.648 310.8024 
+Q 540.648 304.1496 533.952 304.1496 
+L 384.408 304.1496 
+Q 377.712 304.1496 377.712 310.8024 
+L 377.712 362.3616 
+Q 377.712 369.0144 384.408 369.0144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 568.548 369.0144 
+L 718.092 369.0144 
+Q 724.788 369.0144 724.788 362.3616 
+L 724.788 310.8024 
+Q 724.788 304.1496 718.092 304.1496 
+L 568.548 304.1496 
+Q 561.852 304.1496 561.852 310.8024 
+L 561.852 362.3616 
+Q 561.852 369.0144 568.548 369.0144 
+z
+" clip-path="url(#p835c1735c9)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 643.32 231.5232 
+L 643.32 252.036 
+L 275.04 252.036 
+L 275.04 303.0408 
+" clip-path="url(#p835c1735c9)" style="fill: none; stroke: #475569; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="7.2" y="92.062125" transform="rotate(-0 7.2 92.062125)">Dos tiempos: la ingesta se reutiliza; la consulta depende de cada pregunta.</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #2563eb" x="12.78" y="135.612" transform="rotate(-0 12.78 135.612)">1  PREPARACIÓN · al incorporar o actualizar fuentes</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(53.019375 193.271062)">Documentos</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(41.468438 210.29325)">con procedencia</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(224.880938 192.29325)">Extraer y limpiar</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(211.86375 211.45575)">Conservar relaciones</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(403.026563 193.45575)">Dividir con sentido</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(417.21 211.45575)">Contar tokens</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(575.809688 192.29325)">Representar y guardar</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(597.609375 211.69575)">Texto + índices</text>
+   </g>
+   <g id="patch_10">
+    <path d="M 176.598501 198.2592 
+Q 182.970528 198.2592 187.441898 198.2592 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 181.441898 195.2592 
+L 187.441898 198.2592 
+L 181.441898 201.2592 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 360.738501 198.2592 
+Q 367.110528 198.2592 371.581898 198.2592 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 365.581898 195.2592 
+L 371.581898 198.2592 
+L 365.581898 201.2592 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 544.878501 198.2592 
+Q 551.250528 198.2592 555.721898 198.2592 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 549.721898 195.2592 
+L 555.721898 198.2592 
+L 549.721898 201.2592 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0f766e" x="12.78" y="274.212" transform="rotate(-0 12.78 274.212)">2  CONSULTA · por cada pregunta</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(63.917813 330.708562)">Pregunta</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(30.958125 349.13325)">Formar la búsqueda</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(244.235625 330.708562)">Recuperar</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(204.9 348.89325)">Candidatos pertinentes</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(396.244687 332.05575)">Seleccionar contexto</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(396.675 348.89325)">Orden y procedencia</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(578.927813 330.89325)">Generar y comprobar</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #172554" transform="translate(571.634063 348.708562)">Respuesta con sustento</text>
+   </g>
+   <g id="patch_13">
+    <path d="M 176.598501 336.8592 
+Q 182.970528 336.8592 187.441898 336.8592 
+" style="fill: none; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 181.441898 333.8592 
+L 187.441898 336.8592 
+L 181.441898 339.8592 
+z
+" style="fill: #0f766e; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 360.738501 336.8592 
+Q 367.110528 336.8592 371.581898 336.8592 
+" style="fill: none; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 365.581898 333.8592 
+L 371.581898 336.8592 
+L 365.581898 339.8592 
+z
+" style="fill: #0f766e; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 544.878501 336.8592 
+Q 551.250528 336.8592 555.721898 336.8592 
+" style="fill: none; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 549.721898 333.8592 
+L 555.721898 336.8592 
+L 549.721898 339.8592 
+z
+" style="fill: #0f766e; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 275.04 292.843819 
+Q 275.04 297.773496 275.04 300.802516 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 278.04 294.802516 
+L 275.04 300.802516 
+L 272.04 294.802516 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="12.78" y="412.812" transform="rotate(-0 12.78 412.812)">Dependencia central: la consulta solo puede aprovechar la evidencia que el sistema conserva y hace accesible.</text>
+   </g>
+  </g>
+  <g id="text_13">
+   <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="358.2" y="22.396875" transform="rotate(-0 358.2 22.396875)">RAG: preparar documentos y consultar evidencia</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p835c1735c9">
+   <rect x="7.2" y="77.4" width="725.4" height="360.36"/>
+  </clipPath>
+ </defs>
+</svg>

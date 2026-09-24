@@ -8,6 +8,16 @@ tags:
 
 # Índices y SARGability: buscar sin revisar todo
 
+## Sigue una búsqueda concreta
+
+Supón que tienes un millón de ventas y necesitas las del cliente 123. Sin una estructura útil para buscarlo, el motor puede tener que revisar la tabla completa. Un índice por `cliente_id` permite localizar las entradas de 123 y acceder a sus ventas.
+
+Hay dos trabajos distintos: **encontrar las filas** y **recuperar las columnas solicitadas**. Si el índice contiene cliente y localizador, pero pides también importe, puede hacer falta ir a la tabla por ese importe. Un índice que cubre la consulta ya contiene lo necesario para responderla.
+
+En `ON ventas(cliente_id) INCLUDE (fecha, total)`, `cliente_id` es la clave de búsqueda y `fecha`/`total` son información adicional disponible en las hojas del índice. Incluir fecha no equivale a ponerla como primera clave de búsqueda.
+
+Para el filtro anual, imagina las fechas ordenadas en una agenda: «desde el 1 de enero de 2026 hasta antes del 1 de enero de 2027» describe un tramo continuo. Esa es la razón del rango del ejemplo, no una regla de que toda función esté siempre prohibida.
+
 ## Intuición
 
 Un índice se parece al índice alfabético de un libro: pagas espacio y mantenimiento para encontrar páginas más rápido. Un predicado es la condición que decide si una fila cumple el filtro. Un filtro SARGable permite usar una estructura de acceso para buscar por su clave; **posibilita** un acceso eficiente, no obliga al optimizador a escogerlo.

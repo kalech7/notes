@@ -8,6 +8,21 @@ tags:
 
 # Pruebas: niveles, objetivos y pirámide
 
+## Sigue un defecto por los niveles de prueba
+
+Requisito: un empate debe entregar un punto a cada equipo.
+
+| Alcance | Entrada del ejemplo | Qué resultado compruebas |
+|---|---|---|
+| Unidad | Números 2 y 2 | La función devuelve 1 |
+| Integración | Texto `2,2` leído del archivo | Parser y función se conectan y producen los puntos correctos |
+| Sistema | Archivo con partidos | El reporte final refleja las sumas esperadas |
+| Aceptación | Clasificación presentada al responsable | Cumple la regla acordada de puntos y desempates |
+
+Si la función recibe correctamente 2 y 2 pero el lector interpreta el separador de forma incorrecta, la prueba unitaria puede pasar y el flujo fallar. Por eso las pruebas se complementan.
+
+Una prueba necesita una **expectativa independiente**: saber que un empate vale 1 por la regla del negocio. Calcular el resultado esperado con la misma función que estás comprobando puede repetir el mismo error y no detectarlo.
+
 ## Dos preguntas diferentes
 
 El **nivel** indica qué parte del sistema pruebas. El **tipo u objetivo** indica qué propiedad estás comprobando. Una prueba puede ser de sistema y funcional; otra, de sistema y rendimiento. No pongas «unitaria» y «no funcional» como alternativas excluyentes.

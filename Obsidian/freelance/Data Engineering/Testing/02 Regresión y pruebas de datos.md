@@ -8,6 +8,16 @@ tags:
 
 # Regresión, retesting e invariantes de datos
 
+## Haz visibles la corrección y sus efectos
+
+Antes del arreglo: `puntos(1, 1)` da 0. Después debe dar 1. Repetir ese caso confirma que se corrigió el defecto. Comprobar además que `puntos(2, 0)` sigue dando 3 y `puntos(0, 2)` sigue dando 0 busca regresiones.
+
+Un **invariante** es una propiedad que debe mantenerse bajo supuestos explícitos. En un partido 3–1, la diferencia del local es +2 y la del visitante −2; suman cero. Si generas ambas perspectivas de cada partido válido, la suma global también debe ser cero.
+
+Ese control no basta por sí solo: asignar cero a todas las diferencias también suma cero, pero está mal. Combina propiedades generales con casos pequeños cuya respuesta conoces.
+
+Una prueba **metamórfica** cambia la entrada de una manera cuyo efecto puedes anticipar. Si desplazas todos los centros y su centroide 10 unidades a la derecha, las distancias deben conservarse. No necesitas conocer cada distancia para saber que un traslado común no las modifica.
+
 ## Un arreglo tiene dos preguntas
 
 Supón que el sistema otorgaba 0 puntos a los empates y lo corriges a 1.

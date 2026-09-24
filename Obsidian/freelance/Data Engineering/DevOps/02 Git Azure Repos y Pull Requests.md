@@ -8,6 +8,21 @@ tags:
 
 # Git, Azure Repos y Pull Requests
 
+## Qué ocurre entre editar y compartir
+
+Imagina que modificas la regla de puntos en `reglas.py`.
+
+1. Guardar el archivo cambia tu copia de trabajo.
+2. `git add reglas.py` prepara ese contenido para el próximo commit. Si vuelves a editar, los cambios nuevos necesitan añadirse otra vez.
+3. `git commit` registra lo preparado en el historial local.
+4. `git push` comparte commits con el repositorio remoto configurado.
+5. El pull request permite revisar una propuesta de integración entre ramas.
+6. El merge incorpora cambios según la estrategia elegida; el despliegue es otro paso del proceso.
+
+Un commit local no aparece automáticamente en el servidor. Un push tampoco significa que el cambio se haya integrado en main o que ya esté en producción.
+
+Si corriges una regla urgente en la versión publicada, necesitas que la corrección llegue también a la línea desde la que saldrá la siguiente versión. De lo contrario, una entrega futura puede traer de vuelta el comportamiento anterior.
+
 ## Qué es cada cosa
 
 Git mantiene versiones del proyecto mediante commits relacionados entre sí. Azure DevOps es una plataforma con varios servicios; Azure Repos es el servicio para alojar y colaborar sobre repositorios. Git también se usa localmente y con otros proveedores. Un pull request pertenece al flujo de colaboración de la plataforma: no es un objeto básico de Git como un commit.

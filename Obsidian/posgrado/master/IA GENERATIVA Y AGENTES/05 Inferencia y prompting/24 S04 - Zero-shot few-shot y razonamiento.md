@@ -22,7 +22,7 @@ El prompt altera el prefijo que condiciona la distribución del siguiente token.
 | Few-shot | Instrucción y varios ejemplos | No |
 | Fine-tuning | Dataset usado en entrenamiento | Sí |
 
-Este aprendizaje aparente dentro del contexto se llama **in-context learning**. Se pierde cuando el ejemplo sale de la ventana de contexto.
+Este aprendizaje aparente dentro del contexto se llama **in-context learning**. El ejemplo influye mientras forme parte del contexto disponible; al salir de la ventana, deja de estar accesible directamente y no queda incorporado a los pesos.
 
 ## 2. Qué aporta un ejemplo
 
@@ -70,7 +70,7 @@ Evalúa la respuesta final con un verificador cuando sea posible. Si la traza se
 
 ## 6. Auto-consistencia
 
-La auto-consistencia ejecuta el mismo problema varias veces con muestreo y elige la respuesta más frecuente.
+La auto-consistencia obtiene varias trayectorias de solución mediante muestreo y elige la respuesta final más frecuente, después de normalizar respuestas equivalentes si hace falta.
 
 ```mermaid
 flowchart LR

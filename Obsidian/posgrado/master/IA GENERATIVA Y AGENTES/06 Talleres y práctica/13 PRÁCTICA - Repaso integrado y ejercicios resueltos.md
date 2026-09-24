@@ -9,7 +9,7 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
-**Base:** sesiones 00 y 01, especialmente [[sesion-01.pdf#page=19|Sesión 01, páginas 19–20]]. Ejercicios propios para estudiar. No es el notebook oficial mencionado en las diapositivas.
+**Base:** sesiones 00 y 01, especialmente [[sesion-01.pdf#page=19|Sesión 01, páginas 19–20]]. Estos son ejercicios propios para estudiar; el notebook de la sesión está en [[s1-lun-estudiante.ipynb]] y se trabaja paso a paso en [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas]].
 
 ## Antes de calcular
 
@@ -21,7 +21,7 @@ No necesitas resolver todos los ejercicios de una vez. Los primeros seis repasan
 
 Primero explica el concepto con tus palabras, luego calcula sin mirar y por último abre la respuesta. Si aciertas por intuición pero no sabes justificarlo, vuelve a la nota correspondiente.
 
-Estas actividades convierten el temario en situaciones concretas. El ZIP contiene libros y artículos; no incluye el notebook original citado por las diapositivas. Por eso los ejercicios de esta nota son una adaptación didáctica, no una entrega resuelta del curso.
+Estas actividades convierten el temario en situaciones concretas. Son una adaptación didáctica adicional al notebook de la sesión, no una entrega resuelta del curso.
 
 ## Ejercicio 1: identificar el enfoque
 

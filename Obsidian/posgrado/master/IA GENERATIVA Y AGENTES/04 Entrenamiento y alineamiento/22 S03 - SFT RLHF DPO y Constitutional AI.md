@@ -27,7 +27,7 @@ Instrucción: Explica qué es un token para alguien que empieza.
 Respuesta: Un token es una unidad de texto que el modelo procesa...
 ```
 
-El par se serializa con una plantilla de roles. El modelo sigue prediciendo el siguiente token; cambia la distribución de datos sobre la que se entrena.
+El par se serializa con una plantilla de roles. El modelo sigue prediciendo el siguiente token; cambian los datos y, a menudo, qué posiciones contribuyen a la pérdida: puede calcularse solo sobre los tokens de la respuesta, dejando la instrucción como contexto.
 
 ```mermaid
 flowchart LR
@@ -37,7 +37,7 @@ flowchart LR
     M --> P["Política SFT"]
 ```
 
-SFT enseña principalmente el formato y estilo de asistente. No define por sí solo cómo ordenar dos respuestas razonables.
+SFT enseña a imitar las respuestas demostradas, incluidos contenido, formato y estilo. La calidad y cobertura de las demostraciones limitan lo aprendido; una pérdida sobre una única respuesta objetivo no expresa directamente la preferencia entre dos respuestas alternativas.
 
 ## 3. Datos de preferencia
 
@@ -61,7 +61,7 @@ flowchart LR
     N -. "genera nuevas respuestas" .-> R
 ```
 
-El modelo de recompensa produce un escalar $r_\phi(x,y)$. PPO actualiza la política para obtener recompensa alta, pero añade una penalización KL respecto de una política de referencia. Esa restricción limita cuánto puede alejarse el modelo para explotar defectos del proxy.
+En la variante clásica ilustrada aquí, el modelo de recompensa produce un escalar $r_\phi(x,y)$. PPO actualiza la política para obtener recompensa alta y se añade una penalización KL respecto de una política de referencia. RLHF también puede emplear otros algoritmos de optimización; PPO es un ejemplo, no su definición. La penalización limita cuánto puede alejarse el modelo para explotar defectos del proxy.
 
 ## 5. El modelo de recompensa aprende diferencias
 
@@ -83,17 +83,17 @@ $\beta$ controla el compromiso. Una restricción fuerte conserva el comportamien
 
 ## 7. DPO: conservar preferencias sin el bucle de RL
 
-DPO consume los mismos pares $(x,y_w,y_l)$, pero elimina:
+DPO se entrena con pares de preferencia $(x,y_w,y_l)$ y, en su formulación original, evita:
 
 - el modelo de recompensa separado;
 - el bucle de PPO;
-- el muestreo en línea durante el ajuste descrito por el método original.
+- el muestreo en línea durante su ajuste original con pares de preferencias ya recopilados.
 
-Conserva una política de referencia y una restricción implícita. La recompensa puede interpretarse como
+Conserva una política de referencia y una restricción implícita. La recompensa equivalente puede escribirse, salvo una constante que depende solo de $x$, como
 
 $$\hat r_\theta(x,y)=\beta\log\frac{\pi_\theta(y\mid x)}{\pi_{ref}(y\mid x)}.$$
 
-La recompensa no desaparece conceptualmente: queda expresada mediante la razón entre política entrenada y referencia.
+La constante se cancela al comparar dos respuestas para el mismo prompt. La recompensa no desaparece conceptualmente: queda expresada mediante la razón entre política entrenada y referencia. El ajuste optimiza una pérdida de clasificación de preferencias derivada de esa razón, no maximiza directamente $\hat r_\theta$ para cada respuesta aislada.
 
 ## 8. Constitutional AI
 
@@ -110,8 +110,8 @@ Después pueden generarse preferencias con IA y combinarlas con señales humanas
 
 | Método | Dato principal | Recompensa separada | Bucle de RL | Qué enseña |
 | --- | --- | --- | --- | --- |
-| SFT | Demostraciones | No aplica | No | Formato y conducta demostrada |
-| RLHF | Preferencias humanas | Sí | Sí, PPO | Criterio de preferencia |
+| SFT | Demostraciones | No aplica | No | Contenido, formato y conducta demostrados |
+| RLHF clásico con PPO | Preferencias humanas | Sí | Sí | Criterio de preferencia |
 | DPO | Pares preferido/rechazado | No, implícita | No | Preferencia relativa con referencia |
 | Constitutional AI | Principios, crítica y preferencias | Puede usar modelo de preferencias | Puede usar RL | Conducta derivada de reglas explícitas |
 
@@ -154,7 +154,7 @@ La arquitectura sigue siendo generativa y autorregresiva. Cambia la distribució
 > [!question]- ¿Un puntaje de recompensa aislado tiene significado universal?
 > No. El entrenamiento de Bradley-Terry depende de diferencias entre respuestas del mismo prompt.
 
-> [!question]- ¿Qué elimina DPO respecto de RLHF?
+> [!question]- ¿Qué evita DPO respecto del RLHF clásico con PPO?
 > El modelo de recompensa separado y el bucle de optimización por refuerzo; conserva datos de preferencia y política de referencia.
 
 > [!question]- ¿Constitutional AI elimina la participación humana?

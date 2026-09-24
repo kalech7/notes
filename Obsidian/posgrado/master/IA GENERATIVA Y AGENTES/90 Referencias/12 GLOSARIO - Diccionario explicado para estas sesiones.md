@@ -83,7 +83,7 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 
 **ELBO:** objetivo que se maximiza al entrenar un VAE. Equilibra explicar bien el dato y mantener los códigos compatibles con un prior. Matemáticamente es una cota inferior de la log-probabilidad del dato.
 
-**KL:** medida de diferencia entre distribuciones. No es simétrica: comparar q con p puede dar un valor distinto de comparar p con q.
+**KL (divergencia de Kullback–Leibler):** cuantifica cuánto difiere una distribución $q$ de una distribución de referencia $p$ en el sentido de $D_{\mathrm{KL}}(q\|p)$. No es una distancia métrica: puede ser infinita, no es simétrica y no satisface en general la desigualdad triangular.
 
 ## Lenguaje y sistemas: vocabulario de transición
 
@@ -100,6 +100,8 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 **LM head:** capa que convierte una representación del transformer en un logit por token del vocabulario.
 
 **Ventana de contexto:** límite de tokens que el sistema puede considerar en el contexto definido. No indica cuántos pesos tiene ni cuántos números contiene cada vector.
+
+**Inferencia:** depende del tema. En un modelo probabilístico puede significar calcular o aproximar una distribución de variables desconocidas después de observar datos. En un LLM suele referirse a ejecutar el modelo ya entrenado para producir una salida. El segundo uso no implica actualizar sus pesos.
 
 **Prompt:** la entrada con la que orientas al modelo: puede incluir una pregunta, instrucciones, documentos y ejemplos.
 
@@ -127,7 +129,7 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 
 **RAG:** buscar información pertinente y entregarla al modelo para que responda con ese contexto. Ejemplo: recuperar un apartado de tu PDF antes de explicarlo.
 
-**Agente:** sistema que puede elegir acciones, usar herramientas y revisar sus resultados para avanzar en una tarea. Por ejemplo: buscar datos, ejecutar un cálculo y comprobar si resolvió la pregunta.
+**Agente:** sistema que puede elegir acciones, usar herramientas, observar sus resultados y decidir si continúa o termina una tarea. Por ejemplo: buscar datos, ejecutar un cálculo y comprobar si resolvió la pregunta. El LLM puede ser una parte del sistema; darle un prompt o hacer una sola búsqueda no constituye por sí solo un ciclo de agente.
 
 ## Embeddings y recuperación: vocabulario de la sesión 06
 

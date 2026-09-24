@@ -8,6 +8,23 @@ tags:
 
 # Laboratorio Spark: aggregate, join back y salida
 
+## Qué debería existir después de cada paso
+
+Para los seis registros del laboratorio, cuatro son centros válidos y dos se rechazan. Sigue solo los válidos para esta tabla:
+
+| Etapa | Filas | Información disponible |
+|---|---:|---|
+| Centros válidos | 4 | A, B, C públicos; D privado |
+| Medias por titularidad | 2 | PUBLICO: (1,1); PRIVADO: (10,10) |
+| Join de centros con medias | 4 | Cada centro conserva sus coordenadas y recibe las medias |
+| Distancias | 4 | A: √2; B: √2; C: 2; D: 0 |
+| Un ganador por grupo | 2 | A y D, con desempate por ID |
+| Todos los líderes empatados | 3 | A, B y D, usando rango por distancia sola |
+
+Dos y tres son resultados de **políticas alternativas**, no dos pasos sucesivos de una sola selección. El grupo de D tiene un solo punto; su promedio es el propio D y su distancia es cero. Eso no permite afirmar que sea mejor centro que A: pertenecen a competencias distintas.
+
+Antes de mirar tiempos o formatos, compara estos valores. Si el join produce más de cuatro filas, el resumen no es único por la clave usada o la condición de unión es incorrecta.
+
 ## Estado de verificación
 
 El script [[Obsidian/freelance/Data Engineering/Laboratorios/laboratorio_spark.py|laboratorio_spark.py]] tiene sintaxis Python revisada, pero **no se ejecutó aquí** porque PySpark no está instalado. Requiere un entorno con PySpark y Java compatibles; comprueba su versión antes de ejecutarlo. Usa datos sintéticos y crea un directorio temporal nuevo para las salidas.

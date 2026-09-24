@@ -8,6 +8,22 @@ tags:
 
 # Schemas, DataFrames y vistas temporales en PySpark
 
+## Lee la transformación fila por fila
+
+En el ejemplo de esta nota, la entrada conserva edad como texto. Tras la conversión esperas:
+
+| id | edad_texto original | edad numérica | edad_conversion_invalida |
+|---|---|---:|---|
+| 1 | `25` | 25 | false |
+| 2 | `abc` | NULL | true |
+| 3 | NULL | NULL | false |
+
+La última fila no es una conversión fallida: no había texto para convertir. El booleano se obtiene preguntando **«¿había un original y aun así no obtuve número?»**.
+
+`StructType` describe el conjunto de campos; cada `StructField` describe uno. En `StructField("id", StringType(), False)`, las tres piezas son nombre, tipo y permiso de nulos. Eso no impone que los IDs sean únicos: esa regla requiere otro control.
+
+`F.col("edad")` representa una referencia a la columna dentro de una expresión. `withColumn` describe un DataFrame con una columna añadida o reemplazada; no es un bucle que traiga cada edad a Python. Lee el código como operaciones sobre tablas.
+
 ## Qué representa un DataFrame
 
 Un DataFrame es una colección distribuida organizada en columnas con un schema. El schema define nombres, tipos y nulabilidad; describe estructura, no toda la validez del negocio. `nullable=True` permite nulos en ese campo; no significa que un país desconocido o un número negativo sean aceptables.

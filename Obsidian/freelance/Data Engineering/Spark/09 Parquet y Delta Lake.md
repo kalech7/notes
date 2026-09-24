@@ -8,6 +8,20 @@ tags:
 
 # Parquet y Delta Lake: archivo frente a tabla
 
+## Una corrección muestra para qué sirve el registro
+
+Imagina una versión 0 con archivos A y B. Una corrección crea C para sustituir lógicamente los datos de B. La versión 1 debe leerse como A + C; B puede seguir físicamente presente durante un tiempo para conservar versiones anteriores.
+
+| Lectura | Archivos conceptualmente vigentes |
+|---|---|
+| Versión 0 | A y B |
+| Versión 1 | A y C |
+| Todos los Parquet sin consultar el registro | Puede incluir A, B y C y mezclar versiones |
+
+Este es un modelo didáctico de sustitución de archivos. El registro permite identificar una versión consistente; las operaciones concretas dependen de la implementación y las funciones habilitadas.
+
+Conservar el registro sin los archivos que necesita una versión antigua no basta para recuperar sus datos. Por eso historial y retención deben pensarse juntos. [La guía de Delta Lake muestra actualizaciones y lectura de versiones](https://docs.delta.io/quick-start/).
+
 ## Dos niveles distintos
 
 Parquet es un formato de archivos. Delta Lake es una capa de tabla que combina archivos de datos Parquet con un registro de transacciones y reglas para gestionar cambios. La distinción importa cuando varios procesos escriben, hay actualizaciones o necesitas saber qué conjunto de archivos forma una versión consistente de la tabla.

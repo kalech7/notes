@@ -56,7 +56,7 @@ Podemos calcular primero dos resultados: $h_1$ indica si al menos una entrada va
 
 Para entradas distintas, $h_1=1$ y $h_2=0$: el puntaje da 0.5 y la salida 1. Para ambas iguales a 1, da −1.5 y la salida 0. Para ambas iguales a 0, da −0.5 y la salida 0. Así resolvimos XOR creando una representación intermedia.
 
-Las redes profundas aprenden representaciones de este tipo, generalmente mucho más complejas. Apilar únicamente transformaciones lineales no basta: su composición sigue siendo lineal. Se necesitan funciones no lineales para ganar esa capacidad.
+Las redes profundas aprenden representaciones de este tipo, generalmente mucho más complejas. Apilar capas que solo multiplican por pesos y suman sesgos no basta: su composición sigue siendo una transformación afín (una suma ponderada más un sesgo). Se necesitan activaciones no lineales para ganar esa capacidad.
 
 ## 6. Qué significa ajustar los pesos
 
@@ -94,7 +94,7 @@ Intenta responder antes de desplegar cada respuesta.
 > No. La retropropagación calcula gradientes; el optimizador utiliza esos gradientes para modificar parámetros.
 
 > [!question]- ¿Por qué no basta con apilar capas lineales?
-> Su composición sigue siendo una transformación lineal. Las activaciones no lineales permiten representar fronteras más complejas.
+> Su composición sigue siendo lineal si no hay sesgos, o afín si los hay: equivale a una sola capa de ese tipo. Las activaciones no lineales permiten representar fronteras más complejas.
 
 
 > [!question]- ¿Cada actualización del perceptrón reduce necesariamente todos los errores?

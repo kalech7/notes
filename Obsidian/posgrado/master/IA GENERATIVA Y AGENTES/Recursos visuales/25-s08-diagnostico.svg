@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="739.8pt" height="544.32pt" viewBox="0 0 739.8 544.32" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-23T19:10:09.278226</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 544.32 
+L 739.8 544.32 
+L 739.8 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 16.128 182.8584 
+L 419.562 182.8584 
+Q 426.258 182.8584 426.258 176.2056 
+L 426.258 142.9416 
+Q 426.258 136.2888 419.562 136.2888 
+L 16.128 136.2888 
+Q 9.432 136.2888 9.432 142.9416 
+L 9.432 176.2056 
+Q 9.432 182.8584 16.128 182.8584 
+z
+" clip-path="url(#pa4e5d01e1b)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 16.128 241.0704 
+L 419.562 241.0704 
+Q 426.258 241.0704 426.258 234.4176 
+L 426.258 201.1536 
+Q 426.258 194.5008 419.562 194.5008 
+L 16.128 194.5008 
+Q 9.432 194.5008 9.432 201.1536 
+L 9.432 234.4176 
+Q 9.432 241.0704 16.128 241.0704 
+z
+" clip-path="url(#pa4e5d01e1b)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 16.128 299.2824 
+L 419.562 299.2824 
+Q 426.258 299.2824 426.258 292.6296 
+L 426.258 259.3656 
+Q 426.258 252.7128 419.562 252.7128 
+L 16.128 252.7128 
+Q 9.432 252.7128 9.432 259.3656 
+L 9.432 292.6296 
+Q 9.432 299.2824 16.128 299.2824 
+z
+" clip-path="url(#pa4e5d01e1b)" style="fill: #2563eb; fill-opacity: 0.070588; stroke: #2563eb; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 16.128 357.4944 
+L 419.562 357.4944 
+Q 426.258 357.4944 426.258 350.8416 
+L 426.258 317.5776 
+Q 426.258 310.9248 419.562 310.9248 
+L 16.128 310.9248 
+Q 9.432 310.9248 9.432 317.5776 
+L 9.432 350.8416 
+Q 9.432 357.4944 16.128 357.4944 
+z
+" clip-path="url(#pa4e5d01e1b)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 16.128 415.7064 
+L 419.562 415.7064 
+Q 426.258 415.7064 426.258 409.0536 
+L 426.258 375.7896 
+Q 426.258 369.1368 419.562 369.1368 
+L 16.128 369.1368 
+Q 9.432 369.1368 9.432 375.7896 
+L 9.432 409.0536 
+Q 9.432 415.7064 16.128 415.7064 
+z
+" clip-path="url(#pa4e5d01e1b)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 16.128 473.9184 
+L 419.562 473.9184 
+Q 426.258 473.9184 426.258 467.2656 
+L 426.258 434.0016 
+Q 426.258 427.3488 419.562 427.3488 
+L 16.128 427.3488 
+Q 9.432 427.3488 9.432 434.0016 
+L 9.432 467.2656 
+Q 9.432 473.9184 16.128 473.9184 
+z
+" clip-path="url(#pa4e5d01e1b)" style="fill: #0f766e; fill-opacity: 0.070588; stroke: #0f766e; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="7.2" y="108.742125" transform="rotate(-0 7.2 108.742125)">Revisa en orden. El primer fallo observado orienta qué componente investigar.</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="217.845" y="162.88485" transform="rotate(-0 217.845 162.88485)">¿La fuente contiene la respuesta?</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #c2410c" x="453.6" y="162.691256" transform="rotate(-0 453.6 162.691256)">No → revisar cobertura y vigencia</text>
+   </g>
+   <g id="patch_8">
+    <path d="M 432.164953 159.5736 
+Q 439.091859 159.5736 444.118107 159.5736 
+" style="fill: none; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 438.118107 156.5736 
+L 444.118107 159.5736 
+L 438.118107 162.5736 
+z
+" style="fill: #c2410c; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 216.45 185.969862 
+Q 216.45 188.959116 216.45 190.047713 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 219.45 184.047713 
+L 216.45 190.047713 
+L 213.45 184.047713 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="230.4" y="191.7288" transform="rotate(-0 230.4 191.7288)">Sí</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="217.845" y="221.407162" transform="rotate(-0 217.845 221.407162)">¿La extracción conserva su sentido?</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #c2410c" x="453.6" y="220.903256" transform="rotate(-0 453.6 220.903256)">No → revisar lectura, OCR y tablas</text>
+   </g>
+   <g id="patch_10">
+    <path d="M 432.164953 217.7856 
+Q 439.091859 217.7856 444.118107 217.7856 
+" style="fill: none; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 438.118107 214.7856 
+L 444.118107 217.7856 
+L 438.118107 220.7856 
+z
+" style="fill: #c2410c; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 216.45 244.181862 
+Q 216.45 247.171116 216.45 248.259713 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 219.45 242.259713 
+L 216.45 248.259713 
+L 213.45 242.259713 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="230.4" y="249.9408" transform="rotate(-0 230.4 249.9408)">Sí</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="217.845" y="279.54885" transform="rotate(-0 217.845 279.54885)">¿El fragmento es suficiente y está representado?</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #c2410c" x="453.6" y="279.115256" transform="rotate(-0 453.6 279.115256)">No → revisar cortes y truncamiento</text>
+   </g>
+   <g id="patch_12">
+    <path d="M 432.164953 275.9976 
+Q 439.091859 275.9976 444.118107 275.9976 
+" style="fill: none; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 438.118107 272.9976 
+L 444.118107 275.9976 
+L 438.118107 278.9976 
+z
+" style="fill: #c2410c; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 216.45 302.393862 
+Q 216.45 305.383116 216.45 306.471713 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 219.45 300.471713 
+L 216.45 306.471713 
+L 213.45 300.471713 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="230.4" y="308.1528" transform="rotate(-0 230.4 308.1528)">Sí</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="217.845" y="337.52085" transform="rotate(-0 217.845 337.52085)">¿La evidencia llega a los candidatos?</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #c2410c" x="453.6" y="337.567256" transform="rotate(-0 453.6 337.567256)">No → revisar búsqueda y filtros</text>
+   </g>
+   <g id="patch_14">
+    <path d="M 432.164953 334.2096 
+Q 439.091859 334.2096 444.118107 334.2096 
+" style="fill: none; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 438.118107 331.2096 
+L 444.118107 334.2096 
+L 438.118107 337.2096 
+z
+" style="fill: #c2410c; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 216.45 360.605862 
+Q 216.45 363.595116 216.45 364.683713 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 219.45 358.683713 
+L 216.45 364.683713 
+L 213.45 358.683713 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="230.4" y="366.3648" transform="rotate(-0 230.4 366.3648)">Sí</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="217.845" y="395.73285" transform="rotate(-0 217.845 395.73285)">¿La evidencia llega al contexto final?</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #c2410c" x="453.6" y="395.779256" transform="rotate(-0 453.6 395.779256)">No → revisar reranking y selección</text>
+   </g>
+   <g id="patch_16">
+    <path d="M 432.164953 392.4216 
+Q 439.091859 392.4216 444.118107 392.4216 
+" style="fill: none; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 438.118107 389.4216 
+L 444.118107 392.4216 
+L 438.118107 395.4216 
+z
+" style="fill: #c2410c; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 216.45 418.817862 
+Q 216.45 421.807116 216.45 422.895713 
+" style="fill: none; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 219.45 416.895713 
+L 216.45 422.895713 
+L 213.45 416.895713 
+z
+" style="fill: #475569; stroke: #475569; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="230.4" y="424.5768" transform="rotate(-0 230.4 424.5768)">Sí</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="217.845" y="453.94485" transform="rotate(-0 217.845 453.94485)">¿La respuesta utiliza bien esa evidencia?</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #c2410c" x="453.6" y="453.991256" transform="rotate(-0 453.6 453.991256)">No → revisar generación y sustento</text>
+   </g>
+   <g id="patch_18">
+    <path d="M 432.164953 450.6336 
+Q 439.091859 450.6336 444.118107 450.6336 
+" style="fill: none; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+    <path d="M 438.118107 447.6336 
+L 444.118107 450.6336 
+L 438.118107 453.6336 
+z
+" style="fill: #c2410c; stroke: #c2410c; stroke-width: 1.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #475569" x="12.78" y="528.804" transform="rotate(-0 12.78 528.804)">Conservar trazas permite separar causas: una respuesta final incorrecta, por sí sola, no identifica la etapa.</text>
+   </g>
+  </g>
+  <g id="text_20">
+   <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #172554" x="358.2" y="22.396875" transform="rotate(-0 358.2 22.396875)">Diagnosticar: seguir el recorrido de la evidencia</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pa4e5d01e1b">
+   <rect x="7.2" y="93.6" width="725.4" height="443.52"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -8,6 +8,19 @@ tags:
 
 # Calidad de datos: seis preguntas y su contexto
 
+## Evalúa la misma fila con preguntas distintas
+
+Registro: `id=7, edad=25, email=NULL`. Supón que el email es obligatorio y que la persona tiene realmente 28 años.
+
+- **Completitud:** falla el email porque falta un campo requerido.
+- **Validez:** 25 puede cumplir la regla «edad entera entre 0 y 120».
+- **Exactitud:** aun siendo válida, esa edad es incorrecta frente a la realidad.
+- **Singularidad:** no se decide mirando una fila; debes buscar si el ID se repite donde debería ser único.
+
+Esto explica por qué pasar una validación de tipos no basta. También explica por qué necesitas conocer el uso: si el email es opcional, ese nulo no viola la regla de completitud acordada.
+
+Con 100 registros y 8 emails ausentes, la completitud de email es `(100 − 8) / 100 = 92 %`. No significa que el dataset sea «92 % correcto»: solo mediste un campo y una dimensión.
+
 ## Un dato puede ser válido y falso
 
 La fecha `2000-01-01` cumple un formato y podría ser un día real. Eso no demuestra que sea el cumpleaños de la persona. Calidad no significa únicamente que el archivo se abra o la consulta termine: significa que los datos son adecuados para un uso.

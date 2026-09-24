@@ -90,3 +90,15 @@ El laboratorio SQL se ejecutó con 18 comprobaciones correctas y conserva su sal
 - [[Obsidian/freelance/Data Engineering/Laboratorios/01 Laboratorio SQL resuelto|01 Laboratorio SQL resuelto]] — evidencia de resultados sobre los ejemplos.
 
 Volver a [[Obsidian/freelance/Data Engineering/00 Empieza aquí|la ruta de estudio]].
+
+## Ampliación explicativa del 22 de septiembre de 2026
+
+Se añadieron recorridos manuales a las 25 notas de SQL, Spark, calidad, DevOps, Testing y laboratorios. Se preservaron los ejemplos y scripts existentes. Los nuevos números son ejemplos didácticos y no resultados del notebook original ni mediciones de producción.
+
+Para contrastar las explicaciones de ventanas, ejecución distribuida, optimización y versiones de tabla se consultaron las páginas oficiales de SQLite, Spark y Delta enlazadas en las notas. Los enlaces `latest` son móviles; la ampliación no establece una versión nueva como requisito del laboratorio.
+
+## Revisión de Spark y Lambda del 22 de septiembre de 2026
+
+Se reescribieron Spark 01, 02 y 10 desde los conceptos básicos, con un cálculo distribuido de ventas y una línea temporal de publicación batch. Se comprobaron los resultados numéricos y la sintaxis de los bloques Python. El ejemplo PySpark no se ejecutó: PySpark no está instalado en este entorno.
+
+Referencias primarias adicionales: [arquitectura de Spark](https://spark.apache.org/docs/latest/cluster-overview.html), [Structured Streaming](https://spark.apache.org/docs/latest/streaming/getting-started.html) y [planteamiento de Nathan Marz](https://nathanmarz.com/blog/how-to-beat-the-cap-theorem.html). Los diagramas de tareas y las particiones son didácticos, no capturas de un plan ejecutado.

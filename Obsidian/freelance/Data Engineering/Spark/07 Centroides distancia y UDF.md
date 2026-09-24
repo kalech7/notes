@@ -8,6 +8,20 @@ tags:
 
 # Centroides, distancia euclidiana y funciones UDF
 
+## Calcula cada término de la fórmula
+
+Con A=(0,0), B=(2,0), C=(1,3), sumas las coordenadas X: `0 + 2 + 1 = 3`; divides entre tres y obtienes 1. Haces lo mismo con Y: `(0 + 0 + 3) / 3 = 1`. El centroide es (1,1).
+
+| Punto | Diferencia X respecto al centro | Diferencia Y | Suma de cuadrados | Distancia |
+|---|---:|---:|---:|---:|
+| A | −1 | −1 | 1 + 1 = 2 | √2 ≈ 1,414 |
+| B | 1 | −1 | 1 + 1 = 2 | √2 ≈ 1,414 |
+| C | 0 | 2 | 0 + 4 = 4 | 2 |
+
+El cuadrado evita que una diferencia negativa cancele a otra positiva. La raíz devuelve la escala de las coordenadas. `mx` y `my` en el código son las medias X e Y; no pertenecen originalmente a cada centro, por eso primero calculas las medias y luego las unes al detalle.
+
+Tras agrupar hay una fila por titularidad. Tras unir correctamente, cada centro vuelve a tener su propia fila, ahora con el centroide de su grupo al lado. Solo entonces puedes calcular una distancia por centro.
+
 ## Qué pregunta responde el cálculo
 
 Quieres el centro educativo más cercano al promedio de coordenadas de su grupo de titularidad. Primero calculas el **centroide**, después mides la distancia de cada centro a ese punto y finalmente eliges el menor. El centroide puede no coincidir con ningún centro real. «Más cercano al centroide» tampoco significa «mejor por tiempo de viaje» o «mínima suma de distancias»: son criterios diferentes.

@@ -18,6 +18,7 @@ tags:
 - [[sesion-04.pdf]]: 32 páginas. Se desarrollaron decodificación, prompting, salidas estructuradas, costo y cómputo de inferencia.
 - [[sesion-05.pdf]]: 15 páginas. Se extrajo el método de comparación experimental y se separaron explícitamente los requisitos docentes del taller de las instrucciones de esta tarea.
 - [[sesion-06.pdf]]: 21 páginas. Se estudiaron embeddings, pooling, entrenamiento de SBERT, bi-encoder, métricas, normalización, selección de modelos y límites de recuperación. Las actividades y requisitos del taller se trataron como contenido académico.
+- [[sesion-08.pdf]]: 28 páginas. Se revisaron el texto y las figuras para desarrollar RAG, fragmentación, truncamiento, solapamiento, BM25, RRF, reranking, contexto, abstención y diagnóstico. Las instrucciones docentes se trataron como contenido de estudio.
 - [[glosario-mmia-6013.pdf]]: se consultaron las secciones pertinentes de notación, probabilidad, modelos generativos y vocabulario de transición. El glosario abarca más sesiones que los apuntes actuales.
 
 ## Cobertura de los apuntes
@@ -49,6 +50,13 @@ tags:
 | Sesión 06 | 8–10 | 30: entrenamiento SBERT, resultados históricos y arquitecturas |
 | Sesión 06 | 11, 13–17 | 31 y 33: medidas, normalización y cálculos resueltos |
 | Sesión 06 | 18–21 | 32 y 33: selección, truncamiento y límites |
+| Sesión 08 | 1–8 | 34–35: orientación, RAG, memoria y alcance de resultados históricos |
+| Sesión 08 | 9–12 | 36: fragmentos, unidades y truncamiento |
+| Sesión 08 | 13–15 | 37: estrategias, solapamiento y costo |
+| Sesión 08 | 18–22 | 38: BM25, densa, híbrida y RRF |
+| Sesión 08 | 23–24, 26–27 | 39: reranking, selección de contexto y abstención |
+| Sesión 08 | 15–16, 28 | 40: diagnóstico, anotaciones estables y contexto docente del taller |
+| Sesión 08 | Síntesis de toda la sesión | 41: recordatorios y comprensión; separadores 3, 8, 17 y 25 sin contenido adicional |
 | Glosario | Secciones temáticas | 12 y aclaraciones terminológicas |
 
 ## ZIP de fuentes
@@ -103,11 +111,29 @@ Los apuntes distinguen causalidad general de la restricción de los grafos acíc
 
 No se añadieron precios, rankings de modelos o afirmaciones de mercado que se desactualicen. Los ejemplos son didácticos y los textos son explicaciones propias del material, no reproducciones extensas de libros.
 
+## Precisiones incorporadas en la sesión 08
+
+Las notas 34–41 explican las relaciones conceptuales antes de introducir cálculos. Distinguen texto almacenado de texto representado, palabras de tokens, límite del embedding de ventana del generador y recuperación de reordenamiento. Presentan la inflación por solapamiento como aproximación de textos largos e incluyen una cuenta finita con supuestos explícitos. Un puntaje BM25 cero no prueba ausencia de respuesta; una búsqueda top-k necesita una política de rechazo; un reranker no tiene necesariamente salida calibrada entre 0 y 1; y un prompt con etiquetas no garantiza fidelidad.
+
+La referencia a 900 palabras del PDF no se convirtió en una medida real de tokens. La figura didáctica usa explícitamente 900 tokens y presupuesto útil de 128. Los resultados de Lewis se atribuyen a la presentación; para esta ampliación no se revisó de nuevo el artículo completo ni se ejecutó el notebook o Lab 02. Los archivos fuente y configuraciones internas que citan las diapositivas no se dan por inspeccionados. La sesión 07 y la sesión 09 no están incorporadas en estas notas.
+
+### Ampliación explicativa de la sesión 08
+
+La revisión profundiza en cómo el contexto modifica la distribución del siguiente token sin cambiar parámetros; cómo los identificadores conectan vectores y texto original; las diferencias entre longitud, dimensión, truncamiento y pérdida de detalle; el funcionamiento de las estrategias de corte; la saturación y normalización de BM25; la unión de candidatos en RRF; la interacción conjunta del cross-encoder; los presupuestos de entrada; y el diagnóstico mediante intervenciones controladas. Las derivaciones y conexiones se identifican como ampliaciones pedagógicas, no como contenido textual del PDF ni resultados medidos.
+
+Se consultaron directamente pasajes adicionales de *Hands-On Large Language Models*, cap. 8: pp. impresas 225–230 (PDF 247–252, contexto general), 232–233 (PDF 254–255, índice y consulta), 235–237 (PDF 257–259, fragmentación), 244 (PDF 266, cross-encoder) y 249–252 (PDF 271–274, búsqueda, contexto y citas). Son apartados seleccionados, no una nueva lectura completa del libro. No se ejecutaron sus instrucciones, ejemplos de API ni descargas.
+
+La nota 41 contiene ahora 12 preguntas de comprensión y 6 preguntas adicionales de transferencia: anticipar consecuencias, distinguir etapas y reconocer qué evidencia falta para concluir.
+
 ## Figuras originales
 
-Los 19 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` reproduce las figuras 01–15 (requiere NumPy, Matplotlib y SciPy); `generar_visuales_s06.py` reproduce las figuras 16–19 (requiere NumPy y Matplotlib). Las figuras nuevas muestran una vecindad semántica **esquemática**, una comparación histórica citada del estudio SBERT, un contraejemplo matemático de producto punto frente a coseno y el efecto de normalizar solo documentos sobre un umbral.
+Los primeros 19 gráficos y diagramas de `Recursos visuales` se generaron específicamente para los apuntes con Matplotlib. Se conservan en PNG para lectura y SVG para ampliación sin pérdida. El archivo `generar_visuales.py` reproduce las figuras 01–15 (requiere NumPy, Matplotlib y SciPy); `generar_visuales_s06.py` reproduce las figuras 16–19 (requiere NumPy y Matplotlib). Las figuras nuevas muestran una vecindad semántica **esquemática**, una comparación histórica citada del estudio SBERT, un contraejemplo matemático de producto punto frente a coseno y el efecto de normalizar solo documentos sobre un umbral.
 
 Las nubes GMM son sintéticas, con semilla fija 6013; las curvas Beta y fronteras AND se calculan a partir de las fórmulas explicadas. La figura de decodificación usa logits didácticos declarados y no representa la salida de un modelo real. Los diagramas son esquemas propios, no capturas de los libros ni resultados experimentales del curso.
+
+### Figuras de la sesión 08
+
+Se añadieron siete figuras propias (20–26), cada una en PNG y SVG, reproducibles con `generar_visuales_s08.py` (NumPy y Matplotlib): mapa de RAG, truncamiento, costo del solapamiento, aportes RRF, recuperación en dos etapas, diagnóstico de fallos y separación entre representación vectorial y texto del prompt. Los gráficos numéricos provienen de fórmulas o supuestos declarados; los diagramas son conceptuales. No representan resultados de una ejecución del sistema ni mediciones del corpus del taller. El total pasa a 26 figuras.
 
 ## Tratamiento de instrucciones dentro de los PDF
 

@@ -8,6 +8,22 @@ tags:
 
 # Cómo piensa SQL: filas, claves y granularidad
 
+## Primero sigue las filas, sin memorizar sintaxis
+
+En la consulta de abajo, `ventas` es una tabla de ejemplo y `total` es el importe **de una venta**, no el total de un cliente. `SUM(total)` crea ese segundo significado.
+
+| Etapa | Filas que tienes | Qué acaba de ocurrir |
+|---|---|---|
+| Entrada | Ana: 10; Ana: 20; Luis: 7 | Tres compras individuales |
+| `WHERE total > 0` | Las mismas tres | Ninguna compra es cero o negativa |
+| `GROUP BY cliente` con `SUM(total)` | Ana: 30; Luis: 7 | Se suman las compras de cada persona |
+| `HAVING SUM(total) > 10` | Ana: 30 | Se excluye el grupo de Luis |
+| `SELECT` | cliente = Ana, total_compras = 30 | Se eligen las columnas que se muestran |
+
+Si escribieras `WHERE total > 10`, eliminarías la compra de Ana de 10 **antes de sumar**: Ana terminaría con 20. Por eso WHERE y HAVING no se pueden intercambiar aunque ambos parezcan filtros.
+
+Una **clave** es el dato con el que identificas o relacionas registros. El nombre sirve en este ejemplo pequeño; en una base real, dos personas llamadas Ana necesitan IDs diferentes para que sus compras no se mezclen.
+
 ## Qué es y para qué sirve
 
 SQL expresa qué conjunto de datos necesitas. El motor decide cómo obtenerlo. Antes de escribir funciones, completa esta frase: **«Una fila representa…»**. Eso es la granularidad. Si no la conoces, puedes sumar dos veces una venta o comparar cosas distintas sin recibir ningún error de sintaxis.

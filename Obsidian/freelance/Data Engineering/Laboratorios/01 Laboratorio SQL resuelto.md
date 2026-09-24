@@ -8,6 +8,24 @@ tags:
 
 # Laboratorio SQL resuelto: del texto al ranking
 
+## Una corrida de escritorio antes del script
+
+Sigue los tres partidos válidos del ejemplo sin añadir todavía entradas incorrectas:
+
+| Etapa | Filas esperadas | Una fila representa |
+|---|---:|---|
+| Origen válido | 3 | Un partido |
+| Separación y conversión válidas | 3 | El mismo partido con campos utilizables |
+| Perspectivas | 6 | Un equipo participando en un partido |
+| Puntos | 6 | Esa participación con 0, 1 o 3 puntos |
+| Resumen | 3 | Un equipo con sus totales |
+| Ranking | 3 | Ese equipo con un puesto |
+| Top 2 | 2 | Un equipo clasificado |
+
+Ecuador: victoria 3 + empate 1 = 4. Senegal: empate 1 + empate 1 = 2. Qatar: derrota 0 + empate 1 = 1. La diferencia global es `1 + 0 − 1 = 0`.
+
+Si tu salida tiene seis equipos en el resumen, revisa la agrupación. Si perspectivas tiene tres filas, puede faltar el visitante. Si el top tiene un número inesperado, revisa grupos, elegibilidad y política de empates. Esta tabla corresponde al caso válido; el script incorpora también casos separados para comprobar rechazos.
+
 ## Objetivo y alcance
 
 Este ejercicio recrea el problema descrito en el spec con datos pequeños inventados. No reproduce ni verifica el notebook original, que no se adjuntó. Usa SQLite en memoria y no modifica bases externas.

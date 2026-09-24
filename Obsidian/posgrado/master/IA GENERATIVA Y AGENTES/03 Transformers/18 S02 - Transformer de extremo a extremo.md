@@ -81,6 +81,8 @@ En una RNN, el estado del paso $t$ depende del estado $t-1$. Ese orden impide ca
 
 $n$ es la longitud de la secuencia y $d$ la dimensión de las representaciones. La atención no elimina el costo: cambia recurrencia por una matriz de interacciones que crece cuadráticamente con $n$.
 
+La tabla aísla el costo de mezclar posiciones: un bloque transformer también tiene proyecciones y red feed-forward, con términos del orden de $O(nd^2)$. Durante entrenamiento se procesan posiciones de una secuencia en paralelo bajo máscara causal; durante generación autorregresiva los tokens nuevos siguen saliendo uno tras otro.
+
 ## 6. Generación autorregresiva
 
 ```mermaid

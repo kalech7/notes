@@ -12,7 +12,7 @@ tags:
 
 ## 1. La auto-atención sola no conoce el orden
 
-Sin una señal de posición, permutar los tokens también permuta sus vectores, pero no comunica cuál apareció primero. «El gato muerde al perro» y «El perro muerde al gato» contienen los mismos tokens y no deberían representar la misma situación.
+En una auto-atención bidireccional sin señal de posición, permutar los tokens también permuta sus vectores, pero no comunica cuál apareció primero. «El gato muerde al perro» y «El perro muerde al gato» contienen los mismos tokens y no deberían representar la misma situación. Una máscara causal ya distingue pasado de futuro, pero no proporciona por sí sola una representación explícita de las distancias entre posiciones.
 
 Por eso se incorpora posición explícitamente.
 
@@ -22,7 +22,7 @@ Por eso se incorpora posición explícitamente.
 | --- | --- | --- |
 | Sinusoidal absoluta | Se suma al embedding | Nada en la señal de posición |
 | Absoluta aprendida | Se suma al embedding | Un vector por posición |
-| RoPE | Rota queries y keys | Frecuencias o configuración de la rotación, según implementación |
+| RoPE | Rota queries y keys | En la versión habitual, las frecuencias se fijan; las proyecciones que generan Q y K sí se aprenden |
 
 Las dos primeras producen una representación del tipo
 
@@ -92,7 +92,7 @@ flowchart LR
     F --> G["P(x_t | x&lt;t)"]
 ```
 
-La máscara obliga a que las representaciones respeten el prefijo. Durante entrenamiento, una ventana desplazada permite calcular muchas predicciones a la vez. Durante generación, el último flujo produce la distribución del siguiente token.
+La máscara obliga a que las representaciones respeten el prefijo. Durante entrenamiento, una secuencia y sus objetivos desplazados permiten calcular muchas predicciones a la vez: la salida de la posición $t$ predice $x_{t+1}$ sin ver ese token. Durante generación, la representación de la última posición disponible produce la distribución del siguiente token.
 
 ## 8. Mapa de decisiones conceptuales
 

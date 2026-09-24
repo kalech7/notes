@@ -8,6 +8,20 @@ tags:
 
 # Ventanas y métricas: elegir el mejor jugador
 
+## Resuelve la competencia sin ejecutar Spark
+
+| Jugador | Goles | Partidos | Cálculo | Tasa |
+|---|---:|---:|---|---:|
+| Ana | 100 | 200 | 100 / 200 | 0,5 |
+| Luis | 80 | 80 | 80 / 80 | 1,0 |
+| Carla | 0 | 0 | División no definida | NULL |
+
+Por goles acumulados gana Ana. Por goles por partido gana Luis. No hay contradicción: cada métrica responde una pregunta distinta.
+
+En el código, `w_original` y `w_nuevo` describen dos órdenes. `row_number().over(w_nuevo)` aplica la numeración usando el segundo. Crear una ventana no filtra ganadores: primero añades números y luego eliges las filas con número 1.
+
+Carla es la única de PE. Si permites que entre en la ventana, recibe número 1 aunque no tenga tasa válida. Define primero quién puede competir. No sustituyas 0/0 por cero: estar sin exposición no equivale a haber jugado sin anotar.
+
 ## Define «mejor» antes de ordenar
 
 Un ranking original más bajo puede significar mejor posición. Una tasa de goles más alta puede significar mayor producción por partido. No son la misma pregunta. Un jugador con 100 goles en 200 partidos tiene tasa 0,5; otro con 80 en 80 tiene tasa 1. El segundo gana en tasa, aunque el primero tenga más goles acumulados.

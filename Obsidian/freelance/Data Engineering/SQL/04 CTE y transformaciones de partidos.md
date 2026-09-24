@@ -8,6 +8,21 @@ tags:
 
 # CTE, CASE y transformación de partidos
 
+## Mira la tabla intermedia que normalmente queda oculta
+
+`gl` significa goles del local; `gv`, goles del visitante. Al cambiar de perspectiva, los goles a favor de uno son los goles en contra del otro.
+
+| Partido | Equipo observado | Favor | Contra | Puntos |
+|---|---|---:|---:|---:|
+| Qatar–Ecuador 0–1 | Qatar | 0 | 1 | 0 |
+| Qatar–Ecuador 0–1 | Ecuador | 1 | 0 | 3 |
+| Ecuador–Senegal 2–2 | Ecuador | 2 | 2 | 1 |
+| Ecuador–Senegal 2–2 | Senegal | 2 | 2 | 1 |
+
+Ahora Ecuador tiene dos filas: sumas `3 + 1 = 4` puntos y `(1 − 0) + (2 − 2) = 1` de diferencia. Sin crear la perspectiva visitante, perderías su contribución.
+
+Lee `WITH perspectivas AS (...)` como «llama perspectivas al resultado de esta consulta». Luego otra etapa puede consultarlo como una tabla dentro de la misma sentencia. `AS puntos` pone nombre a una columna calculada; `AS (...)` en la CTE nombra un resultado completo. La palabra AS aparece en ambos lugares, pero nombra cosas distintas.
+
 ## La historia completa
 
 La entrada «Qatar vs. Ecuador, 0,1» mezcla dos equipos en una fila. Para calcular puntos por equipo necesitas dos perspectivas: Qatar perdió, Ecuador ganó. Después sumas las contribuciones de todos los partidos. Una CTE es un nombre temporal para una expresión dentro de una sentencia: organiza estos pasos y ayuda a inspeccionarlos.

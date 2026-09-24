@@ -8,6 +8,16 @@ tags:
 
 # Joins, cache y optimización en Spark
 
+## Separa tres problemas que parecen la misma lentitud
+
+**Mover datos:** millones de jugadores necesitan el nombre del país. Si el catálogo es realmente pequeño, un broadcast puede llevar una copia a los procesos que la necesitan para unir allí las filas de jugadores.
+
+**Repetir datos calculados:** limpias una misma base y haces varios reportes. Persistirla puede evitar repetir la limpieza, pero consume recursos y hay que materializarla antes de reutilizarla.
+
+**Concentrar datos:** casi todos los registros tienen país `DESCONOCIDO`. Aunque existan muchos países distintos, una clave enorme puede dominar una tarea. Eso es skew; no se arregla necesariamente pidiendo más particiones.
+
+La pregunta para broadcast es «¿qué lado cabe y cuánto movimiento evito?». Para cache es «¿cuántas veces reutilizo el cálculo?». Para skew es «¿qué clave concentra el trabajo?». [La guía de rendimiento de Spark](https://spark.apache.org/docs/latest/sql-performance-tuning.html) desarrolla estas decisiones.
+
 ## Empieza por la semántica del join
 
 Un LEFT JOIN de jugadores con países debe enriquecer cada jugador con su país. Si el catálogo tiene dos filas para el mismo código, duplica jugadores aunque el cluster funcione perfectamente. Antes de optimizar, comprueba claves, granularidad, nulos y cardinalidad.

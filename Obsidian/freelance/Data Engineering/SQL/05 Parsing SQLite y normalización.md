@@ -8,6 +8,22 @@ tags:
 
 # Parsing SQLite y limpieza de texto
 
+## Desarma una expresión antes de leerla completa
+
+Para `Qatar vs. Ecuador`, numera los caracteres desde 1. Qatar ocupa 1–5; el delimitador ` vs. ` ocupa 6–10; Ecuador empieza en 11.
+
+| Expresión | Resultado | Por qué |
+|---|---|---|
+| `INSTR(partido, ' vs. ')` | 6 | Inicio de la primera coincidencia |
+| `INSTR(...) - 1` | 5 | Cantidad de caracteres anteriores al delimitador |
+| `SUBSTR(partido, 1, 5)` | Qatar | Empieza en 1 y toma 5 caracteres |
+| `INSTR(...) + 5` | 11 | Salta todo el delimitador |
+| `SUBSTR(partido, 11)` | Ecuador | Toma desde 11 hasta el final |
+
+Con `3,2`, la coma está en 2: extraes el texto `3` y el texto `2`. Solo después de verificar que cumplen la regla de goles los conviertes a números. Una salida de 3 no demuestra que la entrada fuese válida: `3x` puede convertirse parcialmente.
+
+Piensa en tres preguntas separadas: **¿dónde corto?, ¿lo extraído tiene sentido?, ¿qué tipo necesita el cálculo?** Así puedes localizar si falló la separación, la validación o la conversión.
+
 ## Qué problema resuelve
 
 Parsear es extraer partes de una representación. Limpiar es homogeneizar valores. Normalizar un modelo relacional es organizar entidades y dependencias: no son exactamente la misma operación, aunque en el documento «normalización» también se usa para limpieza.
@@ -50,7 +66,7 @@ Devuelve `ECUADOR`. Cambia NBSP a un espacio corriente antes de recortar bordes.
 | REPLACE | Sustituir coincidencias | Puede borrar puntuación significativa |
 | UPPER | Normalizar mayúsculas ASCII | Irán no se convierte automáticamente en IRAN |
 | CAST | Convertir representación | Texto malo puede convertirse sin error |
-| `||` | Concatenar | Concatenar con NULL produce NULL |
+| `\|\|` | Concatenar | Concatenar con NULL produce NULL |
 
 No borres todos los puntos o tildes de cualquier nombre sin una regla. Para «Iran» e «Irán», una tabla de equivalencias revisada que produzca un `pais_id` es más clara que transformaciones destructivas. Conserva el nombre original para rastrear errores.
 

@@ -25,11 +25,11 @@ Clasifica cada elemento:
 
 1. $W_Q$, $W_K$, $W_V$.
 2. Pesos de atención para «el gato duerme».
-3. Embedding del token.
+3. Una fila aprendida de la matriz de embeddings de entrada, asociada al ID de un token.
 4. Temperatura.
 
 > [!success]- Solución
-> 1 y 3 son parámetros aprendidos. Los pesos de atención se calculan para cada entrada. La temperatura es una configuración de decodificación externa a los pesos.
+> 1 y 3 son parámetros aprendidos. El vector contextualizado que sale del transformer, en cambio, es un valor calculado para esa entrada. Los pesos de atención también se calculan para cada entrada. La temperatura es una configuración de decodificación externa a los pesos.
 
 ## 3. Softmax causal a mano
 
@@ -100,11 +100,12 @@ Para cada salida, identifica el primer fallo:
 A. Aquí está: {"categoria": "ventas", "urgencia": 3}
 B. {"categoria": "ventas", "urgencia": "3"}
 C. {"categoria": "magia", "urgencia": 3}
-D. {"categoria": "ventas", "urgencia": 3}, pero el ticket era técnico
+D. Salida: {"categoria": "ventas", "urgencia": 3}
+   Ticket original: «La aplicación muestra un error al iniciar sesión»
 ```
 
 > [!success]- Solución
-> A puede fallar al parsear directamente por el prefijo textual. B falla el tipo. C falla el dominio. D pasa forma y dominio, pero falla corrección semántica.
+> A falla al parsear si se exige que toda la salida sea JSON. B pasa sintaxis, pero falla el tipo de `urgencia`. C pasa sintaxis y tipos, pero `magia` está fuera del conjunto de categorías permitido. D pasa forma y dominio, pero la categoría correcta del ticket sería `tecnico`: falla la corrección semántica.
 
 ## 10. Costo
 
@@ -127,7 +128,8 @@ Escribe antes de abrir la respuesta:
 - número de corridas.
 
 > [!success]- Propuesta
-> Usa casos balanceados y algunos ambiguos. Valida JSON, esquema y enum; una salida inválida cuenta como fallo de formato y no se convierte en una categoría inventada. Mantén prompt, casos, límite y parser. Mide exactitud, validez, latencia, tokens y costo. Ejecuta al menos tres corridas por configuración si existe muestreo y conserva cada respuesta cruda.
+> Diez casos de referencia: «Necesito el duplicado de mi factura» → `facturacion`; «Me cobraron dos veces» → `facturacion`; «¿Cómo actualizo mis datos fiscales?» → `facturacion`; «La aplicación no inicia» → `tecnico`; «Sale error 502 al entrar» → `tecnico`; «No puedo restablecer mi contraseña» → `tecnico`; «Quiero una cotización para cinco licencias» → `ventas`; «¿Qué planes empresariales ofrecen?» → `ventas`; «¿Cuál es su horario de atención?» → `otro`; «Gracias por la ayuda» → `otro`. Antes de ejecutar, acuerda cómo resolver casos ambiguos y define si se permite más de una etiqueta.
+> Normaliza solo diferencias irrelevantes, como espacios alrededor de la etiqueta; valida el JSON completo, el esquema y el enum. Una salida inválida cuenta como fallo de formato y no se convierte en una categoría inventada. Mantén fijos prompt, casos, límite de salida y parser. Mide exactitud sobre los diez casos, validez de formato, latencia, tokens y costo. Ejecuta al menos tres corridas por configuración si existe muestreo y conserva cada respuesta cruda.
 
 ## 12. Preguntas de explicación corta
 

@@ -37,7 +37,7 @@ $$Q=XW_Q,\qquad K=XW_K,\qquad V=XW_V.$$
 $W_Q$, $W_K$ y $W_V$ son parámetros del modelo. En cambio, los pesos de atención se recalculan para cada entrada.
 
 > [!question]- ¿Los pesos de atención quedan guardados después del entrenamiento?
-> No. Se guardan las matrices de proyección. Los pesos de atención dependen de los tokens y se vuelven a calcular en cada ejecución.
+> Como parámetros entrenados, no. Se guardan las matrices de proyección. Los pesos de atención dependen de la entrada; en inferencia puede reutilizarse una caché de keys y values del prefijo, sin convertir esos valores en parámetros aprendidos.
 
 ## 3. La fórmula en cuatro movimientos
 
@@ -103,7 +103,7 @@ Una sola cabeza produce una mezcla en un único espacio. Con $h$ cabezas se apre
 
 $$\operatorname{MHA}(X)=\operatorname{Concat}(head_1,\ldots,head_h)W_O.$$
 
-Si $d_k=d_v=d_{model}/h$, repartir la dimensión entre cabezas mantiene un costo parecido al de una cabeza de dimensión completa. Más cabezas no garantizan mejor calidad: distribuyen la capacidad disponible.
+Si $d_k=d_v=d_{model}/h$, repartir la dimensión entre cabezas mantiene un costo parecido al de una cabeza de dimensión completa, con el mismo $d_{model}$ y longitud de secuencia. Más cabezas no garantizan mejor calidad: distribuyen la capacidad disponible.
 
 > [!warning] Interpretación cuidadosa
 > Un heatmap muestra pesos de combinación. Por sí solo no demuestra que una cabeza «entienda» gramática ni que el peso más alto sea una explicación causal de la respuesta.

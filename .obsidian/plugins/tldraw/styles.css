@@ -2969,7 +2969,8 @@ input,
   justify-content: flex-start;
   align-items: center;
 }
-.tlui-people-menu__user__color {
+.tlui-people-menu__user__color,
+.tlui-people-menu__user__edit {
   flex-shrink: 0;
 }
 .tlui-people-menu__user__name {
@@ -3010,13 +3011,15 @@ input,
   padding: 0px;
 }
 .tlui-people-menu__item {
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 .tlui-people-menu__item:last-of-type .tlui-button__menu {
   margin-bottom: 0;
 }
 .tlui-people-menu__item__button {
-  padding: 0 11px;
+  padding-inline-start: 12px;
+  padding-inline-end: 0px;
   overflow: hidden;
 }
 .tlui-people-menu__item > .tlui-button__menu {
@@ -3025,7 +3028,7 @@ input,
   align-items: auto;
   justify-content: flex-start;
   flex-grow: 2;
-  gap: 11px;
+  gap: 12px;
 }
 .tlui-people-menu__name {
   text-align: start;
@@ -3034,15 +3037,7 @@ input,
   text-overflow: ellipsis;
 }
 .tlui-people-menu__item__follow {
-  position: absolute;
-  top: 0px;
-  inset-inline-end: 0px;
-  max-width: 40px;
   flex-shrink: 0;
-}
-.tlui-people-menu__item[data-follow=true],
-.tlui-people-menu__item:has(.tlui-button:focus-visible) {
-  padding-inline-end: 36px;
 }
 .tlui-people-menu__item[data-follow=true] .tlui-people-menu__item__follow,
 .tlui-people-menu__item:has(.tlui-button:focus-visible) .tlui-people-menu__item__follow {
@@ -3051,9 +3046,6 @@ input,
 @media (hover: hover) {
   .tlui-people-menu__item__follow {
     opacity: 0;
-  }
-  .tlui-people-menu__item:hover {
-    padding-right: 36px;
   }
   .tlui-people-menu__item:hover .tlui-people-menu__item__follow {
     opacity: 1;

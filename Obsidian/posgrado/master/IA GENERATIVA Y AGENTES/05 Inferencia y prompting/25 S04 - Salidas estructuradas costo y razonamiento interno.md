@@ -104,7 +104,7 @@ Ejemplo didáctico: con 2 000 tokens de entrada a 0.50 USD por millón y 500 de 
 
 $$C=\frac{2000}{10^6}(0.50)+\frac{500}{10^6}(2)=0.002\text{ USD}.$$
 
-El ejemplo enseña la fórmula, no representa un precio vigente.
+El ejemplo enseña la fórmula, no representa un precio vigente. Una factura real puede distinguir tokens de entrada almacenados en caché, tokens de razonamiento, herramientas u otras categorías; aplica a cada una su tarifa y consulta el contador que entregue el proveedor.
 
 ## 7. Dónde paga cada técnica
 
@@ -114,11 +114,11 @@ El ejemplo enseña la fórmula, no representa un precio vigente.
 | Cadena visible | Salida | el modelo escribe pasos adicionales |
 | Esquema | Entrada y a veces reduce salida | añade instrucciones y acota formato |
 | Auto-consistencia | Llamadas completas | repite el problema $n$ veces |
-| Razonamiento interno | Salida facturada | consume tokens que pueden no mostrarse en crudo |
+| Razonamiento interno | Según el proveedor, tokens de salida o categoría específica | consume tokens que pueden no mostrarse en crudo |
 
 ## 8. Test-time compute
 
-Algunos modelos generan tokens internos de razonamiento antes de la respuesta visible. Pueden ocupar contexto y facturarse como salida. Un nivel de esfuerzo suele ser una señal de conducta, no un límite exacto.
+Algunos modelos generan tokens internos de razonamiento antes de la respuesta visible. Pueden ocupar contexto y facturarse según las reglas del proveedor. Un nivel de esfuerzo suele ser una señal de conducta, no un límite exacto.
 
 > [!warning] Más esfuerzo no siempre es mejor
 > En unas tareas, asignar más cómputo mejora la búsqueda. En otras, aumenta distracción, correlaciones espurias o verbosidad. El nivel se elige por tarea y se valida con métricas.
