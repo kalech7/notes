@@ -70,3 +70,7 @@ Referencia de ampliación: [documentación de Delta Lake](https://docs.delta.io/
 - [[Obsidian/freelance/Data Engineering/DevOps/01 DevOps DataOps y CALMS|01 DevOps DataOps y CALMS]] — conecta versionado y operación de datos.
 
 Volver a [[Obsidian/freelance/Data Engineering/00 Empieza aquí|la ruta de estudio]].
+
+## Lectura relacionada: DDIA
+
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#3. Delta: organizar bytes y decidir una versión son problemas distintos|DDIA: archivo, versión y significado]] — Relaciona la lectura columnar con el estado de una tabla y explica por qué un archivo válido puede pertenecer a otra versión.

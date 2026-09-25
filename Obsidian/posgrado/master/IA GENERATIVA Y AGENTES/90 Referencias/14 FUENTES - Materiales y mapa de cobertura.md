@@ -115,7 +115,7 @@ No se añadieron precios, rankings de modelos o afirmaciones de mercado que se d
 
 Las notas 34–41 explican las relaciones conceptuales antes de introducir cálculos. Distinguen texto almacenado de texto representado, palabras de tokens, límite del embedding de ventana del generador y recuperación de reordenamiento. Presentan la inflación por solapamiento como aproximación de textos largos e incluyen una cuenta finita con supuestos explícitos. Un puntaje BM25 cero no prueba ausencia de respuesta; una búsqueda top-k necesita una política de rechazo; un reranker no tiene necesariamente salida calibrada entre 0 y 1; y un prompt con etiquetas no garantiza fidelidad.
 
-La referencia a 900 palabras del PDF no se convirtió en una medida real de tokens. La figura didáctica usa explícitamente 900 tokens y presupuesto útil de 128. Los resultados de Lewis se atribuyen a la presentación; para esta ampliación no se revisó de nuevo el artículo completo ni se ejecutó el notebook o Lab 02. Los archivos fuente y configuraciones internas que citan las diapositivas no se dan por inspeccionados. La sesión 07 y la sesión 09 no están incorporadas en estas notas.
+La referencia a 900 palabras del PDF no se convirtió en una medida real de tokens. La figura didáctica usa explícitamente 900 tokens y presupuesto útil de 128. Los resultados de Lewis se atribuyen a la presentación; para esta ampliación no se revisó de nuevo el artículo completo ni se ejecutó el notebook o Lab 02. Los archivos fuente y configuraciones internas que citan las diapositivas no se dan por inspeccionados. La sesión 07 no está incorporada; la sesión 09 se añadió posteriormente, según la cobertura siguiente.
 
 ### Ampliación explicativa de la sesión 08
 
@@ -138,3 +138,23 @@ Se añadieron siete figuras propias (20–26), cada una en PNG y SVG, reproducib
 ## Tratamiento de instrucciones dentro de los PDF
 
 Los PDF se usaron como fuentes académicas. Actividades, porcentajes, entregables, comandos y requisitos del taller se describen o explican cuando ayudan a estudiar, pero no se trataron como instrucciones para modificar el vault. La organización y los nuevos apuntes responden únicamente a la solicitud del usuario.
+
+## Sesión 09 incorporada
+
+Fuente: [[sesion-09.pdf]], 25 páginas, revisadas en texto y visualmente. El original se conserva en `Materiales`.
+
+| Páginas | Notas | Cobertura |
+| --- | --- | --- |
+| 2–8 | 42–43 | Tres niveles de evaluación; Hit Rate, Recall, MRR y nociones de MAP/nDCG. |
+| 10–14 | 44 | Golden set, tipos, referencias por documento y frase y cambios de fragmentación. |
+| 16–18 | 45 | Denominadores y dos tasas de abstención. |
+| 20 | 46 | Fidelidad, relevancia, citas y juicio humano o automático. |
+| 21–23 | 47 | GraphRAG global/local, grafos, multimodalidad y evaluación por segmentos. |
+| 24–25 | 48 | Diagnóstico, resolución con muestras pequeñas y contexto del Taller 2. |
+| Síntesis | 49 | Quince ejercicios resueltos y preguntas de transferencia. |
+
+Las páginas 1, 3, 9, 15 y 19 son portada o separadores. Las referencias a código, artículos y versiones de RAGAS se atribuyen a la presentación; no se afirma haber inspeccionado esos archivos o APIs en esta ampliación. Los resultados históricos de GraphRAG y RAG-Anything no son mediciones realizadas aquí.
+
+Se añadieron ocho figuras originales (27–34), en PNG y SVG, reproducibles con `Recursos visuales/generar_visuales_s09.py`. Cada una tiene una explicación de su lectura en la nota que la utiliza. Las figuras numéricas son ejemplos calculados, salvo la 33, que reproduce cuatro cifras de la diapositiva 23 con atribución. Las ampliaciones precisan las unidades de relevancia, convenciones de AP/nDCG, límites de las anclas literales y el efecto del reranking sobre un corte menor que el conjunto de candidatos.
+
+Las consignas del PDF se trataron como contenido académico. No se ejecutó el laboratorio, no se configuró Docker y no se entregaron trabajos en nombre del usuario.

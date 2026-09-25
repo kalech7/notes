@@ -8,7 +8,7 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 06 y la sesión 08. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación y construcción del contexto. La sesión 07 no está incorporada en los materiales actuales.
+Este conjunto cubre las sesiones 00 a 06 y las sesiones 08 y 09. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados. La sesión 07 no está incorporada en los materiales actuales.
 
 **Alcance de «agentes»:** por ahora hay una introducción en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. Las sesiones disponibles todavía no desarrollan en profundidad planificación, uso de herramientas ni evaluación de agentes.
 
@@ -97,7 +97,19 @@ Empieza por [[34 S08 - Guía para entender fragmentación y recuperación|la gu�
 6. [[40 S08 - Diagnóstico de fallos y decisiones del taller|Cómo localizar un fallo y justificar cambios]].
 7. [[41 S08 - Recordatorio y preguntas de comprensión|Recordatorios y preguntas con respuestas desplegables]].
 
-## 9. Referencias
+## 9. Evaluación de RAG y patrones avanzados — sesión 09
+
+Empieza por [[42 S09 - Guía para evaluar un RAG|la guía de la sesión 09]]. Incluye métricas con cuentas paso a paso, ocho gráficos y diagramas explicados, anotación del golden set, abstención, fidelidad, GraphRAG y ejercicios resueltos.
+
+1. [[43 S09 - Hit Rate Recall MRR MAP y nDCG paso a paso]]
+2. [[44 S09 - Golden sets anotación y caducidad]]
+3. [[45 S09 - Preguntas negativas y abstención]]
+4. [[46 S09 - Evaluar respuestas fidelidad y citas]]
+5. [[47 S09 - GraphRAG y recuperación multimodal]]
+6. [[48 S09 - Diagnóstico experimentos y Taller 2]]
+7. [[49 S09 - Ejercicios resueltos y repaso]]
+
+## 10. Referencias
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Glosario explicado]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Fuentes y cobertura por sesión]].
@@ -114,6 +126,7 @@ Empieza por [[34 S08 - Guía para entender fragmentación y recuperación|la gu�
 06 Talleres y práctica/
 07 Embeddings y recuperación/
 08 RAG fragmentación y recuperación/
+09 Evaluación de RAG y patrones avanzados/
 90 Referencias/
 Materiales/
 Recursos visuales/

@@ -31,3 +31,7 @@ sequenceDiagram
 - [[computacion distribuida]]
 - [[sockets]]
 - [[servidores]]
+
+## Lectura relacionada: DDIA
+
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#5. RPC: la llamada parece local, pero el resultado puede ser incierto|DDIA: límites de la analogía con una función local]] — Un timeout no demuestra que la operación no ocurrió. El ejemplo explica respuestas perdidas, reintentos e idempotencia.

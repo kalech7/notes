@@ -1,0 +1,449 @@
+{
+  "nodes": [
+    {
+      "id": "498c2eff27b6d8e0",
+      "type": "group",
+      "x": 0,
+      "y": 100,
+      "width": 880,
+      "height": 1120,
+      "label": "CAPÍTULO 4 · Cómo guardar y encontrar",
+      "color": "4"
+    },
+    {
+      "id": "1ab283e4cbb99fab",
+      "type": "group",
+      "x": 960,
+      "y": 100,
+      "width": 880,
+      "height": 1120,
+      "label": "CAPÍTULO 5 · Cómo representar y cambiar",
+      "color": "3"
+    },
+    {
+      "id": "01017b18eed26514",
+      "type": "text",
+      "text": "# DDIA · Dos preguntas\n\n**¿Cómo encontrar el dato? ¿Cómo entenderlo entre versiones?**\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Abrir ruta autosuficiente]]",
+      "x": 570,
+      "y": -430,
+      "width": 700,
+      "height": 200,
+      "color": "5"
+    },
+    {
+      "id": "82ee543ec08218a4",
+      "type": "text",
+      "text": "## Base común\n\nBytes, páginas, caché, estructuras y contratos.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Antes de empezar datos bytes y páginas|Empezar desde cero]]",
+      "x": 650,
+      "y": -160,
+      "width": 540,
+      "height": 180,
+      "color": "5"
+    },
+    {
+      "id": "15cf5c49507c2845",
+      "type": "text",
+      "text": "## 1. Log e índice\n\nGuardar al final simplifica escribir. Un índice evita recorrer todo.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|Abrir explicación]]",
+      "x": 35,
+      "y": 160,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "67529db8d40c170b",
+      "type": "text",
+      "text": "## 2. LSM y Bloom\n\nMemtable → SSTables → compactación. Bloom descarta; un positivo se comprueba.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/02 LSM SSTables compactación y Bloom|Abrir explicación]]",
+      "x": 455,
+      "y": 160,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "3ae43d2272babee2",
+      "type": "text",
+      "text": "## 3. B-tree y WAL\n\nNavegar por páginas. Registrar recuperación antes de depender de cambios persistidos.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/03 B-trees WAL y costos de almacenamiento|Abrir explicación]]",
+      "x": 35,
+      "y": 425,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "b4590bafb98177c6",
+      "type": "text",
+      "text": "## 4. Secundarios y cobertura\n\nBuscar por otro atributo. Encontrar no siempre completa la respuesta.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/04 Índices secundarios cobertura y memoria|Abrir explicación]]",
+      "x": 455,
+      "y": 425,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "7bf359f6c03cc489",
+      "type": "text",
+      "text": "## 5. Columnas y compresión\n\nLeer atributos necesarios de muchas filas; conservar posiciones alineadas.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/05 Almacenamiento columnar y compresión|Abrir explicación]]",
+      "x": 35,
+      "y": 690,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "2b0374838524fbe1",
+      "type": "text",
+      "text": "## 6. Lagos, ejecución y vistas\n\nArchivos, tabla, catálogo y motor resuelven problemas distintos.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/06 Lagos de datos ejecución y vistas materializadas|Abrir explicación]]",
+      "x": 455,
+      "y": 690,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "5674e39cb74ec87d",
+      "type": "text",
+      "text": "## 7. Espacio, texto y vectores\n\nRegiones, términos o vecinos según lo que signifique encontrar.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/07 Índices espaciales texto completo y vectores|Abrir explicación]]",
+      "x": 35,
+      "y": 955,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "a1f464c020ed9302",
+      "type": "text",
+      "text": "## 1. Versiones y compatibilidad\n\nNuevo lee viejo: atrás. Viejo lee nuevo: delante.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/01 Evolución y compatibilidad|Abrir explicación]]",
+      "x": 995,
+      "y": 160,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "66ddc3a0c7539801",
+      "type": "text",
+      "text": "## 2. Formatos y contratos\n\nBytes → tipos → significado. Un JSON válido puede representar algo incorrecto.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/02 JSON XML CSV y esquemas|Abrir explicación]]",
+      "x": 1415,
+      "y": 160,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "e3c917d6949809a5",
+      "type": "text",
+      "text": "## 3. Protobuf\n\nEl número identifica al campo. Nunca reciclar identidades históricas.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/03 Protocol Buffers y números de campo|Abrir explicación]]",
+      "x": 995,
+      "y": 425,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "543301e059f2be23",
+      "type": "text",
+      "text": "## 4. Avro\n\nEsquema escritor + lector → resolución. Defaults para ausencias.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/04 Avro y resolución de esquemas|Abrir explicación]]",
+      "x": 1415,
+      "y": 425,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "933195701ecc79bd",
+      "type": "text",
+      "text": "## 5. Bases y RPC\n\nDos direcciones en una API. Timeout no demuestra ausencia de efecto.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/05 Bases de datos APIs y RPC|Abrir explicación]]",
+      "x": 995,
+      "y": 690,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "5be2602842ad6adf",
+      "type": "text",
+      "text": "## 6. Workflows durables\n\nHistorial y replay recuperan progreso. Idempotencia protege los efectos externos.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/06 Workflows durables e idempotencia|Abrir explicación]]",
+      "x": 1415,
+      "y": 690,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "6176f7a5a718e9f3",
+      "type": "text",
+      "text": "## 7. Mensajes y actores\n\nDesacoplar ritmos no elimina contratos, reentregas ni versiones históricas.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/07 Mensajería actores y repaso|Abrir explicación]]",
+      "x": 995,
+      "y": 955,
+      "width": 390,
+      "height": 210
+    },
+    {
+      "id": "793995380f597fe9",
+      "type": "text",
+      "text": "## Un mismo sistema, varias decisiones\n\nPedidos, índice, analítica, campo moneda y reintento.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/70 Caso práctico de pedidos a analítica|Resolver el caso]]",
+      "x": 640,
+      "y": 1330,
+      "width": 560,
+      "height": 210,
+      "color": "2"
+    },
+    {
+      "id": "e545774e8172c1ae",
+      "type": "text",
+      "text": "## Conectar con lo que ya sabes\n\nSQL · Spark · Arrow/DuckDB · RPC · RAG\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas|Abrir puentes razonados]]",
+      "x": 280,
+      "y": 1640,
+      "width": 580,
+      "height": 200,
+      "color": "4"
+    },
+    {
+      "id": "f6afa7fd39b1470d",
+      "type": "text",
+      "text": "## Recordar sin mirar\n\nGlosario, confusiones y 18 preguntas con respuesta.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/81 Glosario y tarjetas de memoria|Practicar memoria]]",
+      "x": 1020,
+      "y": 1640,
+      "width": 560,
+      "height": 200,
+      "color": "3"
+    },
+    {
+      "id": "8e7fa8d7196f4a5d",
+      "type": "text",
+      "text": "### SQL e índices\n\n[[Obsidian/freelance/Data Engineering/SQL/02 Índices y filtros eficientes|Abrir nota existente]]",
+      "x": 100,
+      "y": 1940,
+      "width": 380,
+      "height": 130
+    },
+    {
+      "id": "6829f0a65c36e59e",
+      "type": "text",
+      "text": "### Parquet y Delta\n\n[[Obsidian/freelance/Data Engineering/Spark/09 Parquet y Delta Lake|Abrir nota existente]]",
+      "x": 550,
+      "y": 1940,
+      "width": 380,
+      "height": 130
+    },
+    {
+      "id": "14db7a58d7ca8f16",
+      "type": "text",
+      "text": "### RPC\n\n[[Obsidian/pregrado/Documentos/Computacion ditribuida/Remote Procedure Call (rpc)|Abrir nota existente]]",
+      "x": 1000,
+      "y": 1940,
+      "width": 380,
+      "height": 130
+    },
+    {
+      "id": "4d64bd52b7918911",
+      "type": "text",
+      "text": "### Recuperación en RAG\n\n[[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/38 S08 - Búsqueda léxica densa y fusión RRF|Abrir nota existente]]",
+      "x": 1450,
+      "y": 1940,
+      "width": 380,
+      "height": 130
+    },
+    {
+      "id": "3f651fe429a2008a",
+      "type": "text",
+      "text": "## Atlas visual explicado\n\nCuatro escenas con lectura paso a paso y límites.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/02 Atlas visual explicado|Abrir atlas]]",
+      "x": 0,
+      "y": -400,
+      "width": 480,
+      "height": 230,
+      "color": "2"
+    }
+  ],
+  "edges": [
+    {
+      "id": "fc48bc74a128b1a1",
+      "fromNode": "01017b18eed26514",
+      "toNode": "82ee543ec08218a4",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "65323c66c96dad73",
+      "fromNode": "15cf5c49507c2845",
+      "toNode": "67529db8d40c170b",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "a7273eb6ddb452bb",
+      "fromNode": "67529db8d40c170b",
+      "toNode": "3ae43d2272babee2",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "2dda323140828a71",
+      "fromNode": "3ae43d2272babee2",
+      "toNode": "b4590bafb98177c6",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "8a59ddea03e03628",
+      "fromNode": "b4590bafb98177c6",
+      "toNode": "7bf359f6c03cc489",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "e1cc0ec952cbd945",
+      "fromNode": "7bf359f6c03cc489",
+      "toNode": "2b0374838524fbe1",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "899b6edffa6497be",
+      "fromNode": "2b0374838524fbe1",
+      "toNode": "5674e39cb74ec87d",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "90b4c8f31ece2341",
+      "fromNode": "82ee543ec08218a4",
+      "toNode": "15cf5c49507c2845",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "recorrer"
+    },
+    {
+      "id": "c6e3c778b4052838",
+      "fromNode": "a1f464c020ed9302",
+      "toNode": "66ddc3a0c7539801",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "60902959eb6015ed",
+      "fromNode": "66ddc3a0c7539801",
+      "toNode": "e3c917d6949809a5",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "0bb3118cc98b4733",
+      "fromNode": "e3c917d6949809a5",
+      "toNode": "543301e059f2be23",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "d58cb0376bb438c0",
+      "fromNode": "543301e059f2be23",
+      "toNode": "933195701ecc79bd",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "0906a1034f6a7f9a",
+      "fromNode": "933195701ecc79bd",
+      "toNode": "5be2602842ad6adf",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "d0e071667894f04a",
+      "fromNode": "5be2602842ad6adf",
+      "toNode": "6176f7a5a718e9f3",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "b1a847bbc3cf2188",
+      "fromNode": "82ee543ec08218a4",
+      "toNode": "a1f464c020ed9302",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "recorrer"
+    },
+    {
+      "id": "ca8ff9023bc08b60",
+      "fromNode": "5674e39cb74ec87d",
+      "toNode": "793995380f597fe9",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "aplicar"
+    },
+    {
+      "id": "f4456876f66ff0b6",
+      "fromNode": "6176f7a5a718e9f3",
+      "toNode": "793995380f597fe9",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "aplicar"
+    },
+    {
+      "id": "834f97667808c144",
+      "fromNode": "793995380f597fe9",
+      "toNode": "e545774e8172c1ae",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "3bba3d376b858de2",
+      "fromNode": "793995380f597fe9",
+      "toNode": "f6afa7fd39b1470d",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "fcf6c471b989a86e",
+      "fromNode": "e545774e8172c1ae",
+      "toNode": "8e7fa8d7196f4a5d",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "relacionar"
+    },
+    {
+      "id": "2ef6dfcf8bdd98d6",
+      "fromNode": "e545774e8172c1ae",
+      "toNode": "6829f0a65c36e59e",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "relacionar"
+    },
+    {
+      "id": "406cbdcc86c64c5b",
+      "fromNode": "e545774e8172c1ae",
+      "toNode": "14db7a58d7ca8f16",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "relacionar"
+    },
+    {
+      "id": "815b0c6bdb0f98fd",
+      "fromNode": "e545774e8172c1ae",
+      "toNode": "4d64bd52b7918911",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "relacionar"
+    },
+    {
+      "id": "67fc9a63fea1f05a",
+      "fromNode": "01017b18eed26514",
+      "toNode": "3f651fe429a2008a",
+      "fromSide": "left",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "ver y explicar"
+    }
+  ]
+}

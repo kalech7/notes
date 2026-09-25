@@ -85,3 +85,7 @@ Imagina un millón de filas: una consulta devuelve 10 y otra 950 000. ¿Añadir�
 - [[Obsidian/pregrado/Documentos/Bases de datos/fundamentos/Indixacion y procesos almacenados|Indixacion y procesos almacenados]] — amplía tu introducción a los índices con costos y condiciones concretas.
 
 Volver a [[Obsidian/freelance/Data Engineering/00 Empieza aquí|la ruta de estudio]].
+
+## Lectura relacionada: DDIA
+
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#1. Índices: ahora puedes explicar por qué ayudan y por qué cuestan|DDIA: del índice al almacenamiento]] — Conecta búsquedas, recuperación de columnas y costo de mantenimiento con las estructuras físicas del motor.

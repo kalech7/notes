@@ -141,3 +141,7 @@ La partición por versión es suficiente en el alcance de las diapositivas, dond
 > En GROUP BY: se pasa de ejecución a resumen por configuración. RANK agrega el puesto sin volver a agrupar.
 
 Fuente: [[assets/module_11.pdf#page=13|PDF pp. 13–18]]. Sigue con [[04 dbt, dependencias y modelos SQL - M11]].
+
+## Lectura relacionada: DDIA
+
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#7. Arrow, DuckDB y artefactos: separar representación, persistencia y semántica|DDIA: representación, persistencia y compatibilidad]] — Amplía el round trip con pruebas entre versiones y distingue integridad, estructura y significado del dato.
