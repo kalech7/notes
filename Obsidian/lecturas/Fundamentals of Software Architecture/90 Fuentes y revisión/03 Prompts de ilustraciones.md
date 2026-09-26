@@ -1,5 +1,7 @@
 # Prompts de las ilustraciones adicionales
 
+[Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Fuentes y revisión](00%20%C3%8Dndice.md)
+
 Generadas con la herramienta integrada de imágenes; archivos finales en esta carpeta. Las analogías y sus límites se explican en cada capítulo y en el atlas.
 
 ## 09-cohesion-responsabilidades.png
@@ -39,3 +41,7 @@ Este intento no produjo archivo: límite de uso. No se cuenta como imagen entreg
 ```text
 Original Spanish educational illustration, landscape, sophisticated isometric editorial style with ivory background navy teal amber accents. Tell a three-step left-to-right story. Left 'NEGOCIO': a sandwich shop owner points at a clock showing lunchtime with a waiting line of customers. Center 'ESCENARIOS': an architect and developer inspect three large cards reading 'Pico de pedidos', 'Fallo de mapas', 'Cambio de promociones'. Right 'PRIORIDADES': a board with exactly three selected cards reading 'Disponibilidad', 'Elasticidad', 'Simplicidad'. Below the right board a visibly distinct baseline tray labeled 'MÍNIMOS: seguridad e integridad'. Main title 'DEL PROBLEMA A LAS PRIORIDADES'. Footer exact 'Ejemplo didáctico: el top 3 depende del contexto'. Show arrows linking needs, scenarios, priority selection. No numeric metrics, no additional texts, no watermark. Explain that choosing three drivers does not discard baseline security or integrity. Large clear readable labels, no clutter.
 ```
+
+---
+
+[← Índice de este bloque](00%20%C3%8Dndice.md)

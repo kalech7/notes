@@ -8,7 +8,7 @@ tags:
 
 # Glosario y repaso
 
-[[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí|← Índice]]
+[Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
 Las definiciones son breves recordatorios de las explicaciones desarrolladas en los capítulos. Algunos términos —como RTO, RPO e idempotencia— aparecen aquí como ampliaciones didácticas.
 
@@ -81,3 +81,7 @@ Antes de consultar definiciones, intenta explicar estas cinco situaciones:
 5. Un proveedor auxiliar deja de responder. ¿Cuál es el comportamiento degradado aceptable y cómo lo comprobarías?
 
 Una respuesta completa identifica mecanismo, costo, supuesto y evidencia. Las preguntas resueltas al final de cada capítulo permiten comprobar los fundamentos antes de intentar el laboratorio.
+
+---
+
+[← Índice de este bloque](00%20%C3%8Dndice.md)

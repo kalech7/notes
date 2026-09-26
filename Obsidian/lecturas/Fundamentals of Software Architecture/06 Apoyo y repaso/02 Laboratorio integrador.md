@@ -8,7 +8,7 @@ tags:
 
 # Laboratorio integrador: de una necesidad a una arquitectura razonada
 
-[[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí|← Índice]]
+[Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
 Este ejercicio es **elaboración propia**, no una kata adicional del libro. Integra lo estudiado en los cinco capítulos. Puedes hacerlo en papel o duplicar esta nota y responder antes de desplegar las soluciones.
 
@@ -101,3 +101,7 @@ Un **Architecture Decision Record** conserva una decisión y su razón. Esta pla
 | Revisión | Si el negocio exige estimaciones de entrega cuyo cálculo depende de mapas |
 
 Evalúa tu trabajo preguntando: ¿cada prioridad tiene una razón de negocio?, ¿cada decisión reconoce un costo?, ¿cada promesa tiene evidencia?, ¿separaste hechos, supuestos y dudas? La calidad está en esa cadena de razonamiento, no en que tu dibujo coincida con una solución única.
+
+---
+
+[← Índice de este bloque](00%20%C3%8Dndice.md)

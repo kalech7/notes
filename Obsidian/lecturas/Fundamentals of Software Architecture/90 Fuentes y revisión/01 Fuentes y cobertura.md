@@ -8,7 +8,7 @@ tags:
 
 # Fuentes, cobertura y límites
 
-[[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí|← Índice]]
+[Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Fuentes y revisión](00%20%C3%8Dndice.md)
 
 ## Edición y materiales
 
@@ -39,7 +39,7 @@ No aparecen las páginas impresas **13–16, 36 y 66** en estos archivos. No se 
 
 ## Matriz de cobertura del material disponible
 
-Cada fila ubica un bloque del escaneo y dónde se desarrolla. Las figuras originales de la guía son reinterpretaciones didácticas, no copias gráficas del libro.
+Cada fila ubica un bloque del escaneo y dónde se desarrolla. Los capítulos se distribuyen ahora en 37 notas temáticas dentro de cinco carpetas; los números de sección se conservan en los encabezados de las notas. Las secciones de alcance y referencias generales están en el índice de cada capítulo. Las figuras originales de la guía son reinterpretaciones didácticas, no copias gráficas del libro.
 
 | Fuente y páginas de PDF | Ideas verificadas | Desarrollo |
 |---|---|---|
@@ -97,3 +97,7 @@ Los cinco capítulos se redactaron con cinco subagentes, con revisión e integra
 Se comprobaron los enlaces internos y las propiedades YAML de las notas, se renderizaron sin errores los 20 diagramas Mermaid y se revisaron los recursos visuales. Las copias de los tres PDF tienen el mismo SHA-256 que sus originales. Los capítulos reúnen 35 preguntas con respuesta y cinco ejercicios resueltos; el laboratorio añade cinco soluciones desplegables.
 
 La ampliación visual contiene **32 imágenes PNG distintas: cinco ilustraciones generadas, siete gráficos originales y veinte diagramas**. Los SVG y archivos Mermaid son versiones editables de esas mismas composiciones, no imágenes adicionales. Los PNG se insertan mediante Markdown relativo para verse en GitHub y Obsidian. El README ofrece navegación para GitHub. El intento de una ilustración generada adicional para priorización alcanzó el límite de uso y no se cuenta como entregado; el capítulo 5 mantiene su gráfico y sus cuatro diagramas explicados.
+
+---
+
+[← Índice de este bloque](00%20%C3%8Dndice.md)

@@ -8,13 +8,13 @@ tags:
 
 # Atlas visual explicado
 
-[[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí|← Índice]]
+[Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
 Un diagrama es útil si permite responder una pregunta. Aquí se explica cómo leer las doce composiciones originales de la guía: cinco ilustraciones generadas y siete figuras vectoriales, todas disponibles en PNG. Además, los capítulos incorporan veinte diagramas exportados a PNG con sus fuentes editables. Los gráficos cuantitativos usan **datos inventados**, no mediciones ni resultados publicados por los autores.
 
 ## 1. Las cuatro dimensiones de la arquitectura
 
-![arquitectura contexto](Recursos%20visuales/01-arquitectura-contexto.png)
+![arquitectura contexto](../Recursos%20visuales/01-arquitectura-contexto.png)
 
 Empieza arriba: el contexto incluye las metas de negocio, el dinero, el equipo y las restricciones. Las dos cajas centrales responden preguntas diferentes. Las características expresan capacidades o condiciones de éxito; los componentes organizan responsabilidades. «Gestionar pedidos» y «resistir un pico» se necesitan mutuamente, pero no son equivalentes.
 
@@ -22,11 +22,11 @@ La parte inferior conecta estilo y decisiones. Un estilo ofrece una organizació
 
 **Lectura aplicada:** si el equipo de PedidoClaro es pequeño, operar múltiples servicios tiene un costo. Si el área de promociones debe desplegar cada hora y el resto cada mes, aparece otra presión. Ninguna caja decide por sí sola: las relaciones ayudan a identificar qué hay que investigar.
 
-**Límite:** las flechas no representan un algoritmo obligatorio. El análisis puede avanzar en paralelo y volver atrás cuando una restricción invalida una alternativa. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/01 Introducción|capítulo 1]].
+**Límite:** las flechas no representan un algoritmo obligatorio. El análisis puede avanzar en paralelo y volver atrás cuando una restricción invalida una alternativa. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/01 Introducción/00 Índice|capítulo 1]].
 
 ## 2. Una cola de trabajo y una publicación a varios intereses
 
-![colas y publicacion](Recursos%20visuales/02-colas-y-publicacion.png)
+![colas y publicacion](../Recursos%20visuales/02-colas-y-publicacion.png)
 
 Arriba hay una cola compartida por dos trabajadores. La intención es repartir trabajo: el pedido 101 puede ir al trabajador A y el 102 al B. Añadir trabajadores aumenta capacidad solo si el recurso limitante permite ese paralelismo. No significa que ambos reciban todos los pedidos.
 
@@ -34,11 +34,11 @@ Abajo, cocina y analítica son intereses diferentes. Ambos necesitan enterarse d
 
 El dibujo deliberadamente no escribe «exactamente una vez». Si un consumidor procesa un evento pero falla antes de confirmar, puede recibirlo de nuevo. Un identificador de pedido y una operación idempotente ayudan a evitar duplicar efectos; las garantías precisas dependen del protocolo y de cómo se persista el resultado.
 
-**Comprueba tu comprensión:** si añades tres réplicas de analítica a la misma cola, ¿todas verán cada evento? No: repartirán las entregas de esa cola. Si cada interés necesita su copia, requiere una suscripción independiente. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/02 Pensamiento arquitectónico|capítulo 2]].
+**Comprueba tu comprensión:** si añades tres réplicas de analítica a la misma cola, ¿todas verán cada evento? No: repartirán las entregas de esa cola. Si cada interés necesita su copia, requiere una suscripción independiente. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/02 Pensamiento arquitectónico/00 Índice|capítulo 2]].
 
 ## 3. Separación lógica y separación de despliegue
 
-![modularidad](Recursos%20visuales/03-modularidad.png)
+![modularidad](../Recursos%20visuales/03-modularidad.png)
 
 La primera escena representa un límite de despliegue que contiene tres módulos. Los colores sugieren responsabilidades distintas. Es posible cambiar una regla de un módulo sin invadir los demás, aunque al publicar se entregue una aplicación completa.
 
@@ -48,11 +48,11 @@ La tercera muestra dependencias densas: aunque las piezas están físicamente se
 
 **Cómo usar la analogía:** pregunta qué cambios exigen tocar varias piezas, cuáles fallan juntas y cuáles requieren desplegarse juntas. Esas observaciones dicen más que contar cajas. Los tres puentes de la escena central tampoco son una recomendación de conectar todos los servicios entre sí.
 
-**Límite:** el dibujo no mide cohesión, latencia ni calidad. Tampoco afirma que un estilo siempre gane. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/03 Modularidad|capítulo 3]].
+**Límite:** el dibujo no mide cohesión, latencia ni calidad. Tampoco afirma que un estilo siempre gane. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/03 Modularidad/00 Índice|capítulo 3]].
 
 ## 4. Secuencia principal: una métrica y sus límites
 
-![secuencia principal](Recursos%20visuales/04-secuencia-principal.png)
+![secuencia principal](../Recursos%20visuales/04-secuencia-principal.png)
 
 El eje horizontal representa **inestabilidad** `I = Ce / (Ca + Ce)`: dependencia saliente relativa, no frecuencia observada de fallos. El vertical representa **abstracción** `A = Na / (Na + Nc)`: proporción de tipos abstractos frente al total de tipos contados.
 
@@ -66,7 +66,7 @@ Las zonas tienen nombres deliberadamente llamativos para invitar a investigar. E
 
 ## 5. LCOM: contar pares, no mirar el dibujo por intuición
 
-![lcom](Recursos%20visuales/05-lcom.png)
+![lcom](../Recursos%20visuales/05-lcom.png)
 
 Tenemos cuatro métodos. Dos usan el campo `a`; los otros dos usan `b`. Cuatro métodos producen `4 × 3 / 2 = 6` pares no ordenados. Dos pares comparten estado (`Q = 2`) y cuatro no lo comparten (`P = 4`). Para la variante LCOM1 utilizada aquí: `max(P − Q, 0) = 2`.
 
@@ -78,7 +78,7 @@ Que existan dos grupos disjuntos sugiere revisar si se mezclaron responsabilidad
 
 ## 6. Crecer y adaptarse al pico no son lo mismo
 
-![escalabilidad elasticidad](Recursos%20visuales/06-escalabilidad-elasticidad.png)
+![escalabilidad elasticidad](../Recursos%20visuales/06-escalabilidad-elasticidad.png)
 
 A la izquierda, una instancia admite 100 solicitudes/s; dos, 180; cuatro, 300. La eficiencia no es lineal: hay trabajo compartido o sobrecarga. Si definimos eficiencia relativa como capacidad real dividida por `instancias × capacidad de una instancia`, obtenemos 100 %, 90 % y 75 %. Estos números solo tienen sentido **manteniendo la misma operación, datos y objetivo de respuesta**.
 
@@ -86,11 +86,11 @@ A la derecha, la demanda aumenta al mediodía y luego cae. La línea de capacida
 
 El gráfico agrupa observaciones cada dos horas; no muestra segundos de arranque ni garantiza que no haya colas entre puntos. Hay que medir cuánto tarda en detectarse el pico, iniciarse recursos, calentarse cachés y repartirse el tráfico. Para un almuerzo previsible puede ser apropiado escalar antes del evento.
 
-**Límite físico del caso:** más capacidad informática no prepara más sándwiches si la cocina está saturada. La respuesta del sistema podría ser ampliar la hora de entrega ofrecida o limitar admisiones de forma explícita, en vez de confirmar plazos imposibles. Véanse los capítulos [[Obsidian/lecturas/Fundamentals of Software Architecture/04 Características arquitectónicas|4]] y [[Obsidian/lecturas/Fundamentals of Software Architecture/05 Identificar y priorizar características|5]].
+**Límite físico del caso:** más capacidad informática no prepara más sándwiches si la cocina está saturada. La respuesta del sistema podría ser ampliar la hora de entrega ofrecida o limitar admisiones de forma explícita, en vez de confirmar plazos imposibles. Véanse los capítulos [[Obsidian/lecturas/Fundamentals of Software Architecture/04 Características arquitectónicas/00 Índice|4]] y [[Obsidian/lecturas/Fundamentals of Software Architecture/05 Identificar y priorizar características/00 Índice|5]].
 
 ## 7. Dos relojes en un incidente: RPO y RTO
 
-![recuperacion](Recursos%20visuales/07-recuperacion.png)
+![recuperacion](../Recursos%20visuales/07-recuperacion.png)
 
 El último estado recuperable corresponde a las 10:00. El fallo ocurre a las 10:05. Si no hay registros adicionales recuperables, están en riesgo hasta cinco minutos de modificaciones. Eso se compara con el **RPO**, el objetivo que limita la pérdida temporal aceptable de datos.
 
@@ -102,7 +102,7 @@ Si el negocio aceptara un RPO de un minuto, este resultado no lo cumpliría aunq
 
 ## 8. De una frase a evidencia
 
-![requisitos decisiones](Recursos%20visuales/08-requisitos-decisiones.png)
+![requisitos decisiones](../Recursos%20visuales/08-requisitos-decisiones.png)
 
 La primera frase expresa una preocupación, pero todavía es ambigua. El segundo paso acota un escenario. El tercero identifica capacidades; el cuarto propone una respuesta estructural; el quinto plantea cómo buscar evidencia.
 
@@ -114,24 +114,28 @@ Para leer el diagrama al revés, toma cualquier prueba y pregunta qué decisión
 
 ## 9. Ver la cohesión antes de calcularla
 
-![Responsabilidades mezcladas y módulos cohesivos](Recursos%20visuales/09-cohesion-responsabilidades.png)
+![Responsabilidades mezcladas y módulos cohesivos](../Recursos%20visuales/09-cohesion-responsabilidades.png)
 
 Los tickets representan pedidos; las monedas, pagos; los vehículos, entregas. A la izquierda los conceptos están mezclados dentro de cada frontera. A la derecha se agrupan y comunican por interfaces. La idea no es eliminar todo puente, sino concentrar cada regla y reducir el conocimiento innecesario entre módulos. «Baja dependencia» es una intención del ejemplo, no un resultado medido. Pregunta dónde cambiarías una regla de reembolso en cada escena.
 
 ## 10. Arquitectura como un conjunto de preguntas
 
-![Cuatro dimensiones conectadas por el contexto](Recursos%20visuales/10-cuatro-dimensiones.png)
+![Cuatro dimensiones conectadas por el contexto](../Recursos%20visuales/10-cuatro-dimensiones.png)
 
 Recorre las cuatro zonas: ¿qué capacidades necesito?, ¿qué responsabilidades existen?, ¿cómo se organizan?, ¿por qué elegí esas reglas? La tienda conecta las respuestas con el negocio. No confundas los componentes con dispositivos físicos ni el estilo con el número de contenedores: son símbolos para recordar las preguntas del capítulo 1.
 
 ## 11. Aprender a lo ancho y en profundidad
 
-![Amplitud y profundidad del conocimiento técnico](Recursos%20visuales/11-amplitud-profundidad.png)
+![Amplitud y profundidad del conocimiento técnico](../Recursos%20visuales/11-amplitud-profundidad.png)
 
 Las islas muestran alternativas que puedes reconocer; la excavación representa una especialidad que puedes implementar y diagnosticar. Identificar una nueva posibilidad mueve conocimiento hacia «sé que lo desconozco». Dominarla exige práctica y mantenimiento. Los puentes representan exploración, no una arquitectura de servicios.
 
 ## 12. No mezclar tiempo individual y producción conjunta
 
-![Latencia, throughput y escalabilidad mediante una cocina](Recursos%20visuales/12-rendimiento-y-capacidad.png)
+![Latencia, throughput y escalabilidad mediante una cocina](../Recursos%20visuales/12-rendimiento-y-capacidad.png)
 
 Cronometrar un pedido da una latencia. Contar pedidos terminados en un intervalo da throughput. Añadir estaciones plantea una pregunta de escalabilidad: ¿cuánto crece el trabajo útil bajo el mismo objetivo? Si todas esperan por un paso compartido, los recursos extra no se aprovechan completamente. La imagen no cuantifica ese límite; las cifras del capítulo 4 permiten practicar cómo medirlo.
+
+---
+
+[← Índice de este bloque](00%20%C3%8Dndice.md)
