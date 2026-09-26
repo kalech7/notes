@@ -16,6 +16,9 @@ orden: 7
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> La agilidad depende del recorrido completo, no de la velocidad de una sola persona. La experiencia práctica del arquitecto ayuda, pero concentrar implementación crítica contradice ese objetivo al crear una dependencia organizativa.
+
 ## 7. Seguir programando sin convertirse en cuello de botella
 
 Los autores defienden mantener contacto con el código. El peligro es la **Bottleneck Trap**: asumir piezas críticas cuya entrega depende de una persona que también atiende reuniones y decisiones arquitectónicas. **Fuente: PDF pp. 29–31; impresas pp. 33–35.**
@@ -31,6 +34,20 @@ Las alternativas del libro tienen propósitos distintos:
 - **Corrección de bugs:** descubrir fallos reales de comprensión y estructura. Conviene elegir trabajos compatibles con la disponibilidad; un incidente urgente no debe depender de huecos en la agenda.
 - **Automatización:** eliminar comprobaciones repetitivas y crear verificaciones de arquitectura. Una regla que prohíba dependencias indebidas ofrece retroalimentación repetible, aunque no certifique la calidad completa del sistema.
 - **Revisiones de código:** comprender implementación y acompañar al equipo. Exigir la aprobación personal del arquitecto en cada cambio recrearía el mismo cuello de botella.
+
+### Heurística para escoger una contribución
+
+Antes de asumir una tarea, responde cuatro preguntas: ¿está en la ruta crítica?, ¿cuántas horas continuas exige?, ¿otra persona puede continuar sin mí?, ¿el trabajo amplía conocimiento compartido? Una contribución saludable tolera interrupciones, deja evidencia y permite que el equipo decida. Emparejarse en un riesgo desconocido suele transferir más criterio que apropiarse de la implementación completa.
+
+| Mala señal | Alternativa más saludable |
+|---|---|
+| Solo el arquitecto puede aprobar o integrar | Criterios automatizados y revisión distribuida. |
+| Tarea crítica asignada a huecos de agenda | Equipo responsable con acompañamiento y decisiones explícitas. |
+| POC que se convierte silenciosamente en producción | Objetivo, fecha de descarte y criterios para reescribir o endurecer. |
+| Revisión que dicta una solución sin contexto | Preguntas sobre restricciones, compensaciones y evidencia. |
+
+> [!question]- Comprobación: ¿el arquitecto debería evitar todo trabajo crítico?
+> No. Debe participar en riesgos críticos, pero evitar que la entrega dependa de su disponibilidad fragmentada o de conocimiento exclusivo. Puede diseñar experimentos, emparejarse, revisar decisiones y ayudar a automatizar límites sin monopolizar la ruta crítica.
 
 ---
 

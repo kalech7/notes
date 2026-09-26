@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Del cliente a los bytes persistentes</title>
+  <desc id="desc">Flujo de una consulta a través del procesador, ejecutor, método de acceso, buffer manager y archivos, con transacciones y recovery como controles transversales.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity=".12"/></filter>
+    <style>
+      .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:16;filter:url(#shadow)}
+      .core{fill:#ecfeff;stroke:#0891b2;stroke-width:2.5;rx:16;filter:url(#shadow)}
+      .disk{fill:#fff7ed;stroke:#ea580c;stroke-width:2.5;rx:16;filter:url(#shadow)}
+      .control{fill:#f5f3ff;stroke:#7c3aed;stroke-width:2;rx:14}
+      .flow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#arrow)}
+      .guard{stroke:#7c3aed;stroke-width:3;stroke-dasharray:8 6;fill:none;marker-end:url(#arrow)}
+      .t{font:700 20px system-ui,sans-serif;fill:#0f172a;text-anchor:middle}
+      .s{font:15px system-ui,sans-serif;fill:#475569;text-anchor:middle}
+      .label{font:700 15px system-ui,sans-serif;fill:#1d4ed8;text-anchor:middle}
+    </style>
+  </defs>
+  <rect width="1200" height="520" fill="#ffffff"/>
+  <text x="600" y="42" class="t" font-size="26">Una consulta se transforma en accesos a páginas</text>
+  <g transform="translate(35 120)">
+    <rect class="box" width="150" height="110"/>
+    <text x="75" y="48" class="t">Cliente</text><text x="75" y="76" class="s">SQL / API</text>
+  </g>
+  <g transform="translate(220 120)">
+    <rect class="box" width="170" height="110"/>
+    <text x="85" y="43" class="t">Procesador</text><text x="85" y="70" class="s">parsea y optimiza</text>
+  </g>
+  <g transform="translate(425 120)">
+    <rect class="box" width="160" height="110"/>
+    <text x="80" y="43" class="t">Ejecución</text><text x="80" y="70" class="s">corre operadores</text>
+  </g>
+  <g transform="translate(620 105)">
+    <rect class="core" width="190" height="140"/>
+    <text x="95" y="48" class="t">Método de acceso</text><text x="95" y="78" class="s">B-Tree, hash, heap</text><text x="95" y="105" class="s">localiza page IDs</text>
+  </g>
+  <g transform="translate(845 120)">
+    <rect class="core" width="155" height="110"/>
+    <text x="78" y="43" class="t">Buffer</text><text x="78" y="70" class="s">page ID → frame</text>
+  </g>
+  <g transform="translate(1035 105)">
+    <rect class="disk" width="135" height="140"/>
+    <text x="68" y="48" class="t">Archivos</text><text x="68" y="78" class="s">páginas</text><text x="68" y="104" class="s">en disco</text>
+  </g>
+  <path class="flow" d="M185 175 H214"/><path class="flow" d="M390 175 H419"/><path class="flow" d="M585 175 H614"/><path class="flow" d="M810 175 H839"/><path class="flow" d="M1000 175 H1029"/>
+  <text x="715" y="82" class="label">qué página contiene la respuesta</text>
+  <g transform="translate(330 340)">
+    <rect class="control" width="240" height="105"/>
+    <text x="120" y="42" class="t">Transacciones + locks</text><text x="120" y="72" class="s">visibilidad y concurrencia</text>
+  </g>
+  <g transform="translate(685 340)">
+    <rect class="control" width="240" height="105"/>
+    <text x="120" y="42" class="t">WAL + recovery</text><text x="120" y="72" class="s">orden y durabilidad</text>
+  </g>
+  <path class="guard" d="M450 340 C450 285 680 290 710 245"/>
+  <path class="guard" d="M805 340 C805 285 930 290 930 230"/>
+  <text x="600" y="493" class="s">La ruta azul mueve la solicitud; los controles morados restringen cuándo y cómo puede cambiar el estado.</text>
+</svg>

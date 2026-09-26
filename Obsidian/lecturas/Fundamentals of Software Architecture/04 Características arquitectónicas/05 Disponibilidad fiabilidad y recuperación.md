@@ -16,6 +16,9 @@ orden: 5
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Rendimiento mide tiempo o trabajo bajo carga, pero un sistema rápido puede estar inaccesible, producir resultados incorrectos o no poder recuperarse. Disponibilidad, fiabilidad, tolerancia y recuperación separan esos modos de éxito y fallo.
+
 ## 5. Disponibilidad, fiabilidad y recuperación
 
 **Ampliación didáctica sobre conceptos presentes en PDF pp. 5 y 8; impresas 59 y 62.** Disponibilidad pregunta si el servicio está utilizable; fiabilidad, si cumple su función durante un intervalo bajo condiciones especificadas. Un servicio accesible que pierde pedidos no es fiable para esa función. Tolerancia a fallos permite seguir funcionando pese a ciertos fallos; recuperabilidad permite restablecer datos y operación después de una interrupción.
@@ -38,7 +41,7 @@ RTO es el **objetivo de tiempo de recuperación**: cuánto puede tardarse en res
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap04-diagrama-03.mmd)
 
-**Interpretación:** el tramo previo representa una ventana potencial de pérdida de datos de dos minutos; el posterior, ocho minutos de recuperación. **Límite:** no muestra fallos parciales ni recuperación de cada subsistema; hay que definir cuándo se considera restablecido el servicio.
+El tramo previo al fallo representa una ventana potencial de pérdida de datos de dos minutos; el posterior, ocho minutos hasta recuperar servicio. La línea no muestra fallos parciales ni recuperación de cada subsistema, por lo que hay que definir cuándo se considera restablecida la operación.
 
 Con RTO = 10 min y RPO = 2 min, este resultado cumple ambos, suponiendo que el estado recuperado sea consistente. El tiempo efectivo es 12:08 − 12:00 = 8 min; la antigüedad del punto recuperable, 12:00 − 11:58 = 2 min. A 30 pedidos confirmados/min, y suponiendo pérdida completa de las escrituras de esa ventana, podrían faltar 60 pedidos. **RPO no mide número de pedidos**: esa conversión depende de la tasa y de qué escrituras se pierdan realmente.
 

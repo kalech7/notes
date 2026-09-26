@@ -14,9 +14,10 @@ tags:
 
 Esta nota conecta los temas de **almacenamiento y recuperación** y **codificación y evolución** de *Designing Data-Intensive Applications*, segunda edición, con contenido que ya tienes en freelance, posgrado y pregrado. Las conexiones y los ejercicios son una elaboración didáctica: no son citas del libro ni ejemplos atribuidos a los escaneos.
 
-> [!tip] Dos preguntas que organizan todo
-> **Almacenamiento:** ¿qué trabajo debe hacer el sistema para encontrar y devolver el dato?
-> **Evolución:** ¿podrá otro programa, quizá de otra versión, entender ese dato correctamente?
+> [!info] Recuerda antes
+> - **Almacenamiento:** pregunta qué trabajo debe hacer el sistema para encontrar y devolver el dato; un plan SQL es la manifestación visible de estructuras y costos físicos.
+> - **Evolución:** pregunta si otro programa, quizá de otra versión, entenderá el dato correctamente; validar sintaxis no basta para preservar significado.
+> - Una conexión útil no dice solo “estos temas se parecen”: explica qué mecanismo del capítulo aclara una decisión de tus otras notas y dónde deja de aplicar.
 
 ```mermaid
 flowchart TD

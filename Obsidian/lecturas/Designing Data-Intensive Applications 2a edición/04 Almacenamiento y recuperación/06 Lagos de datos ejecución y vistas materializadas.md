@@ -13,6 +13,13 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
+Un archivo columnar explica cómo disponer valores dentro de un archivo, pero no decide qué archivos forman hoy una tabla, dónde encontrarla ni cómo ejecutar una consulta. Al separar almacenamiento y cómputo aparecen capas para resolver identidad, versiones, planificación y trabajo derivado.
+
+> [!info] Recuerda antes
+> - **Proyectar columnas** reduce el contenido potencialmente leído; **filtrar grupos de filas** es otro ahorro y depende de metadatos y estadísticas.
+> - Un archivo inmutable puede seguir existiendo sin pertenecer al **estado vigente** de una tabla.
+> - Una **vista materializada** guarda un resultado derivado: acelera lecturas, pero debe mantenerse y tiene una frescura definida.
+
 ## Cuatro capas que suelen confundirse
 
 En una arquitectura analítica desacoplada, diferentes componentes resuelven preguntas distintas. **SQL es la solicitud; no es un diagrama de la infraestructura.**
@@ -36,7 +43,7 @@ flowchart TD
  E --> R["Resultado"]
 ```
 
-**Cómo leer el diagrama:** sigue SQL → motor → catálogo → metadatos → archivos. Es un recorrido de responsabilidades: el motor puede consultar varias capas y reutilizar cachés. El regreso de archivos a motor representa leer bytes para ejecutar, no mover todo el lago al catálogo.
+**La consulta atraviesa responsabilidades separadas:** el motor interpreta SQL, el catálogo localiza la tabla, sus metadatos fijan una versión y esa versión enumera archivos. Los archivos regresan al motor como bytes para ejecutar; no se trasladan al catálogo.
 
 El catálogo no contiene necesariamente todas las filas. Parquet no decide por sí solo cuál es la versión vigente de una tabla. El motor no necesita ser dueño de todos los archivos para leerlos mediante formatos compatibles.
 
@@ -75,7 +82,7 @@ flowchart LR
  D --> E["Un resultado"]
 ```
 
-**Cómo leer el diagrama:** cada caja transforma la salida de la anterior. Filtrar reduce las filas consideradas; tomar cantidades elige los valores que se suman. El resultado final puede ser una sola cifra aunque la lectura inicial abarque millones de ventas.
+**Cada operador reduce o transforma el lote:** el filtro conserva ventas de café, la proyección toma sus cantidades y `SUM` produce una cifra. Que el resultado tenga una celda no evita que la lectura inicial abarque millones de ventas.
 
 Con millones de filas, no basta con minimizar I/O. Interpretar la misma instrucción miles de millones de veces también consume CPU. El capítulo describe dos enfoques:
 

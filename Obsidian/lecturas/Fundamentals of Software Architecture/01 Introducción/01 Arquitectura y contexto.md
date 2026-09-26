@@ -16,6 +16,9 @@ orden: 1
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> El comportamiento dice qué hace el software; la arquitectura añade cómo se organiza y bajo qué condiciones debe seguir siendo útil. Esta distinción evita llamar «arquitectura» únicamente a un diagrama de servidores.
+
 ## 1. Arquitectura: decidir cómo encajan las partes
 
 Un programa puede calcular correctamente un precio y, aun así, fracasar como sistema: quizá se bloquea durante el almuerzo, pierde pedidos al reiniciarse o exige semanas de trabajo para cambiar una promoción. La arquitectura obliga a mirar conjuntamente el comportamiento, la organización del software y las condiciones bajo las cuales debe funcionar.
@@ -36,7 +39,7 @@ Es una explicación histórica de incentivos: cuando cambia el costo de separar 
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap01-diagrama-01.mmd)
 
-**Interpretación:** las opciones técnicas dependen del entorno y los resultados permiten revisar lo decidido. **Límite:** el dibujo simplifica relaciones simultáneas; no afirma que el dinero sea la única causa ni que cada evaluación produzca una alternativa ganadora inequívoca.
+Las opciones técnicas dependen del entorno y los resultados permiten revisar lo decidido. El contexto incluye más que dinero, y evaluar consecuencias no siempre produce una alternativa ganadora inequívoca.
 
 > [!note] La afirmación sobre inteligencia artificial
 > En PDF 1, los autores sostienen que evaluar compensaciones en contextos cambiantes hace especialmente difícil sustituir al arquitecto mediante IA. Debe leerse como su valoración, situada en el momento de escritura, **no como un hecho demostrado ni como una garantía sobre el futuro laboral**. El argumento útil aquí es la importancia del juicio contextual.

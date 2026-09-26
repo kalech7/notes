@@ -16,6 +16,9 @@ orden: 9
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Parte de una necesidad observable, deriva candidatas desde tres fuentes, concreta escenarios y limita las conductoras sin borrar mínimos. Una buena respuesta incluye supuestos, compensaciones, evidencia y disparador de revisión.
+
 ## 9. Preguntas de comprobación
 
 ### 1. Negocio pide «máxima satisfacción». ¿Qué preguntas harías primero?

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">Vacuum de una página fragmentada</title>
+  <desc id="desc">Antes hay celdas vivas y muertas intercaladas; después las vivas quedan compactadas, aparece un gran bloque libre y una página desocupada se registra en la freelist.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L10,3 z" fill="#2563eb"/></marker>
+    <style>
+      .t{font:700 24px system-ui,sans-serif;fill:#0f172a;text-anchor:middle}
+      .s{font:16px system-ui,sans-serif;fill:#475569;text-anchor:middle}
+      .live{fill:#ccfbf1;stroke:#0f766e;stroke-width:2}
+      .dead{fill:#fee2e2;stroke:#dc2626;stroke-width:2;stroke-dasharray:7 5}
+      .free{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;stroke-dasharray:7 5}
+      .flow{stroke:#2563eb;stroke-width:5;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1200" height="650" fill="white"/>
+  <text x="600" y="44" class="t" font-size="29">Vacuum: convertir huecos dispersos en espacio reutilizable</text>
+  <text x="310" y="105" class="t">Antes: 240 B libres, pero fragmentados</text>
+  <rect x="55" y="145" width="510" height="160" rx="14" fill="#fff" stroke="#334155" stroke-width="3"/>
+  <rect x="70" y="160" width="85" height="130" class="live"/><text x="112" y="226" class="s">viva A</text>
+  <rect x="155" y="160" width="60" height="130" class="dead"/><text x="185" y="226" class="s">muerta</text>
+  <rect x="215" y="160" width="120" height="130" class="live"/><text x="275" y="226" class="s">viva B</text>
+  <rect x="335" y="160" width="100" height="130" class="free"/><text x="385" y="226" class="s">hueco</text>
+  <rect x="435" y="160" width="65" height="130" class="dead"/><text x="468" y="226" class="s">muerta</text>
+  <rect x="500" y="160" width="50" height="130" class="live"/><text x="525" y="226" class="s">C</text>
+  <text x="310" y="340" class="s">Un insert de 150 B no cabe: ningún hueco individual alcanza.</text>
+  <path class="flow" d="M580 225 H665"/><text x="622" y="195" class="s">reescribir</text>
+  <text x="920" y="105" class="t">Después: vivas juntas + un hueco grande</text>
+  <rect x="680" y="145" width="465" height="160" rx="14" fill="#fff" stroke="#334155" stroke-width="3"/>
+  <rect x="695" y="160" width="85" height="130" class="live"/><text x="737" y="226" class="s">viva A</text>
+  <rect x="780" y="160" width="120" height="130" class="live"/><text x="840" y="226" class="s">viva B</text>
+  <rect x="900" y="160" width="50" height="130" class="live"/><text x="925" y="226" class="s">C</text>
+  <rect x="950" y="160" width="180" height="130" class="free"/><text x="1040" y="215" class="t">240 B</text><text x="1040" y="247" class="s">contiguos</text>
+  <text x="920" y="340" class="s">Ahora el insert de 150 B cabe sin overflow ni split.</text>
+  <rect x="165" y="425" width="275" height="115" rx="16" fill="#f5f3ff" stroke="#7c3aed" stroke-width="3"/>
+  <text x="303" y="466" class="t">Regla de visibilidad</text><text x="303" y="500" class="s">solo recolectar versiones</text><text x="303" y="526" class="s">que nadie puede leer</text>
+  <rect x="760" y="425" width="275" height="115" rx="16" fill="#fff7ed" stroke="#ea580c" stroke-width="3"/>
+  <text x="898" y="466" class="t">Freelist persistente</text><text x="898" y="500" class="s">page IDs completamente libres</text><text x="898" y="526" class="s">quedan disponibles tras reinicio</text>
+  <path class="flow" d="M440 483 H745"/>
+  <text x="600" y="590" class="s">Vacuum recupera capacidad física; MVCC decide cuándo es seguro considerar una versión como basura.</text>
+</svg>

@@ -13,6 +13,13 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
+El log con mapa hash de la nota anterior acelera una clave exacta, pero el mapa puede crecer hasta agotar la RAM, el archivo acumula versiones y los rangos siguen siendo incómodos. Ordenar por clave permite índices dispersos y recorridos de rango; el problema nuevo es conservar ese orden sin reescribir todo en cada cambio.
+
+> [!info] Recuerda antes
+> - Un **log append-only** abarata la escritura porque añade al final, pero no impide que las versiones obsoletas consuman espacio.
+> - Un **índice disperso** solo guarda puntos de referencia; funciona porque las claves del archivo están ordenadas.
+> - La **RAM es volátil**. Una memtable necesita un registro durable que permita reconstruir los cambios confirmados después de una caída.
+
 ## La dificultad: mantener orden sin reescribir por cada cambio
 
 Una **SSTable** es un archivo de pares clave-valor ordenados por clave. En el modelo simplificado del capítulo contiene una entrada por clave. Ordenar permite saltar al bloque correcto mediante un **índice disperso**: se conserva, por ejemplo, la primera clave de cada bloque y su posición. No hace falta que todas las claves del archivo residan en RAM.
@@ -40,15 +47,23 @@ flowchart TD
  S3 --> P["Publicar resultado y retirar archivos obsoletos"]
 ```
 
-**Cómo leer el diagrama:** la escritura necesita recuperación y una representación consultable en memoria. Las ramas hacia log y memtable muestran responsabilidades, no autorizan cualquier orden: la confirmación duradera depende del log. Flush crea un archivo; compactación combina archivos que ya existían.
+**La escritura crea dos representaciones con responsabilidades distintas:** el log permite recuperar y la memtable permite consultar en orden. La confirmación durable depende del protocolo del log; el flush crea una SSTable y la compactación combina SSTables ya publicadas.
+
+![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/09-lsm-taller-ciclo-actualizacion.png|1200]]
+
+**El taller representa el ciclo completo de una actualización.** El diario rojo es el **WAL o log de recuperación**, donde la escritura queda registrada según la garantía de persistencia. La mesa ámbar es la **memtable**, que mantiene cambios recientes ordenados en RAM. Las losas grises son **SSTables inmutables**: un flush produce otra losa y la compactación combina losas existentes sin modificarlas en el sitio. La losa verde es la **salida ya publicada**, disponible para nuevas lecturas antes de retirar entradas antiguas cuando resulte seguro.
+
+**Conclusión memorable:** registrar permite recuperar, ordenar en memoria permite acumular y publicar una losa nueva permite cambiar el estado visible sin reescribir archivos antiguos.
+
+La escena es una analogía causal, no una reproducción de hardware: un motor no emplea trabajadores, diarios ni losas reales. Tampoco fija el orden exacto de sincronización, publicación y retirada; ese protocolo depende de la implementación y de la garantía de durabilidad configurada.
 
 El log se ordena por llegada; la SSTable, por clave. **No son el mismo archivo ni cumplen el mismo propósito.** El log ayuda a recuperarse; la SSTable organiza búsquedas y recorridos.
 
-## Imagen guiada: dónde vive cada versión
+## Tres estados físicos de la misma clave
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/05-lsm-versiones-y-compactacion.png|1000]]
 
-**Lee los tres paneles de izquierda a derecha:**
+**El valor cambia de representación sin reescribir el archivo antiguo:**
 
 1. El archivo antiguo contiene `P42 → pendiente`. Es una versión persistida e inmutable.
 2. La memtable recibe `P42 → enviado`; el archivo antiguo conserva `pendiente`. Una lectura actual debe elegir la versión reciente que resulte visible, aunque el valor viejo todavía ocupe espacio.
@@ -94,7 +109,7 @@ flowchart LR
  E --> F["Retirar entradas cuando sea seguro"]
 ```
 
-**Cómo leerlo:** el rombo es el límite entre una salida en construcción y una versión utilizable. La rama de fallo vuelve al material válido; la rama de éxito cambia las referencias. No interpretes “temporal” como ausencia de escritura física: el archivo puede ocupar disco sin formar aún parte del estado publicado.
+**La publicación separa una salida en construcción del estado utilizable:** si S3 queda incompleto, las lecturas conservan S1 y S2; si se publica correctamente, las referencias cambian a S3. Un archivo temporal puede ocupar disco sin formar todavía parte del estado visible.
 
 Los archivos inmutables también encajan con almacenamiento de objetos: producir un objeto completo es más natural que sobrescribir continuamente pequeñas regiones. Aun así necesitas metadatos, coordinación y un lugar apropiado para persistir las escrituras recientes.
 
@@ -116,7 +131,7 @@ flowchart TD
  P --> R["Confirmar presencia real o continuar"]
 ```
 
-**Cómo leer el diagrama:** sigue primero la rama “Sí”: basta un cero para descartar el archivo. La rama “No” no confirma presencia; conduce a una búsqueda real en el índice y en los datos. El resultado definitivo lo proporciona el archivo, no el filtro.
+**Un cero descarta; todos unos solo producen un candidato:** la primera condición permite omitir la SSTable, mientras la segunda obliga a consultar el índice y el bloque. El archivo, no el filtro, confirma la presencia real.
 
 Un falso positivo añade trabajo; no inventa un registro porque se verifica. El Bloom clásico, construido correctamente y sin borrar bits arbitrariamente, no produce falsos negativos para las claves insertadas. Borrar el bit compartido 4 para «eliminar A» dañaría la información de B.
 

@@ -16,6 +16,9 @@ orden: 6
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Los conteos de acoplamiento dicen cuántas fronteras se cruzan; no describen qué acuerdo concreto obliga a coordinar cambios. La connascencia precisa si las partes comparten nombres, tipos, significado, orden, tiempo, valores o identidad.
+
 ## 6. Connascencia: precisar qué debe coincidir
 
 Dos elementos presentan connascencia cuando cambiar uno exige adaptar el otro para conservar la corrección. El libro la presenta como **vocabulario de análisis**, no como una única puntuación comparable a $C_a$ o $C_e$.
@@ -57,7 +60,7 @@ La **fuerza** expresa cuánto cuesta reconocer y modificar el acuerdo: un nombre
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap03-diagrama-04.mmd)
 
-**Interpretación:** los refactors hacen explícito el acuerdo o concentran su mantenimiento. **Límite:** no eliminan todas las dependencias. Una constante conserva semántica compartida; un objeto necesita contrato; una operación solo protege los datos bajo su control.
+Los refactors hacen explícito el acuerdo o concentran su mantenimiento; no eliminan todas las dependencias. Una constante conserva semántica compartida, un objeto necesita contrato y una operación solo protege los datos bajo su control.
 
 El libro recomienda debilitar acuerdos difíciles y mantener los más fuertes cerca. No conviene transformar su tipología en una clasificación universal: cambiar un nombre público usado por miles de clientes puede ser más costoso que ajustar un algoritmo privado en dos funciones vecinas.
 

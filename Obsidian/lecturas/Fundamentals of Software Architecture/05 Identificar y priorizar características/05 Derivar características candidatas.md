@@ -16,6 +16,9 @@ orden: 5
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Silicon Sandwiches combina requisitos funcionales, cifras de crecimiento y restricciones de franquicias, expansión y personal. Derivar una candidata significa explicar qué evidencia del enunciado la sugiere y qué dato falta validar.
+
 ## 5. Derivar características: explícitas, implícitas y candidatas
 
 **Libro — PDF pp. 17–21, impresas 72–76:** «explícita» no exige que el documento use el nombre técnico. Una previsión de usuarios puede expresar escalabilidad en lenguaje comercial. «Implícita» indica que la necesidad se deduce del dominio o de condiciones generales. Una inferencia sigue necesitando validación.
@@ -32,7 +35,7 @@ El **rendimiento** requiere tiempos de respuesta aceptables, especialmente en m�
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap05-diagrama-03.mmd)
 
-**Interpretación:** escala y elasticidad imponen condiciones distintas al rendimiento. **Límite:** no define una topología ni demuestra que aumentar servidores elimine un cuello de botella en base de datos o cocina.
+Escalabilidad, elasticidad y rendimiento imponen condiciones diferentes: crecer de forma sostenida, reaccionar a picos y mantener tiempos o trabajo útil. Esa distinción no define una topología ni demuestra que añadir servidores elimine un cuello de botella en base de datos o cocina.
 
 ### Recorrer todos los requisitos sin inflar la arquitectura
 

@@ -15,6 +15,13 @@ cobertura: "Impresas 178–186"
 
 La compatibilidad se vuelve concreta cuando identificas la ruta del dato. Una base de datos lo lleva a otro momento; una API lo lleva a otro proceso; una llamada RPC puede parecer una función pero atraviesa una red con fallos y tiempos impredecibles.
 
+Los formatos anteriores explican si unos bytes pueden interpretarse. Falta ubicar quién escribe y quién lee en cada canal: una base conserva datos para el futuro, una API intercambia solicitud y respuesta, y la red añade incertidumbre sobre si el efecto ocurrió.
+
+> [!info] Recuerda antes
+> - **Hacia atrás** significa lector nuevo sobre datos antiguos; **hacia adelante**, lector antiguo sobre datos nuevos.
+> - Un contrato describe campos y tipos, pero no elimina latencia, caídas ni respuestas perdidas.
+> - Un dato persistido puede sobrevivir a varias versiones de código; una respuesta de red puede no llegar aunque el servidor haya actuado.
+
 ## Base de datos: no todos los registros tienen la misma edad
 
 Una fila puede haberse escrito hace cinco años y otra hace cinco milisegundos. Actualizar el servidor no convierte ambas en la misma representación física. La base de datos puede presentar un esquema lógico actual y completar campos ausentes al leer datos antiguos; si necesitas transformar estructuras complejas, puede hacer falta reescritura o una migración de aplicación.
@@ -41,7 +48,7 @@ sequenceDiagram
   Note over C: Lector viejo interpreta datos nuevos: forward
 ```
 
-**Cómo leerlo.** Sigue primero la petición hacia la derecha y después la respuesta hacia la izquierda. Quien escribe cambia de rol: por eso la misma interacción necesita dos direcciones de compatibilidad.
+**Petición y respuesta invierten los papeles:** el cliente escribe la solicitud que lee el servidor; después el servidor escribe la respuesta que lee el cliente. Una sola interacción puede necesitar dos direcciones de compatibilidad.
 
 Si decides desplegar primero todos los servidores y luego los clientes, ese orden reduce las combinaciones simultáneas que necesitas soportar. Es una **suposición operativa**, no una propiedad universal de HTTP. Un rollback, una app móvil o un cliente externo pueden modificarla.
 
@@ -98,7 +105,7 @@ RPC significa llamada a procedimiento remoto. EJB y RMI se vincularon al ecosist
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/07-timeout-tres-historias.png|1100]]
 
-**Cómo leer la imagen.** Compara las tres historias desde el mismo punto de vista: el cliente termina sin respuesta. En A, la petición no llega; en B, sigue en curso cuando vence la espera; en C, el servidor completó el trabajo pero se perdió la respuesta. Para el cliente, esas historias pueden parecer iguales. No son todos los fallos posibles: son tres contraejemplos a la idea de que un timeout pruebe que no ocurrió el efecto.
+**El mismo timeout oculta tres historias distintas:** la petición pudo no llegar, seguir en curso o completar el efecto y perder solo la respuesta. El cliente observa “sin respuesta” en los tres casos; por eso un timeout no demuestra que la operación no ocurrió.
 
 **La decisión práctica.** No asumas que venció la espera y por eso se canceló el cobro. Consulta su estado si el protocolo lo permite o reintenta con la misma identidad de operación bajo una garantía idempotente duradera. En la historia C eso permite recuperar el resultado en vez de cobrar otra vez; en B, el receptor debe coordinar intentos simultáneos de la misma operación. Escribir una clave en la petición solo ayuda si el receptor la conserva y coordina correctamente con el efecto.
 
@@ -124,7 +131,7 @@ sequenceDiagram
   P-->>C: Resultado del mismo cobro
 ```
 
-**Cómo leerlo.** La cruz marca una respuesta perdida, no un cobro deshecho. La segunda petición conserva la identidad P-42 para recuperar el mismo efecto lógico. La deduplicación debe formar parte del receptor, no ser solo una etiqueta enviada por el cliente.
+**La respuesta perdida no deshace el cobro:** el reintento conserva `P-42` para referirse al mismo efecto lógico. El receptor debe almacenar y hacer cumplir esa identidad; una etiqueta enviada únicamente por el cliente no deduplica nada.
 
 También cambian latencia, disponibilidad, costo de transferir objetos y tipos entre lenguajes. Un puntero válido en un proceso no es una referencia útil en el otro. Un stub simplifica la sintaxis, pero la aplicación sigue teniendo que manejar la realidad de la red.
 
@@ -173,7 +180,7 @@ flowchart TD
   end
 ```
 
-**Cómo leerlo.** Son tres alternativas, no tres pasos obligatorios. En la primera, el cliente conoce una dirección estable y el balanceador elige la instancia. En la segunda, el catálogo ayuda a descubrir destinos; los datos viajan después hacia la instancia elegida. En la tercera, los proxies median el tráfico y pueden gestionar cifrado y observabilidad. Las cajas indican responsabilidades, no un número obligatorio de máquinas.
+**Las tres topologías son alternativas:** un balanceador puede elegir la instancia detrás de una dirección estable; un catálogo puede devolver destinos para una conexión posterior; una malla puede mediar mediante proxies y asumir cifrado u observabilidad. Las cajas representan responsabilidades, no un número obligatorio de máquinas.
 
 Un balanceador puede ser hardware especializado o software como NGINX/HAProxy. DNS puede devolver varias direcciones, pero su caché dificulta reaccionar inmediatamente a instancias que cambian. Un registro dinámico permite que las instancias anuncien host, puerto y metadatos; los **heartbeats** son señales periódicas de presencia. Si dejan de llegar, el catálogo puede considerar una instancia no disponible: sigue siendo una observación con retraso, no una prueba infalible del estado de la máquina.
 

@@ -16,6 +16,9 @@ orden: 1
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Un componente lógico agrupa una responsabilidad, pero no implica proceso, servidor ni despliegue independiente. La modularidad estudia primero esos límites conceptuales para que la decisión física no oculte responsabilidades mezcladas.
+
 ## 1. Modularidad, granularidad y separación física
 
 El libro usa *módulo* como agrupación lógica de código relacionado: funciones, clases u otros elementos. La **modularidad** trata de esa organización y sus fronteras; la **granularidad**, del tamaño y alcance de las piezas. Son dimensiones relacionadas: separar más unidades cambia las fronteras, pero una partición más fina no necesariamente mejora el diseño.
@@ -26,9 +29,17 @@ En PedidoClaro, cálculo de subtotales, descuentos y redondeo podrían pertenece
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap03-diagrama-01.mmd)
 
-**Interpretación:** puede haber módulos con contratos definidos dentro de un solo proceso. **Límite:** las flechas expresan dependencias conceptuales; no prueban que el código impida accesos a detalles internos ni describen toda la ejecución.
+Puede haber módulos con contratos definidos dentro de un solo proceso. Las flechas expresan dependencias conceptuales: no prueban que el código impida accesos a detalles internos ni describen toda la ejecución.
 
 La separación **lógica** establece responsabilidades, visibilidad y contratos. La separación **física** introduce unidades como bibliotecas, procesos o despliegues. Un monolito puede conservar buenas fronteras lógicas; varios servicios pueden depender continuamente de los detalles de sus vecinos y requerir cambios coordinados. Por eso no conviene equiparar modularidad con distribución.
+
+![Mismas responsabilidades con límites lógicos dentro de un despliegue y con despliegues separados](../Recursos%20visuales/13-modularidad-logica-distribucion-fisica.png)
+
+La responsabilidad roja conserva la toma de pedidos, la verde la preparación y la azul el cobro tanto dentro del edificio único como en los edificios separados. A la izquierda, las habitaciones establecen **límites lógicos dentro de un mismo despliegue**: cada actividad tiene un lugar reconocible aunque la aplicación se publique como una unidad. A la derecha, esas mismas responsabilidades se convierten en **unidades físicas separadas**; los conductos hacen visible que ahora necesitan comunicación, contratos, observación y recuperación entre despliegues.
+
+La distribución puede permitir ciclos de publicación, escalado o fallos más independientes, pero introduce operación y coordinación remotas. El edificio único puede simplificar esa operación sin obligar a mezclar responsabilidades. Ninguna disposición es universalmente mejor: la decisión depende de qué independencia necesita el sistema y de si sus beneficios compensan el nuevo costo.
+
+**Límite de la analogía:** conservar colores y actividades ayuda a seguir responsabilidades, pero no demuestra que las fronteras sean correctas ni representa datos, latencia o fallos concretos. Esos límites deben comprobarse en código, contratos y operación.
 
 Un *namespace* distingue nombres: `clientes.Estado` y `pedidos.Estado` pueden coexistir sin representar el mismo concepto. Esto resuelve identificación, pero no demuestra cohesión. Una carpeta `utilidades` puede contener funciones sin relación aunque todos sus nombres sean únicos.
 

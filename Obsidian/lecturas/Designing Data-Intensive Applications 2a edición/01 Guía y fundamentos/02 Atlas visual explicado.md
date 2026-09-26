@@ -11,13 +11,18 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Guía y fundamentos]]
 
-Cada imagen responde una pregunta. **Mira primero qué objeto cambia, después qué recorrido sigue y por último qué condición hace válida la respuesta.** Las imágenes son analogías originales; los pasos siguientes explican el mecanismo real y las partes que el dibujo simplifica. No necesitas abrir los PDF.
+Los cuatro fenómenos comparten una dificultad: lo visible para una aplicación no muestra todo el estado físico o distribuido. Una actualización puede dejar bytes antiguos, un lector puede completar un campo ausente, un timeout puede ocultar un efecto terminado y una búsqueda puede devolver solo candidatos. Las imágenes son analogías originales; el texto explica el mecanismo y sus límites sin requerir los PDF.
+
+> [!info] Recuerda antes
+> - Un mismo **dato lógico** puede tener varias representaciones físicas o versiones; las reglas de visibilidad deciden cuál responde una lectura.
+> - Un **contrato** permite interpretar bytes, pero no inventa hechos ausentes ni garantiza conservar campos al reescribir.
+> - En sistemas distribuidos debes separar lo que un actor **observa** de lo que realmente pudo ocurrir en otro componente.
 
 ## 1. Si actualizo un pedido, ¿por qué sigue existiendo su valor antiguo?
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/05-lsm-versiones-y-compactacion.png|1100]]
 
-### Recorre los tres paneles
+### Tres estados físicos de P42
 
 **Antes:** P42 tiene el estado `pendiente` en un archivo ordenado ya publicado. En este diseño ese archivo es inmutable: una nueva actualización no abre el archivo para sustituir sus bytes por otros.
 
@@ -79,7 +84,7 @@ No se agregan retrospectivamente bytes al archivo. El lector construye una repre
 
 Permitir null no equivale a declarar un default. Y un default no demuestra un hecho histórico: usar USD requiere saber que ese era el contrato de los datos antiguos. En el dibujo se conserva la ausencia de información como null.
 
-### Recorre la dirección contraria
+### El caso inverso: datos nuevos ante un lector antiguo
 
 Si el escritor nuevo incorpora moneda y el lector antiguo no la espera, la resolución puede ignorar ese campo para producir la estructura antigua. Eso es una cuestión distinta de conservarlo al volver a escribir: reconstruir y guardar solo los dos campos antiguos podría perder la moneda. Por tanto, prueba la ruta completa, no solo que la lectura no lance una excepción.
 
@@ -151,9 +156,19 @@ Una referencia exacta, como un código de producto, puede favorecer señales lé
 
 **Imagen mental para recordar:** el catálogo reúne apariciones; el mapa reúne vecinos de una representación. Desarrollo en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/07 Índices espaciales texto completo y vectores|índices espaciales, texto y vectores]], conectado con [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/38 S08 - Búsqueda léxica densa y fusión RRF|tu nota de búsqueda híbrida y RRF]].
 
-## Cómo comprobar que la imagen te ayudó
+## 5. ¿Cómo pasa una actualización LSM de reciente a publicada?
 
-Cierra esta nota y dibuja cuatro cosas: las dos versiones de P42; los dos esquemas de Avro; las tres historias del timeout; los dos caminos de búsqueda. Junto a cada dibujo escribe **una condición que la imagen no garantiza**. Poder explicar esas condiciones vale más que recordar únicamente los colores.
+![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/09-lsm-taller-ciclo-actualizacion.png|1100]]
+
+El diario rojo conserva el cambio para recuperación; la mesa ámbar representa la memtable ordenada; las losas grises son SSTables inmutables; y la losa verde es una salida nueva ya publicada. La escena reúne WAL, acumulación en RAM, flush y compactación para mostrar que una actualización cambia el estado visible mediante **archivos nuevos**, no tallando de nuevo los antiguos.
+
+La analogía no prescribe el protocolo exacto: los motores no usan trabajadores ni losas y pueden coordinar sincronización, publicación y retirada de maneras distintas. La condición esencial es no confirmar ni retirar datos de una forma que impida recuperar el estado prometido.
+
+**Imagen mental para recordar:** primero deja una historia recuperable, después organiza y finalmente publica una versión inmutable. Desarrollo completo en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/02 LSM SSTables compactación y Bloom|LSM, SSTables, compactación y Bloom]].
+
+## Señales de comprensión
+
+Cierra esta nota y dibuja cinco cosas: las dos versiones de P42; los dos esquemas de Avro; las tres historias del timeout; los dos caminos de búsqueda; y el recorrido WAL → memtable → SSTables → publicación. Junto a cada dibujo escribe **una condición que la imagen no garantiza**. Poder explicar esas condiciones vale más que recordar únicamente los colores.
 
 Las ilustraciones fueron generadas con `image_gen` y revisadas antes de incorporarlas. Sus prompts y límites están en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/03 Procedencia de imágenes y prompts|procedencia de recursos visuales]].
 

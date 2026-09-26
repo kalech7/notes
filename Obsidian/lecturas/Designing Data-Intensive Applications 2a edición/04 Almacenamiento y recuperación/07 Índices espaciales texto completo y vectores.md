@@ -13,6 +13,13 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
+Un B-tree responde muy bien cuando la consulta comparte su orden principal. Sin embargo, un rectángulo, una combinación de palabras o una idea semejante no siempre forman un único rango. Cada problema necesita representar qué significa “cerca” y aceptar que algunos índices primero producen candidatos que después deben verificarse.
+
+> [!info] Recuerda antes
+> - Un índice ahorra trabajo porque organiza una **relación concreta**: igualdad, orden, región, término o distancia.
+> - Un **candidato** todavía puede ser un falso positivo geométrico, léxico o aproximado; la comprobación final responde la condición exacta.
+> - La estructura del índice no vuelve verdadera ni relevante la información recuperada.
+
 ## La estructura depende de qué significa “encontrar”
 
 Buscar un pedido por ID, restaurantes dentro de un mapa, documentos con dos palabras y textos de significado cercano son problemas distintos. Un índice necesita organizar los datos según la relación que la consulta aprovecha: igualdad, orden, proximidad geométrica, pertenencia a términos o similitud de representaciones.
@@ -38,7 +45,7 @@ flowchart TD
  P --> V["Verificar coordenadas y devolver coincidencias"]
 ```
 
-**Cómo leer el diagrama:** una región descartada elimina de golpe muchos puntos; una región intersectada solo genera candidatos. La última comprobación impide confundir una envolvente que toca la consulta con un punto que realmente está dentro.
+**Una región sin intersección descarta todos sus puntos; una región intersectada solo genera candidatos.** La comprobación final evita confundir una envolvente que toca la consulta con un punto realmente contenido en ella.
 
 Las dimensiones pueden ser otras: fecha y temperatura, o tres componentes de color. La utilidad depende de la geometría y de la consulta, no de que los datos sean literalmente geográficos.
 
@@ -77,7 +84,7 @@ flowchart LR
  I --> D["D1"]
 ```
 
-**Cómo leer el diagrama:** las listas de documentos llegan por separado a la intersección. D2 falla la condición roja y D3 falla manzana; solo D1 aparece en ambas. No se ha comprobado todavía una frase ni su orden.
+**La intersección conserva únicamente IDs presentes en ambas listas:** D2 no contiene `roja`, D3 no contiene `manzana` y solo D1 cumple las dos presencias. Esto todavía no demuestra que formen una frase ni que aparezcan en ese orden.
 
 Un índice básico de presencia no demuestra que las palabras estén contiguas ni en ese orden. Buscar la frase exacta puede requerir posiciones y lógica adicional. Tampoco determina por sí solo la puntuación de relevancia: funciones como BM25 usan información de frecuencia y longitud.
 
@@ -101,9 +108,9 @@ Un **trie** comparte prefijos: las palabras `casa` y `caso` comparten el camino 
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/08-indice-invertido-y-vectorial.png|1100]]
 
-**Cómo leer la izquierda:** empieza por la ficha `coche` y sigue sus flechas a los documentos A y B. El índice invertido ya conserva esa asociación; no necesita abrir todo el corpus para descubrir dónde aparece el término. El análisis lingüístico puede normalizar formas, y un buscador puede añadir sinónimos: la imagen muestra el mecanismo básico, no todas las capacidades posibles de búsqueda léxica.
+**La mitad izquierda representa apariciones de términos:** la ficha `coche` ya apunta a los documentos A y B, por lo que no hace falta abrir todo el corpus para descubrirlos. El análisis lingüístico puede normalizar formas y añadir sinónimos; la imagen aísla la asociación término-documentos.
 
-**Cómo leer la derecha:** empieza por el marcador de consulta. Los documentos se colocan cerca o lejos según una representación numérica. `Reparar coche` y `arreglar automóvil` ilustran una posible proximidad de significado sin igualdad de términos. El mapa de dos dimensiones es una analogía: no es una medición de embeddings reales ni garantiza que cualquier modelo produzca esa geometría.
+**La mitad derecha representa cercanía entre vectores:** `Reparar coche` y `arreglar automóvil` aparecen próximas sin compartir todos sus términos. El mapa bidimensional es una analogía de una representación numérica; no mide embeddings reales ni garantiza que cualquier modelo produzca esa geometría.
 
 La izquierda permite recuperar por apariciones de términos; la derecha busca vecinos según una medida sobre vectores. Ambas rutas producen candidatos que todavía deben evaluarse. Un documento parecido puede ser falso, irrelevante o insuficiente. Puedes seguir un ejemplo más pausado en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado#4. ¿Buscar una palabra es lo mismo que buscar una idea parecida?|el atlas visual explicado]].
 
@@ -122,7 +129,7 @@ flowchart TD
  C --> R["Evaluar relevancia; opcionalmente reranking y RAG"]
 ```
 
-**Cómo leer el diagrama:** documentos y pregunta deben llegar a representaciones comparables. El índice devuelve candidatos por distancia; evaluar relevancia es un paso posterior. La última caja es opcional y no convierte automáticamente cada candidato en evidencia correcta.
+**Documentos y pregunta deben convertirse en representaciones comparables:** el índice devuelve candidatos por distancia y una etapa posterior evalúa relevancia. El reranking o RAG es opcional y no convierte automáticamente un candidato en evidencia correcta.
 
 Misma cantidad de componentes no garantiza compatibilidad entre modelos. Las coordenadas tampoco son necesariamente etiquetas humanas como “agricultura” o “economía”. La geometría refleja lo que aprendió el modelo, con sus limitaciones.
 
@@ -170,7 +177,7 @@ flowchart TD
  E --> F["Devolver los mejores candidatos encontrados"]
 ```
 
-**Cómo leerlo:** bajar no cambia el vector de consulta; cambia la resolución del grafo disponible. Arriba haces desplazamientos amplios entre pocos puntos; en la base exploras más alternativas. La última caja dice “encontrados” porque no has medido todas las distancias y el método es aproximado.
+**Cada descenso conserva la consulta y aumenta la resolución del grafo:** las capas altas permiten saltos amplios entre pocos nodos; la base expone más alternativas. Se devuelven los mejores candidatos *encontrados*, no necesariamente los vecinos globales, porque el método no mide todas las distancias.
 
 Imagina entrar por A, encontrar un enlace a B más cercano, bajar desde B y explorar C, D y E en la base. Mantener varios candidatos puede encontrar rutas útiles que una decisión puramente codiciosa perdería. Explorar más suele mejorar la recuperación a costa de tiempo; mantener más enlaces también cambia construcción y memoria. No se garantiza hallar el vecino global siguiendo una sola cadena siempre hacia el punto inmediatamente más cercano.
 

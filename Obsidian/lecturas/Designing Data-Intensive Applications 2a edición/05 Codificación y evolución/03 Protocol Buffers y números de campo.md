@@ -13,6 +13,13 @@ cobertura: "Impresas 169–171"
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
+JSON repite nombres de campos y deja varias decisiones de tipos a las aplicaciones. Un formato binario con esquema puede ser más compacto y establecer reglas de evolución, pero necesita una identidad estable para reconocer cada campo aunque su nombre cambie.
+
+> [!info] Recuerda antes
+> - Serializar convierte valores a **bytes**; esos bytes solo recuperan significado mediante reglas compartidas.
+> - La compatibilidad siempre compara un **escritor** con un **lector**, no dos archivos de esquema aislados.
+> - Tolerar un campo desconocido al leer no garantiza conservarlo si después se transforma o se vuelve a escribir el objeto.
+
 Protocol Buffers, o Protobuf, define mensajes mediante un esquema y suele generar código para leerlos y escribirlos. En su representación binaria, un campo se identifica por un **número estable**, no por el texto de su nombre. Esa decisión permite ahorrar nombres repetidos y reconocer campos al evolucionar el mensaje.
 
 ## Un mensaje y sus identidades
@@ -37,7 +44,7 @@ flowchart LR
   R --> V["2 se interpreta como total_centavos"]
 ```
 
-**Cómo leerlo.** El número 2 viaja en los bytes; el nombre total_centavos se obtiene del esquema. El lector une ambas cosas para interpretar el valor. Conservar el número y cambiar su significado produce un fallo semántico aunque los bytes puedan leerse.
+**El número 2 viaja en los bytes y el esquema aporta el nombre `total_centavos`:** el lector combina ambos para interpretar el valor. Reutilizar 2 con otro significado mantendría una estructura decodificable, pero produciría un error semántico.
 
 El *wire type* indica la forma básica de codificación, no todo el tipo semántico. Por ejemplo, strings y mensajes anidados pueden compartir una representación delimitada por longitud. El esquema aporta la interpretación precisa. Para números pequeños, un entero de longitud variable puede ocupar menos bytes que una representación fija de 64 bits.
 

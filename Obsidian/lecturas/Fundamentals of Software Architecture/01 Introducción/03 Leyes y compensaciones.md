@@ -16,6 +16,9 @@ orden: 3
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Las cuatro dimensiones están conectadas: mejorar una capacidad, cambiar límites o escoger un estilo altera costos y restricciones. Por eso una lista de ventajas nunca basta para decidir.
+
 ## 3. Tres leyes y dos corolarios para razonar
 
 Los autores presentan estas leyes como generalizaciones de su experiencia: dos surgieron durante la primera edición y la tercera durante la segunda. Son herramientas de razonamiento profesional, no leyes físicas ni resultados matemáticos demostrados. **Fuente: PDF 6–8, impresas 6–8.**
@@ -46,7 +49,7 @@ PedidoClaro podría centralizar la confirmación del pago y permitir que cada lo
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap01-diagrama-03.mmd)
 
-**Interpretación:** hay posiciones posibles entre extremos, y podemos elegir por responsabilidad. **Límite:** no es una escala cuantificada ni demuestra que el centro sea óptimo; algunas restricciones sí producen decisiones binarias.
+Entre dos extremos suelen existir posiciones que pueden elegirse por responsabilidad. El continuo no es una escala cuantificada ni demuestra que el centro sea óptimo; algunas restricciones sí producen decisiones binarias.
 
 ---
 

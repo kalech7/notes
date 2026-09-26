@@ -16,6 +16,9 @@ orden: 8
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Evalúa cada respuesta con cuatro preguntas: ¿qué contexto se asumió?, ¿qué alternativa se comparó?, ¿qué costo apareció? y ¿qué evidencia falta? El objetivo no es repetir «depende», sino completar de qué depende.
+
 ## 8. Preguntas para comprobar comprensión
 
 ### 1. ¿Elegir un framework de interfaz siempre es diseño?

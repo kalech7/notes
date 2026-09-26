@@ -16,6 +16,9 @@ orden: 5
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Pensar arquitectónicamente significa comparar alternativas en contexto, no aplicar la herramienta más familiar. En mensajería, una misma palabra como «cola» puede ocultar entrega a un consumidor o difusión a varios intereses.
+
 ## 5. Analizar compensaciones: el caso de las subastas
 
 El ejemplo del libro contiene un productor de pujas y tres servicios: captura, seguimiento y analítica. Todos necesitan información de la puja. Se comparan una publicación a un *topic* y publicaciones dirigidas a colas separadas. **Fuente: PDF pp. 26–29; impresas pp. 30–33.**
@@ -35,7 +38,7 @@ En PedidoClaro, cocina, notificaciones y analítica representan tres intereses d
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap02-diagrama-03.mmd)
 
-**Interpretación:** hay una ruta independiente por interés; los trabajadores de cocina comparten su carga. **Límite:** el dibujo no especifica persistencia, confirmaciones, reintentos ni orden. Un evento puede volver a entregarse si se reintenta; procesarlo no debe equivaler a cobrar o preparar dos veces por accidente.
+Cada interés recibe una ruta independiente, mientras los trabajadores de cocina comparten su carga. En una implementación real todavía hay que decidir persistencia, confirmaciones, reintentos y orden. Un evento puede volver a entregarse si se reintenta; procesarlo no debe equivaler a cobrar o preparar dos veces por accidente.
 
 **Cálculo didáctico:** llegan 120 eventos por segundo a analítica y cada trabajador procesa 50. Con dos trabajadores, la capacidad nominal es 100 y se acumulan 20 eventos por segundo: 12.000 en diez minutos. Tres trabajadores ofrecerían 150 y, manteniendo la entrada, vaciarían esa acumulación a 30 por segundo, aproximadamente en 400 segundos.
 

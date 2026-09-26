@@ -1,0 +1,103 @@
+{
+  "nodes": [
+    {
+      "id": "a01db10000000001",
+      "type": "file",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/00 Empieza aquí.md",
+      "color": "5"
+    },
+    {
+      "id": "a01db10000000002",
+      "type": "file",
+      "x": 420,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/00 Guía y fundamentos/00 Índice.md",
+      "color": "5"
+    },
+    {
+      "id": "a01db10000000003",
+      "type": "file",
+      "x": 840,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/01 Introducción y panorama general/00 Índice.md",
+      "color": "3"
+    },
+    {
+      "id": "a01db10000000004",
+      "type": "file",
+      "x": 1260,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/02 Fundamentos de B-Trees/00 Índice.md",
+      "color": "3"
+    },
+    {
+      "id": "a01db10000000005",
+      "type": "file",
+      "x": 1680,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/03 Formatos de archivo/00 Índice.md",
+      "color": "3"
+    },
+    {
+      "id": "a01db10000000006",
+      "type": "file",
+      "x": 2100,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/04 Implementación de B-Trees/00 Índice.md",
+      "color": "3"
+    },
+    {
+      "id": "a01db10000000007",
+      "type": "file",
+      "x": 2520,
+      "y": 0,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/05 Práctica y repaso/00 Índice.md",
+      "color": "4"
+    },
+    {
+      "id": "a01db10000000008",
+      "type": "file",
+      "x": 2520,
+      "y": 300,
+      "width": 320,
+      "height": 180,
+      "file": "Obsidian/lecturas/database internals/90 Fuentes y revisión/00 Índice.md",
+      "color": "1"
+    },
+    {
+      "id": "a01db10000000009",
+      "type": "text",
+      "x": 1680,
+      "y": 300,
+      "width": 740,
+      "height": 180,
+      "text": "## Pregunta que guía el recorrido\n\n¿Qué trabajo físico evita cada estructura, qué metadatos necesita y qué invariante debe sobrevivir a un fallo?",
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {"id": "e01db10000000001", "fromNode": "a01db10000000001", "fromSide": "right", "toNode": "a01db10000000002", "toSide": "left", "toEnd": "arrow"},
+    {"id": "e01db10000000002", "fromNode": "a01db10000000002", "fromSide": "right", "toNode": "a01db10000000003", "toSide": "left", "toEnd": "arrow"},
+    {"id": "e01db10000000003", "fromNode": "a01db10000000003", "fromSide": "right", "toNode": "a01db10000000004", "toSide": "left", "toEnd": "arrow"},
+    {"id": "e01db10000000004", "fromNode": "a01db10000000004", "fromSide": "right", "toNode": "a01db10000000005", "toSide": "left", "toEnd": "arrow"},
+    {"id": "e01db10000000005", "fromNode": "a01db10000000005", "fromSide": "right", "toNode": "a01db10000000006", "toSide": "left", "toEnd": "arrow"},
+    {"id": "e01db10000000006", "fromNode": "a01db10000000006", "fromSide": "right", "toNode": "a01db10000000007", "toSide": "left", "toEnd": "arrow"},
+    {"id": "e01db10000000007", "fromNode": "a01db10000000007", "fromSide": "bottom", "toNode": "a01db10000000008", "toSide": "top", "toEnd": "arrow", "label": "consulta"}
+  ]
+}

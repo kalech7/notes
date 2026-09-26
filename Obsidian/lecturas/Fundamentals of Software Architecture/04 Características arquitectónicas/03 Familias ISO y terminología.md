@@ -16,6 +16,9 @@ orden: 3
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Los nombres del catálogo se solapan y cambian entre organizaciones. Una taxonomía agrupa términos para conversar; no elimina la necesidad de definir qué significa cada capacidad dentro del sistema concreto.
+
 ## 3. Las familias ISO tal como aparecen en el libro
 
 Los autores presentan una selección de definiciones ISO **reformuladas por ellos**. Esta sección reproduce esa organización conceptual; **no afirma cuál es la versión vigente de una norma ni su conformidad literal**. **Fuente: PDF pp. 8–10; impresas 62–64.**

@@ -16,11 +16,16 @@ orden: 2
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Arquitectura y diseño forman un espectro definido por alcance, esfuerzo y compensaciones. Reconocer ese alcance exige conocer suficientes alternativas; dominarlas todas en profundidad es imposible y tampoco es necesario.
+
 ## 2. Amplitud y profundidad: administrar el conocimiento
+
+La profundidad permite implementar y diagnosticar una opción, pero por sí sola favorece aplicar siempre lo conocido. La amplitud aporta alternativas para comparar antes de profundizar donde el riesgo lo justifique.
 
 ![Amplitud para reconocer alternativas y profundidad para dominar una especialidad](../Recursos%20visuales/11-amplitud-profundidad.png)
 
-**Cómo leer la imagen:** recorrer varias islas equivale a descubrir alternativas; excavar en una de ellas equivale a dominar implementación y diagnóstico. Los puentes representan aprendizaje entre áreas, no dependencias entre servicios. Las tres tarjetas distinguen conocimiento operativo, lagunas reconocidas y posibilidades todavía desconocidas. El dibujo no mide conocimientos ni exige especializarse en una sola materia para siempre.
+Recorrer varias islas equivale a descubrir alternativas; excavar en una de ellas equivale a dominar implementación y diagnóstico. Los puentes representan aprendizaje entre áreas, no dependencias entre servicios. Las tres tarjetas distinguen conocimiento operativo, lagunas reconocidas y posibilidades todavía desconocidas. Esta analogía no mide conocimientos ni exige especializarse en una sola materia para siempre.
 
 La **profundidad** permite implementar y diagnosticar una tecnología con competencia. La **amplitud** permite reconocer varias soluciones y saber qué investigar. El libro representa el conocimiento en tres niveles: lo que sabemos, lo que sabemos que desconocemos y lo que ni siquiera sabemos que existe. **Fuente: PDF pp. 16–19; impresas pp. 20–23.**
 
@@ -28,7 +33,7 @@ La **profundidad** permite implementar y diagnosticar una tecnología con compet
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap02-diagrama-02.mmd)
 
-**Interpretación:** primero descubrimos una posibilidad y después profundizamos cuando hace falta. **Límite:** es una representación conceptual de la pirámide, no una medición; conocer el nombre de una herramienta todavía no permite elegirla responsablemente.
+Primero descubrimos una posibilidad y después profundizamos cuando hace falta. La pirámide es una representación conceptual, no una medición; conocer el nombre de una herramienta todavía no permite elegirla responsablemente.
 
 Supongamos que PedidoClaro almacena pedidos en una base relacional. Quien solo conoce esa herramienta intentará resolver con ella todos los problemas. Quien reconoce colas, cachés y procesamiento por lotes puede formular alternativas, aunque necesite ayuda para implementarlas. La amplitud mejora el conjunto de opciones; la profundidad permite comprobar que una opción funciona.
 

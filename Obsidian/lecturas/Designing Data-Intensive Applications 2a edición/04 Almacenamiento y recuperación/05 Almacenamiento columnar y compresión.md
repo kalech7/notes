@@ -13,6 +13,13 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
+Los índices anteriores favorecen consultas que recuperan pocos registros. Una consulta analítica puede tocar millones de filas para sumar solo dos o tres atributos; aun con un índice, arrastrar cada fila completa desperdicia ancho de banda. El siguiente cambio no altera la tabla lógica: reorganiza físicamente sus valores por columna.
+
+> [!info] Recuerda antes
+> - **OLTP y OLAP** describen formas de trabajo: operaciones pequeñas y frecuentes frente a agregaciones amplias; no son sinónimos de “escribir” y “leer”.
+> - El almacenamiento transporta **bloques de bytes**. Ahorrar columnas puede reducir bytes aunque la cantidad de filas siga siendo enorme.
+> - Una **tabla lógica** puede conservar las mismas filas y columnas bajo disposiciones físicas diferentes.
+
 ## La misma tabla puede tener otra disposición física
 
 Una tabla de ventas tiene `fecha`, `producto`, `tienda`, `cantidad` y muchas columnas adicionales. Para `SUM(cantidad) WHERE producto='café'` interesan producto y cantidad de muchas filas, pero no las direcciones, notas y demás atributos.
@@ -44,13 +51,13 @@ flowchart TD
  G2 --> P2["Leer columnas necesarias si el grupo interesa"]
 ```
 
-**Cómo leer el diagrama:** primero eliges qué grupos de filas podrían contener coincidencias; dentro de cada grupo eliges columnas. Fecha sirve al filtro temporal cuando corresponda, producto al filtro de café y cantidad a la suma. Omitir las otras columnas conserva la tabla lógica y reduce bytes necesarios.
+**La consulta ahorra en dos dimensiones distintas:** primero descarta grupos de filas que no pueden contener coincidencias; dentro de los grupos restantes lee únicamente las columnas necesarias. `fecha` sirve al filtro temporal cuando corresponda, `producto` al filtro de café y `cantidad` a la suma. Omitir las otras columnas conserva la tabla lógica y reduce los bytes necesarios.
 
 Un filtro temporal también puede permitir descartar grupos incompatibles con el intervalo buscado. **Elegir columnas y descartar grupos son dos ahorros diferentes**, y dependen del formato, las estadísticas y el motor.
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
-En este modelo sintético, leer 2 de 20 columnas del mismo ancho selecciona una décima parte de los bytes de valores. No es una predicción del tiempo de consulta. El cálculo completo está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|la explicación del gráfico]].
+En este modelo sintético, leer 2 de 20 columnas del mismo ancho selecciona una décima parte de los bytes de valores. No es una predicción del tiempo de consulta. El cálculo completo está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Coste de proyectar columnas|el coste de proyectar columnas]].
 
 ## De una pregunta de negocio a los bytes que hay que leer
 

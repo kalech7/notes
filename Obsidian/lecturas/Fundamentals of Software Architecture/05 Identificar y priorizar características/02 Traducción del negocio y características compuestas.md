@@ -16,6 +16,9 @@ orden: 2
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Las candidatas surgen de preocupaciones del dominio, requisitos explícitos y conocimiento implícito. Una frase comercial no se convierte directamente en una característica: primero debe revelar un resultado, un obstáculo y una forma de observar éxito.
+
 ## 2. Traducir preocupaciones sin convertirlas en equivalencias
 
 **Libro — PDF pp. 12–13, impresas 67–68:** negocio y arquitectura suelen emplear vocabularios diferentes. La tabla 5-1 propone estas correspondencias, traducidas aquí:
@@ -53,7 +56,7 @@ La fuente vincula la última preocupación con auditabilidad. **Precisión de es
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap05-diagrama-02.mmd)
 
-**Interpretación:** el objetivo comercial depende de varias condiciones conjuntas. **Límite:** las ramas no son independientes ni cuantifican probabilidades; falta considerar datos de entrada, dependencias externas y validación del cálculo.
+El objetivo comercial depende de varias condiciones conjuntas; ninguna rama garantiza el resultado por sí sola. Las ramas tampoco son independientes ni cuantifican probabilidades, y aún faltan datos de entrada, dependencias externas y validación del cálculo.
 
 ---
 

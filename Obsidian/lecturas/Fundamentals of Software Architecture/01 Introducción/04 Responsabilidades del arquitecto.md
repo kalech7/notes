@@ -16,6 +16,9 @@ orden: 4
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Una decisión arquitectónica siempre sacrifica algo y solo tiene sentido dentro de su contexto. El trabajo del arquitecto no termina al elegir: debe comunicar, comprobar consecuencias y revisar la elección cuando cambian los hechos.
+
 ## 4. Ocho expectativas del arquitecto
 
 El libro enumera ocho expectativas, independientemente del cargo o nivel de responsabilidad. Conviene estudiarlas como actividades conectadas: decidir sin comunicar, verificar o comprender el negocio deja incompleta la función. **Lista original: PDF 8, impresa 8.**

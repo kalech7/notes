@@ -15,6 +15,12 @@ tipo: ejemplo-didactico
 > [!abstract] El problema completo
 > Una aplicación debe guardar pedidos, mostrar los de un cliente, calcular ventas por mes y añadir un campo sin romper versiones anteriores. **El capítulo 4 pregunta cómo guardar y encontrar; el capítulo 5 pregunta cómo representar y cambiar.** Las dos decisiones se encuentran en el mismo sistema.
 
+> [!info] Recuerda antes
+> - Un índice acelera una **forma concreta de consulta** y añade mantenimiento; no vuelve rápidas todas las preguntas sobre la tabla.
+> - Una copia columnar puede servir a análisis sin reemplazar el estado operacional; necesitas definir frescura y reconciliación entre representaciones.
+> - Compatibilidad significa que escritores y lectores de distintas versiones interpretan el mismo dato sin perder estructura ni significado.
+> - Un timeout deja el efecto incierto; los reintentos necesitan identidad, idempotencia o reconciliación.
+
 Este caso es una **elaboración didáctica propia**, con datos ficticios. No describe la arquitectura real de tus proyectos ni un ejercicio reproducido del libro. Puedes resolverlo con papel: antes de añadir tecnología, justifica qué problema resuelve.
 
 ## 1. Empieza por las preguntas, no por el motor
@@ -71,7 +77,7 @@ Si una tabla sintética tuviera 20 columnas del mismo ancho y una consulta usara
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
-El gráfico usa un millón de filas y ocho bytes por valor: 160 MB frente a 16 MB de contenido de valores. Puedes revisar [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|el cálculo y los límites del modelo]].
+El gráfico usa un millón de filas y ocho bytes por valor: 160 MB frente a 16 MB de contenido de valores. Puedes revisar [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Coste de proyectar columnas|el cálculo y los límites del modelo]].
 
 ## 4. Dos representaciones pueden convivir
 

@@ -10,7 +10,7 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|Fuentes y revisión]]
 
-Las seis ilustraciones se generaron con la herramienta integrada **image_gen**, se revisaron visualmente y se guardaron en la carpeta `Recursos visuales` del libro. Son analogías didácticas originales, no fotografías ni figuras del libro. El texto de las notas desarrolla las condiciones que la imagen simplifica.
+Las siete ilustraciones se generaron con la herramienta integrada **image_gen**, se revisaron visualmente y se guardaron en la carpeta `Recursos visuales` del libro. Son analogías didácticas originales, no fotografías ni figuras del libro. El texto de las notas desarrolla las condiciones que la imagen simplifica.
 
 ## 1. B-tree y LSM
 
@@ -54,7 +54,7 @@ Use only these exact labels. Both arrows strictly go from data LEFT to reader RI
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
-Gráfico calculado con **Matplotlib**, no generado con IA. Sus datos son sintéticos: 1 000 000 filas × columnas seleccionadas × 8 bytes. Se guardaron PNG, SVG y el generador Python. El modelo se explica en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|Cómo leer el gráfico]].
+Gráfico calculado con **Matplotlib**, no generado con IA. Sus datos son sintéticos: 1 000 000 filas × columnas seleccionadas × 8 bytes. Se guardaron PNG, SVG y el generador Python. El modelo se explica en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Coste de proyectar columnas|Coste de proyectar columnas]].
 
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.svg|Gráfico en SVG]]
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/generar_grafico_proyeccion.py|Generador reproducible]]
@@ -70,41 +70,33 @@ Se añadieron cuatro ilustraciones con `image_gen`. Todas se inspeccionaron, se 
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/05-lsm-versiones-y-compactacion.png|900]]
 
-Prompt exacto utilizado:
-
-```text
-undefined
-```
+El prompt exacto de esta imagen anterior no quedó conservado. **Registro verificable de la intención:** representar tres estados de `P42` —versión antigua persistida, versión reciente en memoria y salida nueva tras compactación— sin sugerir que el archivo antiguo se reescribe en el sitio.
 
 ### Avro y dos esquemas
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/06-avro-dos-esquemas.png|900]]
 
-Prompt exacto utilizado:
-
-```text
-undefined
-```
+El prompt exacto de esta imagen anterior no quedó conservado. **Registro verificable de la intención:** mostrar que Avro combina el esquema escritor con el esquema lector para transformar bytes antiguos en la estructura esperada, incluido un campo nuevo con valor por defecto.
 
 ### Timeout y tres historias
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/07-timeout-tres-historias.png|900]]
 
-Prompt exacto utilizado:
-
-```text
-undefined
-```
+El prompt exacto de esta imagen anterior no quedó conservado. **Registro verificable de la intención:** contrastar tres historias que producen el mismo timeout observado por el cliente —petición no recibida, trabajo todavía en curso y respuesta perdida después del efecto—.
 
 ### Índice invertido y vectorial
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/08-indice-invertido-y-vectorial.png|900]]
 
-Prompt exacto utilizado:
+El prompt exacto de esta imagen anterior no quedó conservado. **Registro verificable de la intención:** comparar un índice invertido, que conecta términos con documentos, con un índice vectorial, que organiza proximidad semántica aproximada; ninguno verifica por sí solo la verdad del resultado.
 
-```text
-undefined
-```
+### Taller LSM: ciclo de una actualización
+
+![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/09-lsm-taller-ciclo-actualizacion.png|1000]]
+
+Imagen generada con la herramienta integrada de imágenes y revisada visualmente antes de insertarla. **Resumen del prompt:** representar un taller isométrico en el que una tarjeta `P42` pasa por un diario rojo, una mesa ámbar, losas inmutables y una salida verde; mantener una secuencia espacial clara y evitar texto técnico excesivo dentro de la ilustración.
+
+Su función pedagógica es reunir en una sola cadena causal las responsabilidades de **WAL/log, memtable, flush, SSTables, compactación y publicación**. Los objetos son una analogía: no describen el hardware ni fijan el protocolo exacto de un motor LSM. La correspondencia y sus límites se explican en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/02 LSM SSTables compactación y Bloom|la nota de LSM]] y en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado#5. ¿Cómo pasa una actualización LSM de reciente a publicada?|el atlas visual]].
 
 ---
 

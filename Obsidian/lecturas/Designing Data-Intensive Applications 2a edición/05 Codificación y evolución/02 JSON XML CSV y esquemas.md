@@ -15,6 +15,13 @@ cobertura: "Impresas 163–169 y 177–178"
 
 En memoria tienes objetos, referencias, listas y tipos propios del lenguaje. Un archivo o una conexión transporta bytes. **Codificar es acordar cómo se convierte una estructura en bytes y cómo se recupera su significado.** Aquí “serialización” se refiere a esa conversión; no a la serializabilidad de transacciones.
 
+La compatibilidad de la nota anterior exige algo concreto: dos programas deben convertir entre sus estructuras internas y una representación común. Copiar la memoria de un proceso no sirve porque contiene punteros, tipos y detalles del lenguaje que el otro proceso no comparte.
+
+> [!info] Recuerda antes
+> - El **escritor** codifica y el **lector** decodifica; un despliegue gradual obliga a considerar combinaciones de versiones.
+> - Un **esquema** valida estructura y tipos, pero no demuestra reglas de negocio como la moneda o la unidad correcta.
+> - Ser legible por humanos y ser inequívoco para máquinas son propiedades diferentes.
+
 ```mermaid
 flowchart LR
   A["Objeto del programa"] --> B["Codificador"]
@@ -25,7 +32,7 @@ flowchart LR
   S -.-> D
 ```
 
-**Cómo leerlo.** Recorre la cadena de izquierda a derecha: objeto, bytes y nueva estructura. Las flechas punteadas indican que escritor y lector necesitan reglas compatibles; el dibujo no significa que ambos ejecuten el mismo lenguaje ni compartan memoria.
+**El contrato interviene en ambos extremos:** el codificador transforma el objeto en bytes y el decodificador construye otra estructura. Las reglas deben ser compatibles aunque los programas usen lenguajes distintos y no compartan memoria.
 
 ## Conveniencia inmediata frente a duración del dato
 

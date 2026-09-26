@@ -16,6 +16,9 @@ orden: 1
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Una decisión arquitectónica conecta contexto, capacidades, componentes y estilo, y siempre introduce compensaciones. El siguiente problema es reconocer cuándo una decisión local alcanza suficiente costo o irreversibilidad para tratarla como arquitectónica.
+
 ## 1. Arquitectura y diseño forman un espectro
 
 El libro introduce la diferencia mediante una casa: distribución general frente a decisiones interiores. La analogía orienta, pero no convierte todo diseño de software en apariencia visual. Diseñar una clase, un algoritmo o una interacción también supone decisiones internas. Lo decisivo es el alcance de sus consecuencias.
@@ -26,7 +29,7 @@ Richards y Ford proponen tres criterios: **carácter estratégico, esfuerzo de c
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap02-diagrama-01.mmd)
 
-**Interpretación:** los tres criterios permiten discutir cuánto alcance tiene una decisión. **Límite:** no son una fórmula ni una votación; una sola consecuencia difícil de revertir puede justificar atención arquitectónica.
+Los tres criterios permiten discutir cuánto alcance tiene una decisión. No forman una fórmula ni una votación: una sola consecuencia difícil de revertir puede justificar atención arquitectónica.
 
 ### Estrategia: cuánto futuro estamos comprometiendo
 

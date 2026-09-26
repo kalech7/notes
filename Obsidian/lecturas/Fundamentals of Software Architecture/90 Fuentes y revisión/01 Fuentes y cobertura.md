@@ -96,7 +96,7 @@ Los cinco capítulos se redactaron con cinco subagentes, con revisión e integra
 
 Se comprobaron los enlaces internos y las propiedades YAML de las notas, se renderizaron sin errores los 20 diagramas Mermaid y se revisaron los recursos visuales. Las copias de los tres PDF tienen el mismo SHA-256 que sus originales. Los capítulos reúnen 35 preguntas con respuesta y cinco ejercicios resueltos; el laboratorio añade cinco soluciones desplegables.
 
-La ampliación visual contiene **32 imágenes PNG distintas: cinco ilustraciones generadas, siete gráficos originales y veinte diagramas**. Los SVG y archivos Mermaid son versiones editables de esas mismas composiciones, no imágenes adicionales. Los PNG se insertan mediante Markdown relativo para verse en GitHub y Obsidian. El README ofrece navegación para GitHub. El intento de una ilustración generada adicional para priorización alcanzó el límite de uso y no se cuenta como entregado; el capítulo 5 mantiene su gráfico y sus cuatro diagramas explicados.
+La ampliación visual contiene **33 imágenes PNG distintas: seis ilustraciones generadas, siete gráficos originales y veinte diagramas**. Los SVG y archivos Mermaid son versiones editables de esas mismas composiciones, no imágenes adicionales. Los PNG se insertan mediante Markdown relativo para verse en GitHub y Obsidian. El README ofrece navegación para GitHub. El intento de una ilustración generada adicional para priorización alcanzó el límite de uso y no se cuenta como entregado; el capítulo 5 mantiene su gráfico y sus cuatro diagramas explicados.
 
 ---
 

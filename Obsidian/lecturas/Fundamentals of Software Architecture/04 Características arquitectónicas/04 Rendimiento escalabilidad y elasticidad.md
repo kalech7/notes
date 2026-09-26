@@ -16,11 +16,16 @@ orden: 4
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Nombrar una característica solo abre la conversación. Para que rendimiento, escalabilidad o elasticidad orienten decisiones hay que convertirlos en escenarios con operación, carga, período, umbral y evidencia.
+
 ## 4. Rendimiento: medir la experiencia que se quiere proteger
+
+Una cifra aislada no distingue cuánto tarda una operación, cuánto trabajo termina el sistema ni qué ocurre al añadir recursos. Estas tres preguntas requieren medidas diferentes.
 
 ![Latencia de una operación, throughput de resultados completados y escalabilidad con más recursos](../Recursos%20visuales/12-rendimiento-y-capacidad.png)
 
-**Cómo leer la imagen:** a la izquierda seguimos un pedido desde su inicio hasta su resultado: latencia. En el centro contamos resultados terminados durante un intervalo: throughput. A la derecha aumentamos recursos, pero estos siguen compartiendo un paso: el cuello de botella puede limitar la mejora. Tres cocineros no garantizan tres veces más capacidad, y el único sándwich final es un símbolo del recurso compartido, no un resultado cuantitativo. En software hay que definir las fronteras de la operación y medir la carga real.
+A la izquierda, el tiempo desde el inicio de un pedido hasta su resultado representa latencia. En el centro, los resultados terminados durante un intervalo representan throughput. A la derecha aumentan los recursos, pero todos comparten un paso y ese cuello de botella puede limitar la mejora. Tres cocineros no garantizan tres veces más capacidad, y el único sándwich final simboliza el recurso compartido, no un resultado cuantitativo. En software hay que definir las fronteras de la operación y medir la carga real.
 
 **Ampliación didáctica.** La latencia es el tiempo entre dos eventos definidos; por ejemplo, enviar una compra y recibir su confirmación. El *throughput* es trabajo completado por unidad de tiempo, como pedidos por segundo. La capacidad es el máximo volumen sostenible **bajo condiciones y objetivos definidos**; puede expresarse en solicitudes por segundo, usuarios concurrentes o almacenamiento según la pregunta.
 
@@ -62,7 +67,7 @@ Escalabilidad pregunta si más recursos permiten sostener más carga. Elasticida
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap04-diagrama-02.mmd)
 
-**Interpretación:** la elasticidad implica un ciclo de ajuste, no únicamente crecimiento. **Límite:** el diagrama omite tiempos de arranque, cuotas, estados y cuellos de botella que pueden impedir una respuesta útil.
+La elasticidad implica detectar demanda, ajustar recursos y volver a reducirlos, no únicamente crecer. En la práctica, tiempos de arranque, cuotas, estado y cuellos de botella pueden impedir que el ajuste llegue a tiempo.
 
 Si una instancia sostiene 50 solicitudes/s y cuatro sostienen 160 bajo el mismo objetivo, el factor de escalado es 160/50 = 3,2; la eficiencia respecto del escalado lineal es 3,2/4 = 80 %. No demuestra que ocho alcancen 320. Si las nuevas instancias tardan tres minutos en arrancar, pueden llegar después de un pico de dos minutos: existe escalabilidad, pero la elasticidad resulta insuficiente para ese escenario.
 

@@ -16,6 +16,9 @@ orden: 4
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Identificar características requiere separar hechos, supuestos e inferencias del dominio. Una kata crea un contexto acotado para practicar esa separación y comparar razonamientos, no para adivinar una solución oficial.
+
 ## 4. Practicar con katas: problema, restricciones y discusión
 
 **Libro — PDF pp. 15–16, impresas 70–71:** una kata arquitectónica es un ejercicio acotado para practicar decisiones sin esperar años entre proyectos. Ted Neward desarrolló este formato de práctica; los autores lo adaptaron. Sus secciones son **descripción**, **usuarios**, **requisitos** y **contexto adicional**.

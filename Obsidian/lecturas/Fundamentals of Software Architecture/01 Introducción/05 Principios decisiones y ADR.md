@@ -16,6 +16,9 @@ orden: 5
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> El arquitecto guía y verifica sin convertirse en dueño exclusivo de toda implementación. Para que esa guía sobreviva a conversaciones y cambios de equipo, hay que distinguir orientaciones generales de restricciones concretas y conservar su razón.
+
 ## 5. Principios, decisiones y un ADR breve
 
 El libro menciona principios de diseño junto con decisiones que orientan a los equipos; describe las decisiones como reglas y remite su documentación al capítulo 21. Estas páginas no desarrollan un formato de ADR. **Fuente: PDF 5–8, impresas 5–8.**
@@ -38,7 +41,7 @@ ADR significa *Architecture Decision Record*, registro de decisión arquitectón
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap01-diagrama-04.mmd)
 
-**Interpretación:** una orientación adquiere consecuencias mediante decisiones, implementación y evidencia. **Límite:** no prescribe una metodología del libro ni supone que toda decisión requiera aprobación centralizada; es una síntesis didáctica propia.
+Una orientación adquiere consecuencias mediante decisiones, implementación y evidencia. Este recorrido es una síntesis didáctica propia: no prescribe una metodología del libro ni supone que toda decisión requiera aprobación centralizada.
 
 ---
 

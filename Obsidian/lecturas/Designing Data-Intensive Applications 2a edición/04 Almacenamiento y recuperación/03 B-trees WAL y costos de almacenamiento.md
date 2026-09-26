@@ -13,6 +13,13 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
+Una LSM conserva el orden creando archivos nuevos y fusionándolos después. Un B-tree toma la alternativa de mantener una jerarquía de páginas y actualizarla de forma incremental. Esa mutabilidad evita buscar en varios segmentos, pero introduce divisiones de páginas y el riesgo de que una caída deje referencias a medio actualizar.
+
+> [!info] Recuerda antes
+> - Una **página** es una unidad de almacenamiento con muchas claves o referencias; no equivale a una fila ni necesariamente a una página flash del SSD.
+> - El **orden por clave** permite localizar un punto y después recorrer un rango sin escanear toda la base.
+> - Un **log de recuperación** y la estructura consultable cumplen propósitos distintos: el primero reconstruye cambios; la segunda responde lecturas.
+
 ## Un árbol diseñado para leer pocas páginas
 
 Un B-tree organiza claves ordenadas en páginas de tamaño fijo. Una página interna contiene límites de rangos y referencias a otras páginas. Una hoja contiene valores o referencias a los registros. El capítulo usa “B-tree” de forma amplia e incluye el comportamiento habitual de B+ trees.
@@ -30,7 +37,7 @@ flowchart TD
  C --> G["270 a 299"]
 ```
 
-**Cómo leer el diagrama:** para 251 ignora todas las ramas salvo 200–299 y después 250–269. Cada nivel reduce el rango. Los números son fronteras didácticas, no un inventario completo de las páginas de una implementación.
+**Cada nivel reduce el intervalo posible:** 251 conduce primero a 200–299 y después a 250–269; las demás ramas se descartan. Los números son fronteras didácticas, no un inventario completo de páginas reales.
 
 Para 251: eliges el intervalo 200–299 y después 250–269. No examinas todas las claves anteriores. Para un rango, localizas el inicio y recorres hojas en orden; algunas implementaciones enlazan hojas vecinas para facilitarlo.
 
@@ -57,7 +64,7 @@ sequenceDiagram
  Note over W,P: Tras un fallo, la recuperación usa el WAL
 ```
 
-**Cómo leer el diagrama:** el tiempo avanza hacia abajo. La confirmación puede preceder a la escritura final de páginas si el WAL ya satisface la durabilidad prometida. Eso permite agrupar trabajo sin depender de que la RAM sobreviva a un fallo.
+**La confirmación puede preceder a la escritura final de las páginas:** si el WAL ya satisface la durabilidad prometida, el motor puede agrupar esa escritura posterior. Tras una caída, recupera desde el WAL en lugar de depender de que la RAM haya sobrevivido.
 
 El diagrama resume la lógica de durabilidad, no todos los pasos de un protocolo transaccional. El orden exacto de memoria, commit, checkpoints y escritura varía por motor. El principio es que **el registro de recuperación debe ser duradero antes de depender de páginas que todavía pueden no estarlo**.
 
@@ -117,7 +124,7 @@ Para reutilizarlo:
 3. Utilizar el espacio borrado para nuevas páginas.
 ```
 
-**Cómo leerlo:** B y D ya no sirven, pero no se pueden liberar borrando únicamente esos cuadros del ejemplo. La copia de A y C consume escrituras que la aplicación no solicitó directamente. Esta recolección interna explica por qué “SSD no tiene partes móviles” no equivale a “todas las escrituras cuestan lo mismo”. Agrupar escrituras y eliminaciones puede facilitar que queden bloques enteros liberables. Los tamaños reales, mapeo del controlador y comportamiento exacto varían; la página flash tampoco es necesariamente igual a la página del B-tree.
+**Liberar B y D obliga a conservar A y C antes de borrar el bloque completo:** esas copias son escrituras que la aplicación no solicitó directamente. Esta recolección interna explica por qué “SSD no tiene partes móviles” no equivale a “todas las escrituras cuestan lo mismo”. Agrupar escrituras y eliminaciones puede facilitar que queden bloques enteros liberables. Los tamaños reales, el mapeo del controlador y el comportamiento exacto varían; una página flash tampoco es necesariamente una página del B-tree.
 
 Hay otra reducción posible de trabajo en algunas LSM: **separar claves y valores**. Si una clave de 20 bytes apunta a un valor de 1 MB, mover la referencia durante compactación cuesta menos que copiar repetidamente ese megabyte. A cambio, recuperar el valor requiere seguir la referencia y eventualmente hay que recolectar los valores que dejaron de estar vivos. No desaparece el mantenimiento: cambia de lugar.
 

@@ -54,11 +54,13 @@ Cada capítulo tiene explicaciones causales, referencias al escaneo, diagramas i
 5. Resuelve la kata del capítulo 5 antes de leer su análisis. Compara por qué priorizaste cada capacidad, sin asumir que existe una única estructura correcta.
 6. Termina con el [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/02 Laboratorio integrador\|laboratorio integrador]] y usa el [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/03 Glosario y repaso\|glosario]] para localizar dudas.
 
-Para repasar visualmente, abre el [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/01 Atlas visual explicado|atlas visual]]. La carpeta contiene 32 imágenes PNG: cinco ilustraciones, siete gráficos y veinte diagramas, insertados en los capítulos con sus explicaciones. Cada composición del atlas tiene una lectura guiada y límites de interpretación. Los diagramas conservan sus fuentes editables. El [README](README.md) ofrece navegación compatible con GitHub.
+Para repasar visualmente, abre el [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/01 Atlas visual explicado|atlas visual]]. La carpeta contiene 33 imágenes PNG: seis ilustraciones, siete gráficos y veinte diagramas, insertados en los capítulos con sus explicaciones. Cada composición del atlas tiene una lectura guiada y límites de interpretación. Los diagramas conservan sus fuentes editables. El [README](README.md) ofrece navegación compatible con GitHub.
+
+Si prefieres aprender el proceso completo antes de volver a los detalles, usa el [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/04 Método completo para tomar decisiones|método de decisión de principio a fin]]. Integra los cinco capítulos mediante un flujo visual, una comparación de alternativas y un caso resuelto sin presentar una arquitectura como respuesta universal.
 
 ## Material de apoyo y fuentes
 
-- [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/00 Índice|Apoyo y repaso]]: atlas, laboratorio y glosario.
+- [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/00 Índice|Apoyo y repaso]]: método integrador, atlas, laboratorio y glosario.
 - [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/00 Índice|Fuentes y revisión]]: cobertura, procedencia y prompts.
 - **Recursos visuales:** archivos de imágenes, diagramas y generadores.
 - **Materiales:** copias de los tres PDF.

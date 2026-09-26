@@ -1,14 +1,21 @@
 ---
-title: "Cómo leer el gráfico de proyección"
+title: "DDIA — Coste de proyectar columnas"
 created: 2026-09-25
 tags:
   - lecturas/ddia
   - almacenamiento-columnar
 ---
 
-# Cómo leer el gráfico de proyección
+# DDIA — Coste de proyectar columnas
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
+
+La nota de almacenamiento columnar afirma que pedir menos columnas puede mover menos bytes. Este complemento aísla esa variable con números para mostrar cuánto contenido de valores cambia y, al mismo tiempo, por qué ese cociente no predice la latencia total.
+
+> [!info] Recuerda antes
+> - **Proyectar** es elegir columnas; no significa filtrar filas ni predecir cuánto tardará la consulta.
+> - La organización columnar permite omitir columnas solo si el formato y el lector aprovechan esa disposición.
+> - Bytes de valores, bytes leídos y tiempo de respuesta son magnitudes relacionadas, pero no equivalentes.
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 

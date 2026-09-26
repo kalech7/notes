@@ -16,6 +16,9 @@ orden: 1
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> La modularidad ayuda a contener cambios, pero no dice qué condiciones debe soportar el sistema. Para juzgar una estructura hay que separar la función realizada de capacidades como rendimiento, seguridad o recuperación.
+
 ## 1. Comportamiento y capacidades: dos preguntas distintas
 
 El dominio describe **qué hace** el sistema. En PedidoClaro: seleccionar pan, calcular un precio y registrar un pedido. Una característica arquitectónica expresa una capacidad necesaria para que ese comportamiento resulte útil: responder dentro de cierto tiempo, resistir fallos o permitir cambios sin afectar funciones ajenas. Una compra correctamente calculada que tarda veinte minutos puede resultar comercialmente inútil.
@@ -32,7 +35,7 @@ Para los autores deben concurrir **tres criterios**:
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap04-diagrama-01.mmd)
 
-**Interpretación:** los tres criterios se necesitan conjuntamente. **Límite:** las flechas no representan una secuencia ni un algoritmo automático; determinar la influencia estructural requiere juicio contextual.
+Los tres criterios se necesitan conjuntamente. Las flechas no representan una secuencia ni un algoritmo automático: determinar la influencia estructural requiere juicio contextual.
 
 Cambiar el color de un botón puede ser local. Garantizar accesibilidad en cientos de pantallas puede exigir componentes compartidos, navegación uniforme y verificaciones continuas: el alcance cambia las consecuencias arquitectónicas.
 

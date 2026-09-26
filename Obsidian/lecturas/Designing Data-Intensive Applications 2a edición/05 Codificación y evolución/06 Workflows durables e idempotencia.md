@@ -15,6 +15,13 @@ cobertura: "Impresas 187–189"
 
 Un workflow describe pasos y dependencias de un proceso. La ejecución durable permite recuperar el progreso después de un fallo. La idea decisiva es **registrar lo que ocurrió para continuar sin empezar a ciegas**. Eso no significa que cualquier efecto externo se ejecute mágicamente una sola vez.
 
+RPC resuelve una interacción, pero un pago completo encadena varias llamadas. Si el proceso cae entre ellas, reintentar todo puede repetir un débito y no reintentar puede dejar el depósito pendiente. El workflow necesita recordar qué decisiones y resultados ya son conocidos.
+
+> [!info] Recuerda antes
+> - Un **timeout** deja al cliente sin saber si el efecto no empezó, sigue en curso o terminó sin respuesta.
+> - Una operación **idempotente** reconoce el mismo intento lógico y evita multiplicar su efecto previsto.
+> - Un historial durable se parece a un log de recuperación: registra lo necesario para reconstruir progreso, no convierte servicios externos en una sola transacción.
+
 ## De una tarea aislada a un proceso completo
 
 Imagina un pago con tres tareas: revisar fraude, debitar la tarjeta y depositar los fondos. La segunda depende de que la primera permita continuar; la tercera depende de que exista un débito confirmado. Un motor organiza cuándo ejecutar cada tarea, dónde ejecutarla y qué hacer con fallos.
@@ -30,7 +37,7 @@ flowchart TD
   B --> C["Completar workflow"]
 ```
 
-**Cómo leerlo.** Sigue las decisiones de arriba hacia abajo. Rechazar termina la rama; continuar requiere confirmar cada paso necesario. El bloque de registro es crucial para recuperación, pero el dibujo no convierte débito y depósito en una única transacción bancaria.
+**El riesgo aceptable abre una cadena de efectos dependientes:** rechazar termina el proceso; aceptar exige debitar, registrar un resultado recuperable y después depositar. Ese registro permite continuar tras fallos, pero no convierte débito y depósito en una sola transacción bancaria.
 
 El **orquestador** coordina tareas; los **ejecutores o workers** realizan trabajo. Un workflow puede activarse por una petición, un horario o una persona. Los nombres varían entre herramientas: una tarea que interactúa con el exterior se denomina *Activity* en Temporal.
 
@@ -57,7 +64,7 @@ flowchart LR
   K --> N["Continuar con depósito pendiente"]
 ```
 
-**Cómo leerlo.** El historial entra por la izquierda y permite reconstruir decisiones y resultados conocidos. Solo lo pendiente avanza hacia una actividad nueva. Compara este caso con la caída antes de registrar el resultado, donde el historial todavía no prueba que el efecto ocurrió.
+**El historial reconstruye decisiones y resultados conocidos; solo lo pendiente genera actividad nueva.** Si la caída ocurrió antes de registrar un resultado externo, el historial no prueba si el efecto sucedió y el reintento todavía necesita idempotencia o reconciliación.
 
 En Temporal, el código del workflow debe ser determinista respecto al historial y las actividades alojan operaciones externas. Las actividades pueden reintentarse: que un resultado completado no se vuelva a ejecutar durante replay no significa que todos los intentos físicos de una actividad hayan ocurrido una sola vez.
 
@@ -73,7 +80,7 @@ Esta secuencia es distinta de la anterior:
 
 La pasarela debe reconocer el reintento mediante una clave de idempotencia estable, por ejemplo `pago:P-42:debito`. Generar una clave nueva en cada intento hace que parezcan operaciones diferentes. También importa que la retención de claves y las garantías del proveedor cubran la ventana de reintento requerida.
 
-> [!warning] Cómo leer “exactamente una vez”
+> [!warning] “Exactamente una vez” no elimina los intentos repetidos
 > El capítulo presenta ejecución durable como una manera de conseguir semántica de workflow resistente a fallos, pero también exige idempotencia externa en la impresa 189. **No equivale a una transacción ACID automática entre bancos y servicios**, ni garantiza por sí sola un único intento de cada llamada.
 
 Si después del débito el depósito es rechazado permanentemente, recordar los pasos no decide qué hacer: necesitas una regla de negocio, como revisión o compensación. Una compensación es una nueva acción correctiva; no borra necesariamente todo efecto histórico como un rollback local.

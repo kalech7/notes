@@ -41,6 +41,7 @@ Pregunta siempre **qué trabajo estás ahorrando, qué costo añades y qué info
 ## Consultas rápidas
 
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|Atlas visual explicado]]: sigue versiones LSM, dos esquemas Avro, timeouts y formas de búsqueda.
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/03 Mapa de decisiones de almacenamiento y evolución|Mapa de decisiones]]: pasa de un requisito a mecanismos, costos, fallos y pruebas sin depender de recetas tecnológicas.
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/02 Glosario y tarjetas de memoria|Glosario y tarjetas de memoria]]: busca un término o repasa lo aprendido.
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Mapa de lectura.canvas|Mapa de lectura]]: recorre las relaciones de forma visual en Obsidian.
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/01 Fuentes y cobertura|Alcance y fuentes]]: identifica qué material se trabajó y sus límites.

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="690" viewBox="0 0 1200 690" role="img" aria-labelledby="title desc">
+  <title id="title">Rightmost pointer, high key y páginas overflow</title><desc id="desc">Dos paneles explican el intervalo final de un nodo interno y cómo un registro grande se divide entre una página primaria y páginas overflow.</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#2563eb"/></marker><style>.t{font:700 24px system-ui,sans-serif;fill:#0f172a;text-anchor:middle}.s{font:16px system-ui,sans-serif;fill:#475569;text-anchor:middle}.k{font:700 19px ui-monospace,monospace;fill:#0f172a;text-anchor:middle;dominant-baseline:middle}.n{fill:#ecfeff;stroke:#0891b2;stroke-width:2.5}.o{fill:#fff7ed;stroke:#ea580c;stroke-width:2.5}.e{stroke:#2563eb;stroke-width:3;fill:none;marker-end:url(#a)}</style></defs>
+  <rect width="1200" height="690" fill="white"/><text x="600" y="42" class="t" font-size="29">Dos problemas de borde en una página B-Tree</text>
+  <text x="300" y="95" class="t">1 · El intervalo sin separador a la derecha</text>
+  <rect x="90" y="135" width="420" height="80" rx="12" class="n"/><line x1="230" y1="135" x2="230" y2="215" stroke="#0891b2" stroke-width="2.5"/><line x1="370" y1="135" x2="370" y2="215" stroke="#0891b2" stroke-width="2.5"/><text x="160" y="175" class="k">20 → P0</text><text x="300" y="175" class="k">50 → P1</text><text x="440" y="175" class="k">rightmost P2</text>
+  <path d="M160 215L120 285M300 215L300 285M440 215L480 285" class="e"/><text x="120" y="320" class="s">k &lt; 20</text><text x="300" y="320" class="s">20 ≤ k &lt; 50</text><text x="480" y="320" class="s">k ≥ 50</text>
+  <text x="300" y="365" class="s">Una high key puede volver explícito el límite superior de P2.</text>
+  <line x1="600" y1="90" x2="600" y2="620" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="900" y="95" class="t">2 · El payload que supera la página</text>
+  <rect x="680" y="140" width="440" height="130" rx="14" class="n"/><text x="900" y="170" class="t">Página primaria</text><rect x="710" y="190" width="245" height="55" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="2"/><text x="832" y="218" class="s">clave + prefijo inline</text><rect x="970" y="190" width="120" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="1030" y="218" class="s">overflow id</text>
+  <path d="M1030 245C1030 300 850 285 850 350" class="e"/>
+  <rect x="680" y="355" width="340" height="90" rx="14" class="o"/><text x="850" y="395" class="t">Overflow 1</text><text x="850" y="425" class="s">continuación del valor</text><path d="M1020 400H1080" class="e"/>
+  <rect x="680" y="485" width="340" height="90" rx="14" class="o"/><text x="850" y="525" class="t">Overflow 2</text><text x="850" y="555" class="s">continuación final</text><path d="M1080 400C1130 400 1130 530 1020 530" class="e"/>
+  <rect x="130" y="535" width="390" height="80" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><text x="325" y="570" class="t">N separadores → N+1 intervalos</text><text x="325" y="595" class="s">El extremo derecho no debe perderse.</text>
+  <text x="900" y="635" class="s">Overflow conserva páginas fijas, pero añade lecturas y bookkeeping.</text>
+</svg>

@@ -33,6 +33,7 @@ Las fórmulas permanecen en los archivos Markdown, con notación LaTeX, variable
 - [Atlas visual con lectura guiada](06%20Apoyo%20y%20repaso/01%20Atlas%20visual%20explicado.md)
 - [Laboratorio integrador de PedidoClaro](06%20Apoyo%20y%20repaso/02%20Laboratorio%20integrador.md)
 - [Glosario y repaso](06%20Apoyo%20y%20repaso/03%20Glosario%20y%20repaso.md)
+- [Método completo para tomar decisiones](06%20Apoyo%20y%20repaso/04%20M%C3%A9todo%20completo%20para%20tomar%20decisiones.md)
 - [Fuentes, cobertura y páginas ausentes](90%20Fuentes%20y%20revisi%C3%B3n/01%20Fuentes%20y%20cobertura.md)
 - [Procedencia de imágenes y prompts](90%20Fuentes%20y%20revisi%C3%B3n/02%20Procedencia%20y%20reproducci%C3%B3n.md)
 

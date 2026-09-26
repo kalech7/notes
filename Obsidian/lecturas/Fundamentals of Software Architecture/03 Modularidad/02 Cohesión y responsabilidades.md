@@ -16,11 +16,16 @@ orden: 2
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Un módulo es una frontera lógica y su granularidad indica cuánto abarca. Tener varios módulos no demuestra que la división sea útil; hace falta explicar por qué cada conjunto cambia por razones relacionadas.
+
 ## 2. Cohesión: razones para permanecer juntos
+
+La cohesión responde esa pregunta interna: qué mantiene unidas las partes de un módulo. Sin ella, separar archivos o paquetes solo redistribuye una misma confusión.
 
 ![Responsabilidades mezcladas frente a módulos cohesivos de pedidos, pagos y entregas](../Recursos%20visuales/09-cohesion-responsabilidades.png)
 
-**Cómo leer la imagen:** a la izquierda, cada contenedor mezcla pedidos, pagos y entregas, de modo que un cambio puede atravesar varias fronteras. A la derecha, cada responsabilidad tiene un lugar reconocible y se comunica mediante interfaces. Los puentes muestran que sigue habiendo acoplamiento. La frase «baja dependencia» expresa el objetivo de este ejemplo, no una garantía: hacen falta contratos y límites efectivos para conseguirlo. Los contenedores son módulos lógicos; no obligan a desplegar tres servicios.
+A la izquierda, cada contenedor mezcla pedidos, pagos y entregas, de modo que un cambio puede atravesar varias fronteras. A la derecha, cada responsabilidad tiene un lugar reconocible y se comunica mediante interfaces. Los puentes muestran que sigue habiendo acoplamiento. La frase «baja dependencia» expresa el objetivo de este ejemplo, no una garantía: hacen falta contratos y límites efectivos para conseguirlo. Los contenedores son módulos lógicos; no obligan a desplegar tres servicios.
 
 La cohesión expresa cuánto sentido tiene que las partes pertenezcan al mismo módulo. Una intuición útil es preguntar si colaboran para una responsabilidad reconocible y cambian por razones relacionadas. Separar piezas muy cohesionadas puede obligarlas a compartir tantos detalles que el acoplamiento externo empeore.
 

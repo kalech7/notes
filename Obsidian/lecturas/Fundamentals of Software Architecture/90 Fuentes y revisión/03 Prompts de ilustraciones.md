@@ -34,7 +34,17 @@ Archivo generado e integrado.
 Original scientific educational illustration for Spanish software architecture study guide, landscape with three equal panels in warm ivory navy teal amber palette. Use restaurant kitchen metaphor. Panel one title 'LATENCIA': one order ticket travels from order kiosk to a prepared sandwich, stopwatch measures this single journey, clear arrow from start to finish. Panel two title 'THROUGHPUT': many completed sandwiches move across a finish line on a conveyor over a clock interval, show finished work rather than incoming requests. Panel three title 'ESCALABILIDAD': one work station above, three coordinated work stations below with one shared narrow preparation counter showing that shared bottlenecks can constrain output, no claim three times work. Main title 'TIEMPO, TRABAJO Y RECURSOS'. Small bottom subtitle exactly 'Analogía: medir el sistema bajo condiciones definidas'. Use precise attractive isometric 3D editorial illustration, no numeric claims, no other labels, no watermark. Make distinction single operation time versus aggregate completed operations immediately apparent.
 ```
 
-## 13-priorizar-caracteristicas.png
+## 13-modularidad-logica-distribucion-fisica.png
+
+Archivo generado con la herramienta integrada de imágenes e integrado después de una revisión visual. El siguiente texto es un **resumen del encargo**, no una transcripción literal del prompt de generación:
+
+```text
+Crear una ilustración educativa panorámica que compare las mismas tres responsabilidades de una tienda de sándwiches en dos disposiciones. A la izquierda, pedidos, preparación y cobro ocupan habitaciones de colores distintos dentro de un solo edificio, para representar límites lógicos en un despliegue. A la derecha, las mismas actividades conservan sus colores y objetos, pero viven en edificios separados conectados por conductos, para hacer visible la comunicación y operación adicionales. Mantener continuidad visual entre responsabilidades y evitar presentar una disposición como universalmente superior.
+```
+
+**Función pedagógica:** separar dos decisiones que suelen confundirse. Los colores y actividades constantes muestran que la responsabilidad lógica puede conservarse al cambiar la frontera física; los edificios y conductos muestran que distribuir añade mecanismos operativos y puede permitir ciclos más independientes. La imagen es una analogía causal, no una evaluación de calidad ni una recomendación de estilo.
+
+## Intento no entregado · priorizar-caracteristicas
 
 Este intento no produjo archivo: límite de uso. No se cuenta como imagen entregada.
 

@@ -16,6 +16,9 @@ orden: 3
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Amplitud es reconocer alternativas y profundidad es poder trabajar con detalle en algunas. Ambas pierden valor si la experiencia se convierte en regla universal o si solo se aprende dentro del entorno habitual.
+
 ## 3. Experiencia congelada, burbujas y aprendizaje deliberado
 
 ### Frozen Caveman: convertir un incidente en una ley universal

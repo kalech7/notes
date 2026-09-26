@@ -16,11 +16,16 @@ orden: 2
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Una arquitectura responde a un contexto y no se agota en su estructura física. Para describirla sin perder el porqué hay que conectar condiciones de éxito, responsabilidades, organización y decisiones.
+
 ## 2. Cuatro dimensiones y una estructura que las conecta
+
+Enumerar tecnologías o dibujar cajas no explica por qué el sistema funcionará. Las cuatro dimensiones completan mutuamente esa descripción.
 
 ![Las cuatro dimensiones de la arquitectura ilustradas mediante una tienda de sándwiches](../Recursos%20visuales/10-cuatro-dimensiones.png)
 
-**Cómo leer la imagen:** el reloj, el escudo y el indicador representan capacidades; pedidos, pagos y cocina representan responsabilidades. Las cajas agrupadas o separadas evocan organizaciones posibles y el registro de decisión conserva el porqué. La tienda central es el contexto del negocio. Es una analogía: un estilo no se reduce a contar contenedores, y los componentes de software no son necesariamente las máquinas físicas dibujadas.
+El reloj, el escudo y el indicador representan capacidades; pedidos, pagos y cocina representan responsabilidades. Las cajas agrupadas o separadas evocan organizaciones posibles y el registro de decisión conserva el porqué. La tienda central es el contexto del negocio. Es una analogía: un estilo no se reduce a contar contenedores, y los componentes de software no son necesariamente las máquinas físicas dibujadas.
 
 La definición del libro reúne **características arquitectónicas, componentes lógicos, estilo arquitectónico y decisiones de arquitectura**. La estructura aparece como el soporte que conecta esas dimensiones; no basta con presentar cajas y flechas sin explicar qué sostienen. **Fuente: PDF 2–6, impresas 2–6, figuras 1-1 a 1-5.**
 
@@ -54,7 +59,7 @@ En PedidoClaro, permitir que la pantalla consulte tablas directamente puede redu
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap01-diagrama-02.mmd)
 
-**Interpretación:** describir la arquitectura requiere conectar las cuatro dimensiones con una organización concreta. **Límite:** las flechas no significan independencia ni un proceso estrictamente lineal; una decisión puede obligar a reconsiderar el estilo o una característica.
+Describir la arquitectura requiere conectar las cuatro dimensiones con una organización concreta. Las flechas no significan independencia ni un proceso estrictamente lineal: una decisión puede obligar a reconsiderar el estilo o una característica.
 
 ![arquitectura contexto](../Recursos%20visuales/01-arquitectura-contexto.png)
 

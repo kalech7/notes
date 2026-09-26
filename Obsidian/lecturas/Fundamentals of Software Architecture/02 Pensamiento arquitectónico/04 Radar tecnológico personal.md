@@ -16,6 +16,9 @@ orden: 4
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> El aprendizaje deliberado combate dos sesgos: congelar una mala experiencia como regla y confundir el entorno propio con todo lo posible. Un radar convierte esa exploración en memoria explícita y revisable.
+
 ## 4. Un radar personal convierte curiosidad en decisiones
 
 El radar presentado por el libro organiza el aprendizaje mediante **cuadrantes**, que indican el tipo de elemento, y **anillos**, que expresan una postura frente a él. No son dos listas intercambiables. **Fuente: PDF pp. 22–25; impresas pp. 26–29.**

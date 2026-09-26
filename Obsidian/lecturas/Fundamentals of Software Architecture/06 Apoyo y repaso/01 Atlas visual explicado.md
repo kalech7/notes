@@ -10,17 +10,17 @@ tags:
 
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
-Un diagrama es útil si permite responder una pregunta. Aquí se explica cómo leer las doce composiciones originales de la guía: cinco ilustraciones generadas y siete figuras vectoriales, todas disponibles en PNG. Además, los capítulos incorporan veinte diagramas exportados a PNG con sus fuentes editables. Los gráficos cuantitativos usan **datos inventados**, no mediciones ni resultados publicados por los autores.
+Las trece composiciones originales de la guía representan relaciones que reaparecen a lo largo del libro: contexto y decisiones, distribución del trabajo, modularidad, métricas, capacidad, recuperación y trazabilidad. Seis son ilustraciones generadas y siete son figuras vectoriales, todas disponibles en PNG. Además, los capítulos incorporan veinte diagramas exportados a PNG con sus fuentes editables. Los gráficos cuantitativos usan **datos inventados**, no mediciones ni resultados publicados por los autores.
 
 ## 1. Las cuatro dimensiones de la arquitectura
 
 ![arquitectura contexto](../Recursos%20visuales/01-arquitectura-contexto.png)
 
-Empieza arriba: el contexto incluye las metas de negocio, el dinero, el equipo y las restricciones. Las dos cajas centrales responden preguntas diferentes. Las características expresan capacidades o condiciones de éxito; los componentes organizan responsabilidades. «Gestionar pedidos» y «resistir un pico» se necesitan mutuamente, pero no son equivalentes.
+La parte superior representa el contexto: metas de negocio, dinero, equipo y restricciones. Las dos cajas centrales responden preguntas diferentes. Las características expresan capacidades o condiciones de éxito; los componentes organizan responsabilidades. «Gestionar pedidos» y «resistir un pico» se necesitan mutuamente, pero no son equivalentes.
 
 La parte inferior conecta estilo y decisiones. Un estilo ofrece una organización de partida; las decisiones concretan límites y razones. No puedes justificar un estilo solo nombrándolo. «Usaremos microservicios» no dice qué capacidad necesitas, quién mantendrá cada servicio ni cómo se resolverá un fallo entre ellos.
 
-**Lectura aplicada:** si el equipo de PedidoClaro es pequeño, operar múltiples servicios tiene un costo. Si el área de promociones debe desplegar cada hora y el resto cada mes, aparece otra presión. Ninguna caja decide por sí sola: las relaciones ayudan a identificar qué hay que investigar.
+**Consecuencia en PedidoClaro:** si el equipo es pequeño, operar múltiples servicios tiene un costo. Si el área de promociones debe desplegar cada hora y el resto cada mes, aparece otra presión. Ninguna dimensión decide por sí sola: sus relaciones identifican qué hay que investigar.
 
 **Límite:** las flechas no representan un algoritmo obligatorio. El análisis puede avanzar en paralelo y volver atrás cuando una restricción invalida una alternativa. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/01 Introducción/00 Índice|capítulo 1]].
 
@@ -46,7 +46,7 @@ La segunda separa los límites físicos. Cada servicio tiene datos bajo su respo
 
 La tercera muestra dependencias densas: aunque las piezas están físicamente separadas, siguen exigiendo cambios coordinados. Es la intuición del monolito distribuido. La base compartida es un posible mecanismo de acoplamiento, pero no es condición necesaria ni suficiente para diagnosticarlo.
 
-**Cómo usar la analogía:** pregunta qué cambios exigen tocar varias piezas, cuáles fallan juntas y cuáles requieren desplegarse juntas. Esas observaciones dicen más que contar cajas. Los tres puentes de la escena central tampoco son una recomendación de conectar todos los servicios entre sí.
+**La coordinación revela el acoplamiento real:** los cambios que exigen tocar varias piezas, los fallos que se propagan y los despliegues que deben sincronizarse dicen más que la cantidad de cajas. Los tres puentes de la escena central representan comunicación posible; no recomiendan conectar todos los servicios entre sí.
 
 **Límite:** el dibujo no mide cohesión, latencia ni calidad. Tampoco afirma que un estilo siempre gane. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/03 Modularidad/00 Índice|capítulo 3]].
 
@@ -108,7 +108,7 @@ La primera frase expresa una preocupación, pero todavía es ambigua. El segundo
 
 «Registrar antes de confirmar» protege una expectativa precisa: no comunicar al cliente una aceptación que existe únicamente en memoria volátil. «Aislar el fallo de mapas» evita que una ayuda de navegación derribe la función principal. Cada decisión todavía necesita detalles y pruebas; el esquema no promete durabilidad absoluta ni pago correcto.
 
-Para leer el diagrama al revés, toma cualquier prueba y pregunta qué decisión valida; toma esa decisión y pregunta qué necesidad justifica su costo. Si una caja no conecta con las demás, puede faltar una razón, una prueba o un requisito entendido correctamente.
+La trazabilidad también funciona en sentido inverso: cada prueba debe validar una decisión y cada decisión debe justificar su costo mediante una necesidad. Una caja aislada señala una razón ausente, una prueba insuficiente o un requisito todavía mal entendido.
 
 **Ejercicio de cierre:** cambia la preocupación a «lanzar promociones cada semana sin interrumpir ventas». El escenario y las capacidades pasan a incluir modificabilidad, pruebas y despliegue. Si conservas exactamente las mismas decisiones sin revisarlas, probablemente estás aplicando una solución memorizada.
 
@@ -122,7 +122,7 @@ Los tickets representan pedidos; las monedas, pagos; los vehículos, entregas. A
 
 ![Cuatro dimensiones conectadas por el contexto](../Recursos%20visuales/10-cuatro-dimensiones.png)
 
-Recorre las cuatro zonas: ¿qué capacidades necesito?, ¿qué responsabilidades existen?, ¿cómo se organizan?, ¿por qué elegí esas reglas? La tienda conecta las respuestas con el negocio. No confundas los componentes con dispositivos físicos ni el estilo con el número de contenedores: son símbolos para recordar las preguntas del capítulo 1.
+Las cuatro zonas conectan capacidades necesarias, responsabilidades, forma de organización y razones de las reglas elegidas. La tienda vincula esas respuestas con el negocio. Los componentes no representan dispositivos físicos y el estilo no equivale al número de contenedores; ambos expresan decisiones conceptuales del capítulo 1.
 
 ## 11. Aprender a lo ancho y en profundidad
 
@@ -135,6 +135,16 @@ Las islas muestran alternativas que puedes reconocer; la excavación representa 
 ![Latencia, throughput y escalabilidad mediante una cocina](../Recursos%20visuales/12-rendimiento-y-capacidad.png)
 
 Cronometrar un pedido da una latencia. Contar pedidos terminados en un intervalo da throughput. Añadir estaciones plantea una pregunta de escalabilidad: ¿cuánto crece el trabajo útil bajo el mismo objetivo? Si todas esperan por un paso compartido, los recursos extra no se aprovechan completamente. La imagen no cuantifica ese límite; las cifras del capítulo 4 permiten practicar cómo medirlo.
+
+## 13. Conservar responsabilidades al cambiar el límite físico
+
+![Mismas responsabilidades en un despliegue y en despliegues separados](../Recursos%20visuales/13-modularidad-logica-distribucion-fisica.png)
+
+Rojo, verde y azul conservan las mismas actividades en ambas mitades: pedidos, preparación y cobro no cambian de significado porque cambie el despliegue. El edificio de la izquierda reúne tres límites lógicos dentro de una unidad física. Los tres edificios de la derecha convierten esas fronteras en unidades separadas y los conductos representan la comunicación adicional que aparece entre ellas.
+
+**Consecuencia:** separar físicamente puede permitir publicar, escalar o recuperar una responsabilidad con mayor independencia, pero obliga a operar la red, versionar contratos y tratar fallos parciales. Mantener un despliegue puede reducir ese costo sin renunciar a límites lógicos claros.
+
+**Límite:** la ilustración no recomienda monolito ni servicios como solución universal. Tampoco prueba cohesión o autonomía por el número de edificios; esas propiedades dependen de responsabilidades, datos, contratos y coordinación real. Véase [Módulos y separación física](../03%20Modularidad/01%20M%C3%B3dulos%20y%20separaci%C3%B3n%20f%C3%ADsica.md).
 
 ---
 

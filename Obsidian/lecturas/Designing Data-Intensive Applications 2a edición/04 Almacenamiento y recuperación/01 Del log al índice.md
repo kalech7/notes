@@ -16,6 +16,11 @@ tags:
 > [!abstract] La idea que organiza el capítulo
 > El motor de almacenamiento decide **cómo disponer bytes para escribirlos, encontrarlos y recuperarlos tras un fallo**. El modelo de datos dice qué representan esos bytes. Puedes usar SQL sobre motores con organizaciones físicas muy diferentes.
 
+> [!info] Recuerda antes
+> - Un **dato lógico** como “pedido 42 enviado” necesita una representación en bytes; el motor organiza esa representación, no decide por sí solo qué significa “enviado”.
+> - El almacenamiento mueve y conserva **bloques de bytes**. Aunque una aplicación cambie un campo, el trabajo físico puede abarcar páginas, segmentos o archivos completos.
+> - Un **índice** es información derivada que ahorra búsqueda. No sustituye los datos: ocupa espacio y debe mantenerse cuando estos cambian.
+
 ## Una tienda, dos preguntas
 
 La tienda necesita consultar «¿cuál es el estado del pedido 42?» y también «¿cuánto vendimos por categoría durante el año?». La primera petición toca pocos registros y espera una respuesta breve: patrón OLTP. La segunda combina muchas filas y unas pocas columnas: patrón analítico, OLAP. La frecuencia, selectividad y proporción entre lecturas y escrituras condicionan el almacenamiento conveniente.
@@ -44,7 +49,7 @@ flowchart LR
  S --> V["Última versión: enviado"]
 ```
 
-**Cómo leer el diagrama:** las dos escrituras convergen en el mismo historial. La lectura de la derecha recorre sus registros y conserva el último valor de 42; ninguna flecha elimina la versión antigua.
+**El historial conserva ambas escrituras:** la lectura recorre sus registros y conserva el último valor de 42; escribir una versión nueva no elimina la anterior.
 
 Un **log** es una secuencia a la que se agregan registros; puede ser binaria y destinada al motor. No significa necesariamente un archivo de mensajes de depuración.
 
@@ -61,7 +66,7 @@ flowchart TD
  L --> U["Actualizar su entrada del mapa"]
 ```
 
-**Cómo leer el diagrama:** el camino superior responde una consulta utilizando el desplazamiento del mapa; el inferior mantiene ese atajo al llegar una escritura. Esas acciones deben coordinarse para que el mapa no publique una referencia inválida.
+**El mapa cumple dos funciones coordinadas:** una consulta usa el desplazamiento para saltar al registro y cada escritura actualiza ese atajo. Si el mapa publicara una posición antes de que el registro fuese válido, podría dirigir al lector a datos incompletos.
 
 El mapa hash ofrece búsqueda esperada constante bajo sus supuestos habituales, pero el costo real incluye caché, lectura del almacenamiento y tamaño del valor. `O(1)` no significa tiempo idéntico en cualquier máquina.
 

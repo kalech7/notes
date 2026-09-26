@@ -16,6 +16,9 @@ orden: 7
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Evalúa límites con varias lentes: cohesión dentro del módulo, dependencias entre módulos, métricas calculadas con una unidad fija y acuerdos concretos que obligan a coordinar cambios. Ninguna cifra aislada certifica modularidad.
+
 ## 7. Preguntas de comprobación
 
 ### 1. ¿Extraer Precios como servicio mejora necesariamente la modularidad?

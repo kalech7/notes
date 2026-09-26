@@ -16,6 +16,9 @@ orden: 3
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> La cohesión expresa si las partes de un módulo pertenecen juntas por una razón comprensible. LCOM intenta observar una señal estructural de esa relación mediante métodos y estado compartido; no puede descubrir por sí sola la intención del dominio.
+
 ## 3. LCOM: medir estructura sin confundirla con intención
 
 LCOM significa *Lack of Cohesion of Methods*: falta de cohesión entre métodos. Hay distintas variantes y no comparten necesariamente escala, fórmula o tratamiento de casos especiales. Antes de comparar resultados de herramientas hay que verificar qué calculan.
@@ -48,7 +51,7 @@ Hay $4\times3/2=6$ pares. Dos comparten campos: los dos primeros métodos entre 
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap03-diagrama-02.mmd)
 
-**Interpretación:** aparecen dos grupos desconectados de métodos y campos. **Límite:** el dibujo no muestra llamadas entre métodos, reglas de negocio ni acceso indirecto al estado. Esas omisiones importan al elegir una variante de LCOM.
+Aparecen dos grupos desconectados de métodos y campos, señal de que podrían existir dos responsabilidades. El conteo no incorpora necesariamente llamadas entre métodos, reglas de negocio ni acceso indirecto al estado; esas omisiones importan al elegir una variante de LCOM.
 
 ### LCOM1 no es LCOM4
 

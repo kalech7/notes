@@ -13,11 +13,18 @@ cobertura: "Impresas 172–178"
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
+Protobuf coloca números de campo en los bytes para conservar identidades. Avro busca compacidad de otra manera: omite esas etiquetas y exige conocer exactamente el esquema que produjo el registro. Por eso leer no consiste en aplicar el esquema actual directamente, sino en resolver el esquema escritor contra el lector.
+
+> [!info] Recuerda antes
+> - La compatibilidad hacia atrás enfrenta **lector nuevo con datos antiguos**; hacia adelante, **lector antiguo con datos nuevos**.
+> - Un **default** es una regla del esquema lector para completar un campo ausente; permitir `null` no crea por sí solo ese default.
+> - Bytes compactos sin nombres ni etiquetas resultan ambiguos si se pierde la identidad del esquema escritor.
+
 Avro ofrece una respuesta distinta a la de Protobuf. En la codificación binaria de un registro no repite los nombres ni números de campo: el **esquema del escritor** explica cómo interpretar los bytes. Después, Avro compara ese esquema con el **esquema del lector** para entregar la estructura que la aplicación espera.
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/06-avro-dos-esquemas.png|1100]]
 
-**Lee la imagen en tres pasos.** A la izquierda, el escritor produce `id=P42` y `total=1200` con su esquema. En el centro, la resolución recibe tanto ese esquema original como el esquema que desea el lector. A la derecha, el lector obtiene los dos valores y `moneda=null`, porque su esquema define ese default para un campo ausente en el esquema escritor. `total` abrevia aquí `total_centavos`: 1200 significa 12 unidades monetarias si cada unidad tiene cien centavos; sin la moneda, todavía falta parte del significado económico.
+**El esquema escritor explica los bytes y el esquema lector define el resultado:** el escritor produjo `id=P42` y `total=1200`; la resolución conserva ambos y añade `moneda=null` porque el lector declara ese default para un campo ausente. `total` abrevia aquí `total_centavos`: 1200 son 12 unidades si cada una tiene cien centavos, pero sin moneda todavía falta significado económico.
 
 **Qué demuestra y qué no.** La imagen representa las responsabilidades conceptuales; sus cajas no son sintaxis Avro literal ni tres servicios que debas desplegar. `null` significa falta de información de moneda en este ejemplo; no convierte automáticamente el precio en USD. Tampoco significa que Avro necesite guardar ambos esquemas junto a cada registro: más abajo veremos cómo se obtiene y comparte el esquema escritor.
 
@@ -36,7 +43,7 @@ flowchart TD
   C --> O["Objeto entregado al lector"]
 ```
 
-**Cómo leerlo.** Sigue la columna central desde bytes hasta objeto. La entrada del esquema escritor explica cómo recorrer los bytes; la del lector define qué resultado entregar. Son dos responsabilidades lógicas: una biblioteca puede resolverlas sin crear todos los pasos intermedios como objetos separados.
+**La decodificación y la resolución son responsabilidades distintas:** el esquema escritor permite recorrer los bytes y el esquema lector define el objeto que se entrega. Una biblioteca puede combinarlas en una pasada sin materializar cada caja como un objeto separado.
 
 ### Dos formas de escribir un esquema, una estructura que describir
 

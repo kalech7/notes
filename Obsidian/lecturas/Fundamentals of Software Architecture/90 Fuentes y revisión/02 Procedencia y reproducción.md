@@ -12,7 +12,7 @@ tags:
 
 ## Ilustración generada
 
-`03-modularidad.png` fue creada para esta guía con la herramienta integrada de generación de imágenes. Se inspeccionaron sus títulos y la distinción visual entre separación lógica y física. Es una analogía conceptual, no una medición. El archivo final se conserva en la carpeta `Recursos visuales` del libro.
+`03-modularidad.png` y `13-modularidad-logica-distribucion-fisica.png` fueron creadas para esta guía con la herramienta integrada de generación de imágenes. Se inspeccionaron sus títulos, objetos y la distinción visual entre separación lógica y física. Son analogías conceptuales, no mediciones. Los archivos finales se conservan en la carpeta `Recursos visuales` del libro.
 
 Prompt utilizado:
 
@@ -20,7 +20,7 @@ Prompt utilizado:
 Use case: scientific-educational. Asset type: original conceptual illustration for a Spanish software architecture study guide. Create one wide illustration with three clearly separated panels, polished isometric educational illustration on warm white background, navy teal and coral palette, generous whitespace, no tiny text. Exact titles above panels: 'MONOLITO MODULAR', 'MICROSERVICIOS', 'MONOLITO DISTRIBUIDO'. First panel: one large transparent enclosure containing three distinct neatly grouped functional modules teal blue amber, clear interfaces connecting them, one enclosing deployment boundary. Second panel: three separate smaller enclosures each containing one functional module and its own small data cylinder, thin explicit communication bridges between enclosures. Third panel: three separate enclosures entangled with many crossing red cables and one shared external data cylinder, suggest costly coordination, no fire or melodrama. Illustration explains that physical separation alone does not remove coupling; distinguish modularity from deployment. All three panels equally sized. Render titles verbatim and no other text. No logos, no watermark. High resolution landscape.
 ```
 
-La generación tuvo un límite temporal durante la primera entrega. En la ampliación posterior se generaron nuevas ilustraciones con la misma herramienta integrada. No se utilizó un servicio alternativo de pago. Los prompts adicionales se conservan en [Prompts de ilustraciones](03%20Prompts%20de%20ilustraciones.md).
+La generación tuvo un límite temporal durante la primera entrega. En la ampliación posterior se generaron nuevas ilustraciones con la misma herramienta integrada. No se utilizó un servicio alternativo de pago. Los prompts y resúmenes de encargo adicionales se conservan en [Prompts de ilustraciones](03%20Prompts%20de%20ilustraciones.md). La figura `13` conserva las mismas responsabilidades mediante color y actividad al pasar de un edificio con límites internos a edificios separados; su función es distinguir frontera lógica de distribución física y hacer visible el costo de comunicación.
 
 ## Figuras vectoriales y gráficos
 

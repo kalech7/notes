@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">Anatomía de una slotted page</title>
+  <desc id="desc">Header y slots crecen desde la izquierda, celdas variables desde la derecha, con espacio libre contiguo en medio. Los slots mantienen orden lógico aunque las celdas estén en otro orden físico.</desc>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#0f766e"/></marker>
+    <style>
+      .t{font:700 24px system-ui,sans-serif;fill:#0f172a;text-anchor:middle}
+      .s{font:16px system-ui,sans-serif;fill:#475569;text-anchor:middle}
+      .k{font:700 18px ui-monospace,monospace;fill:#0f172a;text-anchor:middle;dominant-baseline:middle}
+      .arr{stroke:#0f766e;stroke-width:3;fill:none;marker-end:url(#arr)}
+    </style>
+  </defs>
+  <rect width="1200" height="650" fill="white"/>
+  <text x="600" y="45" class="t" font-size="29">Slotted page: orden lógico sin mover registros variables</text>
+  <rect x="80" y="160" width="1040" height="265" rx="18" fill="#f8fafc" stroke="#334155" stroke-width="3"/>
+  <rect x="80" y="160" width="190" height="265" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="175" y="205" class="t">Header</text><text x="175" y="238" class="s">tipo · versión</text><text x="175" y="265" class="s">número de slots</text><text x="175" y="292" class="s">límites libres</text>
+  <rect x="270" y="160" width="210" height="265" fill="#ecfeff" stroke="#0891b2" stroke-width="3"/>
+  <text x="375" y="195" class="t">Slots</text>
+  <rect x="295" y="225" width="160" height="48" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="2"/><text x="375" y="249" class="k">clave 10 → o₁</text>
+  <rect x="295" y="282" width="160" height="48" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="2"/><text x="375" y="306" class="k">clave 30 → o₂</text>
+  <rect x="295" y="339" width="160" height="48" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="2"/><text x="375" y="363" class="k">clave 50 → o₃</text>
+  <rect x="480" y="160" width="300" height="265" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" stroke-dasharray="10 7"/>
+  <text x="630" y="275" class="t" fill="#166534">Espacio libre contiguo</text><text x="630" y="309" class="s">slots crecen →</text><text x="630" y="336" class="s">← celdas crecen</text>
+  <rect x="780" y="160" width="150" height="265" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="855" y="230" class="t">Celda o₂</text><text x="855" y="268" class="k">clave 30</text><text x="855" y="300" class="s">payload largo</text>
+  <rect x="930" y="160" width="75" height="265" fill="#ffedd5" stroke="#ea580c" stroke-width="3"/><text x="968" y="235" class="t" transform="rotate(-90 968 235)">Celda o₁ · 10</text>
+  <rect x="1005" y="160" width="115" height="265" rx="18" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="1062" y="230" class="t">Celda o₃</text><text x="1062" y="268" class="k">clave 50</text><text x="1062" y="300" class="s">payload</text>
+  <path class="arr" d="M455 249 C610 90 925 105 960 155"/><path class="arr" d="M455 306 C590 470 780 470 845 430"/><path class="arr" d="M455 363 C650 575 1070 500 1070 430"/>
+  <text x="600" y="500" class="t">Qué demuestra la figura</text>
+  <text x="600" y="535" class="s">El orden de búsqueda vive en slots pequeños; la ubicación física puede seguir el orden de inserción.</text>
+  <text x="600" y="566" class="s">Insertar o reordenar claves mueve offsets, no payloads grandes. Compactar solo hace falta cuando el espacio se fragmenta.</text>
+</svg>

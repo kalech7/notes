@@ -15,6 +15,13 @@ cobertura: "Impresas 189–192"
 
 En una arquitectura orientada a eventos, el productor suele publicar un mensaje sin esperar que el consumidor termine de procesarlo. Un intermediario puede almacenarlo y entregarlo después. Esto separa los ritmos de los procesos, pero el mensaje sigue necesitando un contrato que sobreviva a distintas versiones.
 
+RPC conecta directamente a quien pide con quien responde. Esa dependencia temporal se vuelve incómoda cuando el consumidor está caído o procesa más despacio. Un broker almacena y entrega después, pero no elimina contratos, duplicados ni decisiones de retención.
+
+> [!info] Recuerda antes
+> - Productor y consumidor pueden ejecutar **versiones diferentes**, por lo que el mensaje necesita compatibilidad y significado estable.
+> - Un **acuse** puede demostrar recepción por el broker o procesamiento por el consumidor; no son el mismo hecho.
+> - La reentrega mejora la posibilidad de procesar, pero obliga a diseñar **idempotencia** o deduplicación del efecto.
+
 ## El broker desacopla ritmos, no significados
 
 ```mermaid
@@ -27,7 +34,7 @@ flowchart LR
   S -.-> D
 ```
 
-**Cómo leerlo.** El evento entra una vez en el broker y se muestra distribuido a dos intereses distintos. Cada consumidor puede tener otra versión y avanzar a otro ritmo. Las flechas punteadas representan el contrato compartido; no garantizan validación automática del contenido.
+**Un evento puede alimentar intereses que avanzan a ritmos y versiones distintas:** inventario y notificaciones reciben la misma clase de mensaje sin coordinar sus horarios. El contrato compartido permite interpretarlo, pero no implica validación automática.
 
 Si notificaciones está temporalmente caído, el broker puede conservar mensajes para después, dependiendo de su durabilidad, configuración y retención. El productor no necesita localizar directamente esa instancia: sigue necesitando conectarse al broker. La capacidad de acumular mensajes no es infinita; una interrupción prolongada puede agotar almacenamiento o superar retención.
 
@@ -62,7 +69,7 @@ sequenceDiagram
   C-->>B: Confirma procesamiento
 ```
 
-**Cómo leerlo.** Baja siguiendo el tiempo. El primer acuse vuelve al productor y el último sale del consumidor: prueban cosas diferentes. La caída entre efecto y acuse explica la reentrega. La deduplicación dibujada es responsabilidad de la aplicación o de un mecanismo con garantías explícitas; no aparece por usar un broker.
+**Los dos acuses prueban hechos distintos:** el primero confirma que el broker aceptó el mensaje; el segundo, que el consumidor terminó según su protocolo. Si este cae después del efecto y antes del segundo acuse, el broker puede reentregar y la aplicación debe deduplicar.
 
 Si confirmaras antes de aplicar el efecto y cayeras después, el broker podría considerar terminado un trabajo que nunca ejecutaste. Si confirmas después, una caída puede duplicar la entrega. Una estrategia es guardar la identidad procesada y el cambio de negocio de manera coordinada; para efectos externos necesitas una garantía idempotente o conciliación. Esto conecta directamente con los timeouts y workflows anteriores.
 
@@ -87,7 +94,7 @@ flowchart TD
   A --> M["Mensaje hacia otro actor"]
 ```
 
-**Cómo leerlo.** El buzón entrega trabajo al actor; este actualiza su estado privado y puede enviar otro mensaje. El estado no se comparte directamente con otros actores. Una flecha saliente no demuestra que el destinatario ya haya aplicado el efecto.
+**El buzón serializa el trabajo de un actor sobre su estado privado:** al terminar puede emitir otro mensaje, pero ese envío no demuestra que el destinatario ya haya aplicado el efecto. Los actores coordinan mediante mensajes, no compartiendo directamente ese estado.
 
 Distribuir actores entre máquinas exige codificar los mensajes, gestionar fallos y mantener compatibilidad durante despliegues graduales. Un modelo basado desde el principio en mensajes tolera mejor la diferencia entre local y remoto que fingir una llamada síncrona normal. Eso no convierte la entrega en infalible ni elimina todos los errores de concurrencia entre entidades.
 

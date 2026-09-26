@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">Lectura por filas frente a lectura por columnas</title>
+  <desc id="desc">La misma tabla se representa agrupando campos por registro o agrupando valores de cada columna; se resalta qué bytes se leen para obtener precio y sumar ventas.</desc>
+  <defs><style>.t{font:700 25px system-ui,sans-serif;fill:#0f172a;text-anchor:middle}.s{font:16px system-ui,sans-serif;fill:#475569;text-anchor:middle}.c{stroke:#334155;stroke-width:2}.need{fill:#fef3c7;stroke:#d97706;stroke-width:3}.skip{fill:#e2e8f0}.row{fill:#dbeafe}.col{fill:#ccfbf1}</style></defs>
+  <rect width="1200" height="650" fill="white"/><text x="600" y="44" class="t" font-size="29">Misma tabla, distinto trabajo físico</text>
+  <text x="300" y="95" class="t">Layout por filas</text><text x="900" y="95" class="t">Layout por columnas</text>
+  <g transform="translate(65 140)">
+    <rect x="0" y="0" width="470" height="90" rx="12" class="row c"/><text x="55" y="45" class="s">id 1</text><text x="145" y="45" class="s">Ana</text><rect x="205" y="12" width="90" height="66" rx="8" class="need"/><text x="250" y="45" class="s">$20</text><text x="370" y="45" class="s">Quito</text>
+    <rect x="0" y="105" width="470" height="90" rx="12" class="row c"/><text x="55" y="150" class="s">id 2</text><text x="145" y="150" class="s">Luis</text><rect x="205" y="117" width="90" height="66" rx="8" class="need"/><text x="250" y="150" class="s">$35</text><text x="370" y="150" class="s">Loja</text>
+    <rect x="0" y="210" width="470" height="90" rx="12" class="row c"/><text x="55" y="255" class="s">id 3</text><text x="145" y="255" class="s">Sol</text><rect x="205" y="222" width="90" height="66" rx="8" class="need"/><text x="250" y="255" class="s">$15</text><text x="370" y="255" class="s">Cuenca</text>
+    <text x="235" y="340" class="s">Para sumar precio se atraviesan filas completas.</text>
+  </g>
+  <g transform="translate(665 140)">
+    <rect x="0" y="0" width="95" height="300" rx="12" class="skip c"/><text x="48" y="145" class="s" transform="rotate(-90 48 145)">id: 1 · 2 · 3</text>
+    <rect x="110" y="0" width="95" height="300" rx="12" class="skip c"/><text x="158" y="150" class="s" transform="rotate(-90 158 150)">Ana · Luis · Sol</text>
+    <rect x="220" y="0" width="95" height="300" rx="12" class="need"/><text x="268" y="150" class="s" transform="rotate(-90 268 150)">precio: 20 · 35 · 15</text>
+    <rect x="330" y="0" width="95" height="300" rx="12" class="skip c"/><text x="378" y="150" class="s" transform="rotate(-90 378 150)">ciudad</text>
+    <text x="215" y="340" class="s">La consulta lee solo el vector necesario.</text>
+  </g>
+  <rect x="210" y="535" width="780" height="70" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="600" y="565" class="t">La pregunta no es cuál layout es mejor</text><text x="600" y="590" class="s">Es qué campos viajan juntos en la mayoría de operaciones.</text>
+</svg>

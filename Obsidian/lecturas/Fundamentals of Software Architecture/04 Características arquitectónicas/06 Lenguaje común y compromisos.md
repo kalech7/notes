@@ -16,6 +16,9 @@ orden: 6
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Cada capacidad necesita escenario y medida: «disponible», «rápido» o «recuperado» pueden significar cosas distintas para negocio, desarrollo y operaciones. Sin acuerdo semántico, dos equipos pueden optimizar objetivos incompatibles usando la misma palabra.
+
 ## 6. Lenguaje ubicuo, compromisos e iteración
 
 El libro recomienda un **lenguaje ubicuo** compartido dentro de la organización. «Aprendizaje» podría significar facilidad de aprender a usar el producto o adaptación automática del sistema; una palabra compartida no garantiza una idea compartida. **Fuente: PDF pp. 7 y 10–11; impresas 61 y 64–65.**
@@ -28,7 +31,7 @@ Los autores proponen la arquitectura **menos mala (*least worst*)**: compromisos
 
 [Fuente editable del diagrama](../Recursos%20visuales/Diagramas/cap04-diagrama-04.mmd)
 
-**Interpretación:** decidir arquitectura implica observar consecuencias y corregir hipótesis. **Límite:** iterar no vuelve gratuitas las migraciones; conviene reconocer decisiones difíciles de revertir.
+Decidir arquitectura implica observar consecuencias y corregir hipótesis. Iterar no vuelve gratuitas las migraciones; las decisiones difíciles de revertir requieren evidencia y márgenes explícitos.
 
 Ejemplo propio: replicar pedidos de forma síncrona puede reducir pérdida de datos, pero añadir latencia y dificultar aceptar escrituras cuando falla una réplica. Hacerlo de forma asíncrona puede reducir la espera a cambio de una ventana de pérdida. La decisión depende de los objetivos, no del atractivo del mecanismo.
 

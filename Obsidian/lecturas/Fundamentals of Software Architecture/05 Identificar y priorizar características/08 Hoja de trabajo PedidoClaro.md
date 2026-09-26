@@ -16,6 +16,9 @@ orden: 8
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> La priorización separa conductoras, mínimos no negociables y candidatas consideradas. Una hoja útil conserva además el escenario, la evidencia pendiente, el costo aceptado y la condición que reabrirá la decisión.
+
 ## 8. Hoja de trabajo completa: PedidoClaro
 
 **Elaboración propia; todos los objetivos numéricos siguientes son inventados.** Esta hoja adapta el método, no reproduce la figura 5-3 literalmente.

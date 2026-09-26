@@ -16,6 +16,9 @@ orden: 7
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> No respondas solo con el nombre de una característica. Define operación, condiciones, umbral y evidencia; después explica qué decisión estructural podría favorecerla y qué costo introduce.
+
 ## 7. Preguntas de comprobación
 
 ### 1. ¿Toda exigencia importante es una característica arquitectónica?

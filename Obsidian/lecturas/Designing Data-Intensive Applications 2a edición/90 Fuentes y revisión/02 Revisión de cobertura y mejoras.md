@@ -21,6 +21,9 @@ El alcance es **los temas visibles de los capítulos 4 y 5 adjuntos**. No equiva
 - Se decodifican ejemplos pequeños de MessagePack, Protobuf y Avro byte a byte; se separan varint y ZigZag, estructura y significado.
 - Se amplían convivencia de versiones, migraciones, OpenAPI, descubrimiento de servicios, historial durable, acuses y reentregas de mensajes.
 - Cada diagrama de los capítulos tiene una guía de lectura inmediata. Las cuatro nuevas ilustraciones se explican tanto en sus notas como en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|el atlas visual]].
+- Se añadió un [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/03 Mapa de decisiones de almacenamiento y evolución|mapa maestro de decisiones]] que conecta carga, organización física, evolución de esquemas y fallos parciales mediante dos diagramas originales, un caso extremo a extremo y seis pruebas de diseño.
+- Una segunda pasada de continuidad didáctica añadió bloques **Recuerda antes** a 19 notas con saltos conceptuales. Cada bloque explica de dos a cuatro prerrequisitos en el propio texto, y las notas secuenciales comienzan indicando qué límite del concepto anterior origina el siguiente.
+- Las descripciones de diagramas ahora declaran directamente qué estado cambia, por qué ocurre y qué conclusión permite, sin convertir la explicación en instrucciones visuales. El complemento de proyección se renombró a **Coste de proyectar columnas** y todas sus referencias se actualizaron.
 
 Las notas conservan ejemplos, preguntas y conexiones anteriores. Las adiciones explican el propósito, el mecanismo y sus límites; no se limitan a añadir nombres de tecnologías.
 
@@ -39,7 +42,7 @@ N1–N7 corresponden a las siete notas de almacenamiento listadas a continuació
 | PDF | Tema visible | Cobertura | Mejora realizada |
 |---:|---|---|---|
 | 1 | Objetivo motor; OLTP y OLAP | N1, N5, N6 | Se mantuvo distinción por forma de trabajo y se amplió warehouse/HTAP. |
-| 2 | Base mínima append-only, última versión | N1 | Conservado ejemplo propio; añadida guía del diagrama y contraste historial/índice. |
+| 2 | Base mínima append-only, última versión | N1 | Conservado ejemplo propio; añadida explicación causal del historial y contraste con el índice. |
 | 3 | Log, costo O(N), índice y mantenimiento | N1 | Añadido escenario de concurrencia, persistencia y fallos. |
 | 4 | Hash RAM, offsets, arranque, límite RAM | N1 | Reconstrucción del mapa paso a paso; dificultades hash en disco y crecimiento. |
 | 5 | Rangos hash; SSTable, índice disperso, bloques | N1, N2 | Conservada búsqueda por bloque y compresión; explicación de rangos LSM ampliada. |
@@ -130,7 +133,7 @@ La codificación de enteros negativos necesita distinguir **ZigZag** de los tipo
 
 Dos revisiones por subagentes contrastaron por separado almacenamiento y evolución contra todo el OCR disponible. Después se realizó la revisión integrada de explicaciones y recursos. Se comprobaron ejemplos de bytes y aritmética, enlaces internos y referencias a páginas, metadatos y sintaxis Mermaid. Las imágenes generadas se inspeccionaron antes de insertarlas.
 
-La comprobación de sintaxis no equivale a una verificación del render dentro de una sesión de Obsidian: las notas y recursos se validaron localmente. Los ejemplos no constituyen una prueba de rendimiento de motores reales ni una certificación de un sistema en producción.
+La comprobación de sintaxis no equivale a una verificación del render de todo el conjunto dentro de una sesión activa de Obsidian: las notas y recursos se validaron localmente. Los dos Mermaid incorporados al mapa maestro sí se renderizaron a imagen y se inspeccionaron. Los ejemplos no constituyen una prueba de rendimiento de motores reales ni una certificación de un sistema en producción.
 
 Los PDF siguen siendo referencias opcionales. Para estudiar puedes comenzar por [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|las cuatro escenas explicadas]] y avanzar hacia las notas del índice.
 

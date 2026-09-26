@@ -13,6 +13,13 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
+B-trees y LSM explican cómo localizar una clave ordenada, pero una aplicación rara vez consulta solo por la identidad principal. Buscar por cliente, fecha o estado exige otras rutas; además, encontrar las filas candidatas no significa que el índice contenga todos los datos que la respuesta necesita.
+
+> [!info] Recuerda antes
+> - La **clave primaria** identifica lógicamente una fila; no determina de forma universal dónde vive físicamente.
+> - Un índice es una **estructura derivada**: acelera una forma de acceso a cambio de espacio y mantenimiento en cada cambio relevante.
+> - **Localizar** una fila y **recuperar** todas sus columnas pueden ser pasos separados.
+
 ## La clave primaria no es la única pregunta
 
 La fila `pedido_id=42, cliente_id=7, total=30` tiene identidad 42, pero muchas consultas preguntan por cliente 7. Un **índice secundario** organiza otra ruta de acceso. Los valores indexados pueden repetirse: un cliente tiene muchos pedidos.
@@ -30,7 +37,7 @@ flowchart TD
  C --> R["Puede responder con la información del índice"]
 ```
 
-**Cómo leer el diagrama:** compara los dos caminos que salen de la misma consulta. El primero localiza IDs y luego busca importes en las filas; el segundo ya tiene el importe en el índice. Cubrir esta consulta puede ahorrar el paso intermedio, pagando espacio y mantenimiento.
+**La misma consulta puede exigir uno o dos accesos:** el índice básico localiza IDs y después busca importes en las filas; el índice que también guarda el importe puede responder sin ese salto. La cobertura ahorra recuperación a cambio de espacio y mantenimiento adicionales.
 
 En el primer camino encontraste los pedidos, pero todavía necesitas sus importes. En el segundo, el índice conserva los campos necesarios para esta consulta: **la cubre**.
 

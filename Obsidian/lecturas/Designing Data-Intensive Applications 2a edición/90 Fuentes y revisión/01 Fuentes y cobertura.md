@@ -91,7 +91,9 @@ Las referencias enlazan páginas del PDF usando la numeración del visor, y sus 
 
 ## Comprobación del conjunto
 
-Se validaron los metadatos YAML de las 25 notas, la sintaxis de los 35 diagramas Mermaid y los 269 enlaces internos del conjunto, incluidos 80 enlaces a páginas de las referencias. El Canvas tiene 26 nodos y 24 conexiones, con identificadores únicos, destinos válidos y tarjetas sin solapamiento. Las copias PDF coinciden con los originales. Se inspeccionaron las seis ilustraciones generadas y el gráfico numérico.
+En la auditoría del 26 de septiembre de 2026 se validaron los metadatos YAML de las 30 notas y los destinos de 384 wikilinks en Markdown, incluidos 80 enlaces a páginas concretas de las referencias y 22 embeds. Se contabilizaron 36 diagramas Mermaid; los dos diagramas del mapa maestro se renderizaron e inspeccionaron. El Canvas contiene 27 nodos y 25 conexiones, con identificadores únicos y destinos válidos. Las copias PDF se conservaron. Se inspeccionaron las seis ilustraciones generadas y el gráfico numérico.
+
+No se encontraron archivos de backup, copias temporales ni duplicados inequívocos dentro de esta carpeta; por ello no se eliminó ningún archivo. Los PDF de **Materiales** permanecen intactos.
 
 La comprobación de Markdown y diagramas se hizo con analizadores locales; no se verificó la apariencia dentro de una sesión activa de Obsidian. Los ejemplos SQL describen mecanismos y no constituyen un laboratorio ejecutado contra un servidor.
 

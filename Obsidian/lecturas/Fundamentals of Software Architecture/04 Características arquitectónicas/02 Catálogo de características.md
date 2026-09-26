@@ -16,6 +16,9 @@ orden: 2
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Una característica arquitectónica no es cualquier requisito importante: debe ser relevante para el éxito, no estar cubierta solo por la función y ejercer influencia estructural. El catálogo aporta vocabulario para reconocer candidatas, no una lista que deba seleccionarse completa.
+
 ## 2. Catálogo completo de las cuatro tablas
 
 Las tablas siguientes incluyen **todas las entradas de las tablas 4-1 a 4-4**. Las explicaciones desarrollan su significado y los ejemplos son propios. Las categorías ayudan a conversar; no son compartimentos exclusivos ni una lista de todo lo que existe.

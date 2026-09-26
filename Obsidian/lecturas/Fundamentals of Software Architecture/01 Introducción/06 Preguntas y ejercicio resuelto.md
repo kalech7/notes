@@ -16,6 +16,9 @@ orden: 6
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> Una respuesta completa conecta contexto, características, componentes, estilo y decisiones; además nombra la compensación y la evidencia que permitiría revisar lo decidido. Usa ese recorrido en lugar de responder con una tecnología aislada.
+
 ## 6. Preguntas de comprensión
 
 ### 1. ¿Por qué un diagrama de servicios no describe toda la arquitectura?

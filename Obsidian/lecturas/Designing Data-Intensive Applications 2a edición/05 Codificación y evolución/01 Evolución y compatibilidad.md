@@ -15,6 +15,11 @@ cobertura: "Impresas 161–164, 178–180 y 191–192"
 
 Una aplicación cambia mucho más rápido que todos los datos y programas que la rodean. Puedes publicar una versión hoy y seguir recibiendo peticiones de una aplicación móvil de hace meses o leyendo registros escritos hace años. **Evolucionar bien significa hacer que esas versiones puedan convivir.** No basta con que la versión nueva funcione cuando está sola.
 
+> [!info] Recuerda antes
+> - Los bytes no traen su significado incorporado: un **esquema o contrato** indica campos, tipos y unidades.
+> - El **escritor** produce una representación y el **lector** la interpreta; sus versiones pueden ser distintas.
+> - Los datos persistidos pueden vivir mucho más que el proceso que los creó, por lo que actualizar código no actualiza automáticamente el historial.
+
 Los ejemplos de pedidos son elaboraciones didácticas. La explicación de esta nota es autosuficiente; no necesitas abrir el PDF para seguirla.
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/02-compatibilidad-lectores.png|900]]
@@ -34,7 +39,7 @@ flowchart LR
   W["Escritor v2"] -->|"Datos nuevos"| R["Lector v1: hacia adelante"]
 ```
 
-**Cómo leerlo.** Cada flecha es una escritura seguida de una lectura. La fila superior recupera datos anteriores con código nuevo; la inferior entrega datos nuevos a código antiguo. Cambia las versiones del lector y vuelve a nombrar la dirección para comprobar que lo entendiste.
+**Las dos direcciones dependen de quién lee a quién:** arriba, código nuevo recupera datos antiguos y necesita compatibilidad hacia atrás; abajo, código antiguo recibe datos nuevos y necesita compatibilidad hacia adelante.
 
 La referencia es la **versión del lector frente a la del escritor**, no el sentido de una migración ni la fecha de despliegue del servidor. En una API hay dos flechas: petición y respuesta. Un cliente antiguo que llama a un servidor nuevo necesita lectura hacia atrás en el servidor para la petición y lectura hacia adelante en el cliente para la respuesta.
 
@@ -76,7 +81,7 @@ sequenceDiagram
   Note over D: Moneda desaparece
 ```
 
-**Cómo leerlo.** Sigue el tiempo de arriba hacia abajo. El campo moneda existe después de la primera escritura y desaparece en la segunda, aunque ninguna lectura falló. El punto crítico es reconstruir el documento con un modelo que perdió campos desconocidos.
+**La segunda escritura puede destruir información que la primera conservaba:** `moneda` existe tras guardar con v2 y desaparece cuando v1 reconstruye y reemplaza el documento sin campos desconocidos. Ninguna lectura tuvo que fallar para que ocurriera la pérdida.
 
 El escaneo dibuja este problema en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=3|PDF, p. 3; impresa 163]]. Una solución puede ser conservar campos desconocidos; otra, actualizar solo el campo que cambió, si la base de datos y las reglas de concurrencia lo permiten. **Tolerar un campo, preservarlo y comprender su significado son capacidades diferentes.** Incluso conservar `moneda` no hace correcto que v1 cobre suponiendo siempre dólares.
 

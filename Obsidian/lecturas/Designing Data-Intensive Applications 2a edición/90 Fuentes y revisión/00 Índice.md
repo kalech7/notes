@@ -21,4 +21,4 @@ Estas notas documentan la procedencia del material. Puedes consultarlas cuando n
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf|Capítulo 4 · Almacenamiento y recuperación]].
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf|Capítulo 5 · Codificación y evolución]].
 
-Las imágenes permanecen en **Recursos visuales**. La explicación del gráfico numérico está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|el complemento de proyección del capítulo 4]].
+Las imágenes permanecen en **Recursos visuales**. El cálculo del gráfico numérico está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Coste de proyectar columnas|el complemento de proyección del capítulo 4]].

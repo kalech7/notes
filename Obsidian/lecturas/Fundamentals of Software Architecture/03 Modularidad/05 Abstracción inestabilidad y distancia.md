@@ -16,6 +16,9 @@ orden: 5
 > [!info] Contexto del capítulo
 > Segunda edición. PedidoClaro y sus cifras son ejemplos didácticos propios; Silicon Sandwiches es la kata del libro. El [índice del capítulo](00%20%C3%8Dndice.md) conserva el alcance y las referencias generales.
 
+> [!info] Recuerda antes
+> $C_a$ cuenta dependencias entrantes y $C_e$ salientes bajo una unidad de análisis declarada. Esos conteos describen dirección, pero todavía no explican si un módulo dependido por muchos puede cambiar sin propagar daños.
+
 ## 5. Abstracción, inestabilidad y secuencia principal
 
 ### Abstracción: contar tipos, no líneas
