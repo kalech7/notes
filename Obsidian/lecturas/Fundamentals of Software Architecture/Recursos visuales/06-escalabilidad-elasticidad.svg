@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img">
+<title>Escalabilidad y elasticidad responden preguntas diferentes</title><desc>Datos sintéticos para aprender a leer capacidad y demanda; no son mediciones de un sistema real.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#007f83" stroke-width="1.5"/></marker></defs>
+<g font-family="Arial, Helvetica, sans-serif"><rect width="1200" height="760" fill="#f6f8f8"/>
+<text x="48" y="57" font-size="32" fill="#16324f" font-weight="700" text-anchor="start">Escalabilidad y elasticidad responden preguntas diferentes</text>
+<text x="48" y="92" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Datos sintéticos para aprender a leer capacidad y demanda; no son mediciones de un sistema real.</text>
+<line x1="48" y1="117" x2="1152" y2="117" stroke="#ccd8df" stroke-width="1"/>
+<text x="65" y="166" font-size="24" fill="#2463a5" font-weight="700" text-anchor="start">ESCALABILIDAD</text>
+<text x="650" y="166" font-size="24" fill="#007f83" font-weight="700" text-anchor="start">ELASTICIDAD</text>
+<text x="65" y="199" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">¿Cuánto trabajo admito al añadir recursos?</text>
+<text x="650" y="199" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">¿Cómo adapto los recursos al cambiar la carga?</text>
+<line x1="100" y1="565" x2="545" y2="565" stroke="#16324f" stroke-width="2"/>
+<line x1="100" y1="565" x2="100" y2="250" stroke="#16324f" stroke-width="2"/>
+<line x1="670" y1="565" x2="1118" y2="565" stroke="#16324f" stroke-width="2"/>
+<line x1="670" y1="565" x2="670" y2="250" stroke="#16324f" stroke-width="2"/>
+<rect x="129" y="475.0" width="72" height="90.0" rx="5" fill="#d4e8f5" stroke="#2463a5" stroke-width="2"/>
+<text x="165" y="457.0" font-size="20" fill="#2463a5" font-weight="700" text-anchor="middle">100</text>
+<text x="165" y="598" font-size="20" fill="#16324f" font-weight="400" text-anchor="middle">1</text>
+<rect x="284" y="403.0" width="72" height="162.0" rx="5" fill="#d4e8f5" stroke="#2463a5" stroke-width="2"/>
+<text x="320" y="385.0" font-size="20" fill="#2463a5" font-weight="700" text-anchor="middle">180</text>
+<text x="320" y="598" font-size="20" fill="#16324f" font-weight="400" text-anchor="middle">2</text>
+<rect x="439" y="295.0" width="72" height="270.0" rx="5" fill="#d4e8f5" stroke="#2463a5" stroke-width="2"/>
+<text x="475" y="277.0" font-size="20" fill="#2463a5" font-weight="700" text-anchor="middle">300</text>
+<text x="475" y="598" font-size="20" fill="#16324f" font-weight="400" text-anchor="middle">4</text>
+<text x="115" y="237" font-size="18" fill="#16324f" font-weight="400" text-anchor="start">Capacidad (solicitudes/s)</text>
+<text x="265" y="633" font-size="20" fill="#16324f" font-weight="400" text-anchor="start">Instancias</text>
+<text x="85" y="670" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Añadir 4× recursos no garantiza 4× capacidad.</text>
+<polyline points="685,515.0 768,490.0 851,290.0 934,290.0 1017,490.0 1100,515.0" fill="none" stroke="#2463a5" stroke-width="4" stroke-dasharray="9 5"/>
+<polyline points="685,540.0 768,515.0 851,315.0 934,465.0 1017,515.0 1100,540.0" fill="none" stroke="#007f83" stroke-width="4"/>
+<text x="685" y="598" font-size="17" fill="#16324f" font-weight="400" text-anchor="middle">8 h</text>
+<text x="768" y="598" font-size="17" fill="#16324f" font-weight="400" text-anchor="middle">10 h</text>
+<text x="851" y="598" font-size="17" fill="#16324f" font-weight="400" text-anchor="middle">12 h</text>
+<text x="934" y="598" font-size="17" fill="#16324f" font-weight="400" text-anchor="middle">14 h</text>
+<text x="1017" y="598" font-size="17" fill="#16324f" font-weight="400" text-anchor="middle">16 h</text>
+<text x="1100" y="598" font-size="17" fill="#16324f" font-weight="400" text-anchor="middle">18 h</text>
+<text x="656" y="570.0" font-size="16" fill="#16324f" font-weight="400" text-anchor="end">0</text>
+<text x="656" y="445.0" font-size="16" fill="#16324f" font-weight="400" text-anchor="end">50</text>
+<text x="656" y="320.0" font-size="16" fill="#16324f" font-weight="400" text-anchor="end">100</text>
+<text x="700" y="237" font-size="18" fill="#16324f" font-weight="400" text-anchor="start">Solicitudes/s equivalentes</text>
+<line x1="680" y1="632" x2="720" y2="632" stroke="#007f83" stroke-width="4"/>
+<text x="732" y="639" font-size="18" fill="#16324f" font-weight="400" text-anchor="start">Demanda</text>
+<line x1="875" y1="632" x2="915" y2="632" stroke="#2463a5" stroke-width="4" stroke-dasharray="8 7"/>
+<text x="927" y="639" font-size="18" fill="#16324f" font-weight="400" text-anchor="start">Capacidad</text>
+<text x="650" y="670" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Importan el tiempo de reacción y el costo ocioso.</text>
+<line x1="48" y1="700" x2="1152" y2="700" stroke="#ccd8df" stroke-width="1"/>
+<text x="48" y="732" font-size="17" fill="#16324f" font-weight="400" text-anchor="start">Escalar preserva objetivos bajo más carga; elasticidad ajusta recursos hacia arriba y hacia abajo.</text>
+</g></svg>

@@ -1,0 +1,9 @@
+flowchart LR
+    P["Pedidos: evento confirmado"] --> E["Exchange de publicación y suscripción"]
+    E --> Q1["Cola de cocina"]
+    E --> Q2["Cola de notificaciones"]
+    E --> Q3["Cola de analítica"]
+    Q1 --> C1["Trabajador de cocina A"]
+    Q1 --> C2["Trabajador de cocina B"]
+    Q2 --> N["Notificador"]
+    Q3 --> A["Analizador"]

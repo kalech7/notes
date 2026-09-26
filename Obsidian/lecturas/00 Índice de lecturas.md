@@ -15,6 +15,7 @@ Este espacio está al mismo nivel que **freelance**, **posgrado** y **pregrado**
 | Lectura | Material trabajado | Punto de entrada |
 |---|---|---|
 | *Designing Data-Intensive Applications*, segunda edición — Martin Kleppmann y Chris Riccomini | Capítulos 4 y 5 de los dos escaneos compartidos | [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí\|Empezar DDIA]] |
+| *Fundamentals of Software Architecture*, segunda edición — Mark Richards y Neal Ford | Material de los capítulos 1 a 5 presente en tres escaneos; 73 páginas revisadas, con huecos documentados | [[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí\|Empezar arquitectura de software]] |
 
 ## Cómo estudiar una nota
 

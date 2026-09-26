@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img">
+<title>Compartir trabajo no es difundir un evento</title><desc>Ejemplo conceptual: un mensaje de pedido y consumidores con responsabilidades distintas.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#007f83" stroke-width="1.5"/></marker></defs>
+<g font-family="Arial, Helvetica, sans-serif"><rect width="1200" height="760" fill="#f6f8f8"/>
+<text x="48" y="57" font-size="32" fill="#16324f" font-weight="700" text-anchor="start">Compartir trabajo no es difundir un evento</text>
+<text x="48" y="92" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Ejemplo conceptual: un mensaje de pedido y consumidores con responsabilidades distintas.</text>
+<line x1="48" y1="117" x2="1152" y2="117" stroke="#ccd8df" stroke-width="1"/>
+<text x="65" y="158" font-size="22" fill="#16324f" font-weight="700" text-anchor="start">A. UNA COLA, DOS TRABAJADORES</text>
+<rect x="70" y="205" width="210" height="90" rx="18" fill="#ffffff" stroke="#007f83" stroke-width="2"/>
+<text x="90" y="239" font-size="23" fill="#007f83" font-weight="700" text-anchor="start">Productor</text>
+<text x="90" y="271" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Pedido 101</text>
+<rect x="420" y="205" width="265" height="90" rx="18" fill="#ffffff" stroke="#007f83" stroke-width="2"/>
+<text x="440" y="239" font-size="23" fill="#007f83" font-weight="700" text-anchor="start">Cola de trabajo</text>
+<text x="440" y="271" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">101 · 102 · 103</text>
+<rect x="905" y="170" width="230" height="82" rx="18" fill="#ffffff" stroke="#2463a5" stroke-width="2"/>
+<text x="925" y="204" font-size="23" fill="#2463a5" font-weight="700" text-anchor="start">Trabajador A</text>
+<text x="925" y="236" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Recibe 101</text>
+<rect x="905" y="290" width="230" height="82" rx="18" fill="#ffffff" stroke="#2463a5" stroke-width="2"/>
+<text x="925" y="324" font-size="23" fill="#2463a5" font-weight="700" text-anchor="start">Trabajador B</text>
+<text x="925" y="356" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Recibe 102</text>
+<line x1="280" y1="250" x2="420" y2="250" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="685" y1="250" x2="905" y2="212" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="685" y1="250" x2="905" y2="332" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="72" y="359" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Reparten las entregas. Los reintentos pueden repetir un procesamiento.</text>
+<line x1="48" y1="395" x2="1152" y2="395" stroke="#ccd8df" stroke-width="1"/>
+<text x="65" y="435" font-size="22" fill="#16324f" font-weight="700" text-anchor="start">B. PUBLICACIÓN Y SUSCRIPCIÓN, UNA COLA POR SUSCRIPTOR</text>
+<rect x="70" y="505" width="210" height="90" rx="18" fill="#ffffff" stroke="#007f83" stroke-width="2"/>
+<text x="90" y="539" font-size="23" fill="#007f83" font-weight="700" text-anchor="start">Productor</text>
+<text x="90" y="571" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">PedidoCreado</text>
+<rect x="385" y="505" width="230" height="90" rx="18" fill="#ffffff" stroke="#007f83" stroke-width="2"/>
+<text x="405" y="539" font-size="23" fill="#007f83" font-weight="700" text-anchor="start">Distribuidor</text>
+<text x="405" y="571" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Exchange / broker</text>
+<rect x="730" y="463" width="195" height="80" rx="18" fill="#ffffff" stroke="#2463a5" stroke-width="2"/>
+<text x="750" y="497" font-size="23" fill="#2463a5" font-weight="700" text-anchor="start">Cola cocina</text>
+<text x="750" y="529" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Copia del evento</text>
+<rect x="730" y="580" width="195" height="80" rx="18" fill="#ffffff" stroke="#ae6a06" stroke-width="2"/>
+<text x="750" y="614" font-size="23" fill="#ae6a06" font-weight="700" text-anchor="start">Cola análisis</text>
+<text x="750" y="646" font-size="19" fill="#16324f" font-weight="400" text-anchor="start">Copia del evento</text>
+<text x="970" y="504" font-size="21" fill="#2463a5" font-weight="700" text-anchor="start">Cocina</text>
+<text x="970" y="623" font-size="21" fill="#ae6a06" font-weight="700" text-anchor="start">Analítica</text>
+<line x1="280" y1="550" x2="385" y2="550" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="615" y1="550" x2="730" y2="503" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="615" y1="550" x2="730" y2="620" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="925" y1="503" x2="959" y2="503" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="925" y1="620" x2="959" y2="620" stroke="#007f83" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="48" y1="700" x2="1152" y2="700" stroke="#ccd8df" stroke-width="1"/>
+<text x="48" y="732" font-size="17" fill="#16324f" font-weight="400" text-anchor="start">Pub/sub puede usar colas por suscriptor: permisos, persistencia y reentrega requieren configuración.</text>
+</g></svg>

@@ -1,0 +1,7 @@
+flowchart LR
+    subgraph APP["Un único proceso de PedidoClaro"]
+        P["Pedidos"] --> C["Contrato de Precios"]
+        C --> R["Reglas y redondeo internos"]
+        P --> U["Contrato de Clientes"]
+    end
+    P --> E["Proveedor externo de pagos"]
