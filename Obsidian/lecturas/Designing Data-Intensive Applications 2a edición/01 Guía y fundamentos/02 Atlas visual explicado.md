@@ -9,7 +9,7 @@ tags:
 
 # DDIA — Atlas visual explicado
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Guía y fundamentos]]
 
 Cada imagen responde una pregunta. **Mira primero qué objeto cambia, después qué recorrido sigue y por último qué condición hace válida la respuesta.** Las imágenes son analogías originales; los pasos siguientes explican el mecanismo real y las partes que el dibujo simplifica. No necesitas abrir los PDF.
 
@@ -155,4 +155,8 @@ Una referencia exacta, como un código de producto, puede favorecer señales lé
 
 Cierra esta nota y dibuja cuatro cosas: las dos versiones de P42; los dos esquemas de Avro; las tres historias del timeout; los dos caminos de búsqueda. Junto a cada dibujo escribe **una condición que la imagen no garantiza**. Poder explicar esas condiciones vale más que recordar únicamente los colores.
 
-Las ilustraciones fueron generadas con `image_gen` y revisadas antes de incorporarlas. Sus prompts y límites están en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/04 Procedencia de imágenes y prompts|procedencia de recursos visuales]].
+Las ilustraciones fueron generadas con `image_gen` y revisadas antes de incorporarlas. Sus prompts y límites están en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/03 Procedencia de imágenes y prompts|procedencia de recursos visuales]].
+
+---
+
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|Empezar el capítulo 4]]

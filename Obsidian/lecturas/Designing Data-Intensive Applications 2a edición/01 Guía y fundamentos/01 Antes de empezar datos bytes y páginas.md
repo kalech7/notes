@@ -8,7 +8,7 @@ tags:
 
 # DDIA — Antes de empezar: datos, bytes, páginas y contratos
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Guía y fundamentos]]
 
 Esta introducción aporta el contexto para estudiar los capítulos 4 y 5 **sin abrir los PDF ni dominar antes todos los términos**. Es una explicación didáctica propia. Mantendremos un mismo ejemplo: una tienda guarda pedidos.
 
@@ -114,4 +114,8 @@ Si cambias las reglas de forma incompatible, no arreglas automáticamente los by
 > [!tip] La frase para llevarte
 > **Una pregunta busca un hecho; un programa interpreta una estructura; un motor mueve bytes.** Un buen diseño mantiene coherentes las tres capas.
 
-Continúa con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|cómo un log se convierte en un sistema consultable]]. Para recordar vocabulario durante el recorrido tienes [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/81 Glosario y tarjetas de memoria|el glosario]].
+Continúa con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|cómo un log se convierte en un sistema consultable]]. Para recordar vocabulario durante el recorrido tienes [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/02 Glosario y tarjetas de memoria|el glosario]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Guía y fundamentos]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|Del log al índice]]

@@ -8,9 +8,9 @@ tags:
 
 # Procedencia de imágenes y prompts
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|Fuentes y revisión]]
 
-Las seis ilustraciones se generaron con la herramienta integrada **image_gen**, se revisaron visualmente y se copiaron dentro de esta carpeta. Son analogías didácticas originales, no fotografías ni figuras del libro. El texto de las notas desarrolla las condiciones que la imagen simplifica.
+Las seis ilustraciones se generaron con la herramienta integrada **image_gen**, se revisaron visualmente y se guardaron en la carpeta `Recursos visuales` del libro. Son analogías didácticas originales, no fotografías ni figuras del libro. El texto de las notas desarrolla las condiciones que la imagen simplifica.
 
 ## 1. B-tree y LSM
 
@@ -54,7 +54,7 @@ Use only these exact labels. Both arrows strictly go from data LEFT to reader RI
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
-Gráfico calculado con **Matplotlib**, no generado con IA. Sus datos son sintéticos: 1 000 000 filas × columnas seleccionadas × 8 bytes. Se guardaron PNG, SVG y el generador Python. El modelo se explica en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03 Cómo leer el gráfico de proyección|Cómo leer el gráfico]].
+Gráfico calculado con **Matplotlib**, no generado con IA. Sus datos son sintéticos: 1 000 000 filas × columnas seleccionadas × 8 bytes. Se guardaron PNG, SVG y el generador Python. El modelo se explica en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|Cómo leer el gráfico]].
 
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.svg|Gráfico en SVG]]
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/generar_grafico_proyeccion.py|Generador reproducible]]
@@ -64,7 +64,7 @@ Los diagramas de procesos están escritos en Mermaid dentro de las notas. El map
 
 ## Ampliación visual después de la revisión
 
-Se añadieron cuatro ilustraciones con `image_gen`. Todas se inspeccionaron, se guardaron en esta carpeta y se acompañaron de explicación de mecanismos, ejemplos y límites en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/02 Atlas visual explicado|el atlas visual]]. Las analogías no representan una medición de rendimiento ni un protocolo literal.
+Se añadieron cuatro ilustraciones con `image_gen`. Todas se inspeccionaron, se guardaron en esta carpeta y se acompañaron de explicación de mecanismos, ejemplos y límites en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|el atlas visual]]. Las analogías no representan una medición de rendimiento ni un protocolo literal.
 
 ### Versiones LSM y compactación
 
@@ -106,3 +106,6 @@ Prompt exacto utilizado:
 undefined
 ```
 
+---
+
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]]

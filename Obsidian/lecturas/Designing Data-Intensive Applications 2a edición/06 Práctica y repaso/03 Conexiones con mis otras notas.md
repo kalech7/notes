@@ -10,6 +10,8 @@ tags:
 
 # Conexiones: de tus prácticas a las decisiones de diseño
 
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Práctica y repaso]]
+
 Esta nota conecta los temas de **almacenamiento y recuperación** y **codificación y evolución** de *Designing Data-Intensive Applications*, segunda edición, con contenido que ya tienes en freelance, posgrado y pregrado. Las conexiones y los ejercicios son una elaboración didáctica: no son citas del libro ni ejemplos atribuidos a los escaneos.
 
 > [!tip] Dos preguntas que organizan todo
@@ -178,4 +180,8 @@ sequenceDiagram
 > 1. Faltan recuperar columnas, recorrer coincidencias y ejecutar otros operadores. 2. Un fragmento de la columna por cada grupo pertinente, además de metadatos necesarios. 3. Formato y pertenencia a una versión son capas distintas. 4. Un campo nuevo requiere reglas explícitas para ausencia y lectores anteriores; cambiar unidades sin cambiar tipo rompe significado. 5. Sabe que no recibió respuesta a tiempo; el efecto puede haber ocurrido. 6. Integridad, estructura y semántica son propiedades diferentes.
 
 
-Continúa en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/70 Caso práctico de pedidos a analítica|el caso práctico de pedidos a analítica]] o vuelve a [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|la ruta de lectura]].
+Para volver a aplicar las conexiones, regresa a [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/01 Caso práctico de pedidos a analítica|el caso práctico de pedidos a analítica]] o vuelve a [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|la ruta de lectura]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/02 Glosario y tarjetas de memoria|Glosario y tarjetas de memoria]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver al inicio]]

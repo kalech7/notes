@@ -92,4 +92,4 @@ Volver a [[Obsidian/freelance/Data Engineering/00 Empieza aquí|la ruta de estud
 
 ## Lectura relacionada: DDIA
 
-- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#4. Schemas y JSON: leer hoy no demuestra compatibilidad mañana|DDIA: evolución de schemas]] — Extiende estructura y validación hacia lectores y escritores de distintas versiones, campos ausentes y cambios de significado.
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/03 Conexiones con mis otras notas#4. Schemas y JSON: leer hoy no demuestra compatibilidad mañana|DDIA: evolución de schemas]] — Extiende estructura y validación hacia lectores y escritores de distintas versiones, campos ausentes y cambios de significado.

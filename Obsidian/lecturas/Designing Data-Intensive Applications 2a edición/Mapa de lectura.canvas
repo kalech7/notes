@@ -33,7 +33,7 @@
     {
       "id": "82ee543ec08218a4",
       "type": "text",
-      "text": "## Base común\n\nBytes, páginas, caché, estructuras y contratos.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Antes de empezar datos bytes y páginas|Empezar desde cero]]",
+      "text": "## Base común\n\nBytes, páginas, caché, estructuras y contratos.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/01 Antes de empezar datos bytes y páginas|Empezar desde cero]]\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Índice de preparación]]",
       "x": 650,
       "y": -160,
       "width": 540,
@@ -43,7 +43,7 @@
     {
       "id": "15cf5c49507c2845",
       "type": "text",
-      "text": "## 1. Log e índice\n\nGuardar al final simplifica escribir. Un índice evita recorrer todo.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|Abrir explicación]]",
+      "text": "## 1. Log e índice\n\nGuardar al final simplifica escribir. Un índice evita recorrer todo.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/01 Del log al índice|Abrir explicación]]\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Ver índice del bloque]]",
       "x": 35,
       "y": 160,
       "width": 390,
@@ -106,7 +106,7 @@
     {
       "id": "a1f464c020ed9302",
       "type": "text",
-      "text": "## 1. Versiones y compatibilidad\n\nNuevo lee viejo: atrás. Viejo lee nuevo: delante.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/01 Evolución y compatibilidad|Abrir explicación]]",
+      "text": "## 1. Versiones y compatibilidad\n\nNuevo lee viejo: atrás. Viejo lee nuevo: delante.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/01 Evolución y compatibilidad|Abrir explicación]]\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Ver índice del bloque]]",
       "x": 995,
       "y": 160,
       "width": 390,
@@ -169,7 +169,7 @@
     {
       "id": "793995380f597fe9",
       "type": "text",
-      "text": "## Un mismo sistema, varias decisiones\n\nPedidos, índice, analítica, campo moneda y reintento.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/70 Caso práctico de pedidos a analítica|Resolver el caso]]",
+      "text": "## Un mismo sistema, varias decisiones\n\nPedidos, índice, analítica, campo moneda y reintento.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/01 Caso práctico de pedidos a analítica|Resolver el caso]]\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Ver índice del bloque]]",
       "x": 640,
       "y": 1330,
       "width": 560,
@@ -179,7 +179,7 @@
     {
       "id": "e545774e8172c1ae",
       "type": "text",
-      "text": "## Conectar con lo que ya sabes\n\nSQL · Spark · Arrow/DuckDB · RPC · RAG\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas|Abrir puentes razonados]]",
+      "text": "## Conectar con lo que ya sabes\n\nSQL · Spark · Arrow/DuckDB · RPC · RAG\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/03 Conexiones con mis otras notas|Abrir puentes razonados]]",
       "x": 280,
       "y": 1640,
       "width": 580,
@@ -189,7 +189,7 @@
     {
       "id": "f6afa7fd39b1470d",
       "type": "text",
-      "text": "## Recordar sin mirar\n\nGlosario, confusiones y 18 preguntas con respuesta.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/81 Glosario y tarjetas de memoria|Practicar memoria]]",
+      "text": "## Recordar sin mirar\n\nGlosario, confusiones y 18 preguntas con respuesta.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/02 Glosario y tarjetas de memoria|Practicar memoria]]",
       "x": 1020,
       "y": 1640,
       "width": 560,
@@ -235,12 +235,22 @@
     {
       "id": "3f651fe429a2008a",
       "type": "text",
-      "text": "## Atlas visual explicado\n\nCuatro escenas con lectura paso a paso y límites.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/02 Atlas visual explicado|Abrir atlas]]",
+      "text": "## Atlas visual explicado\n\nCuatro escenas con lectura paso a paso y límites.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|Abrir atlas]]",
       "x": 0,
       "y": -400,
       "width": 480,
       "height": 230,
       "color": "2"
+    },
+    {
+      "id": "a05208048a0e3412",
+      "type": "text",
+      "text": "## Fuentes y revisión\n\nCobertura, escaneos y procedencia de imágenes.\n\n[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|Consultar referencias]]",
+      "x": 1280,
+      "y": -430,
+      "width": 520,
+      "height": 230,
+      "color": "6"
     }
   ],
   "edges": [
@@ -444,6 +454,15 @@
       "toSide": "right",
       "toEnd": "arrow",
       "label": "ver y explicar"
+    },
+    {
+      "id": "daf0730e515489ee",
+      "fromNode": "01017b18eed26514",
+      "toNode": "a05208048a0e3412",
+      "fromSide": "right",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "consultar fuentes"
     }
   ]
 }

@@ -9,7 +9,7 @@ tags:
 
 # DDIA — Glosario y tarjetas de memoria
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Práctica y repaso]]
 
 > [!tip] Cómo usar esta nota
 > Primero responde sin mirar. Después abre la respuesta y explica qué parte omitiste. Una definición se vuelve útil cuando puedes reconocer **un ejemplo y un contraejemplo**. Las analogías ayudan a recordar; no sustituyen los mecanismos de las notas detalladas.
@@ -131,7 +131,11 @@ Este es un plan de práctica sugerido, no una afirmación de que exista un inter
 |---|---|---|
 | Primera vuelta | Dibuja B-tree, LSM y las dos direcciones de compatibilidad | Puedes explicar las flechas |
 | Día siguiente | Resuelve seis tarjetas al azar | Das condiciones, no solo palabras clave |
-| Unos días después | Resuelve [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/70 Caso práctico de pedidos a analítica\|el caso de pedidos]] | Justificas cada elección y sus costos |
+| Unos días después | Resuelve [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/01 Caso práctico de pedidos a analítica\|el caso de pedidos]] | Justificas cada elección y sus costos |
 | Semana siguiente | Enseña dos conceptos con otra situación | Puedes señalar dónde deja de servir tu analogía |
 
-Si no recuerdas una respuesta, vuelve a su explicación desde [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|el índice]]. Las tarjetas sintetizan las notas del conjunto; consulta [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y cobertura|la procedencia y límites]] para distinguir lectura de ampliaciones.
+Si no recuerdas una respuesta, vuelve a su explicación desde [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|el índice]]. Las tarjetas sintetizan las notas del conjunto; consulta [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/01 Fuentes y cobertura|la procedencia y límites]] para distinguir lectura de ampliaciones.
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/01 Caso práctico de pedidos a analítica|Caso práctico de pedidos a analítica]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/03 Conexiones con mis otras notas|Conexiones con mis otras notas]]

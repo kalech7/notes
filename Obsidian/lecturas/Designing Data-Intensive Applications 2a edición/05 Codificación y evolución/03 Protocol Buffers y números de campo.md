@@ -11,7 +11,7 @@ cobertura: "Impresas 169–171"
 
 # DDIA — Protocol Buffers: la identidad vive en el número de campo
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
 Protocol Buffers, o Protobuf, define mensajes mediante un esquema y suele generar código para leerlos y escribirlos. En su representación binaria, un campo se identifica por un **número estable**, no por el texto de su nombre. Esa decisión permite ahorrar nombres repetidos y reconocer campos al evolucionar el mensaje.
 
@@ -124,3 +124,7 @@ V1 define `total_centavos = 2`. V2 conserva `int64` y el número 2, pero empieza
 Estas referencias documentan la procedencia; no son pasos previos para entender la nota.
 
 Fuentes principales: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=9|PDF, p. 9; impresa 169]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=10|PDF, p. 10; impresa 170]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=11|PDF, p. 11; impresa 171]]. Los esquemas presentados son ejemplos propios en sintaxis proto3.
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/02 JSON XML CSV y esquemas|JSON XML CSV y esquemas]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/04 Avro y resolución de esquemas|Avro y resolución de esquemas]]

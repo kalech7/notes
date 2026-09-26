@@ -8,6 +8,8 @@ tags:
 
 # Cómo leer el gráfico de proyección
 
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
+
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
 El gráfico muestra un **cálculo sintético de contenido de valores**, no resultados medidos en una base de datos. Sirve para entender por qué una consulta analítica puede beneficiarse de leer únicamente las columnas que utiliza. *Proyectar* significa escoger columnas del resultado; el lector necesita poder aprovechar esa selección para evitar trabajo físico.
@@ -33,6 +35,10 @@ La barra gris supone recuperar filas completas. Un motor por filas con un índic
 
 **Pregunta de repaso:** si solicitas las veinte columnas, ¿cuánto ahorro por proyección queda? Ninguno en este modelo; otras ventajas o costos requieren otro análisis.
 
-Conecta con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/70 Caso práctico de pedidos a analítica|el caso de pedidos a analítica]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|la ruta de lectura]].
+Conecta con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/01 Caso práctico de pedidos a analítica|el caso de pedidos a analítica]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|la ruta de lectura]].
 
 Generador reproducible: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/generar_grafico_proyeccion.py|script Python]]; versión vectorial: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.svg|SVG]]. Requiere `matplotlib`.
+
+---
+
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/05 Almacenamiento columnar y compresión|Volver a columnas y compresión]]

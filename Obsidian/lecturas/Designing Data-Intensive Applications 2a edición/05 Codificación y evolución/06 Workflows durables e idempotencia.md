@@ -11,7 +11,7 @@ cobertura: "Impresas 187–189"
 
 # DDIA — Workflows durables: recordar el progreso sin duplicar efectos
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
 Un workflow describe pasos y dependencias de un proceso. La ejecución durable permite recuperar el progreso después de un fallo. La idea decisiva es **registrar lo que ocurrió para continuar sin empezar a ciegas**. Eso no significa que cualquier efecto externo se ejecute mágicamente una sola vez.
 
@@ -132,3 +132,7 @@ Dibuja los puntos de caída antes de debitar, después de debitar pero antes de 
 Estas referencias documentan la procedencia; no son pasos previos para entender la nota.
 
 Fuentes del escaneo: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=27|PDF, p. 27; impresa 187]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=28|PDF, p. 28; impresa 188]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=29|PDF, p. 29; impresa 189]]. La precisión sobre actividades y replay se contrastó con la [arquitectura oficial de Temporal](https://github.com/temporalio/temporal/blob/main/docs/architecture/README.md).
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/05 Bases de datos APIs y RPC|Bases de datos APIs y RPC]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/07 Mensajería actores y repaso|Mensajería actores y repaso]]

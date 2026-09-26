@@ -11,7 +11,7 @@ tags:
 
 # DDIA — Del log al índice: guardar es fácil, encontrar cuesta
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
 > [!abstract] La idea que organiza el capítulo
 > El motor de almacenamiento decide **cómo disponer bytes para escribirlos, encontrarlos y recuperarlos tras un fallo**. El modelo de datos dice qué representan esos bytes. Puedes usar SQL sobre motores con organizaciones físicas muy diferentes.
@@ -119,4 +119,7 @@ Esto no significa que todos los índices dupliquen toda la tabla. Algunos guarda
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=1|PDF, p. 1; impresa 115]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=2|PDF, p. 2; impresa 116]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=3|PDF, p. 3; impresa 117]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=4|PDF, p. 4; impresa 118]]. Ejemplo de pedidos y posiciones creado para estas notas.
 
 ---
-Siguiente: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/02 LSM SSTables compactación y Bloom|LSM SSTables compactación y Bloom]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/01 Antes de empezar datos bytes y páginas|Antes de empezar datos bytes y páginas]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/02 LSM SSTables compactación y Bloom|LSM SSTables compactación y Bloom]]

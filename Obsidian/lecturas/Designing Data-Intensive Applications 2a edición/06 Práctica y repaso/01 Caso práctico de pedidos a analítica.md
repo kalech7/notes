@@ -10,7 +10,7 @@ tipo: ejemplo-didactico
 
 # DDIA — Caso práctico: de pedidos a analítica
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Práctica y repaso]]
 
 > [!abstract] El problema completo
 > Una aplicación debe guardar pedidos, mostrar los de un cliente, calcular ventas por mes y añadir un campo sin romper versiones anteriores. **El capítulo 4 pregunta cómo guardar y encontrar; el capítulo 5 pregunta cómo representar y cambiar.** Las dos decisiones se encuentran en el mismo sistema.
@@ -71,7 +71,7 @@ Si una tabla sintética tuviera 20 columnas del mismo ancho y una consulta usara
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
-El gráfico usa un millón de filas y ocho bytes por valor: 160 MB frente a 16 MB de contenido de valores. Puedes revisar [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03 Cómo leer el gráfico de proyección|el cálculo y los límites del modelo]].
+El gráfico usa un millón de filas y ocho bytes por valor: 160 MB frente a 16 MB de contenido de valores. Puedes revisar [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|el cálculo y los límites del modelo]].
 
 ## 4. Dos representaciones pueden convivir
 
@@ -162,4 +162,8 @@ El timeout no dice si el pedido se guardó. Una clave de idempotencia permite di
 
 Síntesis propia de los dos escaneos: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=1|capítulo 4]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=1|capítulo 5]]. Las referencias web anteriores verifican detalles de implementaciones; el caso y sus números son inventados para estudiar.
 
-Continúa con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas|los puentes con tus otras notas]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/81 Glosario y tarjetas de memoria|el repaso activo]].
+Continúa con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/02 Glosario y tarjetas de memoria|el repaso activo]] y después con [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/03 Conexiones con mis otras notas|los puentes con tus otras notas]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/07 Mensajería actores y repaso|Mensajería actores y repaso]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/02 Glosario y tarjetas de memoria|Glosario y tarjetas de memoria]]

@@ -8,7 +8,7 @@ tags:
 
 # DDIA — Fuentes opcionales y cobertura
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|Fuentes y revisión]]
 
 **Las notas están escritas para estudiar sin volver a los PDF.** Esta página conserva trazabilidad: puedes ignorarla durante la primera lectura. Las referencias no son tareas pendientes ni requisitos previos.
 
@@ -79,7 +79,7 @@ Se consultaron fuentes oficiales para precisar detalles que dependen del formato
 
 Consulta realizada durante la preparación, 25 de septiembre de 2026. Las reglas específicas se contextualizan; una actualización futura del producto puede modificar detalles operativos.
 
-La revisión ampliada añadió contrastes con la [codificación de Protobuf](https://protobuf.dev/programming-guides/encoding/), la [especificación de MessagePack](https://github.com/msgpack/msgpack/blob/master/spec.md), [OpenAPI 3.0.3](https://spec.openapis.org/oas/v3.0.3.html), la [codificación anidada de Parquet](https://parquet.apache.org/docs/file-format/nestedencoding/) y el [mantenimiento de espacio en PostgreSQL](https://www.postgresql.org/docs/18/routine-vacuuming.html#VACUUM-FOR-SPACE-RECOVERY). Las notas de búsqueda incluyen referencias específicas para curvas espaciales y mecanismos de Lucene. Los cambios de cobertura se documentan en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/92 Revisión de cobertura y mejoras|la matriz de revisión]].
+La revisión ampliada añadió contrastes con la [codificación de Protobuf](https://protobuf.dev/programming-guides/encoding/), la [especificación de MessagePack](https://github.com/msgpack/msgpack/blob/master/spec.md), [OpenAPI 3.0.3](https://spec.openapis.org/oas/v3.0.3.html), la [codificación anidada de Parquet](https://parquet.apache.org/docs/file-format/nestedencoding/) y el [mantenimiento de espacio en PostgreSQL](https://www.postgresql.org/docs/18/routine-vacuuming.html#VACUUM-FOR-SPACE-RECOVERY). Las notas de búsqueda incluyen referencias específicas para curvas espaciales y mecanismos de Lucene. Los cambios de cobertura se documentan en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/02 Revisión de cobertura y mejoras|la matriz de revisión]].
 
 Tres matices reciben atención especial: la especificación Avro 1.12 sobre defaults de uniones no se simplifica como una regla universal de orden; RocksDB documenta frenos de escrituras sin justificar la afirmación de que toda lectura se suspenda; ejecución durable no convierte todos los efectos externos en operaciones realizadas una sola vez.
 
@@ -94,3 +94,7 @@ Las referencias enlazan páginas del PDF usando la numeración del visor, y sus 
 Se validaron los metadatos YAML de las 25 notas, la sintaxis de los 35 diagramas Mermaid y los 269 enlaces internos del conjunto, incluidos 80 enlaces a páginas de las referencias. El Canvas tiene 26 nodos y 24 conexiones, con identificadores únicos, destinos válidos y tarjetas sin solapamiento. Las copias PDF coinciden con los originales. Se inspeccionaron las seis ilustraciones generadas y el gráfico numérico.
 
 La comprobación de Markdown y diagramas se hizo con analizadores locales; no se verificó la apariencia dentro de una sesión activa de Obsidian. Los ejemplos SQL describen mecanismos y no constituyen un laboratorio ejecutado contra un servidor.
+
+---
+
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]]

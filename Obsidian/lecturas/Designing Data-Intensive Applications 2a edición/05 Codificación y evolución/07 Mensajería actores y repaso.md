@@ -11,7 +11,7 @@ cobertura: "Impresas 189–192"
 
 # DDIA — Mensajes, actores y una guía para repasar el capítulo
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
 En una arquitectura orientada a eventos, el productor suele publicar un mensaje sin esperar que el consumidor termine de procesarlo. Un intermediario puede almacenarlo y entregarlo después. Esto separa los ritmos de los procesos, pero el mensaje sigue necesitando un contrato que sobreviva a distintas versiones.
 
@@ -142,3 +142,7 @@ El PDF contiene **32 páginas: impresas 161–192**, con correspondencia `impres
 Estas referencias documentan la procedencia; no son pasos previos para entender la nota.
 
 Fuentes del escaneo: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=29|PDF, p. 29; impresa 189]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=30|PDF, p. 30; impresa 190]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=31|PDF, p. 31; impresa 191]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=32|PDF, p. 32; impresa 192]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/06 Workflows durables e idempotencia|Workflows durables e idempotencia]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/01 Caso práctico de pedidos a analítica|Caso práctico de pedidos a analítica]]

@@ -88,4 +88,4 @@ Volver a [[Obsidian/freelance/Data Engineering/00 Empieza aquí|la ruta de estud
 
 ## Lectura relacionada: DDIA
 
-- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#1. Índices: ahora puedes explicar por qué ayudan y por qué cuestan|DDIA: del índice al almacenamiento]] — Conecta búsquedas, recuperación de columnas y costo de mantenimiento con las estructuras físicas del motor.
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/03 Conexiones con mis otras notas#1. Índices: ahora puedes explicar por qué ayudan y por qué cuestan|DDIA: del índice al almacenamiento]] — Conecta búsquedas, recuperación de columnas y costo de mantenimiento con las estructuras físicas del motor.

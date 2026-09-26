@@ -8,7 +8,7 @@ tags:
 
 # Revisión de cobertura y mejoras
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|← Ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|Fuentes y revisión]]
 
 **La primera versión cubría las ideas principales, pero no desarrollaba suficientemente todos los mecanismos.** Se revisaron las 66 páginas PDF suministradas contra las 14 notas y se ampliaron los puntos breves o ausentes. Esta página muestra la evidencia de esa revisión; no necesitas leerla ni abrir los PDF para estudiar.
 
@@ -20,7 +20,7 @@ El alcance es **los temas visibles de los capítulos 4 y 5 adjuntos**. No equiva
 - Se siguen consultas analíticas completas, datos anidados, ejecución por lotes, mantenimiento de vistas, búsquedas espaciales, de texto y de vecinos aproximados.
 - Se decodifican ejemplos pequeños de MessagePack, Protobuf y Avro byte a byte; se separan varint y ZigZag, estructura y significado.
 - Se amplían convivencia de versiones, migraciones, OpenAPI, descubrimiento de servicios, historial durable, acuses y reentregas de mensajes.
-- Cada diagrama de los capítulos tiene una guía de lectura inmediata. Las cuatro nuevas ilustraciones se explican tanto en sus notas como en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/02 Atlas visual explicado|el atlas visual]].
+- Cada diagrama de los capítulos tiene una guía de lectura inmediata. Las cuatro nuevas ilustraciones se explican tanto en sus notas como en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|el atlas visual]].
 
 Las notas conservan ejemplos, preguntas y conexiones anteriores. Las adiciones explican el propósito, el mecanismo y sus límites; no se limitan a añadir nombres de tecnologías.
 
@@ -132,4 +132,8 @@ Dos revisiones por subagentes contrastaron por separado almacenamiento y evoluci
 
 La comprobación de sintaxis no equivale a una verificación del render dentro de una sesión de Obsidian: las notas y recursos se validaron localmente. Los ejemplos no constituyen una prueba de rendimiento de motores reales ni una certificación de un sistema en producción.
 
-Los PDF siguen siendo referencias opcionales. Para estudiar puedes comenzar por [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/02 Atlas visual explicado|las cuatro escenas explicadas]] y avanzar hacia las notas del índice.
+Los PDF siguen siendo referencias opcionales. Para estudiar puedes comenzar por [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|las cuatro escenas explicadas]] y avanzar hacia las notas del índice.
+
+---
+
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]]

@@ -144,4 +144,4 @@ Fuente: [[assets/module_11.pdf#page=13|PDF pp. 13–18]]. Sigue con [[04 dbt, de
 
 ## Lectura relacionada: DDIA
 
-- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/80 Conexiones con mis otras notas#7. Arrow, DuckDB y artefactos: separar representación, persistencia y semántica|DDIA: representación, persistencia y compatibilidad]] — Amplía el round trip con pruebas entre versiones y distingue integridad, estructura y significado del dato.
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/06 Práctica y repaso/03 Conexiones con mis otras notas#7. Arrow, DuckDB y artefactos: separar representación, persistencia y semántica|DDIA: representación, persistencia y compatibilidad]] — Amplía el round trip con pruebas entre versiones y distingue integridad, estructura y significado del dato.

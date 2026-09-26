@@ -11,7 +11,7 @@ cobertura: "Impresas 161–164, 178–180 y 191–192"
 
 # DDIA — Evolucionar sin romper lectores antiguos
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
 Una aplicación cambia mucho más rápido que todos los datos y programas que la rodean. Puedes publicar una versión hoy y seguir recibiendo peticiones de una aplicación móvil de hace meses o leyendo registros escritos hace años. **Evolucionar bien significa hacer que esas versiones puedan convivir.** No basta con que la versión nueva funcione cuando está sola.
 
@@ -126,3 +126,7 @@ No siempre necesitas duplicar campos: este ejemplo sirve para cambios de estruct
 Estas referencias documentan la procedencia; no son pasos previos para entender la nota.
 
 Referencia opcional del planteamiento: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=1|PDF, p. 1; impresa 161]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=2|PDF, p. 2; impresa 162]]; el resumen está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=31|PDF, p. 31; impresa 191]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=32|PDF, p. 32; impresa 192]]. Los ejemplos de pedidos de estas notas son elaboraciones didácticas, no transcripciones del libro.
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/07 Índices espaciales texto completo y vectores|Índices espaciales texto completo y vectores]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/02 JSON XML CSV y esquemas|JSON XML CSV y esquemas]]

@@ -11,7 +11,7 @@ tags:
 
 # DDIA — Columnas, bitmaps y compresión: leer menos para analizar más
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
 ## La misma tabla puede tener otra disposición física
 
@@ -50,7 +50,7 @@ Un filtro temporal también puede permitir descartar grupos incompatibles con el
 
 ![[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03-proyeccion-columnas.png|1000]]
 
-En este modelo sintético, leer 2 de 20 columnas del mismo ancho selecciona una décima parte de los bytes de valores. No es una predicción del tiempo de consulta. El cálculo completo está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Recursos visuales/03 Cómo leer el gráfico de proyección|la explicación del gráfico]].
+En este modelo sintético, leer 2 de 20 columnas del mismo ancho selecciona una décima parte de los bytes de valores. No es una predicción del tiempo de consulta. El cálculo completo está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Cómo leer el gráfico de proyección|la explicación del gráfico]].
 
 ## De una pregunta de negocio a los bytes que hay que leer
 
@@ -143,4 +143,7 @@ No conviertas esta descripción en la promesa de que cualquier archivo Parquet a
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=22|PDF, p. 22; impresa 136]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=23|PDF, p. 23; impresa 137]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=24|PDF, p. 24; impresa 138]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=25|PDF, p. 25; impresa 139]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=26|PDF, p. 26; impresa 140–141]]. Datos de café y cálculos propios.
 
 ---
-Anterior: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/04 Índices secundarios cobertura y memoria|Índices secundarios cobertura y memoria]]. Siguiente: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/06 Lagos de datos ejecución y vistas materializadas|Lagos de datos ejecución y vistas materializadas]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/04 Índices secundarios cobertura y memoria|Índices secundarios cobertura y memoria]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/06 Lagos de datos ejecución y vistas materializadas|Lagos de datos ejecución y vistas materializadas]]

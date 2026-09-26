@@ -11,7 +11,7 @@ cobertura: "Impresas 163–169 y 177–178"
 
 # DDIA — De objetos a bytes: JSON, XML, CSV y sus contratos
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
 En memoria tienes objetos, referencias, listas y tipos propios del lenguaje. Un archivo o una conexión transporta bytes. **Codificar es acordar cómo se convierte una estructura en bytes y cómo se recupera su significado.** Aquí “serialización” se refiere a esa conversión; no a la serializabilidad de transacciones.
 
@@ -154,3 +154,7 @@ Protobuf y Avro se concentran en estructura y tipos; JSON Schema y XML Schema pu
 Estas referencias documentan la procedencia; no son pasos previos para entender la nota.
 
 Fuentes del escaneo: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=3|PDF, p. 3; impresa 163]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=4|PDF, p. 4; impresa 164]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=5|PDF, p. 5; impresa 165]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=6|PDF, p. 6; impresa 166]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=7|PDF, p. 7; impresa 167]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=8|PDF, p. 8; impresa 168]] y [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf#page=9|PDF, p. 9; impresa 169]].
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/01 Evolución y compatibilidad|Evolución y compatibilidad]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/03 Protocol Buffers y números de campo|Protocol Buffers y números de campo]]

@@ -11,7 +11,7 @@ tags:
 
 # DDIA — Buscar por espacio, por palabras y por significado
 
-[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Volver a la ruta de lectura]]
+[[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Almacenamiento y recuperación]]
 
 ## La estructura depende de qué significa “encontrar”
 
@@ -105,7 +105,7 @@ Un **trie** comparte prefijos: las palabras `casa` y `caso` comparten el camino 
 
 **Cómo leer la derecha:** empieza por el marcador de consulta. Los documentos se colocan cerca o lejos según una representación numérica. `Reparar coche` y `arreglar automóvil` ilustran una posible proximidad de significado sin igualdad de términos. El mapa de dos dimensiones es una analogía: no es una medición de embeddings reales ni garantiza que cualquier modelo produzca esa geometría.
 
-La izquierda permite recuperar por apariciones de términos; la derecha busca vecinos según una medida sobre vectores. Ambas rutas producen candidatos que todavía deben evaluarse. Un documento parecido puede ser falso, irrelevante o insuficiente. Puedes seguir un ejemplo más pausado en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/02 Atlas visual explicado#4. ¿Buscar una palabra es lo mismo que buscar una idea parecida?|el atlas visual explicado]].
+La izquierda permite recuperar por apariciones de términos; la derecha busca vecinos según una medida sobre vectores. Ambas rutas producen candidatos que todavía deben evaluarse. Un documento parecido puede ser falso, irrelevante o insuficiente. Puedes seguir un ejemplo más pausado en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado#4. ¿Buscar una palabra es lo mismo que buscar una idea parecida?|el atlas visual explicado]].
 
 ## Embeddings: encontrar una paráfrasis
 
@@ -205,4 +205,7 @@ Puedes medir `recall@k` del índice comparándolo con los vecinos exactos del mi
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=29|PDF, p. 29; impresa 145]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=30|PDF, p. 30; impresa 146]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=31|PDF, p. 31; impresa 147]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=32|PDF, p. 32; impresa 148]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=33|PDF, p. 33; impresa 149]]. Ejemplos de documentos, coordenadas, ecuación de normalización y separación de errores desarrollados para estas notas. Las precisiones de implementación se contrastaron con la documentación oficial enlazada el 25-09-2026.
 
 ---
-Anterior: [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/06 Lagos de datos ejecución y vistas materializadas|Lagos de datos ejecución y vistas materializadas]]. 
+
+---
+
+**Anterior:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/06 Lagos de datos ejecución y vistas materializadas|Lagos de datos ejecución y vistas materializadas]] · **Índice:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/00 Índice|Ver este bloque]] · **Siguiente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/01 Evolución y compatibilidad|Evolución y compatibilidad]]
