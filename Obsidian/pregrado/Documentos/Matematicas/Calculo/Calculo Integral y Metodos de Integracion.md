@@ -17,6 +17,10 @@ aliases:
   - Teorema Fundamental del Cálculo
   - Métodos de Integración
   - Integrales Impropias
+related:
+  - "[[Calculo Diferencial y Teoremas Fundamentales]]"
+  - "[[Calculo Multivariable, Gradiente y Matriz Jacobiana]]"
+  - "[[Probabilidad y Variables Aleatorias]]"
 ---
 
 # Cálculo Integral y Métodos de Integración

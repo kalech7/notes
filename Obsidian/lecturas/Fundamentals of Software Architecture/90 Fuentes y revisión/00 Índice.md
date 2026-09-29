@@ -20,6 +20,8 @@ Este bloque conserva la procedencia del material y sus límites.
 
 5. [Ampliación capítulos 9 y 10](05%20Ampliaci%C3%B3n%20cap%C3%ADtulos%209%20y%2010.md): dos escaneos nocturnos, 35 páginas, mapa de figuras y correcciones técnicas.
 
+6. [Ampliación capítulo 11](06%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2011.md): escaneo del monolito modular, 16 páginas, mapa de figuras e imprecisiones del libro.
+
 ## PDF de referencia
 
 - [Introducción y pensamiento arquitectónico](../Materiales/01%20Introducci%C3%B3n%20y%20pensamiento%20arquitect%C3%B3nico.pdf).
@@ -31,3 +33,4 @@ Este bloque conserva la procedencia del material y sus límites.
 
 - [Fundamentos de estilos arquitectónicos](../Materiales/06%20Fundamentos%20de%20estilos%20arquitect%C3%B3nicos.pdf).
 - [Arquitectura por capas](../Materiales/07%20Arquitectura%20por%20capas.pdf).
+- [Monolito modular](../Materiales/08%20Monolito%20modular.pdf).

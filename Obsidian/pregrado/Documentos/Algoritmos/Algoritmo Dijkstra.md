@@ -1,3 +1,25 @@
+---
+title: "Algoritmo Dijkstra"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - algoritmos
+  - teoria-de-grafos
+  - caminos-minimos
+  - dijkstra
+  - pregrado
+  - epn
+aliases:
+  - Algoritmo Dijkstra
+  - Caminos Mínimos de Fuente Única
+related:
+  - "[[Algoritmo A-Estrella (A-Star)]]"
+  - "[[Arboles de Expansion Minima (Kruskal y Prim)]]"
+  - "[[Redes/OSPFv2(Open Shortest Path First)]]"
+---
+
+# Algoritmo de Dijkstra (Caminos Mínimos de Fuente Única)
+
 El algoritmo de Dijkstra se utiliza para encontrar la ruta más corta porque busca el menor costo acumulado, no solo el menor número de segmentos o saltos. Si un grafo tiene pesos en las aristas, significa que representa un costo, tiempo o distancia entre los nodos.
 
 > [!info] Explicación

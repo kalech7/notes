@@ -11,6 +11,10 @@ tags:
   - mle
   - machine-learning
   - epn
+related:
+  - "[[Probabilidad y Variables Aleatorias]]"
+  - "[[Machine Learning data mining/Validacion Cruzada|Validacion Cruzada]]"
+  - "[[Machine Learning data mining/metodo hold out|metodo hold out]]"
 ---
 
 # Teoremas Límite e Inferencia Estadística: MLE, Intervalos y Contraste de Hipótesis
@@ -22,7 +26,7 @@ tags:
 > - **El gran problema de la Ciencia de Datos:** Casi nunca puedes analizar a todos los habitantes del planeta o a todos los clics que ocurrirán en la historia. Solo tienes una pequeña **muestra** de datos del pasado. ¿Cómo sacas conclusiones generales para el futuro sin equivocarte?
 > - **Teorema Central del Límite (La magia estadística):** Sin importar qué forma loca tengan tus datos originales, si tomas suficientes muestras y promedias, ¡el promedio SIEMPRE se comportará como una curva Normal perfecta! Es lo que permite hacer predicciones confiables.
 > - **Máxima Verosimilitud (MLE):** "¿Qué parámetros hacen que los datos que acabo de observar hayan sido lo más probables posible de ocurrir?". Es el motor matemático con el que se entrena la regresión logística y casi todo el Machine Learning.
-> - **Contraste de Hipótesis y Pruebas A/B:** Si cambiaste el botón de tu aplicación a color verde y las ventas subieron $2\%$, ¿fue por el color o fue pura casualidad? El contraste de hipótesis te da la prueba matemática irrefutable con un $p$-valor.
+> - **Contraste de Hipótesis y Pruebas A/B:** Si cambiaste el botón de tu aplicación a color verde y las ventas subieron un 2%, ¿fue por el color o fue pura casualidad? El contraste de hipótesis te da la prueba matemática irrefutable con un $p$-valor.
 
 ---
 

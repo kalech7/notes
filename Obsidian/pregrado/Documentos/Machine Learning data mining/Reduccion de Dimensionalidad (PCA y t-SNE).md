@@ -36,6 +36,11 @@ La reducción de dimensionalidad es indispensable para:
 3. **Comprimir Datos y Acelerar el Entrenamiento** de modelos subsecuentes.
 4. **Eliminar Multicolinealidad** en [[modelos de regresion]] lineales y regularizar modelos controlando el trade-off de [[bias y viarianza]].
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **La sombra en la pared:** Si proyectas la sombra de una tetera 3D sobre una pared 2D, pierdes una dimensión (la profundidad), pero si iluminas la tetera desde el ángulo correcto, la silueta 2D te permite reconocer claramente la tetera con su asa y pico.
+> - **PCA (El fotógrafo que busca el mejor ángulo):** Encuentra los ejes perpendiculares (Componentes Principales) a lo largo de los cuales los datos están más esparcidos (tienen la máxima varianza). Es un método lineal rápido y matemático (basado en autovectores y SVD).
+> - **t-SNE (El organizador de fotos en un álbum 2D):** A t-SNE no le importa la varianza global; le importa que los puntos que eran "vecinos cercanos" en 100 dimensiones sigan estando juntos en tu pantalla 2D. Es perfecto para visualizar grupos (clusters) de datos médicos o imágenes, pero es lento y no sirve para transformar datos nuevos.
+
 ---
 
 ## 1. La Maldición de la Dimensionalidad (*Curse of Dimensionality*)

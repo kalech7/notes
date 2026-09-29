@@ -15,6 +15,10 @@ aliases:
   - Riesgos de Pipeline
   - Hazards
   - Pipeline MIPS
+related:
+  - "[[Jerarquia de Memoria y Memoria Cache]]"
+  - "[[Sistemas Operativos/Procesos, Hilos y Planificacion de CPU|Procesos, Hilos y Planificacion de CPU]]"
+  - "[[Multiprocesamiento/Fundamentos de Computacion Paralela y Leyes de Escalamiento|Fundamentos de Computacion Paralela y Leyes de Escalamiento]]"
 ---
 
 # Pipeline de Instrucciones y Riesgos (Hazards)
@@ -22,6 +26,18 @@ aliases:
 En las arquitecturas monobiciclo (*single-cycle*) no segmentadas, una instrucción debe completar todas sus fases operativas antes de que la siguiente pueda comenzar a ejecutarse. Dado que la frecuencia del procesador queda limitada por el camino crítico de la instrucción más lenta (típicamente `load word`, que involucra acceso a memorias y ALU), el rendimiento global resulta deficiente.
 
 El **pipelining** (o segmentación de instrucciones) es una técnica de diseño arquitectónico que explota el **paralelismo a nivel de instrucción (ILP)** superponiendo temporalmente la ejecución de múltiples instrucciones simultáneas, de forma enteramente análoga a una cadena de ensamblaje industrial automotriz.
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía de la lavandería:**
+>   - Tienes 4 cargas de ropa sucia. Cada carga requiere 4 pasos: Lavar (30 min), Secar (30 min), Doblar (30 min) y Guardar (30 min).
+>   - **Sin Pipeline:** Lavas la carga 1, esperas, la secas, la doblas, la guardas (2 horas). Luego empiezas la carga 2. En total: ¡8 horas para 4 cargas!
+>   - **Con Pipeline:** Mientras la carga 1 se está secando, ¡ya metes la carga 2 a la lavadora! Las máquinas nunca están ociosas. En 2.5 horas terminas las 4 cargas.
+> - **¿Qué es un Hazard (Riesgo)?** Un obstáculo que frena la línea de ensamblaje:
+>   - **Estructural:** Dos personas quieren usar la misma secadora a la vez.
+>   - **De Datos:** Necesitas doblar una camisa que todavía no termina de lavarse (una instrucción necesita el resultado de la anterior).
+>   - **De Control:** El usuario dice "si llueve, no laves pantalones". Tienes que esperar a ver si llueve antes de meter la siguiente ropa (un salto condicional `if/else`).
+
+---
 
 ---
 

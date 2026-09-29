@@ -33,6 +33,14 @@ Las **Redes Neuronales Recurrentes** (*Recurrent Neural Networks* o **RNN**) rep
 
 Mientras que un perceptrón multicapa o una [[Redes Neuronales Convolucionales (CNN)|CNN]] asume que todas las entradas $x_i$ son independientes e idénticamente distribuidas (supuesto i.i.d.), las RNN introducen **bucles de retroalimentación interna** que actúan como una memoria dinámica, permitiendo que la salida en el instante de tiempo $t$ esté condicionada por el historial completo de computaciones previas $\{x_1, x_2, \dots, x_t\}$.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **El problema de la falta de memoria:** Si estás viendo una película, no entiendes cada escena como si hubieras nacido hace 3 segundos; entiendes la escena porque recuerdas lo que pasó hace 20 minutos. Una red normal no tiene memoria; cada entrada borra la anterior.
+> - **RNN (La memoria de corto plazo):** Tiene un bucle donde su estado interno anterior ($h_{t-1}$) se mezcla con la nueva palabra ($x_t$). Pero sufre del **desvanecimiento del gradiente**: al multiplicar matrices 50 veces seguidas hacia atrás, el número se hace $0.000000001$ y la red olvida por completo el principio de la frase.
+> - **LSTM (La memoria de largo plazo con compuertas):** Introduce una "cinta transportadora" protegida por tres compuertas matemáticas:
+>   - **Compuerta de Olvido ($f_t$):** ¿Debería tirar a la basura información vieja irrelevante?
+>   - **Compuerta de Entrada ($i_t$):** ¿Qué información nueva vale la pena guardar en la cinta?
+>   - **Compuerta de Salida ($o_t$):** ¿Qué parte de la memoria debería influir en la decisión de este instante?
+
 ---
 
 ## 1. Modelado de Secuencias Temporales y Dependencias Dinámicas

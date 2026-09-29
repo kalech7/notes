@@ -29,6 +29,13 @@ En el diseño de sistemas distribuidos a gran escala (expandiendo los fundamento
 
 Garantizar la consistencia de los datos frente a fallos de hardware y particiones de red sin depender de un único punto de fallo (*Single Point of Failure*) requiere protocolos matemáticamente rigurosos de tolerancia a fallos por parada o recuperación (**Crash-Fault Tolerance - CFT**).
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía del grupo de amigos decidiendo qué película ver por WhatsApp:**
+>   - Tienes 5 amigos en un grupo. Algunos tienen mala conexión y sus mensajes llegan 10 minutos tarde; a otro se le apagó el celular. ¿Cómo se ponen de acuerdo de forma unánime sobre a qué cine ir sin que dos personas compren boletos para funciones distintas?
+>   - **El consenso distribuido resuelve esto:** Reglas estrictas para que la mayoría (3 de 5 amigos) vote por un líder y acuerde cada decisión paso a paso, incluso si la red falla o se caen nodos.
+> - **Paxos (El genio incomprendido de Lamport):** El primer algoritmo formal que demostró que el consenso es posible. Es matemáticamente perfecto, pero tan abstracto y difícil de entender que casi nadie en la industria lograba implementarlo sin cometer errores críticos.
+> - **Raft (El consenso diseñado para humanos):** Creado en Stanford en 2014 para hacer lo mismo que Paxos pero dividido en 3 fases intuitivas: 1) Elección de un líder con temporizadores aleatorios, 2) El líder recibe órdenes y las replica, 3) Si la mayoría dice "ok", la orden queda grabada para siempre. ¡Es el motor que mantiene con vida a Kubernetes y etcd!
+
 ---
 
 ## 1. El Problema Fundamental y el Teorema FLP

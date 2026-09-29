@@ -16,11 +16,24 @@ aliases:
   - Gramáticas Libres de Contexto
   - Parser LL(1)
   - Parser LALR(1)
+related:
+  - "[[Fases del Compilador y Analisis Lexico]]"
+  - "[[Teoria de la computacion/Teoria de Automatas y Lenguajes Formales|Teoria de Automatas y Lenguajes Formales]]"
+  - "[[calculo de atributos]]"
 ---
 
 # Análisis Sintáctico (Parsers LL, LR y Gramáticas Libres de Contexto)
 
 El **análisis sintáctico** (*parsing*) es la segunda fase del frontend de un compilador ([[Fases del Compilador y Analisis Lexico]]). Su función principal es determinar si la secuencia de tokens suministrada por el analizador léxico satisface las reglas estructurales del lenguaje de programación y construir, como subproducto, un **árbol sintáctico** que guiará el **[[calculo de atributos]]** y la posterior generación de código intermedio.
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía de la oración en español:**
+>   - El analizador léxico solo te dijo: "Aquí hay un sustantivo ('el perro'), un verbo ('come') y un adverbio ('rápidamente')".
+>   - El analizador sintáctico verifica la **gramática**: ¿Tiene sentido la estructura `Sujeto + Verbo + Predicado`? Si dices "Perro el come rápidamente", las palabras existen individualmente, ¡pero la estructura gramatical está rota!
+> - **Árbol de Análisis (Parse Tree):** Convierte el código plano en un árbol jerárquico donde la raíz es el programa entero y las hojas son las variables y operadores. Este árbol es el mapa que permite entender qué se ejecuta primero.
+> - **Top-Down (LL) vs Bottom-Up (LR):**
+>   - **LL (De arriba hacia abajo):** Empieza en la meta final ("Programa") y va prediciendo qué reglas deben coincidir mirando el siguiente token.
+>   - **LR (De abajo hacia arriba):** Va acumulando tokens en una pila hasta que reconoce una regla completa y la "reduce" al concepto superior, como armar un rompecabezas desde las piezas sueltas hacia la imagen completa.
 
 ---
 

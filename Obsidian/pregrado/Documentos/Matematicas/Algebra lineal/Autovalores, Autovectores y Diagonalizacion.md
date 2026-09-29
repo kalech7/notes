@@ -27,7 +27,7 @@ related:
 
 # Autovalores, Autovectores y Diagonalización
 
-El análisis espectral es uno de los pilares matemáticos más fructíferos de las Ciencias de la Computación. Descomponer un operador lineal en sus direcciones fundamentales de escala (autovectores) y factores de dilatación (autovalores) permite desacoplar sistemas dinámicos complejos, optimizar algoritmos de búsqueda a escala planetaria ([[Algoritmo PageRank]]), acelerar el cálculo de potencias matriciales $A^k$ en grafos y caracterizar la curvatura de funciones de pérdida en Deep Learning mediante la matriz Hessiana.
+El análisis espectral es uno de los pilares matemáticos más fructíferos de las Ciencias de la Computación. Descomponer un operador lineal en sus direcciones fundamentales de escala (autovectores) y factores de dilatación (autovalores) permite desacoplar sistemas dinámicos complejos, optimizar algoritmos de búsqueda a escala planetaria ([[Autovalores, Autovectores y Diagonalizacion#7. Aplicación Clave en CS: El Algoritmo PageRank de Google|Algoritmo PageRank]]), acelerar el cálculo de potencias matriciales $A^k$ en grafos y caracterizar la curvatura de funciones de pérdida en Deep Learning mediante la matriz Hessiana.
 
 > [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
 > - **La intuición física:** Imagina que tienes una tela elástica estampada. Si la agarras de los extremos y la estiras en diagonal, casi todos los dibujos de la tela cambian de tamaño Y giran en nuevas direcciones.

@@ -1,6 +1,31 @@
+---
+title: "Algoritmos Paramétricos y No Paramétricos"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - machine-learning
+  - modelos-parametricos
+  - modelos-no-parametricos
+  - teoria-de-aprendizaje
+  - pregrado
+  - epn
+aliases:
+  - algoritmos parametricos y no parametricos
+  - Modelos Paramétricos y No Paramétricos
+related:
+  - "[[Ajuste de modelos]]"
+  - "[[bias y viarianza]]"
+  - "[[modelos de regresion]]"
+  - "[[K-Nearest Neighbors (KNN)]]"
+---
+
 # Algoritmos Paramétricos y No Paramétricos en Machine Learning
 
 En el aprendizaje automático, la distinción fundamental entre **algoritmos paramétricos** y **no paramétricos** radica en la naturaleza de los supuestos impuestos sobre la función objetivo subyacente $f(X)$ y en cómo la complejidad del modelo escala respecto al tamaño del conjunto de entrenamiento $N$.
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Modelo Paramétrico (El molde fijo):** Imagina que tienes un molde para hacer galletas con forma de estrella. No importa cuánta masa le eches (cuántos datos tengas), la galleta siempre tendrá forma de estrella (forma fija con un número fijo de parámetros, como una línea recta $y = mx + b$). Es rápido y fácil de guardar, pero si la masa real era un dinosaurio, tu estrella fallará por completo (alto sesgo).
+> - **Modelo No Paramétrico (La plastilina libre):** No tienes molde; moldeas la figura exactamente con cada punto de masa que recibes (como KNN o Árboles de Decisión). Puede adaptarse a cualquier forma exótica del mundo real, pero a medida que tienes millones de datos, necesitas recordar cada uno de ellos y la memoria/cálculo explota (alta varianza).
 
 ---
 

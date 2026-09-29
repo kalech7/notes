@@ -10,6 +10,10 @@ tags:
   - estadistica
   - ciencias-computacion
   - epn
+related:
+  - "[[Teoremas Limite e Inferencia Estadistica (MLE y Contraste de Hipotesis)]]"
+  - "[[Machine Learning data mining/modelos de regresion|modelos de regresion]]"
+  - "[[Modelos y simulacion/Simulacion por Eventos Discretos y Teoria de Colas|Simulacion por Eventos Discretos y Teoria de Colas]]"
 ---
 
 # Probabilidad y Variables Aleatorias: Fundamentos Matemáticos y Aplicaciones en Computación
@@ -155,9 +159,9 @@ Una variable aleatoria es **discreta** si su rango o imagen $R_X = X(\Omega)$ es
 
 | Distribución | Parámetros | PMF $p_X(k)$ | Soporte $R_X$ | $\mathbb{E}[X]$ | $\text{Var}(X)$ | Aplicación Primaria en Computación |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Bernoulli** | $p \in [0, 1]$ | $p^k (1-p)^{1-k}$ | $\{0, 1\}$ | $p$ | $p(1-p)$ | Bit transmitido con error, predicción binaria ([[regresion logistica]]). |
+| **Bernoulli** | $p \in [0, 1]$ | $p^k (1-p)^{1-k}$ | $\{0, 1\}$ | $p$ | $p(1-p)$ | Bit transmitido con error, predicción binaria ([[modelos de regresion|regresión logística]]). |
 | **Binomial** | $n \in \mathbb{N}, p \in [0,1]$ | $\binom{n}{k} p^k (1-p)^{n-k}$ | $\{0, 1, \dots, n\}$ | $np$ | $np(1-p)$ | Número de paquetes corrompidos en una ráfaga de $n$ tramas. |
-| **Poisson** | $\lambda > 0$ | $\frac{\lambda^k e^{-\lambda}}{k!}$ | $\{0, 1, 2, \dots\}$ | $\lambda$ | $\lambda$ | Solicitudes entrantes por segundo a un servidor web ([[teoria de colas]], modelo M/M/1). |
+| **Poisson** | $\lambda > 0$ | $\frac{\lambda^k e^{-\lambda}}{k!}$ | $\{0, 1, 2, \dots\}$ | $\lambda$ | $\lambda$ | Solicitudes entrantes por segundo a un servidor web ([[Simulacion por Eventos Discretos y Teoria de Colas|teoría de colas]], modelo M/M/1). |
 | **Geométrica** | $p \in (0, 1]$ | $(1-p)^{k-1} p$ | $\{1, 2, 3, \dots\}$ | $\frac{1}{p}$ | $\frac{1-p}{p^2}$ | Intentos de retransmisión hasta establecer sincronización TCP SYN-ACK. |
 
 > [!tip] La Distribución de Poisson como Límite de la Binomial

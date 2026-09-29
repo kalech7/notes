@@ -26,6 +26,11 @@ related:
 
 La **Teoría de la Complejidad Computacional** es la rama fundamental de la informática teórica que clasifica los problemas matemáticos y algorítmicos según el consumo intrínseco de recursos computacionales (tiempo de ejecución y memoria espacial) requeridos para resolverlos en un modelo formal de computación, típicamente la **Máquina de Turing (TM)**.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Big-O (La velocidad a escala galáctica):** No nos importa si tu código tarda 5 milisegundos en tu laptop con un arreglo de 10 elementos. Nos importa qué le pasa a tu tiempo de ejecución cuando el arreglo tiene 1,000 millones de elementos: ¿crece el tiempo en línea recta ($O(n)$), se duplica suavemente ($O(n \log n)$), o explota exponencialmente haciendo que el universo se apague antes de que termine el programa ($O(2^n)$)?
+> - **P (Los problemas 'fáciles' o tratables):** Problemas que una computadora normal puede resolver en tiempo polinomial ($O(n^k)$, como ordenar una lista o encontrar la ruta más corta).
+> - **NP (Los problemas con respuestas 'fáciles de verificar'):** Resolver un Sudoku gigante puede tomarte semanas de prueba y error, pero si alguien te entrega el Sudoku ya resuelto, puedes verificar en 5 segundos si cada fila y columna cumple las reglas. P vs NP pregunta: si verificar una solución es fácil, ¿encontrar la solución desde cero también debería ser fácil? ¡Es el problema del millón de dólares del Instituto Clay!
+
 ---
 
 ## 1. Análisis Asintótico y Notaciones Matemáticas Formales

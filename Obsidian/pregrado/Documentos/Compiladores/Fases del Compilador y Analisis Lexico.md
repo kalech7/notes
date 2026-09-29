@@ -15,11 +15,23 @@ aliases:
   - Lexer
   - Scanner
   - Construcción de Thompson
+related:
+  - "[[Analisis Sintactico (Parsers LL, LR y Gramaticas Libres de Contexto)]]"
+  - "[[Teoria de la computacion/Teoria de Automatas y Lenguajes Formales|Teoria de Automatas y Lenguajes Formales]]"
+  - "[[calculo de atributos]]"
 ---
 
 # Fases del Compilador y Análisis Léxico
 
 Un **compilador** es un sistema de software de alta complejidad que traduce un programa expresado en un lenguaje fuente de alto nivel (orientado a la legibilidad y abstracción humana) a un lenguaje destino equivalente de bajo nivel (código ensamblador o lenguaje máquina), preservando estrictamente el significado semántico original del programa y optimizando el uso de los recursos de hardware ([[Pipeline de Instrucciones y Riesgos (Hazards)]] y [[Jerarquia de Memoria y Memoria Cache]]).
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía del traductor de un libro en chino antiguo:**
+>   - No puedes traducir todo el libro de golpe. Primero identificas los caracteres individuales y palabras (eso es el **Lexer** o escáner: reconoce "palabras válidas" o tokens).
+>   - Luego verificas si la oración sigue las reglas gramaticales (el **Parser** sintáctico).
+>   - Luego verificas si lo que dice tiene lógica (el analizador **semántico**: por ejemplo, no puedes sumar un caballo con una idea abstracta).
+>   - Finalmente, redactas la versión en español moderno optimizando palabras repetidas (el **Generador y Optimizador de Código**).
+> - **Tokens y Expresiones Regulares:** El escáner lee caracteres en bruto (`c`, `o`, `u`, `n`, `t`, ` `, `=`, ` `, `1`, `0`, `;`) y los agrupa en fichas con significado: `[IDENTIFICADOR: count]`, `[ASIGNACIÓN: =]`, `[NÚMERO_ENTERO: 10]`, `[PUNTO_Y_COMA]`. ¡Descarta espacios en blanco y comentarios para hacerle la vida fácil al parser!
 
 ---
 

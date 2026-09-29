@@ -31,6 +31,13 @@ El **Aprendizaje por Refuerzo** (*Reinforcement Learning* o **RL**) constituye, 
 
 A diferencia del aprendizaje supervisado —donde el modelo aprende de un supervisor externo que proporciona etiquetas de verdad fundamental (*ground truth*)—, en el RL un **agente autónomo** aprende a tomar secuencias de decisiones óptimas mediante un proceso dinámico de **ensayo y error**, interactuando continuamente con un entorno estocástico para maximizar una señal escalar acumulada de **recompensa** (*reward*).
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía de enseñarle a un cachorro a dar la pata:**
+>   - No puedes darle al perro un libro de texto de anatomía canina ni mostrarle 10,000 fotos etiquetadas (no hay datos supervisados).
+>   - Lo que haces es darle una galleta cada vez que por casualidad levanta la pata (**recompensa positiva $+1$**), y no darle nada o decirle "no" si muerde el mueble (**recompensa negativa $-1$**). Tras 100 intentos, el cachorro aprende la secuencia exacta de acciones para ganar la mayor cantidad de galletas posibles.
+> - **Q-Learning (La tabla de sabiduría):** El agente guarda una tabla donde cada celda dice: "Si estás en el estado $s$ (ej. frente a un precipicio) y haces la acción $a$ (saltar), tu puntuación esperada de felicidad futura es $Q(s, a) = -500$". ¡El agente siempre elegirá la acción con la $Q$ más alta!
+> - **El dilema Exploración vs Explotación:** ¿Vas siempre a tu restaurante favorito de siempre (explotación) o pruebas un restaurante nuevo que podría ser el mejor de tu vida o una pérdida de dinero (exploración)?
+
 ---
 
 ## 1. Fundamentos del Paradigma (Sutton & Barto)

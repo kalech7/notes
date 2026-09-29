@@ -11,6 +11,10 @@ tags:
   - simulacion-fisica
   - python
   - epn
+related:
+  - "[[Metodos Numericos para Ecuaciones No Lineales e Interpolacion]]"
+  - "[[Matematicas/Ecuaciones diferenciales/EDO de Primer Orden y Metodos de Resolucion|EDO de Primer Orden y Metodos de Resolucion]]"
+  - "[[Calculo Integral y Metodos de Integracion]]"
 ---
 
 # Métodos Numéricos para Integración y Ecuaciones Diferenciales Ordinarias (EDO)

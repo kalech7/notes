@@ -28,6 +28,13 @@ related:
 
 El **Desarrollo Guiado por Pruebas (Test-Driven Development - TDD)** es una disciplina de diseño y desarrollo de software popularizada por **Kent Beck en 2002** como una de las prácticas centrales de la metodología ágil [[XP (eXtremme programming)]]. Contrario a la intuición tradicional, **TDD no es un proceso de aseguramiento de calidad (QA) posterior, sino una técnica de diseño arquitectónico**, donde los requerimientos y la estructura del código son guiados y descubiertos a través de la especificación anticipada de pruebas automatizadas (complementando los fundamentos de [[Testing automatizado]] y [[tecnicas pruebas]]).
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **El dilema de la casa sin planos ni pruebas:** El programador novato escribe 500 líneas de código de corrido, le da a "Run", sale una pantalla roja con 14 errores y pasa 6 horas tratando de adivinar cuál de las 500 líneas causó el fallo.
+> - **La filosofía Red - Green - Refactor:**
+>   - **1. Rojo (Red):** Escribe una prueba minúscula para una función que NI SIQUIERA EXISTE todavía. Dale a ejecutar. La prueba fallará en rojo (obvio, la función no existe). Esto te garantiza que la prueba realmente está evaluando algo.
+>   - **2. Verde (Green):** Escribe el código más tonto, mínimo y descarado posible (¡incluso retornando un número hardcodeado!) solo para que la prueba se ponga verde.
+>   - **3. Refactorizar (Refactor):** Ahora que tienes una red de seguridad que te avisa si rompes algo, limpia el código, crea clases elegantes y elimina duplicación. Si la prueba sigue en verde, ¡tu código es perfecto!
+
 ---
 
 ## 1. El Ciclo Canónico Red - Green - Refactor

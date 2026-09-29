@@ -22,6 +22,15 @@ El algoritmo **A\*** (Hart, Nilsson & Raphael, 1968) es uno de los algoritmos de
 
 Extiende y optimiza el [[Algoritmo Dijkstra]] incorporando una función heurística que guía la exploración hacia el nodo objetivo, reduciendo drásticamente el espacio de búsqueda evaluado.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía de la linterna y la brújula:** Imagina que estás perdido en un laberinto en la oscuridad.
+>   - **Dijkstra** explora como una onda de agua que crece en círculos concéntricos hacia todas las direcciones posibles (gasta cómputo explorando hacia atrás y hacia los costados).
+>   - **A\*** hace lo mismo que Dijkstra, pero además lleva una brújula que apunta hacia la salida. En lugar de explorar a ciegas, prioriza los caminos que avanzan directamente hacia la meta mediante una heurística estimada ($h(n)$).
+> - **La fórmula mágica $f(n) = g(n) + h(n)$:**
+>   - $g(n)$ es el costo real acumulado que ya pagaste para llegar desde el inicio hasta el nodo actual.
+>   - $h(n)$ es tu estimación educada de cuánto falta para llegar a la meta.
+>   - $f(n)$ es el costo total estimado del camino completo. A\* siempre expande el nodo con el menor $f(n)$ posible.
+
 ---
 
 ## 1. Definición Formal y Función de Evaluación

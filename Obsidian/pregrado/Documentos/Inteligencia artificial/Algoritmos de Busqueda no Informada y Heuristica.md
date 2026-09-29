@@ -14,6 +14,11 @@ aliases:
   - Búsqueda Heurística
   - BFS DFS UCS A*
   - Espacio de Estados
+related:
+  - "[[Agentes Inteligentes y Entornos de Tarea (PEAS)]]"
+  - "[[Busqueda con Adversarios (Minimax y Poda Alfa-Beta)]]"
+  - "[[Algoritmos/Algoritmo A-Estrella (A-Star)|Algoritmo A-Estrella (A-Star)]]"
+  - "[[Algoritmos/Algoritmo Dijkstra|Algoritmo Dijkstra]]"
 ---
 
 # Algoritmos de Búsqueda no Informada y Heurística
@@ -21,6 +26,14 @@ aliases:
 En el marco de la [[conducta racional]] y el diseño de [[Agentes Inteligentes y Entornos de Tarea (PEAS)|agentes basados en objetivos]], un agente que no puede ejecutar una acción refleja inmediata debe formular un plan deliberativo. 
 
 La **resolución de problemas mediante búsqueda** es el paradigma clásico de la Inteligencia Artificial donde un agente explora sistemáticamente las ramificaciones de sus acciones futuras sobre un espacio de estados abstracto antes de comprometerse físicamente en el entorno.
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **El dilema de la búsqueda:** Tienes un cubo Rubik desordenado. Hay trillones de combinaciones posibles. ¿Cómo encuentras la secuencia de movimientos para armarlo sin perderte en una eternidad de intentos?
+> - **Búsquedas Ciegas (No Informadas):** No tienen idea de qué tan cerca están de la meta.
+>   - **BFS (Anchura):** Explora primero todos los caminos de 1 paso, luego todos los de 2 pasos. Garantiza encontrar el camino más corto, pero consume tanta memoria RAM que tu computadora colapsa a los 10 pasos.
+>   - **DFS (Profundidad):** Avanza por un solo camino hasta toparse con una pared. Gasta casi nada de memoria, pero puede perderse para siempre en un bucle infinito.
+>   - **IDDFS (Profundidad Iterativa):** Lo mejor de ambos mundos: hace DFS con límites crecientes de profundidad.
+> - **Búsquedas Informadas (Heurísticas):** Usan una pista ($h(n)$) para no buscar a ciegas. Si buscas una dirección en Quito, sabes que el norte te acerca a Carcelén y el sur a Quitumbe, evitando explorar caminos en la dirección contraria.
 
 ---
 

@@ -1,6 +1,6 @@
 # Fundamentals of Software Architecture · 2.ª edición
 
-Guía detallada en español basada en los siete escaneos compartidos, organizada por capítulos. Autores del libro: Mark Richards y Neal Ford. Las explicaciones, ilustraciones, diagramas y ejercicios propios están diferenciados del material de la fuente.
+Guía detallada en español basada en los ocho escaneos compartidos, organizada por capítulos. Autores del libro: Mark Richards y Neal Ford. Las explicaciones, ilustraciones, diagramas y ejercicios propios están diferenciados del material de la fuente.
 
 ## Leer por capítulos
 
@@ -14,8 +14,9 @@ Guía detallada en español basada en los siete escaneos compartidos, organizada
 8. [Pensamiento basado en componentes](08%20Pensamiento%20basado%20en%20componentes/00%20%C3%8Dndice.md)
 9. [Fundamentos de estilos arquitectónicos](09%20Fundamentos%20de%20estilos%20arquitect%C3%B3nicos/00%20%C3%8Dndice.md)
 10. [Arquitectura por capas](10%20Arquitectura%20por%20capas/00%20%C3%8Dndice.md)
+11. [Monolito modular](11%20Monolito%20modular/00%20%C3%8Dndice.md)
 
-Cada enlace abre el índice de una carpeta de capítulo, con notas numeradas por tema y navegación anterior/siguiente. Los capítulos 1–5 contienen **37 notas de estudio** y los capítulos 6–8 añaden **25 notas temáticas y 31 gráficos PNG**, además de sus índices y un laboratorio; cada capítulo termina con preguntas y un ejercicio resuelto. Los capítulos 9–10 añaden 17 notas temáticas, dos índices, ocho PNG y un atlas con laboratorio transversal.
+Cada enlace abre el índice de una carpeta de capítulo, con notas numeradas por tema y navegación anterior/siguiente. Los capítulos 1–5 contienen **37 notas de estudio** y los capítulos 6–8 añaden **25 notas temáticas y 31 gráficos PNG**, además de sus índices y un laboratorio; cada capítulo termina con preguntas y un ejercicio resuelto. Los capítulos 9–10 añaden 17 notas temáticas, dos índices, ocho PNG y un atlas con laboratorio transversal. El capítulo 11 añade nueve notas temáticas, un índice, ocho PNG en `Recursos visuales/Capítulo 11` y ocho diagramas Mermaid.
 
 Cada capítulo incluye imágenes PNG visibles directamente en GitHub y Obsidian, explicaciones de sus mecanismos y límites, preguntas y un ejercicio resuelto. Los diagramas iniciales conservan `.mmd` y `.svg` en `Recursos visuales/Diagramas`. Los nuevos gráficos, inspirados en la estructura de las figuras del libro y explicados paso a paso, conservan generadores editables en `Recursos visuales/Capítulos 6 a 8`.
 
@@ -25,7 +26,7 @@ La ilustración sirve para diferenciar modularidad y despliegue: contar cajas o 
 
 ## Estructura de la carpeta
 
-- **01–10:** una carpeta por capítulo, cada una con su propio índice y notas temáticas.
+- **01–11:** una carpeta por capítulo, cada una con su propio índice y notas temáticas.
 - **06 Apoyo y repaso:** atlas visual, laboratorios y glosario. Se conserva el nombre histórico; es distinta de **06 Medición y gobierno**.
 - **90 Fuentes y revisión:** cobertura, procedencia y prompts.
 - **Materiales** y **Recursos visuales:** PDF, imágenes y fuentes editables.
@@ -46,6 +47,7 @@ Las fórmulas permanecen en los archivos Markdown, con notación LaTeX, variable
 
 - [Atlas y práctica de estilos y capas](06%20Apoyo%20y%20repaso/06%20Atlas%20y%20pr%C3%A1ctica%20de%20estilos%20y%20capas.md)
 - [Cobertura y precisiones de los capítulos 9–10](90%20Fuentes%20y%20revisi%C3%B3n/05%20Ampliaci%C3%B3n%20cap%C3%ADtulos%209%20y%2010.md)
+- [Cobertura y precisiones del capítulo 11](90%20Fuentes%20y%20revisi%C3%B3n/06%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2011.md)
 
 ## Fuentes locales
 
@@ -57,5 +59,6 @@ Las fórmulas permanecen en los archivos Markdown, con notación LaTeX, variable
 
 - [Fundamentos de estilos: 23 páginas](Materiales/06%20Fundamentos%20de%20estilos%20arquitect%C3%B3nicos.pdf)
 - [Arquitectura por capas: 12 páginas](Materiales/07%20Arquitectura%20por%20capas.pdf)
+- [Monolito modular: 16 páginas](Materiales/08%20Monolito%20modular.pdf)
 
 La colección reúne 155 páginas de PDF: 73 iniciales, 47 en la primera ampliación y 35 en la segunda (incluida una portada de la Parte II sin número impreso). El material no contiene el libro completo; los huecos de numeración impresa se detallan en la nota de cobertura. Los enlaces internos propios de Obsidian están pensados para navegar dentro de la aplicación; este README ofrece navegación equivalente con enlaces de Markdown para GitHub.

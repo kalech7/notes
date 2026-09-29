@@ -20,8 +20,8 @@ related:
   - "[[Programacion en Kotlin para Android (Desde Cero)]]"
   - "[[Arquitectura Android Moderna (Clean Architecture, MVVM y Ciclo de Vida)]]"
   - "[[Fundamentos Esenciales de Desarrollo y Distribucion para iOS (Swift y SwiftUI)]]"
-  - "[[seguridad informatica/Seguridad en redes]]"
-  - "[[tecnologias de seguridad/Criptografia simetrica]]"
+  - "[[tecnologias de seguridad/Firewalls y IDS-IPS]]"
+  - "[[tecnologias de seguridad/Criptografía simétrica]]"
 ---
 
 # Distribución, Empaquetado, Optimización y Seguridad en el Ecosistema Android

@@ -24,6 +24,12 @@ El problema del ordenamiento consiste en permutar una secuencia de $n$ elementos
 
 Dentro de los algoritmos de ordenamiento basados en comparaciones, la trinidad fundamental de complejidad asintótica $\mathcal{O}(n \log n)$ la componen **Quicksort**, **Mergesort** y **Heapsort**. Cada uno ilustra un paradigma algorítmico y trade-offs de ingeniería distintos (tiempo, memoria auxiliar, estabilidad y jerarquía de memoria caché).
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **¿Por qué no basta con Bubble Sort ($O(n^2)$)?** Si tienes 1 millón de registros, un algoritmo de $O(n^2)$ tarda unos 11 días de CPU. Un algoritmo de $O(n \log n)$ tarda apenas 0.02 segundos.
+> - **Quicksort (El rebelde veloz in-place):** Elige un pivote y manda los pequeños a la izquierda y los grandes a la derecha. En promedio vuela porque aprovecha al máximo la memoria caché de la CPU, pero si tienes mala suerte con el pivote puede degradarse a $O(n^2)$.
+> - **Mergesort (El disciplinado y confiable):** Corta el arreglo por la mitad recursivamente hasta que quedan elementos sueltos, y luego los une ordenadamente. Tarda EXACTAMENTE $O(n \log n)$ siempre y preserva el orden relativo de elementos iguales (es estable), pero necesita el doble de memoria RAM auxiliar ($O(n)$).
+> - **Heapsort (El ahorrador estricto):** Convierte el arreglo en un montículo binario (árbol donde el padre siempre es mayor que los hijos). Es determinista $O(n \log n)$ y no gasta ni un solo byte de memoria extra ($O(1)$), pero da saltos bruscos en memoria que hacen sufrir a la memoria caché.
+
 ---
 
 ## 1. Teorema del Límite Inferior para Ordenamiento por Comparación

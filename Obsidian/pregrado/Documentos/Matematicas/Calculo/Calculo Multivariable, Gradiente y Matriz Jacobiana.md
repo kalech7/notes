@@ -17,6 +17,10 @@ aliases:
   - Matriz Jacobiana
   - Diferenciabilidad Multivariable
   - Regla de la Cadena Matricial
+related:
+  - "[[Calculo Diferencial y Teoremas Fundamentales]]"
+  - "[[Matriz Hessiana, Convexidad y Optimizacion Multivariable]]"
+  - "[[Machine Learning data mining/Gradient Descent|Gradient Descent]]"
 ---
 
 # Cálculo Multivariable, Gradiente y Matriz Jacobiana
@@ -27,8 +31,7 @@ Mientras que el cálculo univariable opera sobre líneas rectas, el cálculo mul
 
 > [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
 > - **De una dimensión a muchas dimensiones:** En cálculo básico tenías funciones simples $y = f(x)$ (el precio de una casa según sus metros cuadrados). Pero en la vida real, el precio depende de metros cuadrados, número de cuartos, distancia al centro, crimen de la zona, etc. Ahora la entrada es un vector $\mathbf{x} = (x_1, x_2, \dots, x_n)$.
-> - **¿Qué es el Gradiente ($
-abla f$)?** Imagina que estás vendado de los ojos en una ladera empinada. Das un paso en círculo con tu pie para palpar el suelo: la dirección hacia donde el suelo sube con la mayor pendiente posible es el **Gradiente**.
+> - **¿Qué es el Gradiente ($\nabla f$)?** Imagina que estás vendado de los ojos en una ladera empinada. Das un paso en círculo con tu pie para palpar el suelo: la dirección hacia donde el suelo sube con la mayor pendiente posible es el **Gradiente**.
 > - **¿Por qué el Gradiente mueve el mundo de la IA?**
 >   - Si quieres encontrar el mínimo error en una red neuronal (entrenarla), das un paso en la dirección opuesta al gradiente (**Descenso de Gradiente**). Toda la Inteligencia Artificial moderna funciona siguiendo el gradiente de una función de pérdida.
 > - **¿Qué es la Matriz Jacobiana?** Si tienes una función que toma varios números y escupe varios números (por ejemplo, los ángulos de los motores de un brazo robótico y la posición 3D de su pinza), la Jacobiana te dice cómo se mueve la pinza ante el más mínimo movimiento de cada motor.

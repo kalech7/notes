@@ -17,6 +17,10 @@ aliases:
   - Condiciones KKT
   - Dualidad de Lagrange
   - Karush-Kuhn-Tucker
+related:
+  - "[[Matriz Hessiana, Convexidad y Optimizacion Multivariable]]"
+  - "[[Machine Learning data mining/Support Vector Machines (SVM)|Support Vector Machines (SVM)]]"
+  - "[[Calculo Multivariable, Gradiente y Matriz Jacobiana]]"
 ---
 
 # Optimización con Restricciones y Multiplicadores de Lagrange
@@ -26,8 +30,8 @@ En la carrera de Ingeniería en Ciencias de la Computación de la Escuela Polit�
 Esta nota formaliza la teoría matemática de la **optimización no lineal bajo restricciones**, transitando desde el método geométrico clásico de Joseph-Louis Lagrange para igualdades, hasta las condiciones necesarias y suficientes de Karush-Kuhn-Tucker (KKT), la teoría de la dualidad y su aplicación angular en [[Support Vector Machines (SVM)]].
 
 > [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
-> - **El dilema de la vida real:** Quieres comprar la mayor cantidad de cosas ricas en el supermercado (maximizar satisfacción), pero solo tienes $30 en el bolsillo (restricción). Casi ningún problema de ingeniería es libre; siempre hay presupuestos, límites de CPU, memoria RAM máxima o leyes físicas.
-> - **Multiplicadores de Lagrange (Restricciones de Igualdad):** En lugar de adivinar, Lagrange descubrió que en el punto óptimo, la curva de lo que quieres maximizar debe ser **tangente** a la curva de tu límite. El multiplicador $\lambda$ te dice exactamente "cuánto mejoraría tu felicidad si te dieran $1 dólar más de presupuesto" (precio sombra).
+> - **El dilema de la vida real:** Quieres comprar la mayor cantidad de cosas ricas en el supermercado (maximizar satisfacción), pero solo tienes 30 dólares en el bolsillo (restricción). Casi ningún problema de ingeniería es libre; siempre hay presupuestos, límites de CPU, memoria RAM máxima o leyes físicas.
+> - **Multiplicadores de Lagrange (Restricciones de Igualdad):** En lugar de adivinar, Lagrange descubrió que en el punto óptimo, la curva de lo que quieres maximizar debe ser **tangente** a la curva de tu límite. El multiplicador $\lambda$ te dice exactamente "cuánto mejoraría tu felicidad si te dieran 1 dólar más de presupuesto" (precio sombra).
 > - **Condiciones KKT (Desigualdades):** Generaliza Lagrange para límites del tipo "gastar $\le 30$". Te dice formalmente si tu límite te está frenando o si te sobró recurso.
 > - **Aplicación estrella en CS:** En **Support Vector Machines (SVM)**, las condiciones KKT son las que descubren cuáles son los "vectores de soporte" que sostienen la frontera de decisión para clasificar datos.
 

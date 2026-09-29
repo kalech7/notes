@@ -14,6 +14,10 @@ aliases:
   - Memoria Caché
   - Cache Mapping
   - AMAT
+related:
+  - "[[Pipeline de Instrucciones y Riesgos (Hazards)]]"
+  - "[[Sistemas Operativos/Gestion de Memoria y Memoria Virtual|Gestion de Memoria y Memoria Virtual]]"
+  - "[[Funcionamiento del Sistema de Memoria]]"
 ---
 
 # Jerarquía de Memoria y Memoria Caché
@@ -21,6 +25,14 @@ aliases:
 Como se introdujo fundamentalmente en [[Funcionamiento del Sistema de Memoria]] y se exploró conceptualmente en [[Principios de funcionamiento]], el diseño de la memoria de un computador se enfrenta a una limitación física y económica ineludible: **las tecnologías de memoria más veloces son prohibitivamente caras y de baja densidad por unidad de área, mientras que las de mayor capacidad son exponencialmente más lentas**.
 
 Para resolver esta disparidad (la llamada *Memory Wall* o brecha de velocidad procesador-memoria), los sistemas modernos implementan una **jerarquía piramidal de memoria**, orquestada por hardware y respaldada por el principio físico rector de la **localidad de referencia**.
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía del estudiante estudiando en la biblioteca:**
+>   - **Registros de CPU:** Lo que tienes en tus manos y cabeza en este milisegundo (velocidad instantánea, pero solo puedes sostener 2 cosas).
+>   - **Caché L1/L2/L3:** Tu escritorio de estudio. Puedes colocar 4 libros y cuadernos abiertos. Mirar el escritorio toma 2 segundos.
+>   - **Memoria Principal (RAM):** El estante de la biblioteca a 20 metros. Si necesitas un libro que no está en tu escritorio, caminas 30 segundos a buscarlo.
+>   - **Disco SSD / Almacenamiento:** El almacén central subterráneo de la ciudad. Traer un libro de allá toma 3 días.
+> - **Localidad Temporal y Espacial:** Si usaste una variable hace un segundo, es casi seguro que la volverás a usar en el siguiente bucle (**temporal**); si leíste el elemento `arr[0]`, casi seguro leerás `arr[1]` a continuación (**espacial**). La caché anticipa esto cargando bloques contiguos enteros.
 
 ---
 

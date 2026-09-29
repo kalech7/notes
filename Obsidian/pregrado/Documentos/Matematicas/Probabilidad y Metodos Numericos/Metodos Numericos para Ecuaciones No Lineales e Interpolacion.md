@@ -10,6 +10,10 @@ tags:
   - computacion-cientifica
   - python
   - epn
+related:
+  - "[[Metodos Numericos para Integracion y Ecuaciones Diferenciales Ordinarias (EDO)]]"
+  - "[[Calculo Diferencial y Teoremas Fundamentales]]"
+  - "[[Probabilidad y Variables Aleatorias]]"
 ---
 
 # Métodos Numéricos para Ecuaciones No Lineales e Interpolación Polinómica

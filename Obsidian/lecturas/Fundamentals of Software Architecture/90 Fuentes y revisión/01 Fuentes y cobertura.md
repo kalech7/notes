@@ -11,7 +11,7 @@ tags:
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Fuentes y revisión](00%20%C3%8Dndice.md)
 
 > [!info] Actualización del 28 de septiembre de 2026
-> Esta nota conserva el inventario y la revisión iniciales de los capítulos 1–5. La colección ahora abarca material de los capítulos 1–10 y 155 páginas de PDF. La primera ampliación añadió 47 folios, documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|Ampliación capítulos 6 a 8]]. La segunda añade otros 35 folios: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/05 Ampliación capítulos 9 y 10|Ampliación capítulos 9 y 10]].
+> Esta nota conserva el inventario y la revisión iniciales de los capítulos 1–5. La colección ahora abarca material de los capítulos 1–11 y 171 páginas de PDF. La primera ampliación añadió 47 folios, documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|Ampliación capítulos 6 a 8]]. La segunda añade otros 35 folios: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/05 Ampliación capítulos 9 y 10|Ampliación capítulos 9 y 10]].
 
 ## Edición y materiales
 

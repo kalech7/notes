@@ -27,6 +27,11 @@ Dado un grafo no dirigido y conexo $G = (V, E)$ donde cada arista $e = (u, v) \i
 
 $$w(T) = \sum_{e \in E_T} w(e)$$
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía del tendido eléctrico o fibra óptica:** Tienes 10 ciudades y quieres conectarlas todas para que fluya la electricidad o el internet. Cablear entre ciudades cuesta millones de dólares. ¿Cuál es la forma más barata de asegurar que todas las ciudades queden comunicadas sin gastar en cables redundantes que formen circuitos cerrados inútiles? ¡Eso es exactamente un MST!
+> - **Kruskal (El ahorrador global centrado en aristas):** Ordena todos los cables posibles de menor a mayor precio. Toma el más barato, luego el segundo más barato, y así sucesivamente; si un cable va a cerrar un circuito circular inútil, lo descarta usando *Union-Find*.
+> - **Prim (La mancha de aceite centrada en vértices):** Empieza en una sola ciudad y va conectando a su red la ciudad vecina más cercana que todavía esté desconectada usando una cola de prioridad (*Min-Heap*). Ambos llegan al mismo costo mínimo óptimo.
+
 ### Propiedades Topológicas Fundamentales
 1. **Número de aristas:** Si $|V| = n$, todo árbol generador contiene exactamente $|E_T| = n - 1$ aristas.
 2. **Aciclicidad y Conexidad:** La eliminación de cualquier arista de $T$ desconecta el grafo en dos componentes; la adición de cualquier arista $e \notin E_T$ crea un ciclo simple único.

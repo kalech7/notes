@@ -17,6 +17,10 @@ aliases:
   - Clasificación de Puntos Críticos
   - Optimización de Segundo Orden
   - Método de Newton Multivariable
+related:
+  - "[[Calculo Multivariable, Gradiente y Matriz Jacobiana]]"
+  - "[[Optimizacion con Restricciones y Multiplicadores de Lagrange]]"
+  - "[[Machine Learning data mining/Gradient Descent|Gradient Descent]]"
 ---
 
 # Matriz Hessiana, Convexidad y Optimización Multivariable

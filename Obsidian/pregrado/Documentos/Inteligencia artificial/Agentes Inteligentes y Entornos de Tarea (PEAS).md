@@ -13,6 +13,11 @@ aliases:
   - Marco PEAS
   - Arquitecturas de Agentes
   - Entornos de Tarea
+related:
+  - "[[Algoritmos de Busqueda no Informada y Heuristica]]"
+  - "[[Busqueda con Adversarios (Minimax y Poda Alfa-Beta)]]"
+  - "[[conducta racional]]"
+  - "[[problemas en IA]]"
 ---
 
 # Agentes Inteligentes y Entornos de Tarea (PEAS)
@@ -20,6 +25,14 @@ aliases:
 En la teoría moderna de Inteligencia Artificial (formalizada de manera canónica por Stuart Russell y Peter Norvig), el concepto unificador de la disciplina no es la emulación del pensamiento humano, sino el diseño e implementación de **agentes racionales**. 
 
 Esta perspectiva define a la IA como el estudio de sistemas computacionales que perciben su entorno a través de sensores y ejecutan acciones mediante actuadores para maximizar una medida cuantificable de éxito.
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **¿Qué es un agente?** Un programa que no solo espera pasivamente a que le des órdenes, sino que tiene "ojos" (sensores: cámaras, teclado, APIs), un "cerebro" (un algoritmo que decide) y "manos" (actuadores: motores, enviar un paquete de red, mostrar una alerta).
+> - **El acrónimo PEAS (Tu lista de diseño obligatoria):**
+>   - **P (Performance / Rendimiento):** ¿Cómo calificas al agente con nota de 0 a 10? (ej. en un carro autónomo: llegar rápido, no chocar, gastar poca gasolina).
+>   - **E (Environment / Entorno):** ¿Dónde vive el agente? (calles con peatones impredecibles vs un tablero de ajedrez cuadrado).
+>   - **A (Actuators / Actuadores):** ¿Con qué herramientas interactúa? (volante, frenos, acelerador).
+>   - **S (Sensors / Sensores):** ¿Por dónde se entera del mundo? (cámara LiDAR, velocímetro, GPS).
 
 ---
 

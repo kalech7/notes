@@ -22,6 +22,15 @@ related:
 
 La **Programación Dinámica (PD)** es un paradigma de diseño algorítmico y optimización matemática introducido por **Richard Bellman** en la década de 1950. Se aplica a problemas de optimización combinatoria y toma de decisiones secuenciales donde una solución recursiva ingenua incurre en una explosión combinatoria exponencial debido al recálculo repetitivo de los mismos subproblemas.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía de recordar en un papel:**
+>   - Si alguien te pregunta: "¿Cuánto es $1 + 1 + 1 + 1$?", cuentas y respondes "4".
+>   - Si de inmediato agrega "$+ 1$" al final, ¿vuelves a sumar todos los unos desde cero? ¡No! Simplemente tomas el resultado anterior ("4") y le sumas 1 para obtener "5".
+>   - **Eso es Programación Dinámica:** Guardar en memoria los resultados de subproblemas ya resueltos (en una tabla o arreglo) para no volver a calcularlos jamás.
+> - **Las dos formas de resolver:**
+>   - **Top-Down (Memoización):** Piensas recursivamente desde el problema grande hacia abajo, pero guardas cada respuesta en un diccionario caché.
+>   - **Bottom-Up (Tabulación):** Empiezas por los casos base más pequeños (la base de una tabla) y vas llenando la tabla paso a paso hacia arriba con bucles simples.
+
 ---
 
 ## 1. Fundamentos Matemáticos: El Principio de Optimalidad de Bellman

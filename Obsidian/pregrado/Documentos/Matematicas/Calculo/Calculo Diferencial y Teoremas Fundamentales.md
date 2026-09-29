@@ -16,6 +16,10 @@ aliases:
   - Epsilon-Delta
   - Teorema del Valor Medio
   - Series de Taylor
+related:
+  - "[[Calculo Integral y Metodos de Integracion]]"
+  - "[[Calculo Multivariable, Gradiente y Matriz Jacobiana]]"
+  - "[[Matriz Hessiana, Convexidad y Optimizacion Multivariable]]"
 ---
 
 # Cálculo Diferencial y Teoremas Fundamentales

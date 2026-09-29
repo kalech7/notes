@@ -38,6 +38,15 @@ Durante casi cuatro décadas, los Sistemas de Gestión de Bases de Datos Relacio
 
 El movimiento **NoSQL** (*Not Only SQL*), cimentado en los papers fundacionales de **Google Bigtable (2006)** y **Amazon Dynamo (2007)**, rompió esta hegemonía, introduciendo modelos de datos no relacionales diseñados desde su origen para la computación distribuida y la alta disponibilidad.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **¿Por qué SQL ya no basta para todo?**
+>   - Las bases de datos relacionales (Postgres, MySQL) son como cajas fuertes bancarias con candados de titanio (transacciones ACID estrictas). Son perfectas para transferir dinero, pero si intentas guardar 5 millones de tuits por segundo de todo el mundo en un solo servidor, la caja fuerte explota por sobrecalentamiento.
+> - **Las 4 Familias NoSQL (La herramienta adecuada para cada problema):**
+>   - **1. Clave-Valor (Redis):** Una tabla hash ultrarrápida en memoria RAM. Acceso en tiempo constante $O(1)$ para carritos de compras o sesiones de usuario.
+>   - **2. Documental (MongoDB):** Guarda documentos JSON flexibles. Si un producto tiene 3 colores y otro tiene 10 especificaciones técnicas distintas, no tienes que crear 8 tablas intermedias con `JOIN`.
+>   - **3. Columna Ancha (Cassandra):** Diseñada para escribir terabytes de datos continuos (sensores IoT, historial de chats) sin caerse jamás.
+>   - **4. Grafos (Neo4j):** Si quieres saber "¿Quiénes son los amigos de los amigos de mis amigos que compraron pizza ayer?", en SQL tendrías que hacer 12 `JOIN` lentísimos; en una base de datos de grafos simplemente sigues las flechas en tiempo constante.
+
 ---
 
 ## 1. Fundamentos Teóricos: Teoremas CAP, PACELC y el Modelo BASE

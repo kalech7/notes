@@ -13,6 +13,11 @@ aliases:
   - Poda Alfa-Beta
   - Alpha-Beta Pruning
   - Búsqueda con Oponentes
+related:
+  - "[[Agentes Inteligentes y Entornos de Tarea (PEAS)]]"
+  - "[[Algoritmos de Busqueda no Informada y Heuristica]]"
+  - "[[conducta racional]]"
+  - "[[problemas en IA]]"
 ---
 
 # Búsqueda con Adversarios (Minimax y Poda Alfa-Beta)
@@ -20,6 +25,15 @@ aliases:
 En los problemas de búsqueda clásicos ([[Algoritmos de Busqueda no Informada y Heuristica]]), el agente operaba en un entorno unipersonal donde él tenía el control absoluto de las transiciones. 
 
 En los **entornos multiagente competitivos** (definidos en [[Agentes Inteligentes y Entornos de Tarea (PEAS)#3.6 Agente Único (Single-Agent) vs. Multiagente]]), el agente debe interactuar con otro ente racional cuyos objetivos son diametralmente opuestos a los suyos. En la teoría de la [[conducta racional]], esto se modela como un **juego de dos jugadores, por turnos, determinista, de suma cero y con información perfecta** (como el Ajedrez, las Damas, el Conecta 4 o el Go).
+
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **Analogía de jugar Ajedrez contra un maestro:**
+>   - No puedes planear tu estrategia diciendo: "Ojalá mi rival mueva este peón tonto para que yo gane". Un jugador inteligente siempre asumirá que su oponente jugará el movimiento más letal posible.
+> - **Minimax:**
+>   - Tú eres **MAX**: quieres maximizar tu puntuación (+100 = ganas).
+>   - Tu oponente es **MIN**: quiere minimizar tu puntuación (-100 = tú pierdes).
+>   - En cada turno, el algoritmo simula todas las jugadas futuras y elige el movimiento que te garantice el mejor resultado en el peor escenario posible.
+> - **Poda Alfa-Beta (El arte de no perder tiempo):** Si ya encontraste una jugada que te asegura al menos un empate, y al explorar otra rama ves que el rival tiene una respuesta que te hace jaque mate... ¡deja de analizar el resto de esa rama inmediatamente! (cortas la rama inútil y duplicas la profundidad de cálculo).
 
 > [!info] Conexión con [[problemas en IA]]: Irreversibilidad y Predicción
 > Tal como se analizó en [[problemas en IA#Características básicas de los problemas]]:

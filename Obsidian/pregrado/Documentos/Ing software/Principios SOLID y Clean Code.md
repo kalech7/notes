@@ -29,6 +29,15 @@ Los **Principios SOLID** y la filosofía de **Clean Code** constituyen la base t
 3. **Inmovilidad:** Imposibilidad de reutilizar componentes de software en otros proyectos o contextos debido a su estrecho acoplamiento.
 4. **Viscosidad:** Resistencia del diseño a ser extendido de forma limpia, tentando al desarrollador a recurrir a "parches" rápidos que empeoran la [[Deuda técnica]].
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **El software no se escribe una vez y se olvida:** El 80% de la vida de un sistema de software se gasta leyéndolo y modificándolo para nuevos requerimientos del cliente. Escribir código "que solo funcione para la entrega de mañana" pero que nadie entienda es crear una bomba de tiempo.
+> - **La navaja suiza de SOLID:**
+>   - **S (Responsabilidad Única):** Un empleado no puede ser al mismo tiempo el cocinero, el cajero, el contador y el chofer del restaurante. Cada clase debe tener un solo trabajo bien hecho.
+>   - **O (Abierto/Cerrado):** Tu celular viene con un puerto USB para conectarle audífonos o cargador (abierto a extensión) sin tener que abrir el celular con un destornillador y resoldar la placa madre (cerrado a modificación).
+>   - **L (Sustitución de Liskov):** Si parece un pato y hace "cuac", pero necesita baterías... probablemente no deberías heredar de la clase `PatoReal` o el programa se romperá cuando intente nadar en el lago.
+>   - **I (Segregación de Interfaces):** No obligues a una impresora básica a implementar una interfaz monstruosa con botones de "Escanear en 4K" o "Enviar Fax".
+>   - **D (Inversión de Dependencias):** Tu lámpara no se suelda directamente a los cables de alta tensión de la pared; se conecta a un enchufe estándar (una abstracción).
+
 ---
 
 ## 1. Los 5 Principios SOLID

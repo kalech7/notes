@@ -34,6 +34,12 @@ La arquitectura de software representa el conjunto de decisiones fundamentales s
 
 A medida que los sistemas empresariales crecen en volumen y dinamismo, las arquitecturas monolíticas tradicionales colapsan bajo el peso de su propio acoplamiento. Esta nota analiza a fondo la superación de las limitaciones de la arquitectura en capas tradicional mediante el desacoplamiento tecnológico de la **Arquitectura Hexagonal**, el rigor concéntrico de la **Clean Architecture** y la reactividad distribuida de la **Arquitectura Dirigida por Eventos (EDA)** con patrones avanzados como **CQRS** y **Event Sourcing**.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **El error del novato:** Escribir consultas SQL directamente dentro del botón de la pantalla o dentro del controlador web. Si mañana cambias de MySQL a MongoDB, o de Web a una App Móvil, tienes que tirar a la basura todo el sistema.
+> - **El principio sagrado del Dominio Independiente:** Las reglas de tu negocio (ej. "cómo se calcula el interés de un préstamo bancario") son sagradas e inmutables. No deben saber ni importarles si se guardan en Oracle, si la pantalla usa React o si la orden llegó por mensaje de texto.
+> - **Arquitectura Hexagonal (Puertos y Adaptadores):** Tu lógica de negocio es una isla pura. Para hablar con el mundo exterior tiene "Puertos" (enchufes estándar). Un adaptador conecta la base de datos Postgres al enchufe; otro adaptador conecta una API REST. ¡Puedes cambiar la base de datos por un archivo JSON sin tocar una sola línea de tu lógica de negocio!
+> - **Arquitectura por Eventos (EDA):** En vez de llamar a alguien y quedarte esperando colgado al teléfono ("¡Oye, procesa este pago!"), publicas un altavoz al viento: "Evento: ¡ClientePagó!". Quien necesite enterarse (el sistema de facturación, el almacén, el correo) lo escucha y reacciona a su propio ritmo.
+
 ---
 
 ## 1. Limitaciones de la Arquitectura en Capas Tradicional (N-Tier)

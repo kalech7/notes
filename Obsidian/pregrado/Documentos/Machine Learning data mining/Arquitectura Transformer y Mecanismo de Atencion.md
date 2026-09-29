@@ -31,6 +31,15 @@ Presentada por Vaswani et al. (2017) en el seminal artículo *"Attention Is All 
 
 El Transformer supuso una ruptura epistemológica radical: demostró que es posible modelar dependencias complejas y secuencias arbitrarias basándose exclusivamente en **mecanismos de autoatención** (*self-attention*), prescindiendo por completo de la recurrencia temporal ([[Redes Neuronales Recurrentes (RNN) y LSTM|RNN/LSTM]]) y de los operadores de convolución local ([[Redes Neuronales Convolucionales (CNN)|CNN]]).
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **El problema de las RNN antiguas:** Leían el texto palabra por palabra, como una persona leyendo una carta en voz alta. Para entender la palabra 100, tenían que haber procesado las 99 anteriores en orden estricto (imposible de paralelizar en una GPU con miles de núcleos). Además, para cuando llegaban a la palabra 100, ya habían "olvidado" el inicio de la oración.
+> - **La revolución del Transformer:** ¡Lee todas las palabras de un libro al mismo milisegundo en paralelo!
+> - **¿Cómo funciona la Atención? (La analogía de la biblioteca / Google):**
+>   - **Query ($Q$ - Tu búsqueda):** Escribes en el buscador: "¿De qué color es la manzana?".
+>   - **Key ($K$ - Las etiquetas de los libros):** Cada libro en la biblioteca tiene etiquetas: "Física", "Frutas", "Historia". El producto escalar $Q \cdot K^T$ calcula qué tan relevante es cada etiqueta para tu búsqueda.
+>   - **Value ($V$ - El contenido real):** Lees el contenido del libro cuya etiqueta tuvo la mayor coincidencia.
+>   - En un Transformer, cada palabra en una frase se pregunta: "¿A qué otras palabras de esta oración debo prestar atención para entender mi propio significado?". Por ejemplo, en *"El banco me cobró una comisión"*, la palabra *"banco"* atiende a *"comisión"* y sabe que se refiere a una institución financiera y no a un asiento de parque.
+
 ---
 
 ## 1. El Quiebre del Paradigma Secuencial

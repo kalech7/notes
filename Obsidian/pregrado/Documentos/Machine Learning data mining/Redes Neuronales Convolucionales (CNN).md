@@ -28,6 +28,18 @@ Las **Redes Neuronales Convolucionales** (*Convolutional Neural Networks* o **CN
 
 El éxito fundamental de las CNN radica en la incorporación de **sesgos inductivos espaciales** (*spatial inductive biases*): conectividad local, compartición de parámetros e invarianza/equivarianza a la traslación, resolviendo de manera categórica la explosión paramétrica que experimentan los perceptrones multicapa (MLP) tradicionales al enfrentarse a entradas de alta dimensión.
 
+> [!info] 💡 ¿Cómo entender esto desde cero? (Guía para novatos de pregrado)
+> - **¿Por qué una red normal (MLP) fracasa con imágenes?**
+>   - Si tomas una foto de tu celular ($1000 \times 1000$ píxeles a color = 3 millones de números) y la conectas a una capa densa de apenas 1,000 neuronas, necesitas **3,000 millones de pesos**. ¡Tu GPU se queda sin memoria de inmediato y el modelo sobreajustará brutalmente!
+>   - Además, si la red aprendió a reconocer un gato en la esquina superior izquierda, y el gato se mueve a la esquina inferior derecha, la red densa no lo reconocerá porque sus pesos son fijos para cada posición de píxel individual.
+> - **La solución de la Convolución (El filtro deslizante):**
+>   - Imagina una pequeña lupa de $3 \times 3$ píxeles (el *kernel* o filtro).
+>   - Deslizas esa lupa por toda la imagen buscando patrones:
+>     - Las primeras capas detectan **bordes simples** (líneas verticales, esquinas).
+>     - Las capas intermedias combinan bordes para detectar **texturas y formas** (círculos, ojos, orejas).
+>     - Las capas profundas combinan formas para reconocer **objetos completos** (la cara entera de un gato o un carro).
+>   - ¡El mismo filtro de $3 \times 3$ (apenas 9 números) se reutiliza para toda la foto! Esto reduce los parámetros de millones a unos pocos cientos.
+
 ---
 
 ## 1. Fundamentos Biológicos y Procesamiento de Señales Multidimensionales
