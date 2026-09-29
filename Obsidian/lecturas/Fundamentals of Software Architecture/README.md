@@ -61,4 +61,4 @@ Las fórmulas permanecen en los archivos Markdown, con notación LaTeX, variable
 - [Arquitectura por capas: 12 páginas](Materiales/07%20Arquitectura%20por%20capas.pdf)
 - [Monolito modular: 16 páginas](Materiales/08%20Monolito%20modular.pdf)
 
-La colección reúne 155 páginas de PDF: 73 iniciales, 47 en la primera ampliación y 35 en la segunda (incluida una portada de la Parte II sin número impreso). El material no contiene el libro completo; los huecos de numeración impresa se detallan en la nota de cobertura. Los enlaces internos propios de Obsidian están pensados para navegar dentro de la aplicación; este README ofrece navegación equivalente con enlaces de Markdown para GitHub.
+La colección reúne 171 páginas de PDF: 73 iniciales, 47 en la primera ampliación, 35 en la segunda (incluida una portada de la Parte II sin número impreso) y 16 del capítulo 11. El material no contiene el libro completo; los huecos de numeración impresa se detallan en la nota de cobertura. Los enlaces internos propios de Obsidian están pensados para navegar dentro de la aplicación; este README ofrece navegación equivalente con enlaces de Markdown para GitHub.

@@ -1,3 +1,27 @@
+---
+title: "Estimación de Software en Proyectos Ágiles"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - software-2
+  - estimacion-agil
+  - story-points
+  - planning-poker
+  - scrum
+  - pregrado
+  - epn
+aliases:
+  - Estimación de software
+  - Puntos de Historia y Planning Poker
+  - Story Points y Velocidad
+related:
+  - "[[scrum]]"
+  - "[[historias de usuario]]"
+  - "[[Deuda técnica]]"
+  - "[[Ing software/proyectos|proyectos]]"
+  - "[[Ing software/Metodo de la Ruta Critica (CPM) y Tecnica PERT|Metodo de la Ruta Critica (CPM) y Tecnica PERT]]"
+---
+
 # Estimación de Software
 
 La estimación de software es el proceso de predecir el esfuerzo (normalmente medido en tiempo, dinero o puntos) necesario para desarrollar, mantener o finalizar una tarea o proyecto de software. En metodologías tradicionales se estimaba en horas o días, pero en entornos ágiles se ha demostrado que esto es sumamente inexacto.
@@ -32,13 +56,18 @@ La velocidad es una métrica de gestión en Scrum que indica cuántos puntos de 
 - [[historias de usuario]]
 - [[scrum]]
 - [[Deuda técnica]]
+- [[Ing software/proyectos|proyectos]]
+- [[Ing software/Metodo de la Ruta Critica (CPM) y Tecnica PERT|Metodo de la Ruta Critica (CPM) y Tecnica PERT]]
 
-
-## Diagrama de Referencia
+## Flujo de Estimación en Planning Poker
 
 ```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
+flowchart TD
+    PO["Product Owner lee la Historia de Usuario<br/>(Criterios de Aceptación)"] --> Dudas["Equipo hace preguntas de aclaración técnica"]
+    Dudas --> Voto["Cada desarrollador elige una carta en privado<br/>(Escala Fibonacci: 1, 2, 3, 5, 8, 13)"]
+    Voto --> Revelar["Se revelan las cartas simultáneamente"]
+    Revelar --> Consenso{"¿Hay consenso<br/>general?"}
+    Consenso -- Sí --> Asignar["Se asignan los Story Points al Backlog"]
+    Consenso -- No --> Debate["El puntaje más alto y el más bajo<br/>debaten sus razones técnicas"]
+    Debate --> Voto
 ```

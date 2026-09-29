@@ -36,6 +36,7 @@ Ahora que se tiene la información de los píxeles, se muestra la imagen en la p
 
 ## Notas relacionadas
 - [[OpenGl]]
+- [[Iluminación y sombreado]]
 - [[pixeles]]
 - [[open gl]]
 

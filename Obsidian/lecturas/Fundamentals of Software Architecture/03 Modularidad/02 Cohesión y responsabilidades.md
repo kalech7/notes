@@ -55,7 +55,7 @@ El libro compara un módulo de mantenimiento de clientes que añade, actualiza, 
 
 La separación no se decide contando verbos. Si consultar y cancelar son las únicas operaciones de pedidos y requieren conocer profundamente al cliente, extraerlas puede producir una interfaz muy conversadora. Si los pedidos crecerán con estados, devoluciones y reservas, una responsabilidad independiente gana sentido.
 
-**Aplicación propia:** en PedidoClaro, cancelar un pedido confirmado puede liberar inventario y solicitar un reembolso. Esa regla pertenece probablemente a Pedidos. Clientes puede solicitarla mediante el identificador del cliente y del pedido. Si Pedidos exige doce campos internos del cliente, hay que revisar el contrato: cambiar de carpeta no eliminó el conocimiento compartido. La evidencia decisiva son las invariantes, los cambios esperados y las dependencias resultantes.
+**Aplicación propia:** en PedidoClaro, cancelar un pedido confirmado puede liberar inventario y solicitar un reembolso. Esa regla pertenece probablemente a Pedidos. Clientes puede solicitarla mediante el identificador del cliente y del pedido. Si Pedidos exige doce campos internos del cliente, hay que revisar el contrato: cambiar de carpeta no eliminó el conocimiento compartido. La evidencia decisiva son las invariantes, los cambios esperados y las dependencias resultantes. Una **invariante** es una condición que debe mantenerse en los estados considerados válidos; por ejemplo, el importe total reembolsado no debe superar lo cobrado por ese pedido. Entender quién hace cumplir esa regla ayuda a decidir su frontera.
 
 Fuente: [[Obsidian/lecturas/Fundamentals of Software Architecture/Materiales/02 Modularidad.pdf#page=5|PDF pp. 5–7; impresas pp. 41–43]].
 

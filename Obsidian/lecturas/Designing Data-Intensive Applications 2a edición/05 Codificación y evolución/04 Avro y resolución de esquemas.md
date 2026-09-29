@@ -47,7 +47,7 @@ flowchart TD
 
 ### Dos formas de escribir un esquema, una estructura que describir
 
-Avro ofrece una IDL pensada para edición humana y una representación de esquemas en JSON, útil para herramientas que los generan desde otras fuentes. Un esquema en JSON **no significa que los registros se codifiquen como JSON**: la descripción puede ser JSON y los datos, binarios. Por ejemplo, la estructura `Pedido` de los siguientes ejemplos tiene un campo `id` string y un campo `total_centavos` long; ambas notaciones pueden describir esa misma estructura. Los nombres, tipos y orden pertenecen al esquema, no son nombres repetidos delante de cada registro binario.
+Avro ofrece una IDL (lenguaje de definición de interfaces) pensada para edición humana y una representación de esquemas en JSON, útil para herramientas que los generan desde otras fuentes. Un esquema en JSON **no significa que los registros se codifiquen como JSON**: la descripción puede ser JSON y los datos, binarios. Por ejemplo, la estructura `Pedido` de los siguientes ejemplos tiene un campo `id` string y un campo `total_centavos` long; ambas notaciones pueden describir esa misma estructura. Los nombres, tipos y orden pertenecen al esquema, no son nombres repetidos delante de cada registro binario.
 
 ## Por qué Avro necesita el esquema escritor: cuatro bytes concretos
 

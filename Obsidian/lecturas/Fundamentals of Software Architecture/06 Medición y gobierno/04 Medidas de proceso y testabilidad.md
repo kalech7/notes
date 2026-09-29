@@ -31,7 +31,7 @@ Las herramientas de cobertura indican qué partes del código fueron ejecutadas 
 
 La fila superior separa tres pasos: ejecutar código, comprobar un resultado y detectar un defecto. Las flechas señalan la progresión deseada, no una equivalencia lógica. Abajo se compara una llamada sin verificación con una prueba que contrasta el resultado esperado.
 
-**Causalidad:** la llamada `calcularTotal(2,10)` puede ejecutar todas las líneas aun cuando devuelva 999. La aserción contra 20 convierte ese error en un fallo visible. Pero una aserción trivial, como `assert true`, tampoco representa la intención del caso.
+**Causalidad:** la llamada `calcularTotal(2,10)` puede ejecutar todas las líneas aun cuando devuelva 999. La aserción contra 20 convierte ese error en un fallo visible. Una **aserción** es una comprobación que hace fallar la prueba cuando no se cumple la condición esperada; por ejemplo, `assert calcularTotal(2, 10) == 20` en Python. Pero una aserción siempre verdadera, como `assert True`, tampoco representa la intención del caso.
 
 **Conclusión:** cobertura alta identifica código ejercitado, no demuestra corrección. **Límites:** una aserción válida puede ser insuficiente para casos negativos, límites numéricos, concurrencia o integración. El dibujo usa una función simple y no caracteriza toda una estrategia de pruebas.
 

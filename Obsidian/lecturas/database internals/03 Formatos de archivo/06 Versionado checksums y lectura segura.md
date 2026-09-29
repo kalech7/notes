@@ -82,7 +82,7 @@ sequenceDiagram
     alt coincide
         R->>R: validar estructura y decodificar
     else no coincide
-        R->>R: marcar corrupción; no propagar datos
+        R->>R: marcar corrupción, no propagar datos
     end
 ```
 
@@ -125,7 +125,7 @@ flowchart TD
     F -->|sí| G[exponer registros al motor]
 ```
 
-**Lo que demuestra la secuencia de validación:** cada rombo amplía la confianza y depende de los anteriores. El CRC evita procesar una página alterada; la validación posterior de offsets evita aceptar una página coherente a nivel de bytes pero imposible a nivel estructural. Omitir una etapa deja una clase distinta de fallo sin detectar.
+**Lo que demuestra la secuencia de validación:** cada rombo amplía la confianza y depende de los anteriores. El CRC permite rechazar muchas alteraciones accidentales, aunque puede haber colisiones; la validación posterior de offsets evita aceptar una página coherente a nivel de bytes pero imposible a nivel estructural. Omitir una etapa deja una clase distinta de fallo sin detectar.
 
 ## Evitar overflow al validar rangos
 
@@ -143,7 +143,7 @@ La resta solo se ejecuta después de demostrar que `offset` está dentro. La mis
 El lector debe fallar de manera explícita y conservar contexto: archivo, page ID, versión esperada, checksum leído y tipo de invariante roto. Continuar con valores parciales puede propagar corrupción hacia índices, réplicas o backups. Sin embargo, el mensaje no debe imprimir datos sensibles completos; offsets y huellas suelen bastar para diagnosticar.
 
 > [!tip] Para recordar
-> Versión decide cómo interpretar. Checksum dice si los bytes cambiaron. Validación estructural demuestra si esos bytes forman una página posible. Son tres preguntas distintas.
+> Versión decide cómo interpretar. Checksum aporta evidencia de alteración de los bytes, con los límites de su algoritmo. Validación estructural demuestra si esos bytes forman una página posible. Son tres preguntas distintas.
 
 > [!question]- ¿Un CRC correcto demuestra que la página es lógicamente válida?
 > No. Solo demuestra, con su garantía probabilística, que los bytes coinciden con la huella almacenada. El escritor pudo haber creado una página inválida y calcular correctamente su CRC.

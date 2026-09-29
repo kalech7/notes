@@ -22,11 +22,11 @@ El log con mapa hash de la nota anterior acelera una clave exacta, pero el mapa 
 
 ## La dificultad: mantener orden sin reescribir por cada cambio
 
-Una **SSTable** es un archivo de pares clave-valor ordenados por clave. En el modelo simplificado del capítulo contiene una entrada por clave. Ordenar permite saltar al bloque correcto mediante un **índice disperso**: se conserva, por ejemplo, la primera clave de cada bloque y su posición. No hace falta que todas las claves del archivo residan en RAM.
+Una **SSTable** (*Sorted String Table*, tabla ordenada de claves y valores) es un archivo de pares clave-valor ordenados por clave. En el modelo simplificado del capítulo contiene una entrada por clave. Ordenar permite saltar al bloque correcto mediante un **índice disperso**: se conserva, por ejemplo, la primera clave de cada bloque y su posición. No hace falta que todas las claves del archivo residan en RAM.
 
 Si un bloque empieza en `cliente 100` y el siguiente en `cliente 200`, la clave 153, de existir, está en el primero. Se lee ese pequeño bloque y se busca dentro. Los bloques también se pueden comprimir. El ahorro de bytes reduce I/O, a cambio de trabajo de CPU.
 
-El problema aparece al insertar 153: añadirlo al final rompería el orden. Reescribir un archivo grande por cada inserción sería caro. Un motor **LSM** acumula cambios y los transforma en archivos ordenados por lotes.
+El problema aparece al insertar 153: añadirlo al final rompería el orden. Reescribir un archivo grande por cada inserción sería caro. Un motor **LSM** (*Log-Structured Merge-tree*, organización basada en registros y fusión de archivos ordenados) acumula cambios y los transforma en archivos ordenados por lotes.
 
 ## Sigue una escritura completa
 
@@ -174,8 +174,6 @@ Si llegan cambios más rápido de lo que flush y compactación procesan, se acum
 **Conexión:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/03 B-trees WAL y costos de almacenamiento|B-trees y amplificación]] permite comparar qué costo se paga al escribir y al leer.
 
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=5|PDF, p. 5; impresa 119]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=6|PDF, p. 6; impresa 120]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=7|PDF, p. 7; impresa 121]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=8|PDF, p. 8; impresa 122]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=9|PDF, p. 9; impresa 123]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=10|PDF, p. 10; impresa 124]]. Ejemplos numéricos propios; semántica multiversión mencionada como matiz, no desarrollada en este escaneo.
-
----
 
 ---
 

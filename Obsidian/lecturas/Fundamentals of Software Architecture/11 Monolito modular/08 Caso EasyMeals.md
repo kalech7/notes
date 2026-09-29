@@ -19,7 +19,7 @@ EasyMeals es un **restaurante de barrio nuevo, basado en entregas a domicilio**,
 
 El libro justifica la elección con dos rasgos del problema:
 
-- Como restaurante **pequeño y local**, **no necesita alta escalabilidad ni gran capacidad de respuesta**. Los requisitos operativos que el estilo cumple mal no son importantes aquí.
+- Como restaurante **pequeño y local**, **no necesita alta escalabilidad ni gran capacidad de respuesta**. El caso no prioriza escala extrema; aun así necesita umbrales suficientes de respuesta, disponibilidad y corrección para atender pedidos.
 - Su **presupuesto es limitado** y no quiere gastar mucho en un sistema elaborado. El estilo tiene el costo más bajo de la escala.
 
 La forma del problema —pocas exigencias operativas, poco presupuesto y áreas de negocio bien diferenciadas— hace del monolito modular una buena elección.
@@ -66,7 +66,7 @@ La imagen presenta los seis módulos como tarjetas. El encabezado de cada tarjet
 
 Dos observaciones sobre los nombres: el módulo de pagos se llama `PaymentProcessing` en el texto pero su namespace es `payment`, y el de inventario se llama `IngredientsInventory` pero su namespace es `inventory`. No es un error grave; conviene saber que el nombre del módulo y el de su namespace no tienen por qué coincidir exactamente.
 
-El libro destaca que la modularidad **facilita añadir un nuevo tipo de pago**, como **puntos de fidelidad**: bastaría con un componente nuevo dentro del módulo de pagos.
+El libro destaca que la modularidad **facilita añadir un nuevo tipo de pago**, como **puntos de fidelidad**: el núcleo de las reglas puede concentrarse en un componente nuevo dentro de Pagos. La interfaz y los contratos quizá también cambien, como muestra el ejercicio final.
 
 **Fuente:** PDF pp. 14–16 · impresas 178–180.
 
@@ -96,7 +96,7 @@ El diagrama de secuencia sigue un pedido desde que el cliente lo envía hasta qu
 
 ## 5. Lo que el ejemplo enseña sin decirlo
 
-**Las flechas son pocas.** Solo tres relaciones entre módulos en todo el sistema. Recetas e Inventario no aparecen conectados a nada, aunque el inventario necesita saber qué se vende y qué ingredientes lleva cada plato para su pronóstico. ¿Cómo lo sabe? A través de la **base de datos compartida**: puede leer las ventas y las recetas sin pedírselas a otros módulos. Es exactamente la ventaja que el libro atribuye a la topología de datos monolítica (nota de datos): menos comunicación entre módulos. Y también su costo: si el módulo de recetas cambia cómo guarda las cantidades, el pronóstico puede romperse sin que ninguna regla de dependencias entre módulos lo detecte.
+**Las flechas dibujadas son pocas.** La figura representa tres relaciones directas; no demuestra que sean todas las dependencias del sistema. Recetas e Inventario no aparecen conectados a nada, aunque el inventario necesita saber qué se vende y qué ingredientes lleva cada plato para su pronóstico. Una explicación posible es la **base de datos compartida**: podría leer ventas y recetas sin llamadas directas. Es una inferencia didáctica, no un contrato de acceso documentado por la figura. Es exactamente la ventaja que el libro atribuye a la topología de datos monolítica (nota de datos): menos comunicación entre módulos. Y también su costo: si el módulo de recetas cambia cómo guarda las cantidades, el pronóstico puede romperse sin que ninguna regla de dependencias entre módulos lo detecte.
 
 **Realizar pedido actúa como coordinador.** Llama a Pagos y a Preparar pedido. Si el flujo creciera —por ejemplo, avisando también a Inventario y a un módulo de fidelidad—, sería una buena señal para introducir un mediador en lugar de acumular llamadas en ese módulo.
 

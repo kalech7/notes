@@ -86,3 +86,5 @@ sequenceDiagram
 ## Notas relacionadas
 - [[Desarollo web]]
 - [[WEB RESTful]]
+- [[html]]
+- [[CSS fundamentos]]

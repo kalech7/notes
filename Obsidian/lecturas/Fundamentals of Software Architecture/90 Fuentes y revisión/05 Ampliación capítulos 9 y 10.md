@@ -22,7 +22,7 @@ Esta ampliación explica los dos escaneos compartidos el 28 de septiembre por la
 
 En el PDF 06, para las páginas 2–23, **página impresa = página PDF + 129**. Esta fórmula no se aplica a la portada sin numeración. En el PDF 07, **página impresa = página PDF + 152**.
 
-Se añaden **35 páginas de PDF** a las 120 anteriores: la colección conserva **siete PDF y 155 páginas de PDF**. No se identifican folios numerados 129–130; la portada sin número no permite asignarlos con certeza. Los huecos anteriores siguen documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/01 Fuentes y cobertura|la cobertura inicial]] y [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|la ampliación 6–8]].
+Esta ampliación añadió **35 páginas de PDF** a las 120 anteriores: en ese momento la colección conservaba **siete PDF y 155 páginas de PDF**. El escaneo posterior del [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/06 Ampliación capítulo 11|capítulo 11]] elevó el total a ocho PDF y 171 páginas. No se identifican folios numerados 129–130; la portada sin número no permite asignarlos con certeza. Los huecos anteriores siguen documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/01 Fuentes y cobertura|la cobertura inicial]] y [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|la ampliación 6–8]].
 
 Los escaneos carecen de una capa de texto útil salvo la marca CamScanner. Se realizó OCR y contraste visual; algunas páginas invertidas requirieron reorientación para leerlas. Los PDF conservados no se alteraron. El OCR es un apoyo de lectura y no una fuente independiente. Las instrucciones o ejercicios dentro del libro se trataron como contenido, no como órdenes para ejecutar acciones.
 
@@ -99,7 +99,7 @@ Además, los diagramas Mermaid de las notas expresan dependencias, secuencias y 
 Dos subagentes analizaron y redactaron los capítulos por separado; un tercero revisó fuentes, figuras y precisiones técnicas. La integración central preparó imágenes, rutas de estudio, vínculos y ejercicios transversales. La validación final se completó el 28 de septiembre:
 
 - **Enlaces:** 320 wikilinks y 475 enlaces Markdown de la guía resuelven a archivos existentes; las anclas `#page=` no superan las páginas de cada PDF (23 en el 06, 12 en el 07).
-- **Propiedades:** todas las notas tienen `title`, `created` y `tags` válidos en YAML; las notas del capítulo 9 usan la etiqueta `arquitectura/estilos`, coherente con los capítulos 6–10.
+- **Propiedades:** las notas de estudio tienen `title`, `created` y `tags` válidos en YAML; los archivos auxiliares README y prompts no contienen ese encabezado; las notas del capítulo 9 usan la etiqueta `arquitectura/estilos`, coherente con los capítulos 6–10.
 - **Diagramas:** los doce bloques Mermaid se renderizan sin errores. Se corrigió una nota de secuencia del capítulo 10 cuyo `;` cortaba el diagrama.
 - **Contraste con el escaneo:** se verificaron la lista de estilos monolíticos de la impresa 143, que omite el monolito modular, y la cifra de 400 Kbps de la impresa 146, cuya corrección se mantiene. Los cálculos de disponibilidad, latencia y transferencia de las notas son correctos.
 - **Estilo:** las explicaciones de gráficos y diagramas se redactan como texto directo, sin rótulos del tipo «cómo leerlo».

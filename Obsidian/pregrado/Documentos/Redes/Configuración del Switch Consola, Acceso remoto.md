@@ -1,3 +1,28 @@
+---
+title: "Configuración del Switch: Consola y Acceso Remoto Seguro (SSH y Telnet)"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - redes
+  - switches-cisco
+  - acceso-remoto
+  - ssh-telnet
+  - puerto-de-consola
+  - pregrado
+  - epn
+aliases:
+  - Configuración del Switch Consola, Acceso remoto.
+  - Configuración del Switch Consola, Acceso remoto
+  - Acceso por Consola y SSH en Cisco
+related:
+  - "[[Port Security]]"
+  - "[[Cableado y medios de red]]"
+  - "[[VLAN]]"
+  - "[[Configuraciones basicas de un router y un switch]]"
+---
+
+# Configuración del Switch: Consola y Acceso Remoto Seguro (SSH y Telnet)
+
 Es un pilar fundamental de la administración de redes dominar cómo acceder físicamente y por red a los diferentes modos de operación de un switch, así como los métodos obligatorios para asegurar los puertos administrativos contra intrusiones.
 
 Como medida perimetral básica, para proteger el acceso de comandos críticos en el modo privilegiado (EXEC privilegiado), siempre se debe configurar una contraseña encriptada usando el algoritmo MD5 o superior mediante el comando:

@@ -11,7 +11,7 @@ tags:
 
 [[Obsidian/lecturas/Fundamentals of Software Architecture/11 Monolito modular/00 Índice|← Índice del capítulo 11]]
 
-**Si el código se organiza por negocio, los equipos también deberían organizarse por negocio.** Es la ley de Conway del [[Obsidian/lecturas/Fundamentals of Software Architecture/09 Fundamentos de estilos arquitectónicos/08 Conway y topologías de equipos|capítulo 9]] aplicada a este estilo: cuando la estructura del equipo y la del código coinciden, cada cambio necesita menos conversaciones.
+**Organizar equipos alrededor del negocio puede reducir traspasos cuando el código ya tiene fronteras de dominio.** Es la ley de Conway del [[Obsidian/lecturas/Fundamentals of Software Architecture/09 Fundamentos de estilos arquitectónicos/08 Conway y topologías de equipos|capítulo 9]] aplicada a este estilo: alinear ambas estructuras puede reducir coordinación, aunque los cambios que cruzan dominios siguen necesitando colaboración.
 
 ## 1. Equipos por dominio frente a equipos por especialidad técnica
 
@@ -48,7 +48,7 @@ El libro retoma los tipos de equipo de *Team Topologies* presentados en el capí
 | **Subsistema complicado** (*complicated-subsystem*) | Cada módulo cumple un papel específico según su dominio (por ejemplo, `PaymentProcessing`), de modo que algunos miembros se concentran en procesamiento complejo con independencia del resto | Un módulo encapsula la complejidad y los demás solo ven su interfaz | Especialistas en pagos y antifraude mantienen el módulo de pagos |
 | **Plataforma** (*platform*) | Los desarrolladores aprovechan herramientas, servicios, APIs y tareas comunes | La alta modularidad facilita ofrecer capacidades compartidas a todos los módulos | Plantillas de módulo nuevo, reglas de gobierno listas para usar, pipeline de despliegue |
 
-Conviene fijarse en el matiz del equipo **habilitador**: en este estilo, experimentar suele significar **añadir un módulo** en lugar de modificar los existentes. Como el módulo nuevo vive dentro del mismo despliegue, el experimento se integra rápido; como está separado, retirarlo es sencillo.
+Conviene fijarse en el matiz del equipo **habilitador**: en este estilo, experimentar suele significar **añadir un módulo** en lugar de modificar los existentes. Un módulo nuevo puede facilitar experimentar y retirarlo, siempre que mantenga contratos acotados y no introduzca datos o dependencias difíciles de revertir. Comparte recursos y despliegue con los demás, por lo que su aislamiento lógico no garantiza un impacto mínimo en ejecución.
 
 **Fuente:** PDF pp. 10–11 · impresas 174–175.
 
@@ -68,10 +68,10 @@ El libro no exige tener un equipo por módulo. En un sistema pequeño, un solo e
 > Porque un requisito de negocio se concentra en un módulo, pero ese módulo contiene interfaz, reglas y datos. Con equipos técnicos, un solo requisito necesita a varios equipos y muchos traspasos.
 
 > [!question]- ¿Cómo experimenta un equipo habilitador en este estilo?
-> Añadiendo módulos nuevos al sistema. La modularidad hace que su impacto sobre los módulos existentes sea mínimo.
+> Puede añadir un módulo nuevo con contratos acotados. Es una opción del ejemplo, no una obligación: el impacto depende de datos, recursos y dependencias compartidas.
 
 > [!question]- ¿Qué aporta un equipo de subsistema complicado?
-> Permite que especialistas se concentren en un módulo de procesamiento complejo, como pagos, sin depender del resto del equipo ni de los demás módulos.
+> Permite que especialistas se concentren en un módulo de procesamiento complejo, como pagos, sin exigir que todos dominen sus detalles internos; los contratos y el despliegue conjunto todavía requieren coordinación.
 
 ## Fuente principal
 

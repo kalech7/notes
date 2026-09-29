@@ -21,7 +21,7 @@ Pero si los módulos **son independientes entre sí y realizan funciones especí
 
 ![Un despliegue no obliga a una sola base de datos](../Recursos%20visuales/Cap%C3%ADtulo%2011/c11-04-datos.png)
 
-La recreación en español mantiene esa idea con seis módulos. En los dos lados, el rectángulo azul es la misma unidad de despliegue. A la izquierda, todos los módulos van a una base común. A la derecha, Recetas e Inventario, en verde, tienen su propia base, y los demás módulos siguen compartiendo la común. Debajo se resumen los efectos: compartir reduce la comunicación pero acopla a todos al mismo esquema; separar da independencia a los módulos con datos propios, a cambio de que cualquier consulta que cruce módulos tenga que pasar por el módulo dueño de esos datos.
+La recreación en español mantiene esa idea con seis módulos. En los dos lados, el rectángulo azul es la misma unidad de despliegue. A la izquierda, todos los módulos van a una base común. A la derecha, Recetas e Inventario, en verde, tienen su propia base, y los demás módulos siguen compartiendo la común. Debajo se resumen los efectos: compartir reduce la comunicación pero acopla a todos al mismo esquema; separar reduce el acoplamiento de datos de los módulos con almacén propio, a cambio de que cualquier consulta que cruce módulos tenga que pasar por el módulo dueño de esos datos.
 
 **Fuente:** PDF p. 6 · impresa 170 · figura 11-6.
 
@@ -40,15 +40,15 @@ Por eso la frase del libro tiene dos lados: la base compartida **reduce comunica
 |---|---|
 | El módulo trabaja con datos que nadie más usa (por ejemplo, el historial de previsiones de un algoritmo) | Nadie pierde nada al aislarlos, y el módulo puede cambiar su esquema libremente |
 | Sus datos tienen otra forma o volumen (series temporales, documentos, búsquedas de texto) | Puede usar el almacenamiento más adecuado |
-| Se prevé extraerlo algún día a un servicio | Tener ya separados los datos es la parte más difícil de la extracción |
+| Se prevé extraerlo algún día a un servicio | Separar datos anticipa una dificultad importante; aún quedan contratos, transacciones y operación |
 
-Y el precio: ya no hay `JOIN` entre esas tablas y las del resto, y mantener coherentes dos bases en una misma operación requiere más cuidado que una sola transacción.
+Y el precio: no se puede suponer que seguirá disponible el mismo `JOIN` local entre esas tablas y las del resto, y mantener coherentes dos bases en una misma operación requiere más cuidado que una sola transacción.
 
 ## 2. Consideraciones de nube
 
-Un monolito modular **puede desplegarse en la nube**, sobre todo si es un sistema pequeño. Sin embargo, el libro considera que **en general no se adapta bien a ella**: su naturaleza monolítica le impide aprovechar el **aprovisionamiento bajo demanda** que ofrece la nube.
+Un monolito modular **puede desplegarse en la nube**, sobre todo si es un sistema pequeño. Sin embargo, el libro considera que **en general no se adapta bien a ella**: su unidad de escalado gruesa limita cuánto puede aprovechar el **aprovisionamiento bajo demanda por módulo**. Eso no impide escalar el monolito completo bajo demanda.
 
-¿Qué significa eso? La nube permite pagar solo por la capacidad que se usa y añadir o quitar recursos según la carga. Un sistema distribuido puede añadir copias solo del servicio de pagos durante un pico de compras. Un monolito solo puede añadir **copias de la aplicación completa**, aunque únicamente pagos esté saturado; cada copia arranca todo el sistema, ocupa la memoria de todos los módulos y tarda lo que tarde el conjunto en iniciarse.
+¿Qué significa eso? La nube permite aprovisionar recursos y, según el servicio contratado, añadir o quitar capacidad según la carga; la facturación depende de ese servicio. Un sistema distribuido puede añadir copias solo del servicio de pagos durante un pico de compras. Un monolito solo puede añadir **copias de la aplicación completa**, aunque únicamente pagos esté saturado; cada copia arranca todo el sistema, ocupa la memoria de todos los módulos y tarda lo que tarde el conjunto en iniciarse.
 
 Aun así, los sistemas pequeños construidos con este estilo **pueden aprovechar muchos servicios de la nube**: almacenamiento de archivos, bases de datos gestionadas y mensajería, entre otros. Usar una base de datos administrada por el proveedor, por ejemplo, ahorra trabajo operativo sin cambiar el estilo.
 
@@ -69,7 +69,7 @@ Como con cualquier monolito, el riesgo principal es que el sistema se vuelva **d
 
 ## 4. Riesgo: reutilizar código en exceso
 
-Reutilizar y compartir código es una parte necesaria del desarrollo. Pero en este estilo, **demasiada reutilización difumina las fronteras de los módulos** y lleva la arquitectura al terreno del **monolito no estructurado**: un monolito con código tan interdependiente que **ya no se puede desenredar**.
+Reutilizar y compartir código es una parte necesaria del desarrollo. Pero en este estilo, **demasiada reutilización difumina las fronteras de los módulos** y lleva la arquitectura al terreno del **monolito no estructurado**: un monolito con código tan interdependiente que **resulta muy costoso desenredarlo**.
 
 Ejemplo propio. Pedidos crea una clase `Utilidades` con cálculos de precio. Pagos la usa para calcular impuestos; Promociones la usa para descuentos; Entregas le añade una función de distancia. En un año, `Utilidades` tiene reglas de cuatro dominios y cualquier cambio en ella obliga a probar los cuatro. Nadie puede extraer Pagos a otro sistema sin arrastrar esa clase y, con ella, lógica de los demás. **La reutilización que ahorraba líneas terminó fundiendo los módulos.** Reutilizar un mecanismo técnico estable (por ejemplo, formatear fechas) es muy distinto de compartir reglas de negocio de varios dominios.
 
@@ -79,7 +79,7 @@ Ejemplo propio. Pedidos crea una clase `Utilidades` con cálculos de precio. Pag
 
 Idealmente, los módulos deberían ser **independientes y autocontenidos**. Es normal, y a veces necesario, que algunos se comuniquen, especialmente dentro de un **flujo de trabajo complejo**. Pero si hay **demasiada** comunicación, el libro lo interpreta como **indicio de que los dominios se definieron mal desde el principio**. En esos casos recomienda **redefinir los dominios** para acomodar los flujos complejos y las interdependencias.
 
-Ejemplo propio. Si cada vez que Pedidos hace algo necesita consultar a Clientes, Precios y Promociones, quizá «calcular el precio final de un pedido» sea en realidad un único dominio repartido en tres módulos. Juntar esa responsabilidad puede reducir tres conversaciones a ninguna.
+Ejemplo propio. Si cada vez que Pedidos hace algo necesita consultar a Clientes, Precios y Promociones, quizá «calcular el precio final de un pedido» sea en realidad un único dominio repartido en tres módulos. Agrupar las reglas de cálculo podría reducir conversaciones, pero no demuestra que Clientes, Precios y Promociones deban fusionarse. Primero hay que distinguir reglas dispersas de colaboraciones legítimas.
 
 ```mermaid
 flowchart TD
@@ -99,10 +99,10 @@ El diagrama conecta cada síntoma con su causa probable y con la respuesta que s
 > Porque un módulo puede leer los datos que necesita directamente de la base, sin pedírselos a otro módulo. El precio es que ambos quedan atados al mismo esquema.
 
 > [!question]- ¿Qué impide a un monolito modular aprovechar bien la nube?
-> Que solo puede escalar replicando la aplicación entera. La nube brilla cuando se añade capacidad justo a la parte que la necesita; aquí esa parte no existe como pieza separada.
+> La limitación principal es que el escalado horizontal replica toda la aplicación. Puede usar nube y escalado bajo demanda, pero no replicar un módulo aisladamente. Véase la [explicación de Microsoft sobre escalado de monolitos](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures).
 
 > [!question]- ¿Qué es un monolito no estructurado?
-> Un monolito cuyo código es tan interdependiente que ya no se puede separar en partes. Es el destino de un monolito modular cuando la reutilización excesiva y la comunicación sin control borran sus módulos.
+> Un monolito cuyo código tiene límites erosionados y dependencias difíciles de separar. Recuperar módulos puede requerir una refactorización costosa; no es una imposibilidad absoluta. Es el destino de un monolito modular cuando la reutilización excesiva y la comunicación sin control borran sus módulos.
 
 ## Fuente principal
 

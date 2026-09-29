@@ -1,3 +1,28 @@
+---
+title: "Cableado Estructurado y Medios de Red (Capa Física)"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - redes
+  - capa-fisica
+  - cableado-estructurado
+  - utp-stp
+  - fibra-optica
+  - pregrado
+  - epn
+aliases:
+  - Cableado y medios de red
+  - Medios de Transmisión de Red
+  - UTP y Fibra Óptica
+related:
+  - "[[Modelo OSI]]"
+  - "[[Modelo TCP-IP]]"
+  - "[[Configuración del Switch Consola, Acceso remoto]]"
+  - "[[Port Security]]"
+---
+
+# Cableado Estructurado y Medios de Transmisión de Red
+
 Toda infraestructura de interconexión de red y medios de transmisión físicos pertenecen estrictamente a la **Capa 1 (Capa Física)** del [[Modelo OSI]]. Son los conductos y mecanismos tangibles a través de los cuales fluyen los bits de información cruda en forma de pulsos eléctricos, potentes haces de luz o espectros de ondas de radio.
 
 ```mermaid

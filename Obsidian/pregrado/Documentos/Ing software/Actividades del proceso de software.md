@@ -20,7 +20,7 @@ Por ejemplo, en el modelo en cascada se organizan en secuencia estricta, mientra
 - [[El proceso de software]]
 - [[Software e Ingeniería  de Software]]
 - [[Apuntes de clase]]
-- [[técnicas pruebas]]
+- [[tecnicas pruebas|técnicas de pruebas]]
 - [[Ciclo de vida de hci]]
 
 ## Especificación del Software

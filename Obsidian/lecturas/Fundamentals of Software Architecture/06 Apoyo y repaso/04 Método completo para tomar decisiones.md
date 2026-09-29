@@ -11,7 +11,7 @@ tags:
 
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
-Esta nota reúne los cinco capítulos en un método operativo. Es una **síntesis didáctica propia** basada en los conceptos de las 73 páginas disponibles; no añade páginas ausentes ni pretende que exista una receta universal. Úsala después de las notas temáticas o como mapa para saber qué releer.
+Esta nota reúne los capítulos 1–5 en un método operativo. Es una **síntesis didáctica propia** basada en los conceptos de las 73 páginas de los tres escaneos iniciales; no añade páginas ausentes ni pretende que exista una receta universal. Úsala después de las notas temáticas o como mapa para saber qué releer.
 
 ## La cadena que no debe romperse
 

@@ -117,7 +117,7 @@ Antes de elegir, mediríamos cambios que se coordinan, tiempos de despliegue, sa
 | Agrupar por dominio dentro del monolito | Concentrar Promociones, Pedidos y Entregas | Deben definirse contratos y propiedad de datos | Cambios que realmente quedan dentro de cada módulo |
 | Separar servicios seleccionados | Publicación y capacidad independientes donde hagan falta | Red, contratos, observabilidad y coordinación de datos | Necesidad operacional específica y coste asumible |
 
-La segunda alternativa se apoya en la partición del capítulo 9; esta sección no pretende explicar íntegramente el estilo del capítulo 11, que no está en los nuevos escaneos.
+La segunda alternativa se apoya en la partición del capítulo 9. Su desarrollo completo está en [[Obsidian/lecturas/Fundamentals of Software Architecture/11 Monolito modular/00 Índice|el capítulo 11 sobre monolito modular]], incorporado en un escaneo posterior.
 
 ### Paso 3: construir un presupuesto de latencia
 

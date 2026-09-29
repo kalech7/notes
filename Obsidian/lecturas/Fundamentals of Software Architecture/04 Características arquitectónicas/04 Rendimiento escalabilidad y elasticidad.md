@@ -45,7 +45,7 @@ $$
 p_{95}=x_{(\lceil0{,}95n\rceil)}.
 $$
 
-Aquí p95 = 100 ms y p99 = 2.000 ms. El promedio oculta cómo se distribuye la espera; p95 tampoco protege al 5 % restante. Diferentes herramientas interpolan percentiles de otra manera: hay que acordar el método. No se obtiene el p95 global promediando los p95 de servidores.
+En la fórmula, $n$ es el número de solicitudes, $x_{(k)}$ es el tiempo situado en la posición $k$ de la lista ordenada y $\lceil\;\rceil$ indica redondear hacia arriba. Para p95 buscamos la posición 950; para p99, la 990. Aquí p95 = 100 ms y p99 = 2.000 ms. El promedio oculta cómo se distribuye la espera; p95 tampoco protege al 5 % restante. Diferentes herramientas interpolan percentiles de otra manera: hay que acordar el método. No se obtiene el p95 global promediando los p95 de servidores.
 
 Un objetivo inventado sería «p95 ≤ 300 ms para confirmar compras con 100 solicitudes/s durante 20 minutos, y errores ≤ 0,1 %». Debe precisarse cómo se contabilizan tiempos de espera agotados: excluirlos puede hacer que una caída parezca una mejora.
 
@@ -57,7 +57,7 @@ $$
 L=\lambda W.
 $$
 
-Si se completan 80 pedidos/s y cada pedido permanece 0,25 s de media, hay 20 pedidos en curso de media. Esto incluye espera dentro de la frontera elegida; no implica 20 hilos ni permite sustituir el promedio por p95. Tampoco describe un régimen estable si la cola crece indefinidamente.
+$L$ es el número medio de pedidos dentro de la frontera observada, $\lambda$ la tasa media de paso en pedidos por segundo y $W$ el tiempo medio en segundos que permanece cada pedido. Si se completan 80 pedidos/s y cada pedido permanece 0,25 s de media, hay $80 \times 0{,}25 = 20$ pedidos en curso de media. Esto incluye espera dentro de la frontera elegida; no implica 20 hilos ni permite sustituir el promedio por p95. Tampoco describe un régimen estable si la cola crece indefinidamente.
 
 ### Escalabilidad y elasticidad
 

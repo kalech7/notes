@@ -66,7 +66,7 @@ sequenceDiagram
 
 **La confirmación puede preceder a la escritura final de las páginas:** si el WAL ya satisface la durabilidad prometida, el motor puede agrupar esa escritura posterior. Tras una caída, recupera desde el WAL en lugar de depender de que la RAM haya sobrevivido.
 
-El diagrama resume la lógica de durabilidad, no todos los pasos de un protocolo transaccional. El orden exacto de memoria, commit, checkpoints y escritura varía por motor. El principio es que **el registro de recuperación debe ser duradero antes de depender de páginas que todavía pueden no estarlo**.
+El diagrama resume la lógica de durabilidad, no todos los pasos de un protocolo transaccional. El orden exacto de memoria, commit, checkpoints y escritura varía por motor. La regla WAL es concreta: **antes de persistir una página modificada, deben haberse persistido los registros del WAL que describen sus cambios**. Para confirmar una transacción como durable, también debe persistirse el registro de confirmación correspondiente; no es necesario escribir inmediatamente todas sus páginas de datos. Así se separan el orden de escritura y el momento de confirmar al cliente. [PostgreSQL: principio de WAL](https://www.postgresql.org/docs/18/wal-intro.html).
 
 Otra variante es *copy-on-write*: escribir una página modificada en una ubicación nueva y crear el camino de padres que la referencia. No todos los B-trees sobrescriben páginas de la misma manera ni usan idéntico WAL.
 
@@ -155,8 +155,6 @@ Usa una carga de prueba representativa: mezcla de lecturas/escrituras, claves ca
 - [[Obsidian/freelance/Data Engineering/SQL/03 Planes estadísticas y particiones|Planes, estadísticas y particiones]] enseña a juzgar trabajo observado en vez de una etiqueta de acceso.
 
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=11|PDF, p. 11; impresa 125]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=12|PDF, p. 12; impresa 126]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=13|PDF, p. 13; impresa 127]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=14|PDF, p. 14; impresa 128]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=15|PDF, p. 15; impresa 129]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=16|PDF, p. 16; impresa 130]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=17|PDF, p. 17; impresa 131]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=18|PDF, p. 18; impresa 132]]. Ejemplos de claves y amplificación propios.
-
----
 
 ---
 

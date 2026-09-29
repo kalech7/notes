@@ -51,7 +51,7 @@ Con IDs monotónicos, cada insert cae en la hoja derecha extrema. La búsqueda d
 
 Si algo falla, se usa el algoritmo general. Una optimización correcta debe poder abandonar su premisa sin comprometer el resultado.
 
-Cuando la hoja derecha está llena, otra estrategia asigna una página nueva a la derecha en vez de repartir todo. Empieza casi vacía, pero el stream creciente debería llenarla pronto. Esto evita mover la mitad de una página que ya está ordenada.
+Cuando la hoja derecha está llena, otra estrategia asigna una página nueva a la derecha en vez de repartir todo. Empieza casi vacía, pero el stream creciente debería llenarla pronto. Esto evita mover la mitad de una página que ya está ordenada. La variante debe permitir esa baja ocupación temporal de la hoja extrema; no satisface sin más el mínimo estricto de un B-Tree de manual. También hay que publicar su separador en el padre.
 
 > [!warning] Optimización local, costo global
 > Las claves crecientes dan localidad dentro del B-Tree, pero concentran escritores en la misma hoja. En un sistema particionado también pueden producir un shard caliente.
@@ -81,7 +81,7 @@ Proceso:
 5. agrupar esas referencias en páginas internas;
 6. continuar hasta producir una sola raíz.
 
-Solo es necesario mantener en memoria el frente de construcción. Los hijos existen cuando el padre necesita sus direcciones.
+Antes de cerrar la construcción, se ajustan las últimas páginas de cada nivel para cumplir los mínimos de ocupación; el último grupo no siempre queda suficientemente lleno por sí solo. Solo es necesario mantener en memoria el frente de construcción. Los hijos existen cuando el padre necesita sus direcciones.
 
 Para un árbol inmutable, las páginas pueden quedar casi completas: no habrá inserts futuros. En un índice mutable, una ocupación inicial de 100 % puede provocar splits en cuanto llega la primera modificación. La carga masiva debe elegir densidad según el futuro, no solo según el dataset actual.
 

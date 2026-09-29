@@ -92,7 +92,7 @@ flowchart LR
 
 La tabla operacional es la referencia para atender pedidos. La copia analítica está preparada para otras preguntas. Es una posibilidad de diseño, no una obligación: una sola base puede servir ambas cargas si sus requisitos lo permiten.
 
-**El costo oculto es mantener la correspondencia.** Si un pedido se cancela después de copiarse, el informe tiene que enterarse. Define si la extracción usa lotes, cambios incrementales u otro mecanismo, cómo maneja eliminaciones y cuál es la demora aceptable. Esto conecta con [[Obsidian/pregrado/big data/extract transform load|tus notas de ETL]] y [[Obsidian/freelance/Data Engineering/Spark/10 Arquitectura Lambda|la distinción entre historia y datos recientes]]. El diagrama no promete sincronización instantánea ni transacciones entre ambos destinos.
+**El costo oculto es mantener la correspondencia.** Si un pedido se cancela después de copiarse, el informe tiene que enterarse. Define si la extracción usa lotes, cambios incrementales u otro mecanismo, cómo maneja eliminaciones y cuál es la demora aceptable. Esto conecta con [[Obsidian/pregrado/Documentos/big data/extract transform load|tus notas de ETL]] y [[Obsidian/freelance/Data Engineering/Spark/10 Arquitectura Lambda|la distinción entre historia y datos recientes]]. El diagrama no promete sincronización instantánea ni transacciones entre ambos destinos.
 
 ## 5. Cambia el esquema sin cambiar silenciosamente el significado
 

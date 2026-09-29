@@ -25,7 +25,7 @@ Crear arquitectura lógica consiste en proponer componentes y refinarlos con evi
 La caja de entrada identifica funciones principales. Después se entra en un circuito de cuatro actividades. Las flechas expresan orden de revisión, no ejecución del software:
 
 1. **Identificar candidatos.** Nombrar los grandes bloques que parecen necesarios según acciones o recorridos del usuario.
-2. **Asignar historias y requisitos.** Relacionar comportamientos concretos con los bloques que los implementarán.
+2. **Asignar historias y requisitos.** Relacionar comportamientos concretos con los bloques que los implementarán. Una **historia de usuario** expresa una necesidad desde el punto de vista de quien la usa; por ejemplo: «Como cliente, quiero elegir un horario para recoger mi pedido». Sus criterios de aceptación concretan cuándo está satisfecha.
 3. **Analizar roles y responsabilidades.** Revisar si cada conjunto de comportamientos corresponde a un propósito coherente y manejable.
 4. **Analizar características arquitectónicas.** Comprobar si rendimiento, disponibilidad, elasticidad, mantenibilidad y otras necesidades justifican límites distintos.
 5. **Reestructurar o añadir.** Dividir, fusionar, mover responsabilidades o crear componentes; regresar a la asignación para verificar el resultado.

@@ -37,7 +37,7 @@ orden: 8
 | ¿Top 3? | Conductora candidata | Objetivo provisional y evidencia para revisarlo |
 |---|---|---|
 | Sí | Disponibilidad | 99,9 % de solicitudes válidas de creación aceptadas técnicamente durante horario comercial; acordar exclusiones y medir extremo a extremo. |
-| Sí | Elasticidad | Soportar el paso de 200 a 2.000 sesiones en cinco minutos manteniendo los límites acordados de errores y latencia. |
+| Sí | Elasticidad | Soportar el paso de 200 a 2.000 sesiones en cinco minutos manteniendo los límites acordados de errores y latencia; al bajar la demanda, reducir capacidad sin interrumpir pedidos y medir cuánto tarda ese ajuste. |
 | Sí | Simplicidad operativa | Desplegar y revertir mediante procedimientos que dos integrantes diferentes puedan ejecutar en una prueba de quince minutos. |
 | No | Escalabilidad | Validar 4.000 sesiones con capacidad adicional y revisar coste, saturación y latencia. |
 | No | Rendimiento | Percentil 95 de creación de pedido inferior a dos segundos con 2.000 sesiones y mezcla documentada de solicitudes. |
@@ -55,7 +55,7 @@ orden: 8
 | Validación próxima | Prueba de carga, simulacro de dependencia caída y comparación del coste operativo. |
 | Reapertura | Revisar ante expansión, incumplimiento medido o nuevas reglas por franquicia. Responsable: equipo técnico y representante comercial. |
 
-La simplicidad puede favorecer capacidad preparada antes del almuerzo; la elasticidad exige comprobar si basta. La hoja permite discutir esa tensión.
+La simplicidad puede favorecer capacidad preparada antes del almuerzo; la elasticidad exige comprobar si basta. El objetivo de bajada todavía necesita un plazo y una capacidad mínima acordados: medirlos ayuda a fijarlos, pero no sustituye ese acuerdo. La hoja permite discutir esa tensión.
 
 ---
 

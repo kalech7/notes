@@ -137,9 +137,9 @@ flowchart TD
 
 ## 🔗 Vinculación con otras materias de la carrera en la EPN
 
-- **[[Gestion Organizacional]] (ADMD511):** Fundamentos de teoría administrativa, estructuras de poder y comportamiento humano en las organizaciones.
-- **[[Gestion de Procesos y Calidad]] (ADMD611):** Metodologías Lean, Six Sigma, aseguramiento de la calidad y control estadístico de procesos.
-- **[[Auditoria Informatica]] (ICCD833):** Técnicas forenses, pruebas de control interno, marcos ITAF/COBIT y evidencias digitales.
-- **[[seguridad informatica]] & [[sgsi]] (ICCD733 / ICCD643):** Familia ISO/IEC 27001, gestión del riesgo según ISO 27005 y controles de la Tríada CIA.
-- **[[Cloud Computing AWS]] (ICCD823):** Arquitectura de nube empresarial, modelo de responsabilidad compartida, finops y resiliencia de infraestructura.
-- **[[Ing software]] & [[Software 2]]:** Metodologías ágiles (Scrum, Kanban, XP), ciclo de vida del software, TDD y principios SOLID.
+- **Gestión Organizacional (ADMD511):** Fundamentos de teoría administrativa, estructuras de poder y comportamiento humano en las organizaciones.
+- **Gestión de Procesos y Calidad (ADMD611):** Metodologías Lean, Six Sigma, aseguramiento de la calidad y control estadístico de procesos.
+- **[[Auditoría de seguridad|Auditoría Informática (ICCD833)]]:** Técnicas forenses, pruebas de control interno, marcos ITAF/COBIT y evidencias digitales.
+- **[[seguridad informatica/seguridad|Seguridad Informática]] & [[sgsi]] (ICCD733 / ICCD643):** Familia ISO/IEC 27001, gestión del riesgo según ISO 27005 y controles de la Tríada CIA.
+- **[[Cloud Computing AWS/Cloud computing|Cloud Computing AWS]] (ICCD823):** Arquitectura de nube empresarial, modelo de responsabilidad compartida, finops y resiliencia de infraestructura.
+- **[[Software e Ingeniería  de Software|Ingeniería de Software]] & [[software 2|Software 2]]:** Metodologías ágiles (Scrum, Kanban, XP), ciclo de vida del software, TDD y principios SOLID.

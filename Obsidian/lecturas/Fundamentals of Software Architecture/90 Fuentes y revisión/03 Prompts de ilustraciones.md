@@ -2,7 +2,7 @@
 
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Fuentes y revisión](00%20%C3%8Dndice.md)
 
-Generadas con la herramienta integrada de imágenes; archivos finales en esta carpeta. Las analogías y sus límites se explican en cada capítulo y en el atlas.
+Generadas con la herramienta integrada de imágenes; archivos finales en `Recursos visuales`, dentro de la carpeta del libro. Las analogías y sus límites se explican en cada capítulo y en el atlas.
 
 ## 09-cohesion-responsabilidades.png
 

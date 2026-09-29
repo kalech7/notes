@@ -26,7 +26,7 @@ Para escribir estas comprobaciones existen herramientas en casi todos los lengua
 | Python | PyTestArch |
 | TypeScript y JavaScript | TSArch |
 
-Todas funcionan de forma parecida: leen el código compilado o fuente, construyen un mapa de paquetes y dependencias, y permiten escribir reglas que se ejecutan como pruebas automáticas. Si una regla falla, la compilación o el *pipeline* falla.
+Todas funcionan de forma parecida: leen el código compilado o fuente, construyen un mapa de paquetes y dependencias, y permiten escribir reglas que se ejecutan como pruebas automáticas. Si se configuran como controles obligatorios, una regla fallida detiene el *pipeline* (la secuencia automatizada de construcción, pruebas y entrega). La herramienta no bloquea cambios si nadie ejecuta la regla o se ignora su resultado.
 
 El libro presenta **tres reglas** progresivamente más finas.
 

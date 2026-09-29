@@ -133,13 +133,13 @@ flowchart TD
 
 Misma cantidad de componentes no garantiza compatibilidad entre modelos. Las coordenadas tampoco son necesariamente etiquetas humanas como “agricultura” o “economía”. La geometría refleja lo que aprendió el modelo, con sus limitaciones.
 
-Para vectores no nulos, la similitud coseno es:
+Aquí $q$ es el vector de la consulta y $d$ el de un documento. El producto punto $q\cdot d$ multiplica componentes de la misma posición y suma los resultados; $\|q\|$ es la longitud del vector, calculada como la raíz de la suma de sus componentes al cuadrado. Para vectores no nulos, la similitud coseno es:
 
 $$s(q,d)=\frac{q\cdot d}{\|q\|\,\|d\|}.$$
 
 La distancia euclidiana es $\sqrt{\sum_i(q_i-d_i)^2}$. Coseno compara orientación; euclidiana mide separación. Si normalizas ambos a longitud uno, $\|q-d\|^2=2-2s(q,d)$, así que inducen el mismo orden. Sin esa condición no debes tratarlas como intercambiables.
 
-**Ejemplo propio:** consulta $q=(1,0)$, documento $a=(0.9,0.1)$ y documento $b=(0,1)$. Sus distancias euclidianas son aproximadamente 0.141 y 1.414. A es el vecino más cercano en este ejemplo geométrico. No hemos demostrado con ello que A sea una fuente verdadera o suficiente para responder.
+**Ejemplo propio:** consulta $q=(1,0)$, documento $a=(0.9,0.1)$ y documento $b=(0,1)$. La distancia a $a$ es $\sqrt{(1-0.9)^2+(0-0.1)^2}=\sqrt{0.02}\approx0.141$; la distancia a $b$ es $\sqrt{(1-0)^2+(0-1)^2}=\sqrt{2}\approx1.414$. A es el vecino más cercano en este ejemplo geométrico. No hemos demostrado con ello que A sea una fuente verdadera o suficiente para responder.
 
 ## Tres maneras de encontrar vecinos
 
@@ -192,7 +192,7 @@ Un embedding puede representar texto, imagen o audio. Un modelo multimodal compa
 1. **Error de representación:** los vecinos exactos según el embedding no son los documentos útiles para la persona.
 2. **Error de aproximación:** el índice no devuelve algún vecino que una búsqueda exhaustiva sí habría encontrado.
 
-Puedes medir `recall@k` del índice comparándolo con los vecinos exactos del mismo conjunto y medida. Por separado, evalúas relevancia con preguntas y documentos esperados. Mejorar ANN no arregla una representación inadecuada.
+La búsqueda **ANN** (*Approximate Nearest Neighbors*) busca vecinos de forma aproximada. Para medir `recall@k`, tomas los $k$ vecinos de la búsqueda exacta y cuentas cuántos aparecen entre los $k$ resultados aproximados: `coincidencias / k`, suponiendo al menos $k$ candidatos y una regla consistente para empates. Si los cinco vecinos exactos son A, B, C, D y E, y el índice devuelve A, C, E, X e Y, recuperó tres de cinco: `recall@5 = 3/5 = 60 %`. Esta comparación usa el mismo conjunto, filtros y medida. Por separado, evalúas relevancia con preguntas y documentos esperados. Mejorar ANN no arregla una representación inadecuada.
 
 > [!tip] Para recordar
 > **Espacial: regiones. Invertido: términos. Vectorial: vecinos.** Vecino cercano no significa respuesta correcta. “Vectorizado” en ejecución SQL significa procesar lotes; no significa embeddings.
@@ -210,8 +210,6 @@ Puedes medir `recall@k` del índice comparándolo con los vecinos exactos del mi
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/05 Almacenamiento columnar y compresión|Bitmaps columnares]] muestra cómo intersecar condiciones con AND, la misma idea de conjuntos usada en postings.
 
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=29|PDF, p. 29; impresa 145]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=30|PDF, p. 30; impresa 146]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=31|PDF, p. 31; impresa 147]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=32|PDF, p. 32; impresa 148]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=33|PDF, p. 33; impresa 149]]. Ejemplos de documentos, coordenadas, ecuación de normalización y separación de errores desarrollados para estas notas. Las precisiones de implementación se contrastaron con la documentación oficial enlazada el 25-09-2026.
-
----
 
 ---
 

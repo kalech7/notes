@@ -25,7 +25,7 @@ El **índice primario** es el camino principal, normalmente sobre la primary key
 
 ## Clustered describe proximidad física
 
-Un índice es **clustered** cuando las filas se disponen siguiendo el orden de su clave. `id BETWEEN 100 AND 200` puede recorrer páginas contiguas. Solo hay un orden físico dominante por copia: las mismas filas no pueden estar simultáneamente ordenadas de forma independiente por `id`, `fecha` y `cliente`.
+Un índice es **clustered** cuando la organización de las filas sigue su clave. `id BETWEEN 100 AND 200` puede recorrer hojas consecutivas por clave y aprovechar localidad. Esto no garantiza páginas consecutivas en el archivo: los splits y la asignación de espacio pueden dispersarlas. Solo hay un orden físico dominante por copia: las mismas filas no pueden estar simultáneamente ordenadas de forma independiente por `id`, `fecha` y `cliente`.
 
 Un índice **nonclustered** mantiene su propio orden, pero sus hojas contienen localizadores o primary keys que conducen a filas cuyo orden físico es otro. «Primario» y «clustered» suelen coincidir, pero no son sinónimos: primario describe el papel de acceso; clustered, la relación con el layout.
 
@@ -75,7 +75,7 @@ Si cada índice secundario repite la primary key, una clave larga se multiplica 
 
 ## Índices de cobertura
 
-Un índice puede incorporar columnas adicionales para responder una consulta sin visitar la fila. Por ejemplo, `(cliente_id, fecha) INCLUDE (importe)` puede cubrir un informe que solo necesita esas columnas. Reduce saltos, pero duplica datos y hace más costosa cada actualización de las columnas incluidas. «Cubrir» es relativo a una consulta concreta, no una propiedad universal.
+Un índice puede incorporar columnas adicionales para responder una consulta sin visitar la fila. Por ejemplo, `(cliente_id, fecha) INCLUDE (importe)` puede cubrir un informe que solo necesita esas columnas. Reduce saltos, pero duplica datos y hace más costosa cada actualización de las columnas incluidas. «Cubrir» es relativo a una consulta concreta, no una propiedad universal. Tener todas las columnas es una condición necesaria para evitar la tabla; según el motor, también puede hacer falta comprobar allí la visibilidad de la fila para la transacción.
 
 > [!warning] Un índice acelera una ruta y grava las escrituras
 > Crear uno para cada filtro posible aumenta páginas sucias, WAL, memoria, recuperación y contención. La decisión debe basarse en consultas reales, selectividad y costo de mantenimiento.

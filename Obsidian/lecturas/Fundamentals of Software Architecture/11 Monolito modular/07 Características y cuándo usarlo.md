@@ -64,11 +64,11 @@ La lectura de fondo es que **cambiar la partición de técnica a dominio mejora 
 
 La causa principal es el **despliegue monolítico**. El libro reconoce que **es posible** que algunas funciones escalen más que otras dentro de un monolito, pero eso suele exigir **técnicas de diseño muy complejas**: multihilo, mensajería interna y otras prácticas de procesamiento en paralelo, para las que este estilo no está pensado.
 
-Ejemplo propio. En PedidoClaro, a la hora de comer las consultas del menú se multiplican por diez, mientras que el resto del sistema apenas cambia. En un monolito modular solo se puede responder de dos formas: arrancar más copias del sistema completo (con todos sus módulos, aunque solo el menú esté saturado) o complicar el interior del programa con hilos y colas internas para dar prioridad al menú. La primera desperdicia recursos; la segunda erosiona la simplicidad que justificaba el estilo.
+Ejemplo propio. En PedidoClaro, a la hora de comer las consultas del menú se multiplican por diez, mientras que el resto del sistema apenas cambia. Dos respuestas posibles en un monolito modular son arrancar más copias del sistema completo (con todos sus módulos, aunque solo el menú esté saturado) o complicar el interior del programa con hilos y colas internas para dar prioridad al menú. Replicar todo puede consumir capacidad innecesaria; introducir coordinación interna puede aumentar complejidad. También deben evaluarse optimización y caché según el caso: este ejemplo no agota las alternativas.
 
 ## 6. Por qué la tolerancia a fallos recibe una estrella
 
-Los despliegues monolíticos **no soportan tolerancia a fallos**: si una pequeña parte provoca, por ejemplo, un **agotamiento de memoria**, **se cae toda la unidad de aplicación**. Además, como en la mayoría de monolitos, la **disponibilidad** se ve afectada por un **tiempo medio de recuperación (MTTR) alto**, con **tiempos de arranque que suelen medirse en minutos**.
+El despliegue monolítico **no proporciona aislamiento de fallos entre los módulos que comparten proceso**: si una pequeña parte provoca, por ejemplo, un **agotamiento de memoria**, **se cae toda la unidad de aplicación**. El libro también advierte que un arranque lento puede elevar el **tiempo medio de recuperación (MTTR)** y reducir disponibilidad. Los minutos citados son ejemplos de la fuente: el tiempo real depende de la implementación y de los pasos necesarios para recuperar el servicio. Si otras réplicas mantienen la atención, reiniciar una no equivale a una interrupción global.
 
 Un cálculo propio, simplificado, muestra por qué importa el arranque. La disponibilidad puede aproximarse como:
 
@@ -76,7 +76,7 @@ $$
 \text{disponibilidad} = \frac{\text{MTBF}}{\text{MTBF} + \text{MTTR}}
 $$
 
-donde MTBF es el tiempo medio entre fallos. Si el sistema falla una vez al mes (unos 43.200 minutos):
+En este modelo, MTBF representa el tiempo medio de funcionamiento entre fallos y MTTR el tiempo medio sin servicio hasta recuperarlo. Se supone una unidad reparable, ciclos comparables y ninguna réplica que mantenga el servicio. Si funciona unos 43.200 minutos entre fallos (aproximadamente un mes):
 
 | Tiempo de recuperación | Cálculo | Disponibilidad | Caída acumulada al año |
 |---|---|---|---|
@@ -102,12 +102,12 @@ Además, por estar particionado por dominio, encaja bien con equipos que practic
 
 ## 8. Cuándo no usarlo
 
-1. **Cuando se necesitan niveles altos de características operativas**: escalabilidad, elasticidad, disponibilidad, tolerancia a fallos, capacidad de respuesta y rendimiento. Como la mayoría de monolitos, el estilo no está pensado para ellas.
+1. **Cuando se exige independencia operativa por capacidad**: escalar, desplegar o recuperar una parte sin afectar a las demás. Las valoraciones bajas del libro orientan esa comparación; no prueban que un monolito sea incapaz de alcanzar alta disponibilidad o rendimiento global. Hay que medir requisitos concretos y evaluar redundancia, recursos y costo.
 2. **Cuando la mayoría de los cambios son técnicos**, por ejemplo sustituir continuamente la interfaz de usuario o la tecnología de base de datos. Como cada módulo contiene su propia interfaz y su acceso a datos, esos cambios **afectan a todos los módulos** y requieren mucha comunicación y coordinación entre equipos de dominio. En esas situaciones, el libro considera **mucho mejor** la arquitectura por capas del capítulo 10, donde un cambio técnico se concentra en una capa.
 
 ```mermaid
 flowchart TD
-  Q1{"¿Se necesitan escalabilidad, elasticidad o tolerancia a fallos altas?"} -->|Sí| D["Estilo distribuido"]
+  Q1{"¿Hace falta escalar o recuperar capacidades por separado?"} -->|Sí| D["Evaluar un estilo distribuido y sus costos"]
   Q1 -->|No| Q2{"¿La mayoría de cambios son técnicos y transversales?"}
   Q2 -->|Sí| L["Arquitectura por capas"]
   Q2 -->|No, son de negocio| Q3{"¿Hay presupuesto o tiempo ajustados, o la dirección no está clara?"}
@@ -115,7 +115,7 @@ flowchart TD
   Q3 -->|No| M2["Monolito modular como punto de partida y revisar si crece"]
 ```
 
-El diagrama ordena los criterios del libro como un embudo. Primero se descartan los requisitos operativos exigentes, porque ningún monolito los cumple con fuerza. Después se mira el tipo de cambio dominante: si es técnico, gana la partición técnica de las capas; si es de negocio, gana la partición por dominio. El último paso reconoce que, sin presiones especiales, el monolito modular sigue siendo un buen inicio, con la condición de vigilar las señales de crecimiento de la nota de riesgos.
+El diagrama ordena los criterios del libro como un embudo. La rama de requisitos operativos debe leerse como «evaluar distribución si hace falta independencia por capacidad», no como una prohibición de usar monolitos con cargas altas. Después se mira el tipo de cambio dominante: si es técnico, gana la partición técnica de las capas; si es de negocio, gana la partición por dominio. El último paso reconoce que, sin presiones especiales, el monolito modular sigue siendo un buen inicio, con la condición de vigilar las señales de crecimiento de la nota de riesgos.
 
 ## 9. Tres decisiones resueltas
 
@@ -123,7 +123,7 @@ El diagrama ordena los criterios del libro como un embudo. Primero se descartan 
 |---|---|---|
 | Startup con cuatro desarrolladores y un producto que aún cambia cada mes | Monolito modular | Barato, simple y permite descubrir los dominios antes de distribuirlos |
 | Portal de noticias que rediseña su interfaz cada trimestre y cambia de base de datos cada pocos años | Arquitectura por capas | Los cambios dominantes son técnicos y transversales |
-| Plataforma de venta de entradas con picos de cien veces la carga normal al abrir un concierto | Estilo distribuido | La elasticidad es imprescindible y el monolito solo puede replicarse entero |
+| Plataforma de venta de entradas con picos de cien veces la carga normal al abrir un concierto | Evaluar distribución | Hace falta medir qué capacidad se satura y comparar su escalado independiente con replicar u optimizar el monolito |
 
 > [!question]- ¿Qué cuatro estrellas gana el monolito modular respecto a capas?
 > Modularidad, mantenibilidad, desplegabilidad y capacidad de evolución, cada una de una a dos estrellas. Las demás valoraciones son iguales.

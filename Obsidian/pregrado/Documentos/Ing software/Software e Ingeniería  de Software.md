@@ -1,3 +1,29 @@
+---
+title: "Software e Ingeniería de Software"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - ingenieria-de-software
+  - conceptos-fundamentales
+  - dominios-de-software
+  - legacy-systems
+  - pregrado
+  - epn
+aliases:
+  - Software e Ingeniería de Software
+  - Dominios de Aplicación del Software
+  - Naturaleza del Software
+related:
+  - "[[CIENCIAS EN LAS QUE SE BASA LA INGENIERÍA DE SOFTWARE]]"
+  - "[[El proceso de software]]"
+  - "[[Actividades del proceso de software]]"
+  - "[[Requisitos de software]]"
+  - "[[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]"
+  - "[[Principios SOLID y Clean Code]]"
+---
+
+# Naturaleza del Software e Ingeniería de Software
+
 Es un producto y al mismo tiempo es el vehículo para entregar un producto
 
 **forma de producto:** brinda el potencial de cómputo incorporado en el hardware de cómputo o, con más amplitud, en una red de computadoras a las que se accede por medio de un hardware local
@@ -147,14 +173,25 @@ si el software heredado satisface las necesidades de sus usuarios y corre de man
 - El software debe adaptarse para que cumpla las necesidades de los nuevos ambientes de cómputo y tecnología. 
 - El software debe ser mejorado para implementar nuevos requerimientos del negocio. 
 - El software debe ampliarse para que sea operable con otros sistemas o bases de datos modernos.  La arquitectura del software debe rediseñarse para hacerla viable dentro de un ambiente de redes.
-se debe hacer la reingeniería del sistema heredado para que sea viable en el futuro
+se debe hacer la reingeniería del sistema heredado para que sea viable en el futuro.
 
-
-## Diagrama de Referencia
+## Mapa Conceptual de la Disciplina
 
 ```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
+flowchart TD
+    IngSw["Ingeniería de Software"] --> Multidisc["Fundamentos Multidisciplinarios<br/>[[CIENCIAS EN LAS QUE SE BASA LA INGENIERÍA DE SOFTWARE]]"]
+    IngSw --> Proceso["Ciclos y Modelos de Desarrollo<br/>[[El proceso de software]] y [[Actividades del proceso de software]]"]
+    IngSw --> Requisitos["Ingeniería de Requerimientos<br/>[[Requisitos de software]] y [[historias de usuario]]"]
+    IngSw --> Calidad["Atributos y Métricas de Calidad<br/>[[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]"]
+    IngSw --> Arquitectura["Diseño Arquitectónico y Limpio<br/>[[Principios SOLID y Clean Code]] y [[Arquitecturas de Software (Limpia, Hexagonal, Event-Driven)]]"]
 ```
+
+## Notas relacionadas
+- [[CIENCIAS EN LAS QUE SE BASA LA INGENIERÍA DE SOFTWARE]]
+- [[El proceso de software]]
+- [[Actividades del proceso de software]]
+- [[Requisitos de software]]
+- [[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]
+- [[Principios SOLID y Clean Code]]
+- [[Arquitecturas de Software (Limpia, Hexagonal, Event-Driven)]]
+- [[proyectos]]

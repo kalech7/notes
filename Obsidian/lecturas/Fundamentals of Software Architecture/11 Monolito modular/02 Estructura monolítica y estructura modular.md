@@ -37,7 +37,7 @@ com.orderentry.shipping             → envíos
 
 **Ventaja.** Es la opción más sencilla. Todo el código está en un sitio, así que se mantiene, se prueba y se despliega con facilidad: un solo proyecto para abrir, un solo proceso de compilación, un solo conjunto de pruebas.
 
-**Riesgo.** Nada técnico impide que el código de un módulo use clases internas de otro: están en la misma compilación y el compilador no se queja. El libro señala dos tendencias concretas: los desarrolladores **reutilizan demasiado código entre módulos** y **dejan que los módulos se comuniquen demasiado**. Cada atajo parece inofensivo, pero acumulados borran las fronteras hasta convertir un monolito modular bien diseñado en una **Big Ball of Mud**. Por eso esta opción exige un **gobierno estricto**: reglas automáticas que fallen cuando alguien cruza una frontera prohibida (se estudian en la nota de gobierno).
+**Riesgo.** Si las clases son públicas y no hay restricciones adicionales, compartir compilación facilita usar detalles de otro módulo. Un repositorio común no elimina los controles de acceso del lenguaje: el problema es exponer como públicas clases que conceptualmente deberían ser internas. El libro señala dos tendencias concretas: los desarrolladores **reutilizan demasiado código entre módulos** y **dejan que los módulos se comuniquen demasiado**. Cada atajo parece inofensivo, pero acumulados borran las fronteras hasta convertir un monolito modular bien diseñado en una **Big Ball of Mud**. Por eso esta opción exige un **gobierno estricto**: reglas automáticas que fallen cuando alguien cruza una frontera prohibida (se estudian en la nota de gobierno).
 
 **Fuente:** PDF p. 3 · impresa 167 · figura 11-2.
 
@@ -59,7 +59,7 @@ En la estructura modular, cada módulo se representa como un **artefacto autocon
 
 ## 3. Por qué la frontera es más fuerte con artefactos
 
-La diferencia es mecánica y conviene verla con un ejemplo propio. En la estructura monolítica, este código compila sin problemas porque `ReservaInterna` está en la misma compilación:
+La diferencia es mecánica y conviene verla con un ejemplo propio. En la estructura monolítica, este código puede compilar si `ReservaInterna`, su constructor y el método son accesibles; llamarla «Interna» no restringe su acceso:
 
 ```java
 // dentro del módulo pedidos
@@ -67,7 +67,7 @@ var reserva = new com.orderentry.inventorymanagement.interno.ReservaInterna();
 reserva.descontarExistencias(articulo, 2);
 ```
 
-En la estructura modular, `pedidos.jar` se compila **sin** el código de inventario. Si nadie ha declarado que pedidos depende de inventario, esa línea no compila. Para que funcione hay que tomar una decisión explícita y visible: añadir la dependencia, o mejor, depender de un contrato público de inventario. **La frontera deja de ser una convención y pasa a ser un obstáculo técnico.** Eso explica por qué el libro dice que los desarrolladores reutilizan y comunican menos con esta opción: no porque sean más disciplinados, sino porque cruzar cuesta un paso deliberado.
+En la estructura modular, `pedidos.jar` se compila **sin** el código de inventario. Si nadie ha declarado que pedidos depende de inventario, esa línea no compila. Para que funcione hay que tomar una decisión explícita y visible: añadir la dependencia, o mejor, depender de un contrato público de inventario. **La dependencia debe declararse, lo que hace visible el cruce de frontera.** Un JAR separado no oculta automáticamente sus clases públicas una vez añadido como dependencia: todavía hacen falta contratos y controles de acceso. En Java, la [especificación de accesibilidad](https://docs.oracle.com/javase/specs/jls/se25/html/jls-6.html#jls-6.6) distingue acceso público, de paquete y restricciones de módulos. Eso explica por qué el libro dice que los desarrolladores reutilizan y comunican menos con esta opción: no porque sean más disciplinados, sino porque cruzar cuesta un paso deliberado.
 
 ## 4. Comparación y decisión
 
@@ -103,7 +103,7 @@ PedidoClaro, nuestro caso inventado de tienda de sándwiches, tiene cinco módul
 > No en el estilo que describe el libro: los artefactos se combinan en una sola unidad de despliegue. Cambiar `payment.jar` implica volver a ensamblar y desplegar la unidad completa. La separación mejora el desarrollo y las fronteras, no la independencia en producción.
 
 > [!question]- ¿Por qué la estructura monolítica puede terminar en una Big Ball of Mud si empezó bien diseñada?
-> Porque cruzar fronteras no cuesta nada: reutilizar una clase de otro módulo o llamarlo directamente siempre compila. Cada atajo aislado es pequeño; su acumulación elimina los límites. Sin reglas que lo detecten, la degradación es gradual e invisible.
+> Porque cruzar fronteras puede resultar muy fácil cuando todas las clases son públicas y no hay controles adicionales. Cada atajo aislado es pequeño; su acumulación elimina los límites. Sin reglas que lo detecten, la degradación es gradual e invisible.
 
 > [!question]- ¿Cuándo pierde sentido la estructura modular?
 > Cuando los módulos dependen mucho unos de otros. Cada dependencia entre artefactos exige interfaces compartidas y compatibilidad de versiones; si hay muchas, el esfuerzo supera el beneficio de las fronteras fuertes.

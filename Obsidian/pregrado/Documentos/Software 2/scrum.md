@@ -111,9 +111,10 @@ flowchart LR
 
 ## Notas Relacionadas
 - [[software 2]]
+- [[historias de usuario]]
+- [[Estimación de software]]
 - [[XP (eXtremme programming)]]
 - [[kanban]]
-- [[historias de usuario]]
 - [[proyectos]]
 - [[Metodologia TDD (Test-Driven Development)]]
 - [[Testing automatizado]]

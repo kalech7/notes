@@ -86,7 +86,7 @@ flowchart LR
 
 Con millones de filas, no basta con minimizar I/O. Interpretar la misma instrucción miles de millones de veces también consume CPU. El capítulo describe dos enfoques:
 
-**Compilación de consultas:** generar código especializado para la consulta y ejecutarlo, a menudo mediante compilación JIT. Se reduce parte del trabajo de interpretar repetidamente qué comparación hacer. La generación y compilación también tienen costo.
+**Compilación de consultas:** generar código especializado para la consulta y ejecutarlo, a menudo mediante compilación JIT (*just-in-time*): el código se genera y compila durante la ejecución, cuando ya se conoce la consulta. Se reduce parte del trabajo de interpretar repetidamente qué comparación hacer. La generación y compilación también tienen costo.
 
 **Ejecución vectorizada:** operadores preparados reciben lotes de valores y devuelven lotes o máscaras. En vez de solicitar un valor, entrar a otra función y repetir, se hace trabajo compacto sobre muchos elementos.
 
@@ -157,8 +157,6 @@ El resumen pierde detalle. Si solo guardaste ventas por día y producto, no pued
 - [[Obsidian/freelance/Data Engineering/SQL/03 Planes estadísticas y particiones|Planes, estadísticas y particiones]] ayuda a distinguir receta estimada y trabajo ejecutado.
 
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=20|PDF, p. 20; impresa 134]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=21|PDF, p. 21; impresa 135]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=22|PDF, p. 22; impresa 136]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=27|PDF, p. 27; impresa 142–143]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=28|PDF, p. 28; impresa 144]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=29|PDF, p. 29; impresa 145]]. El PDF 27 contiene dos páginas; un adhesivo tapa una franja superior de la 143. No se transcribe ni reconstruye esa zona oculta.
-
----
 
 ---
 

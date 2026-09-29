@@ -21,12 +21,10 @@ aliases:
   - Empresa, Procesos y Sistemas de Información
   - Alineamiento Estratégico de TI
 related:
-  - "[[Ingenieria de Software]]"
-  - "[[Arquitectura de software]]"
-  - "[[Bases de datos]]"
-  - "[[Seguridad de la Informacion]]"
-  - "[[Gobernanza de TI y COBIT]]"
-  - "[[Gestion de Servicios ITIL]]"
+  - "[[Software e Ingeniería  de Software]]"
+  - "[[seguridad informatica/seguridad|Seguridad Informática]]"
+  - "[[Capitulo 5 - COBIT 2019 - Gobierno y Gestion de IT|Gobernanza de TI y COBIT 2019]]"
+  - "[[Capitulo 6 - Otros Modelos y Marcos de Gestion de TICs|Marcos de Gestión de TICs e ITIL]]"
 ---
 
 # Capítulo 1: Fundamentos de la Empresa, Organización y TICs

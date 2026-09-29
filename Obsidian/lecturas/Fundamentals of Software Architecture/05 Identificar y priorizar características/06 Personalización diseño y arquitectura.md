@@ -46,7 +46,7 @@ La fuente pide analizar rendimiento, acoplamiento, otras características y cost
 
 La tabla no es una progresión obligatoria. Sirve para evitar dos extremos: codificar cada diferencia con condicionales dispersos o construir una plataforma de plugins antes de demostrar que las extensiones necesitan independencia.
 
-**Caso propio:** una franquicia cambia el porcentaje de descuento. Guardarlo como dato permite validarlo y auditarlo. Otra franquicia introduce «segundo sándwich gratis solo si ambos pertenecen a una familia y durante dos franjas horarias». Antes de crear un plugin, se comprueba si una estrategia mantenida por el mismo equipo cubre la variación. Un plugin gana justificación si terceros entregan reglas, sus versiones evolucionan aparte o un fallo debe quedar aislado; esas ventajas también exigen límites de recursos y permisos.
+**Caso propio:** una franquicia cambia el porcentaje de descuento. Guardarlo como dato permite validarlo y auditarlo. Otra franquicia introduce «segundo sándwich gratis solo si ambos pertenecen a una familia y durante dos franjas horarias». Antes de crear un plugin, se comprueba si una estrategia mantenida por el mismo equipo cubre la variación. Un plugin gana justificación si terceros entregan reglas, sus versiones evolucionan aparte o un fallo debe quedar aislado; esas ventajas también exigen límites de recursos y permisos. Un plugin cargado en el mismo proceso puede bloquear o derribar toda la aplicación: el nombre «plugin» no garantiza aislamiento de fallos. Si ese aislamiento es necesario, hay que diseñar y probar la frontera de ejecución correspondiente.
 
 > [!warning] Errores frecuentes
 > - Confundir «configurable» con «sin riesgo»: los datos pueden cambiar comportamiento crítico.

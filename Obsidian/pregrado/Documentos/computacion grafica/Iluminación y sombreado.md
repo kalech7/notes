@@ -1,3 +1,28 @@
+---
+title: "Iluminación y Sombreado en Computación Gráfica (Modelo Phong)"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - computacion-grafica
+  - iluminacion-sombreado
+  - modelo-phong
+  - shaders
+  - opengl
+  - pregrado
+  - epn
+aliases:
+  - Iluminación y sombreado
+  - Modelo de Iluminación de Phong
+  - Shading e Iluminación 3D
+related:
+  - "[[pipeline grafico]]"
+  - "[[OpenGl]]"
+  - "[[open gl]]"
+  - "[[pixeles]]"
+---
+
+# Iluminación y Sombreado en Computación Gráfica
+
 La **Iluminación y el Sombreado** en computación gráfica son los procesos matemáticos que simulan el comportamiento físico de la luz cuando interactúa con superficies. Su objetivo principal es dar sensación de volumen, realismo y profundidad (3D) a polígonos que, de otro modo, se verían planos en el [[pipeline grafico]].
 
 ## Modelos de Iluminación Local

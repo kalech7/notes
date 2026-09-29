@@ -30,12 +30,12 @@ El negocio atiende tres barrios, con picos moderados a la hora de comer, y quier
 ## Paso 1 · ¿Monolito modular o seguir por capas?
 
 > [!question]- Solución
-> 37 de 40 cambios (92,5 %) son de negocio y solo 3 son técnicos transversales. El libro recomienda el monolito modular cuando la mayoría de los cambios son de dominio y la arquitectura por capas cuando dominan los técnicos. Además, los requisitos operativos son moderados y el presupuesto limitado. **Decisión: migrar a un monolito modular**, conservando un solo despliegue. **Costo aceptado:** los tres cambios técnicos tocarán ahora todos los módulos.
+> 37 de 40 cambios (92,5 %) son de negocio y solo 3 son técnicos transversales. El libro recomienda el monolito modular cuando la mayoría de los cambios son de dominio y la arquitectura por capas cuando dominan los técnicos. Además, los requisitos operativos son moderados y el presupuesto limitado. **Decisión: migrar a un monolito modular**, conservando un solo despliegue. **Costo aceptado:** algunos cambios técnicos podrán extenderse por varios módulos; su alcance depende de cómo se encapsulen las herramientas compartidas.
 
 ## Paso 2 · Definir módulos y namespaces
 
 > [!question]- Solución
-> Un módulo por área que concentra cambios: `com.pedidoclaro.promociones`, `com.pedidoclaro.pedidos`, `com.pedidoclaro.entregas` y `com.pedidoclaro.pagos`. El tercer nodo es el dominio. Dentro de un módulo complejo, como promociones, puede haber subdivisión técnica: `com.pedidoclaro.promociones.reglas`, `com.pedidoclaro.promociones.pantallas`. No se crea un módulo `comun` ni `utilidades`: sería el primer paso hacia la reutilización excesiva.
+> Un módulo por área que concentra cambios: `com.pedidoclaro.promociones`, `com.pedidoclaro.pedidos`, `com.pedidoclaro.entregas` y `com.pedidoclaro.pagos`. El tercer nodo es el dominio. Dentro de un módulo complejo, como promociones, puede haber subdivisión técnica: `com.pedidoclaro.promociones.reglas`, `com.pedidoclaro.promociones.pantallas`. No se crea un módulo genérico `comun` ni `utilidades` como contenedor de reglas de varios dominios. Una utilidad técnica estable sí puede compartirse con un propósito y unas dependencias explícitos.
 
 ## Paso 3 · ¿Estructura monolítica o modular?
 
@@ -72,7 +72,7 @@ Tras un año, las dependencias entre módulos son: Compra → Pedidos, Compra �
 > | Pagos | 1 | 1 | 2 |
 > | Entregas | 0 | 1 | 1 |
 >
-> Nadie supera el límite de cuatro, aunque Pedidos está justo en él con cuatro entrantes. Comprobación: la suma de totales es 12, el doble de las 6 dependencias. Que un módulo reciba muchas dependencias no es malo en sí (es un módulo estable del que otros dependen), pero conviene revisar por qué Promociones y Pagos consultan Pedidos directamente si ya existe un mediador.
+> Nadie supera el límite de cuatro, aunque Pedidos está justo en él con cuatro entrantes. Comprobación: la suma de totales es 12, el doble de las 6 dependencias. Que un módulo reciba muchas dependencias no es malo en sí, pero el conteo no demuestra que su contrato sea estable; hay que comprobarlo. También conviene revisar por qué Promociones y Pagos consultan Pedidos directamente si ya existe un mediador.
 
 ## Paso 7 · Leer las señales de alarma
 
@@ -86,7 +86,7 @@ Dos años después: el arranque tarda seis minutos, dos personas modifican a men
 La tienda abre en veinte ciudades y las promociones de fin de semana multiplican por treinta la carga del cálculo de precios.
 
 > [!question]- Solución
-> Ahora la elasticidad importa y el estilo tiene una estrella en ella. El libro sugiere evolucionar hacia un estilo distribuido, como el basado en servicios o los microservicios. Los módulos ya definidos dan las líneas de corte: Promociones es el primer candidato a extraer. Si su base de datos ya estaba separada o sus tablas eran exclusivas, la extracción será mucho más sencilla.
+> Ahora la elasticidad importa y el estilo tiene una estrella en ella. El libro sugiere evolucionar hacia un estilo distribuido, como el basado en servicios o los microservicios. Los módulos ya definidos ofrecen candidatos de separación: Promociones merece evaluarse si la medición confirma que su carga domina y el costo de escalar todo no resulta aceptable. Un aumento de treinta veces no demuestra por sí solo que distribuir sea necesario. Si su base de datos ya estaba separada o sus tablas eran exclusivas, la extracción será mucho más sencilla.
 
 ## Repaso rápido
 
@@ -94,13 +94,13 @@ La tienda abre en veinte ciudades y las promociones de fin de semana multiplican
 > Una sola unidad de despliegue y funcionalidad agrupada por área de dominio.
 
 > [!question]- ¿Qué indica el tercer nodo del namespace?
-> El criterio de partición: técnico en capas (`com.app.presentation…`) y de dominio en el monolito modular (`com.app.customer…`).
+> En los ejemplos con prefijo `com.app`, indica el criterio de partición: técnico o de dominio. Con otro prefijo puede ocupar otra posición; importa la primera agrupación propia de la aplicación.
 
 > [!question]- ¿Cuál es el gran riesgo de la estructura monolítica y cuál el de la modular cuando hay mucha comunicación?
-> En la monolítica, degradarse en una Big Ball of Mud porque cruzar fronteras es gratis. En la modular, caer en el JAR o DLL Hell por la proliferación de contratos compartidos y sus versiones.
+> En la monolítica, degradarse en una Big Ball of Mud si las clases internas son accesibles y faltan controles de dependencias. En la modular, caer en el JAR o DLL Hell por la proliferación de contratos compartidos y sus versiones.
 
 > [!question]- ¿Qué acoplamiento conserva el mediador?
-> El de cada módulo con el mediador. Los módulos dejan de depender entre sí, pero todos dependen de él, y es él quien necesita la API de cada uno.
+> La coordinación del flujo y los contratos que usa el mediador. En el diseño unidireccional mostrado, el mediador depende de la API de cada módulo, pero los módulos no necesitan conocerlo.
 
 > [!question]- ¿Por qué un monolito modular puede tener varias bases de datos?
 > Porque la topología de datos es una decisión distinta del despliegue. Los módulos independientes con datos de su contexto pueden tener base propia aunque todo se despliegue junto.

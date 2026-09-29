@@ -24,10 +24,10 @@ aliases:
   - "ICCD943 - Capítulo 3"
   - "Estructuras y Procesos TIC EPN"
 related:
-  - "[[Capítulo 1 - Introducción a la Gestión de TICs]]"
-  - "[[Capítulo 2 - Alineamiento Estratégico de TI]]"
+  - "[[Capitulo 1 - Fundamentos de la Empresa, Organizacion y TICs]]"
+  - "[[Capitulo 2 - Analisis de Situacion Actual, Diagnostico y Planeacion de TICs]]"
   - "[[El proceso de software]]"
-  - "[[Software e Ingeniería de Software]]"
+  - "[[Software e Ingeniería  de Software]]"
   - "[[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]"
 ---
 

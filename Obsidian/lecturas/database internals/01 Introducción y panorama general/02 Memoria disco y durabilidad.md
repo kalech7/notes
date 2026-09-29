@@ -15,7 +15,7 @@ tags:
 [[Obsidian/lecturas/database internals/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/database internals/01 Introducción y panorama general/00 Índice|Introducción y panorama general]]
 
 > [!abstract] Idea que organiza la nota
-> Todos los motores usan memoria y almacenamiento persistente. La distinción útil es cuál constituye el hogar principal del dato y qué costos físicos guiaron las estructuras. Durabilidad no aparece por guardar «en memoria» o «en disco»: se construye con un protocolo verificable.
+> Los motores que estudiaremos combinan memoria y almacenamiento persistente. La distinción útil es cuál constituye el hogar principal del dato y qué costos físicos guiaron las estructuras. Durabilidad no aparece por guardar «en memoria» o «en disco»: se construye con un protocolo verificable.
 
 ## El medio cambia la forma del motor
 
@@ -48,9 +48,9 @@ sequenceDiagram
     Note over W,S: Tras un fallo: cargar S y reproducir WAL posterior a N
 ```
 
-**Lo que demuestra la secuencia:** el camino del cliente termina cuando el registro persistente satisface la política acordada, no necesariamente cuando el estado completo queda consolidado. El snapshot posterior agrupa muchos cambios. Tras un fallo, snapshot y sufijo del log se complementan: el primero evita reconstruir toda la historia y el segundo conserva lo ocurrido después.
+**Lo que demuestra la secuencia:** el camino del cliente termina cuando el registro persistente satisface la política acordada, no necesariamente cuando el estado completo queda consolidado. El snapshot posterior agrupa muchos cambios. Tras un fallo, snapshot y sufijo del log se complementan: el primero evita reconstruir toda la historia y el segundo conserva lo ocurrido después. Aquí `LSN` es una posición en el log. El dibujo supone un snapshot consistente hasta esa posición; un checkpoint real puede registrar un punto de recuperación y páginas pendientes, sin ser una copia completa e instantánea. Por eso el inicio exacto del replay depende del protocolo.
 
-El orden es crucial. Si el motor permite que una página de datos modificada dependa de un cambio antes de registrar información suficiente en WAL, una caída puede dejar una página imposible de explicar. **Write-ahead** significa que el registro necesario se hace durable antes que la página cuya recuperación depende de él.
+El orden es crucial. Modificar una página en RAM antes de sincronizar el log puede ser válido; persistirla antes del WAL necesario para recuperarla no lo es. Una caída en ese segundo caso puede dejar una página imposible de explicar. **Write-ahead** significa que el registro necesario se hace durable antes que la página cuya recuperación depende de él.
 
 ## Tres estados que no deben confundirse
 
@@ -86,6 +86,8 @@ La memoria no volátil reduce la brecha tradicional, pero no elimina la consiste
 
 > [!question]- ¿Por qué árboles anchos ayudan en disco?
 > Porque una sola página trae muchos separadores. Cada lectura reduce mucho el rango restante y evita más accesos aleatorios.
+
+**Complemento de implementación:** [regla de persistencia del WAL en PostgreSQL](https://www.postgresql.org/docs/18/wal-intro.html).
 
 **Fuente:** [[Obsidian/lecturas/database internals/Materiales/Database Internals - Parte I (fuente).pdf#page=11|PDF, capítulo 1, desde p. 11]].
 

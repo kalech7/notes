@@ -15,7 +15,7 @@ tags:
 [[Obsidian/lecturas/database internals/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/database internals/01 Introducción y panorama general/00 Índice|Introducción y panorama general]]
 
 > [!abstract] Idea que organiza la nota
-> Una tabla lógica no fija cómo se acomodan sus bytes. Agrupar por fila favorece recuperar entidades; agrupar por columna favorece recorrer atributos. Una wide-column store es otra cosa: un modelo de mapa ordenado por row key, familias y versiones.
+> Una tabla lógica no fija cómo se acomodan sus bytes. Agrupar por fila favorece recuperar entidades; agrupar por columna favorece recorrer atributos. Una wide-column store es otra cosa: la estudiaremos con el modelo de Bigtable, organizado por row key, familias y versiones.
 
 ## Una tabla, dos disposiciones
 
@@ -77,7 +77,7 @@ No es una elección absoluta. Un sistema puede conservar datos recientes por fil
 
 ## Wide-column no significa columnar analítico
 
-Una **wide-column store** modela datos como un mapa multidimensional ordenado. La ruta conceptual es:
+En el modelo de **wide-column store** ilustrado por Bigtable, los datos forman un mapa multidimensional ordenado. No todos los productos llamados wide-column exponen exactamente las mismas familias, qualifiers o versiones. La ruta del ejemplo es:
 
 `row key → familia → qualifier → timestamp → valor`
 

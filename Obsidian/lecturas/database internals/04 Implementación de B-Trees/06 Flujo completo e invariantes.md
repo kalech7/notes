@@ -27,22 +27,24 @@ flowchart TD
  A[Validar header y versión] --> B[Búsqueda binaria en raíz]
  B --> C[Guardar breadcrumb]
  C --> D[Descender hasta hoja]
- D --> E{Hay espacio contiguo}
- E -->|sí| F{Payload cabe inline}
+ D --> F{Payload cabe inline}
+ F -->|sí| T[Calcular celda completa y slot]
+ F -->|no| M[Definir prefijo y referencia a overflow]
+ M --> T
+ T --> E{Hay espacio para esa celda}
+ E -->|sí| L[Escribir celda, overflow si corresponde y offset]
  E -->|hay espacio total, no contiguo| G[Compactar]
- G --> F
+ G --> E
  E -->|no hay espacio suficiente| H{Hermano puede absorber}
  H -->|sí| I[Rebalancear y actualizar padre]
- H -->|no| J[Split]
+ I --> E
+ H -->|no| J[Split incluyendo la entrada nueva]
  J --> K[Propagar separador con breadcrumbs]
- F -->|sí| L[Escribir celda y offset]
- F -->|no| M[Asignar overflow y escribir prefijo]
- M --> L
 ```
 
 **Lo que demuestra el árbol de decisiones:** cada obstáculo activa un mecanismo distinto. La búsqueda encuentra la ubicación; el layout decide si la entrada cabe; overflow resuelve un valor demasiado grande; y `split` con breadcrumbs repara un cambio estructural. El flujo conecta responsabilidades, no prescribe el protocolo exacto de una base concreta.
 
-Después de escribir todavía faltan logging, checksums, dirty-page tracking y reglas de commit según el motor. El diagrama se limita al B-Tree para no mezclar niveles.
+Logging y coordinación acompañan las modificaciones; no se añaden al final. El WAL necesario debe ser durable antes de persistir las páginas afectadas. También se actualizan checksums, el registro de páginas modificadas en memoria (*dirty-page tracking*) y las reglas de commit según el motor. El diagrama se limita al B-Tree para no mezclar niveles.
 
 ## Invariantes para auditar una implementación
 
@@ -50,9 +52,9 @@ Una lista de pasos puede variar. Las invariantes son las condiciones que deben s
 
 1. **Orden lógico.** Los offsets se comparan en orden de clave aunque las celdas físicas estén dispersas.
 2. **Cobertura de rangos.** Cada separador divide correctamente los subárboles; no deja huecos ni solapamientos indebidos.
-3. **Aritmética de hijos.** Un nodo interno con `N` separadores representa `N + 1` intervalos, con rightmost pointer o high key según el formato.
+3. **Aritmética de hijos.** Un nodo interno con `N` separadores representa `N + 1` intervalos, con una representación explícita de todos sus punteros; una high key es un límite y no sustituye por sí sola un puntero faltante.
 4. **Altura uniforme.** Todas las hojas permanecen a la misma profundidad.
-5. **Enlaces coherentes.** Si existen sibling links, ambos sentidos describen la misma vecindad.
+5. **Enlaces coherentes.** Si hay enlaces bidireccionales, ambos sentidos describen la misma vecindad en el estado estable; si solo hay enlace derecho, debe conservarse ese recorrido.
 6. **Overflow alcanzable.** Toda extensión viva parte de una celda viva y la cadena termina.
 7. **Regreso válido.** Breadcrumbs o parent pointers identifican y revalidan el padre antes de cambiarlo.
 8. **Espacio exclusivo.** Una página no puede estar a la vez en la freelist y alcanzable desde la raíz.
@@ -88,7 +90,7 @@ Preguntar “¿qué pasa si se apaga aquí?” en cada paso descubre dependencia
 > Debe comprobar la premisa en cada operación y volver al algoritmo general.
 
 > [!failure] “Eliminar un offset borra el dato.”
-> Elimina su alcanzabilidad lógica; los bytes pueden sobrevivir hasta vacuum.
+> Retirar la última referencia elimina su alcanzabilidad lógica, no sus bytes. Con MVCC deben conservarse las referencias y versiones que aún necesitan snapshots.
 
 ## Método de estudio transferible
 

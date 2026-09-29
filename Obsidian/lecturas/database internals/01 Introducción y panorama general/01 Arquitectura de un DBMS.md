@@ -65,7 +65,7 @@ La integridad lógica y la física no son idénticas. En una transferencia banca
 
 ## Sigue la actualización del pedido
 
-El parser identifica tabla y columnas. El optimizador elige el índice primario. La transacción obtiene la versión apropiada; el método de acceso recorre el índice; el buffer manager trae la página si falta; recovery registra el cambio en WAL antes de que una página de datos dependa de él; se modifica la fila y el índice secundario de `estado`. El commit puede confirmarse cuando el log cumple la garantía de durabilidad, aunque la página definitiva se escriba después.
+El parser identifica tabla y columnas. El optimizador elige el índice primario. La transacción obtiene la versión apropiada; el método de acceso recorre el índice; el buffer manager trae la página si falta; recovery registra el cambio en WAL y asegura que ese registro sea durable antes de persistir la página de datos modificada; se modifica la fila y el índice secundario de `estado`. El commit puede confirmarse cuando el log cumple la garantía de durabilidad, aunque la página definitiva se escriba después.
 
 > [!important] La respuesta no marca el final de todo el trabajo
 > Checkpoints, propagación de páginas, compactación o limpieza de versiones pueden continuar en segundo plano. «Commit exitoso» expresa una garantía concreta, no que todos los bytes alcanzaron ya su destino final.

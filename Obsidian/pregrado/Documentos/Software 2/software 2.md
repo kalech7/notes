@@ -1,54 +1,99 @@
-# Software 2
+---
+title: "Software 2: Fundamentos del Desarrollo Ágil de Software"
+date_created: 2024-01-04
+date_modified: 2026-09-29
+tags:
+  - ingenieria-de-software
+  - metodologias-agiles
+  - scrum
+  - xp
+  - kanban
+  - calidad
+aliases:
+  - Software 2
+  - Desarrollo Ágil de Software
+  - Metodologías Ágiles
+related:
+  - "[[scrum]]"
+  - "[[XP (eXtremme programming)]]"
+  - "[[kanban]]"
+  - "[[historias de usuario]]"
+  - "[[tecnicas pruebas]]"
+  - "[[El proceso de software]]"
+  - "[[Estimación de software]]"
+---
 
-Scrum no es una metodología en sí misma, sino que es un *framework* (marco de trabajo) ágil.
-XP (Extreme Programming) sí es una metodología ágil, ya que prescribe exactamente cómo se deben hacer las cosas desde el punto de vista técnico y utiliza historias de usuario.
-AUP (Agile Unified Process) es un marco que trabaja principalmente con casos de uso.
-Kanban es un método visual que ayuda a identificar cuellos de botella en el flujo de trabajo en tiempo real.
-Es importante entender la diferencia entre Git (el sistema de control de versiones) y GitHub (la plataforma de alojamiento de repositorios). Al trabajar en equipo, los desarrolladores deben hacer *match* (coordinar) para saber a quién le corresponde solucionar un error o conflicto específico.
+# Software 2: Fundamentos del Desarrollo Ágil de Software
 
-## Manifiesto Ágil
+El desarrollo ágil surge como respuesta a la rigidez de los modelos tradicionales en cascada (*Waterfall*), priorizando la entrega continua de valor, la adaptabilidad al cambio y la estrecha colaboración entre los clientes y los equipos de desarrollo.
 
-El desarrollo ágil se basa en 4 valores fundamentales:
+- **Scrum:** No es una metodología prescriptiva completa, sino un **marco de trabajo (*framework*) ágil** empírico centrado en la gestión iterativa del valor (Sprints de 1 a 4 semanas).
+- **XP (Extreme Programming):** Es una **metodología ágil técnica** que prescribe prácticas de ingeniería rigurosas (Pair Programming, TDD, integración continua, refactorización constante) y modela los requisitos mediante [[historias de usuario]].
+- **Kanban:** Es un método visual de gestión del flujo de trabajo enfocado en limitar el trabajo en curso (WIP - *Work In Progress*) e identificar cuellos de botella en tiempo real.
+- **AUP (Agile Unified Process):** Versión simplificada del RUP que combina principios ágiles con modelado de casos de uso y arquitectura en fases.
+
+---
+
+## 1. El Manifiesto Ágil: Valores y Principios
+
+### Los 4 Valores Fundamentales
 1. **Individuos e interacciones** sobre procesos y herramientas.
 2. **Software funcionando** sobre documentación extensiva.
 3. **Colaboración con el cliente** sobre negociación contractual.
 4. **Respuesta ante el cambio** sobre seguir un plan estricto.
 
-Además, se rige por 12 principios:
-1. Nuestra mayor prioridad es satisfacer al cliente mediante la entrega temprana y continua de software con valor.
-2. Aceptamos que los requisitos cambien, incluso en etapas tardías del desarrollo. Los procesos Ágiles aprovechan el cambio para proporcionar ventaja competitiva al cliente.
-3. Entregamos software funcional frecuentemente, en periodos de entre dos semanas y dos meses, con preferencia por el periodo de tiempo más corto posible.
-4. Los responsables del negocio y los desarrolladores trabajamos juntos de forma cotidiana durante todo el proyecto.
-5. Los proyectos se desarrollan en torno a individuos motivados. Hay que darles el entorno y el apoyo que necesitan, y confiarles la ejecución del trabajo.
-6. El método más eficiente y efectivo de comunicar información al equipo de desarrollo y entre sus miembros es la conversación cara a cara.
-7. El software funcionando es la medida principal de progreso.
-8. Los procesos Ágiles promueven el desarrollo sostenible. Los promotores, desarrolladores y usuarios debemos ser capaces de mantener un ritmo constante de forma indefinida.
-9. La atención continua a la excelencia técnica y al buen diseño mejora la Agilidad.
-10. La simplicidad, o el arte de maximizar la cantidad de trabajo no realizado, es esencial.
-11. Las mejores arquitecturas, requisitos y diseños emergen de equipos auto-organizados.
-12. A intervalos regulares, el equipo reflexiona sobre cómo ser más efectivo y, a continuación, ajusta y perfecciona su comportamiento en consecuencia.
+### Los 12 Principios Rectores
+1. Mayor prioridad: satisfacer al cliente mediante la entrega temprana y continua de software con valor.
+2. Aceptación del cambio de requisitos, incluso en etapas tardías, como ventaja competitiva.
+3. Entrega frecuente de software funcional (semanas a meses, con preferencia por lapsos cortos).
+4. Trabajo conjunto y cotidiano entre negocio y desarrolladores.
+5. Construcción de proyectos alrededor de individuos motivados, brindándoles entorno, apoyo y confianza.
+6. Comunicación cara a cara como el método más eficaz de transmisión de información.
+7. Software funcionando como la principal medida de progreso.
+8. Promoción del desarrollo sostenible y mantenimiento de un ritmo constante indefinido.
+9. Atención continua a la excelencia técnica y al buen diseño.
+10. La simplicidad (el arte de maximizar el trabajo no realizado) como elemento esencial.
+11. Equipos autoorganizados como fuente de las mejores arquitecturas y diseños.
+12. Reflexiones retrospectivas a intervalos regulares para ajustar y perfeccionar la efectividad.
 
-## Enfoques de Desarrollo
-* **FDD (Feature-Driven Development):** Se centra en el desarrollo guiado por características y está muy orientado a las pruebas del sistema y los resultados.
-* **BDD (Behavior-Driven Development):** Se centra en el desarrollo guiado por el comportamiento del usuario y cómo el sistema reacciona ante este.
+---
+
+## 2. Enfoques Técnicos de Desarrollo
+
+* **TDD (Test-Driven Development):** Desarrollo guiado por pruebas unitarias previas al código de producción ([[Testing automatizado]]).
+* **BDD (Behavior-Driven Development):** Desarrollo guiado por el comportamiento del sistema validado contra especificaciones de negocio legibles en lenguaje natural.
+* **FDD (Feature-Driven Development):** Desarrollo guiado por funcionalidades y características tangibles de corto plazo.
+
+---
+
+## 3. Ecosistema de Metodologías Ágiles
+
+```mermaid
+flowchart TD
+    AGILE["Manifiesto Ágil (2001)<br>4 Valores • 12 Principios"]
+    
+    AGILE --> GEST["Gestión e Iteración"]
+    AGILE --> FLUX["Flujo Continuo"]
+    AGILE --> TECN["Excelencia Técnica"]
+    
+    GEST --> SCRUM["[[scrum|Scrum]]<br>• Sprints<br>• Backlog<br>• Retrospectivas"]
+    FLUX --> KANBAN["[[kanban|Kanban]]<br>• Límite WIP<br>• Tableros visuales<br>• Lead Time"]
+    TECN --> XP["[[XP (eXtremme programming)|Extreme Programming (XP)]]<br>• TDD y Refactorización<br>• Pair Programming<br>• Integración Continua"]
+```
+
+---
 
 > [!info] Explicación: Integración de Prácticas Ágiles
-> Los 12 principios del manifiesto ágil no son un simple ideal teórico; requieren disciplina técnica para sostenerse. Por ejemplo, el principio de "entregar software funcional frecuentemente" requiere de automatización de pruebas (Testing) e Integración Continua (CI). Metodologías como BDD ayudan a cerrar la brecha entre el negocio ("responsables de negocio") y la parte técnica ("desarrolladores"), usando un lenguaje común para describir pruebas automatizadas basadas en el comportamiento.
+> Los valores y principios del manifiesto ágil requieren una estricta disciplina técnica para no degenerar en desorganización. La entrega de software funcional continuo requiere suites robustas de [[Testing automatizado]], control de versiones distribuido riguroso y automatización mediante [[Integración continua y despliegue continuo (CI-CD)]].
+
+---
 
 ## Notas relacionadas
 - [[scrum]]
 - [[XP (eXtremme programming)]]
 - [[kanban]]
 - [[historias de usuario]]
-- [[técnicas pruebas]]
+- [[tecnicas pruebas]]
+- [[Testing automatizado]]
 - [[El proceso de software]]
-
-
-## Diagrama de Referencia
-
-```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
-```
+- [[Estimación de software]]

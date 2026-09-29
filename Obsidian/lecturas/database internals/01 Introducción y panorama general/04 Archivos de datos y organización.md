@@ -60,9 +60,9 @@ flowchart TB
 
 ## Index-organized table: la fila vive en el índice
 
-En una **index-organized table (IOT)**, las hojas del índice primario contienen el registro completo. Al recorrer el árbol no hace falta un segundo salto a un heap. Además, filas próximas por la clave quedan próximas físicamente, lo que beneficia rangos.
+En una **index-organized table (IOT)**, las hojas del índice primario contienen el registro completo. Al recorrer el árbol no hace falta un segundo salto a un heap. Además, filas próximas por clave se agrupan en hojas vecinas del árbol, lo que beneficia rangos. Las páginas vecinas por clave no tienen por qué ocupar posiciones consecutivas en el archivo.
 
-El precio es que las filas ocupan espacio dentro de las hojas. Menos entradas caben en cada página, disminuye el fan-out y las divisiones pueden mover más bytes. Una fila grande también hace costoso mantener el orden. Por eso «evitar un lookup» no significa ganar siempre.
+El precio es que las filas ocupan espacio dentro de las hojas. Caben menos registros por hoja y las divisiones pueden mover más bytes. Si los internos solo almacenan separadores y punteros, su fanout no disminuye directamente al crecer el valor; lo que aumenta primero es la cantidad de hojas necesarias. Una fila grande también hace costoso mantener el orden. Por eso «evitar un lookup» no significa ganar siempre.
 
 | Organización | Igualdad | Rango | Inserción | Dónde vive la fila |
 |---|---|---|---|---|

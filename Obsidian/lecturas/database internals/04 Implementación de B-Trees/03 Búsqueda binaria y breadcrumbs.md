@@ -45,7 +45,9 @@ flowchart TD
  G --> B
 ```
 
-**Lo que demuestra el resultado:** la búsqueda no produce solo «encontrado/no encontrado». Cuando falta la clave, `low` queda en el primer elemento mayor y entrega directamente la posición de inserción que conserva el orden.
+**Lo que demuestra el resultado:** esta variante es `lower_bound`: devuelve el primer elemento mayor o igual al objetivo, o `n` si todos son menores. Hay que comprobar `low < n` antes de leer esa posición y comparar por igualdad para saber si existe la clave.
+
+En una hoja sirve para encontrar el inicio del rango o la posición de inserción. Para elegir un hijo interno con nuestra convención de separadores —igualdad hacia la derecha— se usa `upper_bound`, el primer separador estrictamente mayor: en el rombo se compara `clave_mid <= objetivo`. No deben intercambiarse ambas reglas.
 
 Con `[10,18,27,41]`, buscar `25` termina en la posición 2. Insertar un nuevo offset allí produce `[10,18,25,27,41]` sin mover inmediatamente los payloads.
 

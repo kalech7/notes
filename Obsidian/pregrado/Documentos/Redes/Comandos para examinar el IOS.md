@@ -1,3 +1,27 @@
+---
+title: Comandos para Examinar y Diagnosticar Cisco IOS
+date_created: 2024-01-04
+date_modified: 2026-09-29
+tags:
+  - redes
+  - cisco
+  - ios
+  - switch
+  - router
+  - diagnostico
+aliases:
+  - Comandos para examinar el IOS
+  - Diagnóstico de Cisco IOS
+  - Configuraciones basicas de un router y un switch
+related:
+  - "[[Configuración del Switch Consola, Acceso remoto]]"
+  - "[[Enrutamiento]]"
+  - "[[VLAN]]"
+  - "[[Port Security]]"
+---
+
+# Comandos para Examinar y Diagnosticar Cisco IOS
+
 Los comandos de verificación y diagnóstico en el modo privilegiado (EXEC) son la herramienta fundamental diaria para administrar, monitorear y solucionar problemas de operación tanto en un **Switch** como en un **Router** gobernado por el sistema operativo Cisco IOS.
 
 Para obtener un resumen exhaustivo y detallado sobre el estado base del sistema y el hardware del equipo, se utiliza el clásico comando general:
@@ -37,7 +61,8 @@ flowchart TD
 *(Diagrama: Proceso de arranque estándar del IOS donde se cargan los componentes que luego el comando `show version` audita).*
 
 ## Notas relacionadas
-- [[Configuración del Switch Consola, Acceso remoto.]]
+- [[Configuración del Switch Consola, Acceso remoto]]
 - [[Enrutamiento]]
 - [[VLAN]]
 - [[Port Security]]
+- [[Cableado y medios de red]]

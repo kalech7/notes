@@ -13,7 +13,7 @@ cobertura: "Impresas 178–186"
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/05 Codificación y evolución/00 Índice|Codificación y evolución]]
 
-La compatibilidad se vuelve concreta cuando identificas la ruta del dato. Una base de datos lo lleva a otro momento; una API lo lleva a otro proceso; una llamada RPC puede parecer una función pero atraviesa una red con fallos y tiempos impredecibles.
+Una **API** (*Application Programming Interface*, interfaz de programación de aplicaciones) define cómo un programa solicita operaciones o datos a otro componente. En esta nota estudiamos APIs entre procesos; también existen APIs locales de bibliotecas. La compatibilidad se vuelve concreta cuando identificas la ruta del dato. Una base de datos lo lleva a otro momento; una API lo lleva a otro proceso; una llamada RPC puede parecer una función pero atraviesa una red con fallos y tiempos impredecibles.
 
 Los formatos anteriores explican si unos bytes pueden interpretarse. Falta ubicar quién escribe y quién lee en cada canal: una base conserva datos para el futuro, una API intercambia solicitud y respuesta, y la red añade incertidumbre sobre si el efecto ocurrió.
 
@@ -133,7 +133,7 @@ sequenceDiagram
 
 **La respuesta perdida no deshace el cobro:** el reintento conserva `P-42` para referirse al mismo efecto lógico. El receptor debe almacenar y hacer cumplir esa identidad; una etiqueta enviada únicamente por el cliente no deduplica nada.
 
-También cambian latencia, disponibilidad, costo de transferir objetos y tipos entre lenguajes. Un puntero válido en un proceso no es una referencia útil en el otro. Un stub simplifica la sintaxis, pero la aplicación sigue teniendo que manejar la realidad de la red.
+También cambian latencia, disponibilidad, costo de transferir objetos y tipos entre lenguajes. Un puntero válido en un proceso no es una referencia útil en el otro. Un **stub** es una función o un objeto local que empaqueta la petición remota y presenta su respuesta al programa. Simplifica la sintaxis, pero la aplicación sigue teniendo que manejar la realidad de la red.
 
 ### Seis diferencias que deben aparecer en tu diseño
 

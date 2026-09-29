@@ -20,7 +20,7 @@ La primera edición del libro (2020) no trataba este estilo por separado. Los au
 - La adopción del **diseño guiado por el dominio** (*domain-driven design*, DDD). DDD propone construir el software alrededor del lenguaje y de las áreas del negocio: si la empresa habla de «pedidos», «facturación» y «envíos», el código debería tener partes con esos nombres y esas responsabilidades. Un **dominio** es un área de conocimiento del negocio; un **subdominio** es una parte más pequeña dentro de ella, por ejemplo «devoluciones» dentro de «pedidos».
 - Un interés creciente por la **partición por dominio**, es decir, por organizar el primer nivel del sistema según esas áreas del negocio en lugar de según capas técnicas.
 
-El monolito modular es la forma más sencilla de aplicar esas ideas: se obtienen fronteras de negocio claras sin pagar todavía los costos de un sistema distribuido que se estudiaron en el capítulo 9.
+El monolito modular es una forma de aplicar esas ideas con poca complejidad operativa inicial: se obtienen fronteras de negocio claras sin pagar todavía los costos de un sistema distribuido que se estudiaron en el capítulo 9.
 
 **Fuente:** PDF p. 1 · impresa 165.
 
@@ -32,9 +32,9 @@ El estilo es **monolítico** porque todo el sistema se entrega como una sola pie
 |---|---|---|
 | Java web | Archivo **WAR** (*web archive*) | Un paquete comprimido con toda la aplicación web, que un servidor de aplicaciones ejecuta |
 | Java empresarial | Archivo **EAR** (*enterprise archive*) | Un paquete mayor que puede agrupar varios módulos y aplicaciones web en una sola entrega |
-| .NET | Un único **ensamblado** | El binario compilado que contiene la aplicación |
+| .NET | Una entrega de aplicación, que puede incluir varios **ensamblados** | Binarios compilados que se publican y ejecutan como una unidad |
 
-Lo importante no es el formato, sino la consecuencia: **para cambiar cualquier parte en producción hay que volver a desplegar la pieza completa**, y todas sus partes se ejecutan en el mismo proceso. Una llamada entre módulos es una llamada a un método, no un viaje por la red. Por eso desaparecen problemas como la respuesta perdida o la latencia de red entre módulos, y por eso también un fallo grave afecta a todo el proceso (se retoma en la nota de características).
+Lo importante no es el formato, sino la consecuencia: **para cambiar cualquier parte en producción hay que volver a desplegar la pieza completa**, y todas sus partes se ejecutan en el mismo proceso. Una llamada entre módulos es una llamada a un método, no un viaje por la red. Por eso las llamadas internas evitan problemas de transporte como la respuesta perdida o la latencia de red; las conexiones con bases remotas y proveedores externos siguen expuestas a ellos. Compartir proceso también permite que un fallo grave afecte a toda la instancia (se retoma en la nota de características).
 
 **Fuente:** PDF p. 1 · impresa 165.
 
@@ -42,7 +42,7 @@ Lo importante no es el formato, sino la consecuencia: **para cambiar cualquier p
 
 El estilo está **particionado por dominio**: sus bloques principales representan áreas del negocio y no capacidades técnicas. El libro resume su **forma isomórfica** —la silueta que permite reconocer el estilo en un diagrama— así: *una sola unidad de despliegue con la funcionalidad agrupada por área de dominio*.
 
-La figura 11-1 dibuja exactamente eso: una caja en tres dimensiones que representa la única unidad desplegable, y dentro, nueve rectángulos iguales rotulados «Module». No hay capas ni flechas: el mensaje es que el sistema se divide en módulos de negocio de similar importancia, todos viviendo dentro del mismo paquete.
+La figura 11-1 dibuja exactamente eso: una caja en tres dimensiones que representa la única unidad desplegable, y dentro, nueve rectángulos iguales rotulados «Module». No hay capas ni flechas: el mensaje es que el sistema se divide en módulos de negocio dentro del mismo paquete. El tamaño igual de los rectángulos no demuestra igual complejidad, importancia ni carga.
 
 En este estilo, los dominios (o, a veces, subdominios) reciben el nombre de **módulos**. Un módulo agrupa todo lo necesario para una capacidad del negocio: sus reglas, su manejo de pantallas o peticiones y su acceso a datos.
 
@@ -50,7 +50,7 @@ En este estilo, los dominios (o, a veces, subdominios) reciben el nombre de **m�
 
 ## 4. La diferencia vista en un nombre de paquete
 
-El libro usa un truco muy útil para distinguir el estilo por capas del monolito modular: mirar el **tercer nodo del namespace** (el nombre de paquete o espacio de nombres del código).
+El libro usa un truco para sus ejemplos: mirar el **tercer nodo del namespace** (el nombre de paquete o espacio de nombres del código). Funciona porque los dos primeros nodos son el prefijo `com.app`; en otro proyecto el dominio puede ocupar otra posición. Lo importante es el primer agrupamiento dentro de la aplicación, no contar siempre hasta tres.
 
 ![El tercer nodo del namespace decide el criterio](../Recursos%20visuales/Cap%C3%ADtulo%2011/c11-01-namespaces.png)
 
@@ -71,7 +71,7 @@ Supón un cambio de negocio propio: «el perfil del cliente debe guardar un segu
 | ¿Qué riesgo tengo? | Olvidar una de las capas o romper otra función que comparte la capa | Tocar datos que otros módulos leen directamente |
 | ¿Qué despliego? | Toda la aplicación | Toda la aplicación |
 
-La última fila es la que más se olvida: **la organización del código cambia, pero el despliegue sigue siendo uno.** El monolito modular mejora la localización y la comprensión de los cambios de negocio; no permite publicar, escalar ni reiniciar un módulo por separado.
+La última fila es la que más se olvida: **la organización del código cambia, pero el despliegue sigue siendo uno.** El monolito modular mejora la localización y la comprensión de los cambios de negocio; no ofrece unidades independientes para publicar o reiniciar cada módulo, ni para replicarlo por separado.
 
 Ahora imagina un cambio técnico: «sustituir el framework de interfaz en todo el sistema». Con capas, ese cambio se concentra en la capa de presentación. En el monolito modular está repartido por todos los módulos. El estilo favorece los cambios de negocio y penaliza los técnicos transversales; el libro usa esta idea para decidir cuándo no usarlo.
 
@@ -101,7 +101,7 @@ El diagrama resume el contraste. El cambio de negocio entra por una sola puerta,
 > Solo si esas carpetas son verdaderos módulos: cada una debe tener su responsabilidad, sus reglas y unos pocos puntos de contacto con las demás. Si cualquier clase usa libremente las clases internas de otro módulo, los nombres de carpeta no protegen nada y el sistema se acerca a la Big Ball of Mud.
 
 > [!question]- ¿Por qué no se puede escalar solo el módulo de pagos?
-> Porque no existe como pieza desplegable independiente: está dentro del mismo paquete y del mismo proceso que el resto. Para tener más capacidad de pagos hay que ejecutar más copias de la aplicación entera.
+> Porque no existe como pieza desplegable independiente: está dentro del mismo paquete y del mismo proceso que el resto. Para replicar pagos horizontalmente hay que ejecutar más copias de la aplicación entera. También se puede optimizar su código o ajustar recursos internos; eso no convierte Pagos en un despliegue independiente.
 
 > [!question]- Si un módulo complejo se divide por dentro en `presentation` y `business`, ¿el sistema pasa a ser por capas?
 > No. La partición se define por el primer nivel. Si el primer nivel es el negocio y las capas aparecen dentro de un módulo, sigue siendo partición por dominio.

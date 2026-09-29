@@ -30,7 +30,7 @@ El libro plantea cuatro decisiones esenciales:
 
 **Política didáctica para el ejemplo:** conservar temporalmente dos contratos, declarar la interpretación de clientes antiguos, observar qué versión usa cada consumidor, probar compatibilidad y retirar la anterior cuando exista evidencia de migración. «Temporalmente» necesita una condición concreta: si nunca se comprueba el uso, las versiones tienden a acumularse.
 
-**Compensación:** autonomía para migrar frente al costo de sostener varias interpretaciones simultáneas. No existe un número universal de versiones correcto.
+**Tradeoff o compromiso:** autonomía para migrar frente al costo de sostener varias interpretaciones simultáneas. Aquí se comparan beneficios y costos; la «compensación» de la siguiente sección es una operación de recuperación distinta. No existe un número universal de versiones correcto.
 
 **Fuente:** PDF pp. 20–21, impresas 149–150.
 
@@ -52,7 +52,7 @@ flowchart TD
   N --> Q[Reintento controlado o reconciliación]
 ```
 
-La rama inferior hace visible el fallo de la propia compensación. Si liberar inventario no responde, no se marca automáticamente todo como restaurado. El flujo conserva un estado pendiente y un mecanismo de recuperación. Las flechas indican avance conceptual del proceso; el diagrama no define un protocolo ni garantiza entrega exactamente una vez.
+En este diagrama, la salida «No» de «¿Pago aceptado?» significa **rechazo confirmado**. Un timeout deja el pago incierto y requiere averiguar su resultado o gestionar explícitamente esa incertidumbre; no debe recorrer automáticamente la rama de rechazo. La rama inferior hace visible el fallo de la propia compensación. Si liberar inventario no responde, no se marca automáticamente todo como restaurado. El flujo conserva un estado pendiente y un mecanismo de recuperación. Las flechas indican avance conceptual del proceso; el diagrama no define un protocolo ni garantiza entrega exactamente una vez.
 
 **Ejemplo resuelto propio.** Se reservan dos productos; el pago es rechazado; la liberación falla por indisponibilidad de Inventario. El pedido debe conservar que la reserva existe o podría existir y que se intentó liberarla. Un responsable o proceso posterior necesita identificar la operación y determinar su estado. Si el sistema solo muestra «cancelado» y descarta esos datos, puede perder la capacidad de reconciliar existencias.
 

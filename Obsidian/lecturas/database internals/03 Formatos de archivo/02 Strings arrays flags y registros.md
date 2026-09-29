@@ -39,7 +39,7 @@ Para elementos fijos, el conteo basta:
 [count:u16][elemento 0:u32][elemento 1:u32]...[elemento n-1:u32]
 ```
 
-El elemento `i` empieza en `base + i × 4`. Para elementos variables, conocer `count` solo dice cuántos hay; no indica dónde empieza el elemento 17. Se puede recorrer los 16 anteriores o guardar una tabla de offsets.
+El elemento `i`, numerado desde cero, empieza en `base + i × 4`, donde `base` es el inicio de los elementos, después del conteo de dos bytes. Para elementos variables, conocer `count` solo dice cuántos hay; no indica dónde empieza el elemento 17. Se puede recorrer los 16 anteriores o guardar una tabla de offsets.
 
 ```mermaid
 flowchart TD
@@ -54,7 +54,7 @@ flowchart TD
 
 ## Enums, booleanos y flags
 
-Un **enum** elige una alternativa excluyente: `0 = ROOT`, `1 = INTERNAL`, `2 = LEAF`. Los **flags** describen propiedades que pueden coexistir. Como cada flag ocupa un bit, sus máscaras son potencias de dos.
+Un **enum** elige una alternativa excluyente: por ejemplo, `0 = INTERNAL`, `1 = LEAF`, `2 = OVERFLOW`. Ser raíz es una propiedad independiente: la raíz puede ser interna o una hoja, así que conviene identificarla por metadatos o un flag separado. Los **flags** describen propiedades que pueden coexistir. Como cada flag ocupa un bit, sus máscaras son potencias de dos.
 
 ```text
 IS_LEAF       = 0000 0001 = 0x01

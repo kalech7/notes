@@ -19,11 +19,15 @@ tags:
 > [!info] Recuerda antes
 > - Un **dato lógico** como “pedido 42 enviado” necesita una representación en bytes; el motor organiza esa representación, no decide por sí solo qué significa “enviado”.
 > - El almacenamiento mueve y conserva **bloques de bytes**. Aunque una aplicación cambie un campo, el trabajo físico puede abarcar páginas, segmentos o archivos completos.
-> - Un **índice** es información derivada que ahorra búsqueda. No sustituye los datos: ocupa espacio y debe mantenerse cuando estos cambian.
+> - Un **índice** organiza el acceso para ahorrar búsqueda. Puede guardar localizadores, algunas columnas o las filas completas, según el diseño; ocupa espacio y debe mantenerse cuando los datos cambian.
 
 ## Una tienda, dos preguntas
 
-La tienda necesita consultar «¿cuál es el estado del pedido 42?» y también «¿cuánto vendimos por categoría durante el año?». La primera petición toca pocos registros y espera una respuesta breve: patrón OLTP. La segunda combina muchas filas y unas pocas columnas: patrón analítico, OLAP. La frecuencia, selectividad y proporción entre lecturas y escrituras condicionan el almacenamiento conveniente.
+La tienda necesita consultar «¿cuál es el estado del pedido 42?» y también «¿cuánto vendimos por categoría durante el año?». La primera petición toca pocos registros y espera una respuesta breve: patrón OLTP. La segunda combina muchas filas y unas pocas columnas: patrón analítico, OLAP.
+
+OLTP significa procesamiento de transacciones en línea (*Online Transaction Processing*); OLAP, procesamiento analítico en línea (*Online Analytical Processing*). Aquí “en línea” no significa necesariamente conectado a Internet.
+
+La frecuencia, selectividad y proporción entre lecturas y escrituras condicionan el almacenamiento conveniente. **Selectividad** describe cuánta parte del conjunto cumple el filtro: devolver 10 pedidos de un millón es una selección mucho más estrecha que devolver 900 000.
 
 No memorices OLTP como «escribir» y OLAP como «leer»: OLTP también lee y un almacén analítico también recibe cambios. La diferencia es la **forma del trabajo habitual**.
 
@@ -39,7 +43,7 @@ Imagina un archivo al que solo añadimos registros al final. Usamos los siguient
 
 Una actualización añade una nueva versión: no necesita buscar la anterior para sobrescribirla. Para consultar el pedido 42, una lectura completa debe reconocer sus apariciones y quedarse con la última. Devuelve `enviado`; la versión antigua sigue ocupando espacio.
 
-Si hay $N$ entradas en el archivo, recorrerlas cuesta $O(N)$. Aquí $N$ cuenta **registros del historial**, no solo claves distintas: actualizar un único pedido muchas veces también hace crecer el archivo. La sencillez de escribir creó una deuda para leer.
+Si hay $N$ entradas en el archivo, recorrerlas cuesta $O(N)$: el trabajo crece aproximadamente en proporción al número de entradas; duplicarlas puede exigir examinar el doble. La notación describe cómo crece el trabajo, no segundos de ejecución. Aquí $N$ cuenta **registros del historial**, no solo claves distintas: actualizar un único pedido muchas veces también hace crecer el archivo. La sencillez de escribir creó una deuda para leer.
 
 ```mermaid
 flowchart LR
@@ -122,8 +126,6 @@ Esto no significa que todos los índices dupliquen toda la tabla. Algunos guarda
 [[Obsidian/freelance/Data Engineering/SQL/02 Índices y filtros eficientes|Índices y filtros eficientes]] explica cuándo un filtro permite localizar un rango y qué significa que un índice cubra una consulta. Esta nota añade el origen físico del costo de mantener ese atajo.
 
 **Fuente:** [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=1|PDF, p. 1; impresa 115]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=2|PDF, p. 2; impresa 116]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=3|PDF, p. 3; impresa 117]], [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 4 - escaneo.pdf#page=4|PDF, p. 4; impresa 118]]. Ejemplo de pedidos y posiciones creado para estas notas.
-
----
 
 ---
 

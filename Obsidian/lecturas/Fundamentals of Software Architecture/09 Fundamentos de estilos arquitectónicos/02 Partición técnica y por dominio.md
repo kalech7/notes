@@ -11,7 +11,7 @@ tags:
 
 # Partición técnica y por dominio
 
-**Particionar es decidir qué criterio agrupa primero las responsabilidades.** El primer nivel importa porque establece dónde buscar cambios, qué se considera una unidad de trabajo y qué dependencias cruzan sus límites.
+**Particionar es decidir qué criterio agrupa primero las responsabilidades.** El primer nivel importa porque establece dónde buscar cambios, qué se considera una unidad de trabajo y qué dependencias cruzan sus límites. Aquí **contenedor** significa una agrupación lógica de código; no implica un contenedor de ejecución como Docker.
 
 ## 1. Dos maneras de organizar la misma aplicación
 

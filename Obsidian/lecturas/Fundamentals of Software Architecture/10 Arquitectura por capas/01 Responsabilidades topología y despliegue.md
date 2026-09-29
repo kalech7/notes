@@ -79,7 +79,7 @@ La interfaz puede formatear `54` como moneda, pero el importe autorizado lo calc
 
 **¿Una base de datos externa convierte el sistema en microservicios?** No. Una frontera física de almacenamiento no divide responsabilidades de negocio en servicios independientes.
 
-**¿Cuál es la diferencia entre persistencia y base de datos?** La primera es código que adapta acceso y representación; la segunda es el mecanismo de almacenamiento. Una capa de persistencia puede usar un ORM, consultas directas o un sistema de archivos; no se identifica con una tecnología concreta.
+**¿Cuál es la diferencia entre persistencia y base de datos?** La primera es código que adapta acceso y representación; la segunda es el mecanismo de almacenamiento. Una capa de persistencia puede usar un ORM (mapeador entre objetos del programa y tablas relacionales), consultas directas o un sistema de archivos; no se identifica con una tecnología concreta.
 
 **¿Qué debes dibujar antes de elegir infraestructura?** Las responsabilidades y sus contratos. Después, una vista de despliegue separada que indique dónde se ejecutan y qué dependencias cruzan procesos.
 

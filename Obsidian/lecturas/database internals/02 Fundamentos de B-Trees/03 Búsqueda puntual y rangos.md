@@ -21,7 +21,7 @@ tags:
 
 ## Una búsqueda puntual reduce el intervalo
 
-Buscar `clave = 67` empieza en la raíz. Dentro de cada página se localiza el primer separador mayor que la clave objetivo; el puntero situado antes de ese separador conduce al rango apropiado. Si no existe separador mayor, se toma el hijo del extremo derecho. Esta regla corresponde a nuestra convención —cada separador es la menor clave del hijo derecho—; otras implementaciones pueden usar límites distintos, pero comparación y formato deben coincidir.
+Buscar `clave = 67` empieza en la raíz. Dentro de cada página se localiza el primer separador mayor que la clave objetivo; el puntero situado antes de ese separador conduce al rango apropiado. Si no existe separador mayor, se toma el hijo del extremo derecho. Esta regla corresponde a nuestra convención —cada separador es la menor clave de datos del subárbol derecho—; otras implementaciones pueden usar límites distintos, pero comparación y formato deben coincidir.
 
 Considera esta ruta:
 
@@ -58,7 +58,7 @@ flowchart LR
 
 **Lo que demuestra el recorrido:** el descenso inicial paga el costo logarítmico una sola vez. Después, los punteros laterales mueven la lectura entre hojas y el trabajo crece con la salida: se omite 30 antes del límite inferior y 84 al alcanzar el superior. Repetir una búsqueda desde la raíz por cada clave desperdiciaría el orden ya encontrado.
 
-El costo conceptual es `O(log_F M + K/B)`: la primera parte encuentra el inicio; `K` es la cantidad de resultados y `B` aproxima cuántas entradas útiles caben por hoja. Si el rango devuelve casi toda la tabla, ningún índice puede evitar leer muchos datos; la ventaja es que lo hace en orden y con acceso predecible.
+El costo conceptual es `O(log_F M + K/B)`: la primera parte encuentra el inicio; `K` es la cantidad de resultados y `B` aproxima cuántas entradas útiles caben por hoja. La fórmula cuenta páginas del índice bajo una ocupación razonable; si las hojas solo guardan referencias, hay que sumar el acceso a las filas y a posibles páginas overflow. Si el rango devuelve casi toda la tabla, ningún índice puede evitar leer muchos datos; la ventaja es que lo hace en orden y con acceso predecible.
 
 Los enlaces laterales son lógicos, no una promesa de contigüidad física. Dos hojas vecinas por clave pueden estar lejos en el archivo después de muchas divisiones. El motor puede intentar asignarlas cerca o usar lectura anticipada, pero el puntero por sí solo solo garantiza cuál es la siguiente, no dónde está en el dispositivo.
 

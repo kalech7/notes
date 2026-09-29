@@ -240,6 +240,7 @@ timeline
 ---
 
 ## 7. Notas Relacionadas y Enlaces del Vault
+- [[Auditoría de seguridad]] - Tipos de auditorías (técnica/pentesting, física, cumplimiento).
 - [[egsi]] - Estrategia de Gobierno de Seguridad de la Información.
 - [[metodologias de analisis y evaluacion de riesgo]] - Métodos formales (MAGERIT, NIST SP 800-30, ISO 27005).
 - [[linea base]] - Líneas base de configuración segura y hardening técnico.

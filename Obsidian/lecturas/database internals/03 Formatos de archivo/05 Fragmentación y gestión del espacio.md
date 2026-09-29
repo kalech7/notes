@@ -64,7 +64,7 @@ flowchart TD
     T -->|no| O[overflow, split o nueva página]
 ```
 
-**Lo que demuestra la decisión:** el costo real incluye payload y, si hace falta, un slot. Tener bytes suficientes en total no autoriza la escritura: deben formar un tramo contiguo. La compactación solo sirve cuando la suma alcanza pero está dispersa; mover bytes no crea capacidad que no existe.
+**Lo que demuestra la decisión:** el costo real incluye payload y, si hace falta, un slot. El dibujo simplifica la comprobación de espacio: la celda necesita su propio tramo contiguo, mientras un slot nuevo necesita espacio en el directorio. Un hueco grande entre celdas no permite ampliar automáticamente el directorio; ambos deben caber en sus regiones o hay que compactar. La compactación solo sirve cuando la suma alcanza pero está dispersa; mover bytes no crea capacidad que no existe.
 
 ## Compactar: convertir huecos en una frontera
 
@@ -78,7 +78,7 @@ después:
 [header][slots][........ libre ........][A][B][C]
 ```
 
-La identidad `(page_id, slot_id)` permite este movimiento. Si las referencias externas fueran offsets directos, compactar exigiría buscar y corregir punteros fuera de la página.
+Con slots estables, la identidad `(page_id, slot_id)` permite este movimiento. En un directorio ordenado, compactar también funciona porque se corrigen offsets sin alterar el orden de las entradas; eso no convierte sus posiciones en IDs estables ante futuras inserciones. Si las referencias externas fueran offsets directos, compactar exigiría buscar y corregir punteros fuera de la página.
 
 Compactar tiene costos: lee y copia bytes vivos, actualiza offsets, consume CPU, ensucia buena parte de la página y puede aumentar la escritura persistente. Por eso hacerlo en cada borrado produce latencia innecesaria. Posponerlo hace barato el borrado, pero transfiere el trabajo a una futura inserción o a mantenimiento en segundo plano.
 

@@ -10,7 +10,7 @@ tags:
 
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
-Las definiciones son breves recordatorios de las explicaciones desarrolladas en los capítulos. Algunos términos —como RTO, RPO e idempotencia— aparecen aquí como ampliaciones didácticas.
+Este glosario reúne los fundamentos de los capítulos 1–5 y su laboratorio. Las definiciones son breves recordatorios de sus explicaciones; los capítulos posteriores añaden conceptos en sus propias notas y ejercicios. Algunos términos —como RTO, RPO e idempotencia— aparecen aquí como ampliaciones didácticas.
 
 | Término | Significado y diferencia importante | Capítulo |
 |---|---|---|
@@ -49,7 +49,7 @@ Las definiciones son breves recordatorios de las explicaciones desarrolladas en 
 | Implícita / explícita | Inferida del contexto / expresada en requisitos; ambas deben concretarse | 4, 5 |
 | Latencia | Tiempo de una operación definido entre dos puntos de observación | 4 |
 | Throughput | Trabajo completado por unidad de tiempo | 4 |
-| p95 | Valor bajo el que queda aproximadamente el 95 % de observaciones según la convención usada | 4 |
+| p95 | Con el método de rango más próximo usado aquí, valor que al menos el 95 % de observaciones no supera; los empates pueden elevar esa proporción | 4 |
 | Escalabilidad | Capacidad de sostener objetivos al aumentar carga y recursos | 4, 5 |
 | Elasticidad | Adaptación de recursos a la demanda, incluyendo reducción | 4, 5 |
 | Disponibilidad | Accesibilidad operativa según criterio, período y alcance acordados | 4 |

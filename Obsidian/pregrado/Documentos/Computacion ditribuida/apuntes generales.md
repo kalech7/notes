@@ -1,3 +1,28 @@
+---
+title: "Apuntes Generales de Arquitectura y Concurrencia Distribuida"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - computacion-distribuida
+  - concurrencia
+  - sockets
+  - sistemas-operativos
+  - tolerancia-a-fallos
+  - pregrado
+  - epn
+aliases:
+  - apuntes generales
+  - Concurrencia y Sincronización Distribuida
+  - Síntesis de Computación Distribuida
+related:
+  - "[[computacion distribuida]]"
+  - "[[sockets]]"
+  - "[[Tolerancia a fallos]]"
+  - "[[Consistencia y replicacion]]"
+  - "[[Algoritmos de Consenso Distribuido (Paxos y Raft)]]"
+  - "[[Microservicios]]"
+---
+
 # Apuntes Generales de Computación Distribuida
 
 > [!info] Explicación General
@@ -52,3 +77,14 @@ La seguridad es vital cuando los datos viajan por la red.
 
 > [!info] Explicación: Teorema CAP
 > En sistemas distribuidos (ej. bases de datos distribuidas y directorios como DNS), el **Teorema CAP** establece que es imposible tener simultáneamente Consistencia (C), Disponibilidad (A) y Tolerancia a Particiones (P). Se debe elegir como máximo dos de las tres propiedades.
+
+## Notas relacionadas
+- [[computacion distribuida]]
+- [[sockets]]
+- [[Tolerancia a fallos]]
+- [[Consistencia y replicacion]]
+- [[Algoritmos de Consenso Distribuido (Paxos y Raft)]]
+- [[Microservicios]]
+- [[Virtualizacion y contenedores]]
+- [[Bases de datos/Distribuidas/Bases de Datos NoSQL y Poliglota|Bases de Datos NoSQL y Poliglota]]
+- [[Sistemas Operativos/Sincronizacion, Seccion Critica y Deadlocks|Sincronizacion, Seccion Critica y Deadlocks]]

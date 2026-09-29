@@ -187,7 +187,7 @@ Después de refactorizar, pregunta:
 - ¿Es más fácil seguir el comportamiento completo?
 - ¿Las pruebas siguen verificando las reglas y sus interacciones?
 
-El libro relaciona TDD con funciones pequeñas y enfocadas. Puede favorecer esa estructura, pero no la garantiza.
+El libro relaciona **TDD** (*test-driven development*, desarrollo guiado por pruebas) con funciones pequeñas y enfocadas. Su ciclo consiste en escribir una prueba que falle, añadir el código suficiente para hacerla pasar y refactorizar conservando las pruebas. Puede favorecer esa estructura, pero no la garantiza.
 
 ## 8. Detalle técnico: calcular CC con un grafo
 

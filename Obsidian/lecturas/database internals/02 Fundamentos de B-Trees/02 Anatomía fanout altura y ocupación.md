@@ -21,7 +21,7 @@ tags:
 
 ## Una página interna es un mapa de intervalos
 
-Un B-Tree es ordenado, balanceado y multivía. Una página interna contiene claves **separadoras** y punteros a hijos. Si muestra los separadores `20 | 50 | 80`, no afirma que solo existan esos tres valores: divide todo el dominio en cuatro intervalos. Cada hijo se hace responsable de uno. La convención exacta varía; en estas notas, un separador representa la primera clave del hijo situado a su derecha.
+Un B-Tree es ordenado, balanceado y multivía. Una página interna contiene claves **separadoras** y punteros a hijos. Si muestra los separadores `20 | 50 | 80`, no afirma que solo existan esos tres valores: divide todo el dominio en cuatro intervalos. Cada hijo se hace responsable de uno. La convención exacta varía; en el modelo didáctico, un separador representa la menor clave de datos del subárbol situado a su derecha. No significa la primera clave escrita en un nodo interno: esa es otra frontera dentro del subárbol.
 
 ```mermaid
 flowchart TD
@@ -52,7 +52,7 @@ La clave completa no siempre debe repetirse en niveles internos. Basta un separa
 
 ## Altura: multiplicar alcance por nivel
 
-Con fanout efectivo `F` y altura `h`, el número de hojas direccionables crece aproximadamente como `F^h`. Si `F = 500`, una raíz puede distinguir 500 hijos; un nivel adicional alcanza unas 250 000 páginas; otro, 125 millones. Incluso si cada hoja guardara solo cien entradas, tres saltos internos abarcarían miles de millones de claves.
+Llamemos `h` al número de saltos entre raíz y hoja: la ruta visita `h + 1` páginas. Con fanout efectivo `F`, el número de hojas direccionables crece aproximadamente como `F^h`. Si `F = 500`, una raíz puede distinguir 500 hijos; un nivel adicional alcanza unas 250 000 páginas; otro, 125 millones. Incluso si cada hoja guardara solo cien entradas, tres saltos internos abarcarían miles de millones de claves.
 
 ```mermaid
 flowchart TD
@@ -61,9 +61,9 @@ flowchart TD
     I2 --> L["hasta 125 000 000 hojas"]
 ```
 
-**Lo que demuestra la progresión:** las etiquetas representan multiplicadores de capacidad, no la cantidad literal de cajas. Cada nivel multiplica el alcance por un factor cercano al fanout. Caché y ocupación reducen la capacidad efectiva, pero no la conclusión: un árbol ancho cubre muchas claves con pocos niveles.
+**Lo que demuestra la progresión:** las etiquetas representan multiplicadores de capacidad, no la cantidad literal de cajas. Cada nivel multiplica el alcance por un factor cercano al fanout. Una ocupación menor reduce el alcance por nivel; la caché cambia cuántas páginas hay que leer del dispositivo, no la capacidad del árbol. La conclusión se mantiene: un árbol ancho cubre muchas claves con pocos niveles.
 
-Dentro de cada página, localizar el separador puede hacerse con búsqueda binaria. Con 512 entradas bastan unas nueve comparaciones. Pagar nueve comparaciones de CPU sobre una página residente suele ser preferible a pagar una transferencia extra. La altura mide páginas atravesadas; no debe confundirse con las comparaciones internas.
+Dentro de cada página, localizar el separador puede hacerse con búsqueda binaria. Con 512 entradas bastan unas nueve comparaciones. Pagar nueve comparaciones de CPU sobre una página residente suele ser preferible a pagar una transferencia extra. La altura mide aquí saltos entre páginas; el número de páginas visitadas es uno más. Ninguna de esas cantidades debe confundirse con las comparaciones internas.
 
 ## Ocupación: espacio usado y margen futuro
 
@@ -90,7 +90,7 @@ Una ocupación baja tiene el costo contrario: se necesitan más páginas para lo
 > Porque la siguiente entrada no tiene margen local y fuerza redistribución o `split`. Se ahorra espacio inmediato a cambio de más cambios estructurales y escrituras.
 
 > [!question]- ¿Qué dos cantidades no debes confundir al hablar de altura?
-> Páginas atravesadas entre raíz y hoja, frente a comparaciones realizadas dentro de cada página. La segunda suele ejecutarse sobre bytes ya residentes.
+> Saltos entre raíz y hoja —o páginas visitadas, declarando la convención— frente a comparaciones realizadas dentro de cada página. La segunda suele ejecutarse sobre bytes ya residentes.
 
 **Fuente:** [[Obsidian/lecturas/database internals/Materiales/Database Internals - Parte I (fuente).pdf#page=31|PDF, pp. 31–35]]. Cálculos didácticos propios.
 

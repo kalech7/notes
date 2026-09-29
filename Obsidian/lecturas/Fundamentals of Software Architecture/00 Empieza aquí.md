@@ -73,7 +73,7 @@ Si prefieres aprender el proceso completo antes de volver a los detalles, usa el
 - [[Obsidian/lecturas/Fundamentals of Software Architecture/06 Apoyo y repaso/00 Índice|Apoyo y repaso]]: método integrador, atlas, laboratorio y glosario.
 - [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/00 Índice|Fuentes y revisión]]: cobertura, procedencia y prompts.
 - **Recursos visuales:** archivos de imágenes, diagramas y generadores.
-- **Materiales:** copias de los siete PDF.
+- **Materiales:** copias de los ocho PDF.
 
 ## Cómo distinguir procedencias
 

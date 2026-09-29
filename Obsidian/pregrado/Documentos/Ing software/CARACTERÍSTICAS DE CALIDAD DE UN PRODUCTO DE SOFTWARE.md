@@ -1,37 +1,69 @@
-# Características de Calidad de un Producto de Software
+---
+title: Características de Calidad de un Producto de Software (ISO/IEC 25010)
+date_created: 2024-01-04
+date_modified: 2026-09-29
+tags:
+  - calidad
+  - ingenieria-de-software
+  - iso25010
+  - arquitectura-software
+aliases:
+  - Características de Calidad del Software
+  - ISO 25010
+  - Atributos de Calidad
+related:
+  - "[[El proceso de software]]"
+  - "[[Software e Ingeniería  de Software]]"
+  - "[[pruebas de usabilidad]]"
+  - "[[tecnicas pruebas]]"
+---
 
-1. **seguridad:** Capacidad del sistema para enfrentar y resistir ataques maliciosos, protegiendo la información y los datos de usuarios no autorizados.
-2. **Escalabilidad:** Capacidad del sistema de crecer para soportar mayor carga de trabajo. Puede ser horizontal (agregando más servidores o nodos) o vertical (aumentando la capacidad de un servidor, como más RAM o CPU).
-3. **Desempeño (Rendimiento):** Mide el tiempo de respuesta, la velocidad de procesamiento y la eficiencia en el uso de los recursos del sistema (memoria, disco, CPU, red, etc.).
-4. **Usabilidad:** Facilidad con la que los usuarios pueden comprender, aprender y utilizar el sistema de software.
-5. **Disponibilidad:** Porcentaje de tiempo que un sistema de software está operativo, accesible y listo para ser usado por los usuarios.
-6. **Portabilidad:** Capacidad del software para ser transferido y funcionar adecuadamente en cualquier otra plataforma o entorno (sistemas operativos, hardware distinto).
-7. **Confiabilidad:** Capacidad del sistema para mantener su nivel de rendimiento bajo condiciones específicas durante un periodo determinado, enfrentando fallas, errores, defectos y bugs sin colapsar.
-8. **Eficacia:** Grado en el que el software cumple con su propósito y satisface las verdaderas necesidades del usuario, cliente o *stakeholder*.
-9. **Rentabilidad:** El software debe ser construido con eficiencia financiera y debe permitir generar valor o ganar rentabilidad para sus creadores o dueños del negocio.
-10. **Eficiencia:** Capacidad de optimizar el consumo de recursos de cómputo y tiempo para realizar sus funciones.
-11. **Reutilización / Reúso:** Capacidad que permite reutilizar el software entero o partes de él (componentes) en otros productos sin requerir cambios estructurales mayores.
-12. **Mantenibilidad:** Facilidad con la que el software puede ser modificado. Incluye mantenimientos de distintos tipos: preventivo, correctivo, adaptativo, perfectivo y proactivo.
-13. **Accesibilidad:** Capacidad del software para ser utilizado de manera efectiva por personas con diferentes capacidades o discapacidades especiales (visuales, auditivas, motrices).
-14. **Efectividad:** Es la suma de alcanzar el objetivo (eficacia) haciéndolo de la mejor manera (eficiencia).
-15. **Flexibilidad:** Capacidad de ser modificado, adaptado o extendido con facilidad ante nuevos requerimientos.
-16. **Interoperabilidad:** Capacidad del sistema para comunicarse, intercambiar datos y trabajar de manera conjunta con otros sistemas o componentes de software externos sin problemas.
+# Características de Calidad de un Producto de Software (ISO/IEC 25010)
 
-> [!info] Explicación: Atributos de Calidad y Arquitectura
-> Estas características también se conocen como **Requerimientos No Funcionales** o **Atributos de Calidad**. A diferencia de los requerimientos funcionales (lo que el sistema *hace*), estos definen *cómo* lo hace el sistema. Son el factor principal que dicta la **Arquitectura de Software**; por ejemplo, si la disponibilidad y escalabilidad son críticas, un arquitecto probablemente elegirá una arquitectura de microservicios en la nube en lugar de una arquitectura monolítica tradicional. Las pruebas de carga y estrés son vitales para validar características como el desempeño y la confiabilidad.
+Las características de calidad de un producto de software definen el grado en el que el sistema satisface las necesidades declaradas e implícitas de sus distintas partes interesadas (*stakeholders*).
+
+1. **Seguridad:** Capacidad del sistema para enfrentar y resistir ataques maliciosos, protegiendo la información y los datos de accesos no autorizados (autenticación, autorización, no repudio, confidencialidad e integridad).
+2. **Escalabilidad:** Capacidad del sistema de adaptarse para soportar mayor carga de trabajo sin degradar el servicio. Puede ser horizontal (agregando más nodos en clúster) o vertical (aumentando recursos de CPU/RAM).
+3. **Desempeño / Eficiencia de Desempeño:** Mide el comportamiento temporal (latencia, rendimiento/throughput) y la eficiencia en la utilización de recursos de cómputo (memoria, procesador, ancho de banda).
+4. **Usabilidad:** Facilidad con la que los usuarios pueden comprender, aprender, operar y sentirse atraídos por el sistema en un contexto de uso determinado (ver [[pruebas de usabilidad]]).
+5. **Disponibilidad:** Fracción o porcentaje de tiempo en el que un sistema de software se encuentra en estado operativo y accesible cuando se requiere su uso (medido comúnmente en "nueves", ej. 99.9% o 99.99%).
+6. **Portabilidad:** Facilidad con la que el software puede ser transferido y ejecutado de manera efectiva desde un entorno operativo o de hardware hacia otro (adaptabilidad, instalabilidad, reemplazabilidad).
+7. **Confiabilidad:** Capacidad del sistema para mantener un nivel especificado de rendimiento bajo condiciones operativas normales durante un período de tiempo determinado (tolerancia a fallos, recuperabilidad y madurez).
+8. **Eficacia:** Grado de exactitud e integridad con el que los usuarios logran objetivos específicos mediante el uso del software.
+9. **Eficiencia:** Razón entre los resultados alcanzados y los recursos (tiempo, memoria, cómputo) empleados para lograrlos.
+10. **Mantenibilidad:** Eficacia y eficiencia con la que los desarrolladores pueden modificar el producto (modularidad, reusabilidad, analizabilidad, modificabilidad y testabilidad).
+11. **Reutilización / Reúso:** Capacidad de emplear componentes o módulos de software en más de un sistema o en la construcción de nuevas aplicaciones.
+12. **Accesibilidad:** Capacidad del software para ser utilizado con la misma efectividad por personas con el rango más amplio posible de capacidades o discapacidades (visuales, motoras, auditivas o cognitivas).
+13. **Flexibilidad:** Capacidad de adaptarse dinámicamente o con mínimo costo a cambios en los requerimientos o en el entorno de negocio.
+14. **Interoperabilidad:** Capacidad de dos o más sistemas o componentes para intercambiar información y utilizar de forma transparente la información que ha sido intercambiada (APIs RESTful, RPC, protocolos estándar).
+
+---
+
+> [!info] Explicación: Atributos de Calidad y Arquitectura de Software
+> Estas características constituyen los **Requerimientos No Funcionales (RNF)** o **Atributos de Calidad**. Mientras que los requerimientos funcionales definen *qué* debe hacer el sistema, los atributos de calidad gobiernan *cómo* debe comportarse. Son los principales *drivers* arquitectónicos: determinan decisiones fundamentales como el particionamiento de módulos, estilos arquitectónicos (monolito vs microservicios vs serverless) y estrategias de redundancia y resiliencia.
+
+---
+
+## Modelo de Calidad del Producto (ISO/IEC 25010)
+
+```mermaid
+graph TD
+    ISO["Calidad del Producto de Software (ISO/IEC 25010)"]
+    
+    ISO --> FUNC["Adecuación Funcional<br>• Completitud<br>• Corrección<br>• Pertinencia"]
+    ISO --> PERF["Eficiencia de Desempeño<br>• Comportamiento temporal<br>• Utilización de recursos<br>• Capacidad"]
+    ISO --> COMP["Compatibilidad<br>• Coexistencia<br>• Interoperabilidad"]
+    ISO --> USAB["Usabilidad<br>• Reconocimiento de idoneidad<br>• Aprendizaje<br>• Operabilidad<br>• Accesibilidad"]
+    ISO --> RELI["Fiabilidad / Confiabilidad<br>• Madurez<br>• Disponibilidad<br>• Tolerancia a fallos<br>• Recuperabilidad"]
+    ISO --> SECU["Seguridad<br>• Confidencialidad<br>• Integridad<br>• No repudio<br>• Responsabilidad<br>• Autenticidad"]
+    ISO --> MAIN["Mantenibilidad<br>• Modularidad<br>• Reusabilidad<br>• Analizabilidad<br>• Modificabilidad<br>• Testabilidad"]
+    ISO --> PORT["Portabilidad<br>• Adaptabilidad<br>• Instalabilidad<br>• Reemplazabilidad"]
+```
+
+---
 
 ## Notas relacionadas
 - [[El proceso de software]]
 - [[Software e Ingeniería  de Software]]
 - [[pruebas de usabilidad]]
-- [[técnicas pruebas]]
-
-
-## Diagrama de Referencia
-
-```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
-```
+- [[tecnicas pruebas|técnicas de pruebas]]

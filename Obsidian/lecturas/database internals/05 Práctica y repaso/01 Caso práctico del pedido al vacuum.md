@@ -28,11 +28,11 @@ total_centavos: uint64
 nota: string variable
 ```
 
-El índice primario está organizado por `pedido_id`. Existe un índice secundario por `(cliente_id, pedido_id)` para listar pedidos de un cliente en orden.
+Para este ejemplo, las hojas del índice primario por `pedido_id` contienen las filas completas; no hay un heap separado. Existe un índice secundario por `(cliente_id, pedido_id)` para listar pedidos de un cliente en orden.
 
 ## Insertar el pedido 7301
 
-La aplicación envía una operación lógica. El query processor valida tipos y el motor de ejecución solicita un insert al método de acceso. El transaction manager asigna el contexto y recovery registra información suficiente antes de depender de páginas aún no persistidas.
+La aplicación envía una operación lógica. El query processor valida tipos y el motor de ejecución solicita un insert al método de acceso. El transaction manager asigna el contexto y recovery registra los cambios. El WAL necesario debe ser durable antes de escribir al almacenamiento las páginas de datos modificadas.
 
 Como `pedido_id` crece, el B-Tree primario intenta la hoja derecha. La fast path solo es válida si `7301` supera la frontera actual y la página sigue siendo el extremo correcto.
 
@@ -46,17 +46,17 @@ flowchart TD
  D -->|llena| G[Rebalancear o split]
  E --> H[Actualizar índice secundario]
  F --> E
- G --> H
- H --> I[WAL y reglas de commit]
+ G --> E
+ H --> I[Sincronizar WAL y confirmar según la política]
 ```
 
-**Lo que demuestra la secuencia:** insertar una fila también publica entradas en cada índice afectado. El secundario no es un efecto gratuito del primario, sino otra estructura con sus propias páginas e invariantes. Una sola operación lógica puede ensuciar varias páginas y generar varios registros de recuperación.
+**Lo que demuestra la secuencia:** insertar una fila también publica entradas en cada índice afectado. El secundario no es un efecto gratuito del primario, sino otra estructura con sus propias páginas e invariantes. Una sola operación lógica puede ensuciar varias páginas y generar varios registros de recuperación. El logging acompaña cada modificación; la caja final representa su sincronización para el commit. Antes de decidir si cabe, se calcula el tamaño de la celda inline y de su referencia a overflow, si la necesita.
 
 ## La nota grande usa overflow
 
 Si `nota` mide 12 KiB y la página 4 KiB, no puede almacenarse completa inline. La celda primaria conserva clave, campos pequeños, prefijo y `overflow_id`; el resto ocupa una cadena.
 
-Esto preserva fanout, pero recuperar la fila completa necesita más I/O. Si la consulta solo proyecta `estado` y `total_centavos`, un formato que permita evitar el payload grande puede ahorrar ese recorrido.
+Esto preserva la densidad de registros en las hojas, pero recuperar la fila completa necesita más I/O. Si la consulta solo proyecta `estado` y `total_centavos`, un formato que permita evitar el payload grande puede ahorrar ese recorrido.
 
 ## Listar pedidos del cliente 42
 
@@ -90,7 +90,7 @@ Aunque la versión vieja deje de ser actual, MVCC puede mantenerla visible para 
 
 ## Delete y vacuum
 
-Borrar el pedido elimina su alcanzabilidad en los índices y deja versiones físicas pendientes. El espacio liberado puede estar repartido. Vacuum copia celdas vivas, consolida huecos y devuelve páginas completamente libres a la freelist.
+Borrar el pedido lo oculta a las transacciones para las que el borrado ya es visible. Las versiones y referencias que necesita un snapshot anterior deben mantenerse hasta que sea seguro retirarlas. El espacio liberado puede estar repartido. Vacuum copia celdas vivas, consolida huecos y devuelve páginas completamente libres a la freelist.
 
 El archivo no necesariamente se hace más pequeño: el motor puede reutilizar internamente una página libre sin devolverla al filesystem.
 

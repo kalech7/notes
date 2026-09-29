@@ -1,3 +1,27 @@
+---
+title: "Computación en la Nube (Cloud Computing y AWS)"
+date_created: 2024-01-04
+date_modified: 2026-09-29
+tags:
+  - cloud
+  - aws
+  - nist
+  - infraestructura
+  - pregrado
+aliases:
+  - Cloud computing
+  - Cloud Computing
+  - Cloud Computing AWS
+  - Computación en la Nube
+related:
+  - "[[responsabilidad compartida]]"
+  - "[[vpc]]"
+  - "[[ebs(network)]]"
+  - "[[EFS elastic file system]]"
+  - "[[tipos de soporte aws]]"
+  - "[[Acceso]]"
+---
+
 # Computación en la Nube (Cloud Computing)
 
 La **computación en la nube** representa un cambio de paradigma en la provisión, consumo y gestión de recursos informáticos, transformando la infraestructura de tecnologías de la información desde un modelo de gasto de capital (**CapEx** - *Capital Expenditure*) hacia un modelo de gasto operativo (**OpEx** - *Operational Expenditure*) con economías de escala masivas.

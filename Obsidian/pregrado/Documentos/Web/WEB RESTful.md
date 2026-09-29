@@ -1,3 +1,27 @@
+---
+title: "APIs y Arquitectura WEB RESTful"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - web
+  - api-rest
+  - restful
+  - http
+  - backend
+  - cliente-servidor
+aliases:
+  - WEB RESTful
+  - RESTful APIs
+  - Métodos HTTP y Códigos de Estado
+related:
+  - "[[Desarollo web]]"
+  - "[[JavaScript fundamentos]]"
+  - "[[Computacion ditribuida/Microservicios|Microservicios]]"
+  - "[[Computacion ditribuida/Http introduccion|Http introduccion]]"
+---
+
+# APIs y Arquitectura WEB RESTful
+
 RESTful (Representational State Transfer) es un estilo arquitectónico para diseñar sistemas de software distribuidos. Se basa en el concepto de recursos, que son entidades de información, y utiliza métodos HTTP estándar (GET, POST, PUT, DELETE) para manipular estos recursos de forma estandarizada.
 
 > [!info] Explicación
@@ -76,3 +100,10 @@ Normalmente, al desarrollar APIs RESTful se debe implementar el patrón de dise�
 
 ## Cookies
 Las cookies son pequeños fragmentos de información que el servidor envía al navegador. Ayudan a retroalimentar a las páginas web y a recordar datos, como sesiones activas, configuraciones o elementos que se digitan en la página web.
+
+## Notas relacionadas
+- [[Desarollo web]]
+- [[JavaScript fundamentos]]
+- [[Computacion ditribuida/Microservicios|Microservicios]]
+- [[Computacion ditribuida/Http introduccion|Http introduccion]]
+- [[Ing software/Reglas de Negocio y Operaciones CRUD en Estaciones de Combustible|Operaciones CRUD]]

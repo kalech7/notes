@@ -1,3 +1,26 @@
+---
+title: "Auditoría de Seguridad de la Información (Cumplimiento y Pentesting)"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - seguridad-informatica
+  - auditoria
+  - pentesting
+  - iso-27001
+  - cumplimiento-normativo
+  - pregrado
+  - epn
+aliases:
+  - Auditoría de seguridad
+  - Auditorías de Cumplimiento y Pentesting
+  - Pruebas de Penetración
+related:
+  - "[[sgsi]]"
+  - "[[Análisis de riesgos]]"
+  - "[[controles administrativos]]"
+  - "[[linea base]]"
+---
+
 # Auditoría de seguridad
 
 Una **Auditoría de seguridad** es una evaluación sistemática de la seguridad del sistema de información de una organización, midiendo qué tan bien se ajusta a un conjunto establecido de criterios o normativas (como **[[ISO 27001]]** o **[[controles administrativos|PCI-DSS]]**).

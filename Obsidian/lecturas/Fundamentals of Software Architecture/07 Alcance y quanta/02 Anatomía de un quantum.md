@@ -54,7 +54,7 @@ Esto no afirma que todo elemento tenga que vivir en la misma máquina o que se r
 
 ## Cohesión y contexto delimitado
 
-El libro conecta la alta cohesión con DDD y su **bounded context** o contexto delimitado. Dentro de un contexto, un modelo expresa con precisión una parte del negocio; fuera de él, se comunica mediante límites explícitos. Por ejemplo, «cliente» puede significar algo diferente para ventas y para facturación.
+El libro conecta la alta cohesión con el **diseño guiado por el dominio** (*Domain-Driven Design*, DDD): modelar el software a partir de las reglas y el lenguaje del negocio. Su **bounded context**, o contexto delimitado, establece dónde un modelo y sus términos conservan un significado preciso. Dentro de un contexto, un modelo expresa con precisión una parte del negocio; fuera de él, se comunica mediante límites explícitos. Por ejemplo, «cliente» puede significar algo diferente para ventas y para facturación.
 
 La explicación del texto no obliga a construir una clase Cliente universal. Compartir un modelo único por toda la organización puede introducir coordinación y cambios en cascada. Modelos locales permiten que cada dominio evolucione conforme a sus reglas y que las diferencias se resuelvan en la comunicación.
 

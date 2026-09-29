@@ -1,3 +1,23 @@
+---
+title: "Ciencias en las que se basa la Ingeniería de Software"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - ingenieria-de-software
+  - fundamentos-multidisciplinarios
+  - ciencias-exactas
+  - administracion
+  - pregrado
+  - epn
+aliases:
+  - Ciencias de la Ingeniería de Software
+  - Fundamentos Multidisciplinarios del Software
+related:
+  - "[[Software e Ingeniería  de Software]]"
+  - "[[El proceso de software]]"
+  - "[[Actividades del proceso de software]]"
+---
+
 # Ciencias en las que se basa la Ingeniería de Software
 
 La Ingeniería de Software es una disciplina integradora que se apoya en múltiples campos del conocimiento humano:
@@ -20,12 +40,15 @@ La Ingeniería de Software es una disciplina integradora que se apoya en múltip
 ## Notas Relacionadas
 - [[Software e Ingeniería  de Software]]
 - [[El proceso de software]]
+- [[Actividades del proceso de software]]
 
-## Diagrama de Referencia
+## Mapa de Ciencias Fundacionales
 
 ```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
+flowchart TD
+    IngSw["Ingeniería de Software"]
+    IngSw --> Exactas["Ciencias Exactas<br/>(Matemáticas, Física, Probabilidad y Estadística)"]
+    IngSw --> CS["Ciencias de la Computación<br/>(Algoritmos, Estructuras de Datos, Lógica)"]
+    IngSw --> Admin["Ciencias Administrativas<br/>(Gestión de Proyectos, Finanzas, Recursos)"]
+    IngSw --> Humanas["Ciencias Sociales y Humanas<br/>(Psicología UX, Ética, Legislación y Patentes)"]
 ```

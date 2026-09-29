@@ -67,7 +67,7 @@ Proporciona un tránsito de datos confiable a través de un enlace físico direc
 Define las especificaciones eléctricas, mecánicas, de procedimiento y funcionales para activar, mantener y desactivar el enlace físico entre sistemas.
 - **Función:** Transmisión de bits a través de medios de comunicación.
 - **Dispositivo clave:** Hub, cables, tarjetas de red (NIC).
-- **Medios:** Cobre (UTP), Fibra Óptica, Radiofrecuencia.
+- **Medios:** Cobre (UTP), Fibra Óptica, Radiofrecuencia (véase [[Cableado y medios de red]]).
 - **PDU:** Bit.
 
 ## El Proceso de Encapsulación
@@ -93,5 +93,7 @@ sequenceDiagram
 
 ## Notas relacionadas
 - [[Modelo TCP-IP]]
+- [[Cableado y medios de red]]
 - [[Enrutamiento]]
+- [[ACL (Listas de Control de Acceso)]]
 - [[Dominios de Colisiones y broadcast]]

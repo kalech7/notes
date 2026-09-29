@@ -58,7 +58,7 @@ Aquí $\lambda$ es la tasa de llegada y $\mu$ la tasa de finalización. Si $\lam
 | Dependencia del dominio | Sigue existiendo. | También sigue existiendo. |
 | Sobrecarga sostenida | Saturación o rechazo. | Crecimiento del pendiente y eventual saturación. |
 
-**Ampliación práctica:** una implementación real debe definir duplicados, reintentos, idempotencia, mensajes fallidos y observabilidad del retraso. Son asuntos necesarios para llevar la idea a producción, pero el fragmento del capítulo no desarrolla sus mecanismos.
+**Ampliación práctica:** una implementación real debe definir cómo manejar duplicados, reintentos y mensajes fallidos, y cómo observar el retraso. La **idempotencia** permite repetir la misma operación sin añadir un efecto de negocio distinto: reenviar el mismo intento de cobro no debería cobrar otra vez. Son asuntos necesarios para llevar la idea a producción, pero el fragmento del capítulo no desarrolla sus mecanismos.
 
 ## ¿La sincronía fusiona quanta?
 

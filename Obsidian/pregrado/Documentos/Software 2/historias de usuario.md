@@ -53,16 +53,16 @@ Identificar un riesgo a tiempo implica también crear y estimar tareas preventiv
 ## Notas relacionadas
 - [[software 2]]
 - [[scrum]]
+- [[Estimación de software]]
+- [[Deuda técnica]]
 - [[XP (eXtremme programming)]]
-- [[técnicas pruebas]]
+- [[tecnicas pruebas]]
 - [[pruebas de usabilidad]]
 
-
-## Diagrama de Referencia
+## Las 3 C de las Historias de Usuario (Ron Jeffries)
 
 ```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
+flowchart LR
+    Card["1. Card (Tarjeta)<br/>Descripción concisa del requerimiento:<br/>'Como [rol] quiero [acción] para [beneficio]'"] --> Conv["2. Conversation (Conversación)<br/>Diálogo continuo entre el cliente/PO<br/>y el equipo de desarrollo"]
+    Conv --> Conf["3. Confirmation (Confirmación)<br/>Criterios de Aceptación (DoD)<br/>y pruebas automatizadas"]
 ```

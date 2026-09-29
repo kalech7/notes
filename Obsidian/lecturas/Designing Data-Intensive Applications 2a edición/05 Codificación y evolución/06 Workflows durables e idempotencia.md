@@ -19,8 +19,10 @@ RPC resuelve una interacción, pero un pago completo encadena varias llamadas. S
 
 > [!info] Recuerda antes
 > - Un **timeout** deja al cliente sin saber si el efecto no empezó, sigue en curso o terminó sin respuesta.
-> - Una operación **idempotente** reconoce el mismo intento lógico y evita multiplicar su efecto previsto.
+> - Una operación **idempotente** produce el mismo efecto previsto al repetirse que al ejecutarse una vez. Reconocer una clave de operación es una forma de conseguirlo, no su definición.
 > - Un historial durable se parece a un log de recuperación: registra lo necesario para reconstruir progreso, no convierte servicios externos en una sola transacción.
+
+Por ejemplo, establecer `estado = enviado` repetidamente conserva ese estado; incrementar `cantidad = cantidad + 1` dos veces suma dos unidades. Para que un cobro reintentado conserve un único efecto, el servicio necesita reconocer y coordinar esa misma operación. La propiedad se refiere al efecto previsto: no exige respuestas idénticas ni impide registrar cada intento en un log. [RFC 9110: idempotencia](https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2).
 
 ## De una tarea aislada a un proceso completo
 

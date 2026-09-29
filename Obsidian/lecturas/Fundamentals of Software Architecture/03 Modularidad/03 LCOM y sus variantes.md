@@ -55,7 +55,7 @@ Aparecen dos grupos desconectados de métodos y campos, señal de que podrían e
 
 ### LCOM1 no es LCOM4
 
-**Ampliación técnica propia:** LCOM4 cuenta componentes conexas en un grafo de métodos, conectados por acceso a campos comunes o por llamadas entre ellos, según las reglas de la herramienta. Si no hay llamadas adicionales, el ejemplo anterior tiene dos componentes: LCOM4 = 2. La coincidencia numérica con LCOM1 es accidental.
+**Ampliación técnica propia:** LCOM4 cuenta componentes conexas en un grafo de métodos, conectados por acceso a campos comunes o por llamadas entre ellos, según las reglas de la herramienta. Una **componente conexa** es un grupo de métodos unidos directa o indirectamente por esas relaciones, sin conexión con los otros grupos. Aquí «componente» es un término del grafo, no un servicio desplegable. Si no hay llamadas adicionales, el ejemplo anterior tiene dos componentes: LCOM4 = 2. La coincidencia numérica con LCOM1 es accidental.
 
 Para comprobarlo, imaginemos tres métodos que comparten `lineas` y un cuarto que usa únicamente `correo`. Hay tres pares compartidos y tres disjuntos: LCOM1 = 0. Sin llamadas adicionales siguen existiendo **dos componentes conexas**. Por tanto, un cero en LCOM1 no demuestra que toda la clase esté conectada.
 

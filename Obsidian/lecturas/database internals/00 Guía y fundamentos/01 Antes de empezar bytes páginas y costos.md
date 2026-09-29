@@ -11,6 +11,10 @@ tags:
 
 [[Obsidian/lecturas/database internals/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/database internals/00 Guía y fundamentos/00 Índice|Guía y fundamentos]]
 
+## Vocabulario mínimo
+
+Un **bit** vale 0 o 1; un **byte** agrupa 8 bits. En estas notas, `KiB = 1024 bytes`, mientras `kB = 1000 bytes`. Un **workload** es la carga de trabajo: qué operaciones llegan, con qué frecuencia y sobre qué datos. Una **invariante** es una condición que debe conservarse para que una estructura siga siendo correcta; por ejemplo, mantener las claves ordenadas.
+
 ## Del valor lógico a su representación
 
 La aplicación piensa en `cliente=42`, `precio=19.99` y `nombre="Ana"`. El dispositivo persiste bytes. Entre ambos hay contratos:
@@ -41,7 +45,7 @@ En memoria, un puntero puede ser una dirección virtual válida mientras vive el
 - **offset:** distancia desde el inicio de una región conocida;
 - **page ID:** identificador que otra capa traduce a ubicación;
 - **slot ID:** posición lógica dentro del directorio de una página;
-- **record ID:** combinación estable, a menudo page ID + slot.
+- **record ID:** identificador del registro, a menudo page ID + slot; su estabilidad depende de que el motor conserve ese slot y la página.
 
 Un offset directo es compacto, pero mover el objeto invalida la referencia. Una indirección añade un salto, pero permite que el objeto cambie de lugar mientras su identificador lógico permanece estable.
 

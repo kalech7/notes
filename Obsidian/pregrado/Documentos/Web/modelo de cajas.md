@@ -1,3 +1,26 @@
+---
+title: "Modelo de Cajas en CSS (Box Model)"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - web
+  - css
+  - box-model
+  - maquetacion
+  - frontend
+aliases:
+  - Modelo de Cajas
+  - Box Model
+  - Padding Margin Border
+related:
+  - "[[CSS fundamentos]]"
+  - "[[Unidades de medida]]"
+  - "[[Desarollo web]]"
+  - "[[html]]"
+---
+
+# Modelo de Cajas en CSS (Box Model)
+
 El modelo de cajas (Box Model) se refiere a cómo el navegador interpreta y renderiza los elementos HTML, cuyo comportamiento gráfico se define mediante CSS.
 Toda etiqueta HTML genera automáticamente una caja rectangular alrededor de su contenido, aunque por defecto estas cajas no son visibles hasta que se les aplican estilos.
 
@@ -35,3 +58,9 @@ Además, la apariencia de la caja puede modificarse con los siguientes atributos
 > - Si aplicas un color de fondo, este teñirá el *padding*, pero **no** teñirá el *margin*. 
 > - El *padding* empuja el contenido hacia adentro, haciendo la caja más grande. 
 > - El *margin* empuja a los vecinos hacia afuera, separando la caja de otros elementos.
+
+## Notas relacionadas
+- [[CSS fundamentos]]
+- [[Unidades de medida]]
+- [[Desarollo web]]
+- [[html]]

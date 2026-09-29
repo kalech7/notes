@@ -3,11 +3,17 @@
 La computación distribuida aborda la complejidad de orquestar el **procesamiento**, el **almacenamiento** y las operaciones de **entrada/salida (I/O)** a través de múltiples nodos independientes que colaboran en red para resolver problemas complejos a gran escala.
 
 ## Notas relacionadas
+- [[apuntes generales|Apuntes Generales de Arquitectura y Concurrencia Distribuida]]
 - [[sockets]]
 - [[Remote Procedure Call (rpc)]]
 - [[servidores]]
 - [[peer to peer]]
 - [[tiempo de respuesta vs Throughput]]
+- [[Algoritmos de Consenso Distribuido (Paxos y Raft)]]
+- [[Microservicios]]
+- [[Virtualizacion y contenedores]]
+- [[Consistencia y replicacion]]
+- [[Tolerancia a fallos]]
 
 ## Fundamentos de Comunicación en Red
 

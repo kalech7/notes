@@ -211,6 +211,8 @@ flowchart TD
 ---
 
 ## Notas relacionadas
+- [[Metodo de la Ruta Critica (CPM) y Tecnica PERT]]
+- [[Software 2/Estimación de software|Estimación de software]]
 - [[producto minimo viable]]
 - [[tdr terminos de refencia]]
 - [[software 2]]

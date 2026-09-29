@@ -46,14 +46,18 @@ Cuando se divide el hijo derecho, el padre recibe un separador nuevo y el rightm
 
 ## High keys: hacer explícito el límite
 
-Una **high key** expresa el mayor valor permitido en el nodo o subárbol. En vez de tratar `+∞` como un caso implícito, cada par puede guardar un puntero y su límite superior.
+Una **high key** expresa una frontera superior del rango del nodo o subárbol; no tiene que ser una clave de usuario presente. Hay que declarar si el límite es inclusivo o exclusivo. En vez de tratar `+∞` como un caso implícito, cada par puede guardar un puntero y su límite superior.
 
 ```text
 Sin high key: P0 --20-- P1 --50-- P2 --(+∞ implícito)
-Con high key: P0 --20-- P1 --50-- P2 --80 (límite explícito)
+Con high key: P0 --20-- P1 --50-- P2 --80 (límite local explícito)
 ```
 
+La segunda línea describe una página cuyo rango local acaba en 80: las claves posteriores pertenecen a otras páginas. No reemplaza `+∞` por 80 para el árbol completo. En el extremo global derecho sigue siendo necesaria una convención para un rango sin cota superior.
+
 Esto simplifica algunos casos de representación y ayuda bajo concurrencia. Si una búsqueda de `93` llega a una página cuya high key es `80`, sabe que esa página ya no cubre el valor, quizás porque ocurrió un split concurrente, y puede continuar a la derecha.
+
+El movimiento lateral requiere también un enlace válido al hermano derecho y un protocolo concurrente: la high key sola solo detecta que la clave quedó fuera. [El B-Tree de PostgreSQL documenta esa combinación](https://github.com/postgres/postgres/blob/master/src/backend/access/nbtree/README).
 
 La high key no reemplaza al separador del padre. Son vistas relacionadas del rango: el padre decide a qué hijo entrar; la página puede comprobar si la clave todavía pertenece a su rango local.
 
@@ -68,7 +72,7 @@ flowchart LR
  O2 --> F[fin]
 ```
 
-El motor define `max_inline_payload`, una porción máxima que puede permanecer en el nodo. Al limitar cuánto ocupa cada celda, protege el fanout.
+El motor define `max_inline_payload`, una porción máxima que puede permanecer en el nodo. Al limitar cuánto ocupa cada celda, protege la densidad de entradas. En hojas conserva espacio para más registros; en internos, si también hay claves grandes, puede proteger directamente el fanout.
 
 ```text
 valor de 300 B  → 300 B inline
@@ -92,7 +96,7 @@ Si casi todos los valores usan overflow, el árbol actúa como un índice hacia 
 > Porque dos fronteras parten el dominio en tres intervalos: antes, entre y después.
 
 > [!question]- ¿Qué problema evita `max_inline_payload`?
-> Impide que un único valor grande consuma la página y reduzca drásticamente el fanout del árbol.
+> Impide que un único valor grande consuma la hoja y expulse muchas entradas. El fanout cuenta hijos de nodos internos; la capacidad de una hoja cuenta registros.
 
 **Fuente:** [[Obsidian/lecturas/database internals/Materiales/Database Internals - Parte I (fuente).pdf#page=60|PDF, capítulo 4, páginas 60–64]].
 

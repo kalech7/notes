@@ -37,3 +37,7 @@ Estas notas condensan las decisiones que atraviesan cada lectura. Son un buen pu
 > No memorices solo el nombre del mecanismo. Intenta predecir qué lectura, escritura, coordinación o recuperación cambia cuando modificas la carga, el formato o un requisito. Si tu predicción coincide con el ejemplo resuelto, entendiste la causa y no solo la definición.
 
 La fuente original, una ampliación externa y un ejemplo inventado cumplen funciones distintas. En cada lectura se indica la procedencia para que puedas volver al material cuando tengas dudas.
+
+## Revisión de las explicaciones
+
+[[Obsidian/lecturas/01 Revisión de claridad 2026-09-29|Revisión de claridad del 29 de septiembre de 2026]]: alcance, correcciones y notas que conviene repasar.

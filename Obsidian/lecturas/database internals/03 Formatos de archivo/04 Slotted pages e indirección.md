@@ -17,7 +17,7 @@ tags:
 > [!info] Recuerda antes
 > - Una página contiene celdas de tamaño variable y un header que permite interpretarlas.
 > - Si una referencia externa guarda el offset físico de una celda, moverla invalida esa referencia.
-> La slotted page introduce una capa pequeña de indirección para poder ordenar, mover y compactar payloads sin cambiar su identidad lógica.
+> La slotted page introduce una capa pequeña de indirección para mover y compactar payloads. Que además conserve una identidad externa depende de cómo se administren los slots.
 
 ## Tres cosas que no deben ser la misma
 
@@ -27,11 +27,16 @@ Una página mutable con registros variables necesita distinguir:
 - **orden lógico:** en qué posición participa en una búsqueda ordenada;
 - **ubicación física:** en qué bytes se encuentra ahora.
 
-Si la identidad fuera el offset físico, compactar la página rompería todas las referencias. Una *slotted page* introduce indirección: desde fuera se usa `(page_id, slot_id)`; dentro, el slot contiene el offset actual de la celda.
+Si la identidad fuera el offset físico, compactar la página rompería todas las referencias. Una *slotted page* introduce un directorio de offsets, pero hay dos diseños que no deben confundirse:
+
+- **Slots estables:** el registro conserva su número de slot; una referencia externa `(page_id, slot_id)` sigue funcionando si solo se mueve el payload.
+- **Directorio ordenado:** las posiciones se desplazan al insertar una clave entre otras. Sirve para buscar, pero el índice del arreglo no es una identidad estable.
+
+Para tener ambas propiedades hacen falta dos capas: slots estables y un arreglo ordenado de sus IDs. En una hoja de índice también puede bastar buscar por clave, sin prometer IDs de posición estables.
 
 ![[Obsidian/lecturas/database internals/Recursos visuales/03-slotted-page.svg|1000]]
 
-**Lo que demuestra la figura:** el directorio celeste conserva el orden lógico `10, 30, 50`, mientras sus offsets apuntan a celdas físicas de distinto ancho y en otro orden. Slots y payloads crecen desde extremos opuestos, de modo que sus fronteras delimitan directamente el tramo verde contiguo. Ordenar o compactar puede cambiar offsets sin cambiar los IDs de slot.
+**Lo que demuestra la figura:** el directorio celeste conserva el orden lógico `10, 30, 50`, mientras sus offsets apuntan a celdas físicas de distinto ancho y en otro orden. Slots y payloads crecen desde extremos opuestos, de modo que sus fronteras delimitan directamente el tramo verde contiguo. La figura representa un directorio ordenado. Compactar solo cambia sus offsets; insertar entre dos entradas puede cambiar sus posiciones y, por tanto, no conserva por sí solo un ID basado en la posición.
 
 ## Layout desde ambos extremos
 
@@ -79,7 +84,7 @@ sequenceDiagram
 
 ## Buscar y resolver una referencia
 
-Una referencia externa `(page_id=27, slot_id=4)` no conoce el offset. El buffer manager carga la página 27; el lector valida que exista el slot 4; ese slot, por ejemplo, contiene `0x0F20`; recién entonces se decodifica la celda.
+Ahora usamos el otro diseño: **slots de identidad estable**, que no se reordenan como en el ejemplo anterior. Una referencia externa `(page_id=27, slot_id=4)` no conoce el offset. El buffer manager carga la página 27; el lector valida que exista el slot 4; ese slot, por ejemplo, contiene `0x0F20`; recién entonces se decodifica la celda.
 
 ```mermaid
 flowchart LR
@@ -99,7 +104,7 @@ flowchart LR
 | Necesidad | Mecanismo de la slotted page |
 |---|---|
 | registros variables con poco desperdicio | cada celda usa sus bytes reales; solo se añade un slot |
-| orden de búsqueda | el directorio puede ordenarse sin ordenar payloads |
+| orden de búsqueda | directorio ordenado, o arreglo de IDs si los slots deben ser estables |
 | reubicación | se actualiza el offset del slot |
 | recuperar huecos | se compactan celdas vivas y se corrigen slots |
 
@@ -112,13 +117,15 @@ Tampoco significa que cada slot deba contener una clave. La figura muestra clave
 La capa extra parece trabajo innecesario hasta que algo debe moverse. Sin indirección, cada movimiento obliga a descubrir y reescribir todas las referencias. Con indirección, se mantiene estable el nombre y se actualiza una traducción local. El mismo patrón aparece en tablas de páginas virtuales, handles de objetos y tablas de inodos.
 
 > [!tip] Para recordar
-> El slot no es la celda. El slot conserva la identidad y resuelve la ubicación actual de la celda.
+> El slot no es la celda. Un slot estable conserva identidad; una posición en un directorio ordenado conserva orden. Ambos permiten resolver la ubicación del payload, pero no prometen lo mismo.
 
 > [!question]- ¿Por qué ordenar slots suele ser más barato que ordenar celdas?
 > Porque los slots tienen tamaño pequeño y uniforme. Mover varios offsets cuesta menos que mover claves y valores variables.
 
 > [!question]- ¿Puede compactarse una página sin cambiar `(page_id, slot_id)`?
-> Sí. Se mueven los bytes de la celda y se actualiza el offset almacenado en ese slot; la identidad externa permanece estable.
+> Sí, si el diseño conserva el número de slot. Se mueven los bytes y se actualiza su offset. Reordenar un directorio moviendo sus entradas es otra operación y no conserva IDs basados en su posición.
+
+**Contraste de implementaciones:** [PostgreSQL conserva identificadores durante movimientos dentro de la página](https://www.postgresql.org/docs/18/storage-page-layout.html); [SQLite ordena su arreglo de punteros por clave](https://www.sqlite.org/fileformat.html#b_tree_pages). Son contratos diferentes.
 
 **Fuente:** [[Obsidian/lecturas/database internals/Materiales/Database Internals - Parte I (fuente).pdf#page=50|PDF, pp. 50–53]]. El SVG es una visualización técnica del layout explicado en esas páginas.
 

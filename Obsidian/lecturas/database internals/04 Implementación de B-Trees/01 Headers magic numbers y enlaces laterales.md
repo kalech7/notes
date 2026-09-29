@@ -48,6 +48,8 @@ bytes   50 41 47 45 02 01 00 17
                       └─────── versión 2
 ```
 
+En este ejemplo, el contador usa `u16` big-endian: `00 17` vale 23. Es una elección local del ejemplo; los dumps little-endian del capítulo anterior usan otro contrato.
+
 Encontrar la constante esperada es una señal de que el offset y el formato probablemente son correctos. No demuestra que el resto de la página esté intacto: una escritura parcial puede conservar los primeros cuatro bytes y dañar todo lo demás. Por eso un magic number identifica; un checksum valida el contenido con mucha mayor cobertura.
 
 ## Hermanos enlazados o regreso por el padre

@@ -20,6 +20,8 @@ aliases:
   - "Capítulo 4: Marcos, Gobernanza y Operaciones de TICs"
   - "Gobernanza y Operaciones de TI"
   - "EGIT e ITOps"
+  - "ISO/IEC 38500"
+  - "ISO 38500"
 related:
   - "[[sgsi]]"
   - "[[Triada CIA]]"

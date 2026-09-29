@@ -10,7 +10,7 @@ tags:
 
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Apoyo y repaso](00%20%C3%8Dndice.md)
 
-Este ejercicio es **elaboración propia**, no una kata adicional del libro. Integra lo estudiado en los cinco capítulos. Puedes hacerlo en papel o duplicar esta nota y responder antes de desplegar las soluciones.
+Este ejercicio es **elaboración propia**, no una kata adicional del libro. Integra lo estudiado en los capítulos 1–5. Puedes hacerlo en papel o duplicar esta nota y responder antes de desplegar las soluciones.
 
 ## Situación y supuestos
 

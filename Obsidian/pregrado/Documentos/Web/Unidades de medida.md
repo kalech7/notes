@@ -1,3 +1,27 @@
+---
+title: "Unidades de Medida y Colores en CSS"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - web
+  - css
+  - unidades-de-medida
+  - responsive-design
+  - frontend
+aliases:
+  - Unidades de Medida
+  - Unidades CSS
+  - Colores en CSS
+  - Rem y Em
+related:
+  - "[[CSS fundamentos]]"
+  - "[[modelo de cajas]]"
+  - "[[Desarollo web]]"
+  - "[[html]]"
+---
+
+# Unidades de Medida y Colores en CSS
+
 En diseño web con CSS, es necesario especificar dimensiones y colores. Se utilizan diferentes unidades dependiendo del objetivo visual y la flexibilidad requerida.
 
 ```mermaid
@@ -72,3 +96,9 @@ a { color: #395; } /* Que es igual a #339955 */
 
 ### Colores establecidos del sistema
 CSS permite heredar colores de la interfaz gráfica del sistema operativo del usuario (como `Canvas`, `ButtonText`), aunque su uso es menos frecuente hoy en día en favor de esquemas de color controlados por el diseñador (como los modos Light/Dark).
+
+## Notas relacionadas
+- [[CSS fundamentos]]
+- [[modelo de cajas]]
+- [[Desarollo web]]
+- [[html]]

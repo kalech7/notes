@@ -1,37 +1,78 @@
-# Testing Automatizado
+---
+title: Testing Automatizado y Pirámide de Pruebas
+date_created: 2024-01-04
+date_modified: 2026-09-29
+tags:
+  - testing
+  - calidad
+  - software2
+  - tdd
+  - bdd
+  - ci-cd
+aliases:
+  - Testing Automatizado
+  - Pruebas Automatizadas
+  - Pirámide de Pruebas
+related:
+  - "[[tecnicas pruebas]]"
+  - "[[XP (eXtremme programming)]]"
+  - "[[Integración continua y despliegue continuo (CI-CD)]]"
+  - "[[Deuda técnica]]"
+  - "[[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]"
+---
 
-El testing automatizado es el uso de software especializado para controlar la ejecución de pruebas de software y comparar los resultados esperados con los obtenidos, sin necesidad de intervención manual. Es uno de los pilares fundamentales para garantizar la calidad del software ([[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]).
+# Testing Automatizado y Pirámide de Pruebas
 
-## Pirámide de Pruebas
-La estrategia óptima de automatización se visualiza como una pirámide:
+El **testing automatizado** es el uso de software y herramientas especializadas para controlar la ejecución sistemática de pruebas de software, comparar los resultados esperados con los obtenidos y generar reportes de regresión sin necesidad de intervención manual repetitiva. Es uno de los pilares fundamentales para garantizar la calidad del software ([[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]).
 
-1. **Pruebas Unitarias (Base de la pirámide):** Prueban componentes aislados (clases, funciones) a nivel de código de forma independiente. Son muy rápidas y económicas de ejecutar. Deben representar la gran mayoría de las pruebas del sistema.
-2. **Pruebas de Integración (Medio de la pirámide):** Verifican que diferentes módulos o bases de datos funcionen correctamente cuando se unen.
-3. **Pruebas End-to-End o E2E (Punta de la pirámide):** Simulan el comportamiento real del usuario desde la interfaz gráfica (UI) hasta la base de datos. Son lentas y frágiles, por lo que deben ser pocas y centrarse en los flujos críticos.
+---
 
-## TDD y BDD
-* **TDD (Test-Driven Development):** Como se describe en [[XP (eXtremme programming)]] y [[técnicas pruebas]], el desarrollo se guía escribiendo la prueba unitaria que falla *antes* de escribir el código de producción. Esto asegura que todo el código esté probado y diseñado para ser modular.
-* **BDD (Behavior-Driven Development):** Se centra en pruebas de aceptación escritas en un lenguaje natural estructurado (como Gherkin: *Given, When, Then*) para que tanto el cliente como el técnico entiendan exactamente qué se está probando.
+## 1. La Pirámide de Pruebas (Mike Cohn)
 
-## Frameworks Comunes
-* **Unit Testing:** JUnit (Java), PyTest (Python), Jest (JavaScript), NUnit (.NET).
-* **E2E Testing:** Selenium, Cypress, Playwright.
+La estrategia óptima de distribución del esfuerzo de automatización se modela como una pirámide de capas:
 
-> [!info] Explicación: Red de seguridad
-> El testing automatizado actúa como una red de seguridad. Si el equipo necesita hacer una refactorización para reducir la [[Deuda técnica]], las pruebas automatizadas le avisarán inmediatamente si han roto alguna funcionalidad existente (regresión). Sin pruebas automatizadas, el código heredado o legacy se vuelve un campo minado.
+```mermaid
+flowchart TD
+    E2E["▲ Pruebas End-to-End (E2E / UI)<br>Lentas • Costosas • Frágiles • Poca cantidad"]
+    INT["■ Pruebas de Integración (APIs / DB)<br>Velocidad media • Alcance entre componentes"]
+    UNIT["● Pruebas Unitarias (Código aislado)<br>Ultrarrápidas • Económicas • Deterministas • Máxima cobertura"]
+
+    E2E --> INT
+    INT --> UNIT
+```
+
+1. **Pruebas Unitarias (Base de la pirámide):** Verifican unidades aisladas de código (funciones, clases, métodos) sin dependencias externas (usando Mocks/Stubs). Son rápidas, ejecutables en milisegundos y deben conformar el 70-80% del conjunto de pruebas.
+2. **Pruebas de Integración (Nivel intermedio):** Verifican la interacción y comunicación entre dos o más módulos acoplados (ej. interacción entre la capa de acceso a datos y la base de datos PostgreSQL, llamadas a microservicios).
+3. **Pruebas End-to-End o E2E (Cúspide de la pirámide):** Simulan el comportamiento completo del usuario desde la interfaz gráfica (UI) hasta los servidores y bases de datos. Son lentas y frágiles ante cambios de diseño, por lo que deben reservarse para los flujos críticos de negocio (*happy paths*).
+
+---
+
+## 2. Paradigmas de Desarrollo Guiado por Pruebas
+
+* **TDD (Test-Driven Development):** Como se describe en [[XP (eXtremme programming)]] y [[tecnicas pruebas]], el desarrollo se guía mediante el ciclo estricto **Rojo - Verde - Refactorizar** (*Red-Green-Refactor*): se escribe una prueba unitaria que falla antes de implementar el código de producción.
+* **BDD (Behavior-Driven Development):** Evolución de TDD centrada en el comportamiento del sistema desde el punto de vista del negocio. Emplea especificaciones legibles en lenguaje natural estructurado (sintaxis Gherkin: *Given, When, Then*) mediante frameworks como Cucumber o Behave.
+
+---
+
+## 3. Ecosistema de Frameworks y Herramientas
+
+| Nivel de Prueba | Lenguaje / Entorno | Herramientas Populares |
+| :--- | :--- | :--- |
+| **Pruebas Unitarias** | Java / Kotlin<br>Python<br>JavaScript/TypeScript<br>C# / .NET | JUnit 5, Mockito<br>PyTest, Unittest<br>Jest, Vitest, Mocha<br>xUnit, NUnit, Moq |
+| **Pruebas de Integración** | Microservicios / HTTP / DB | Postman, Newman, REST-assured, Testcontainers |
+| **Pruebas E2E / UI** | Web / Browsers<br>Móvil | Playwright, Cypress, Selenium<br>Appium, Espresso, XCUITest |
+| **Pruebas de Rendimiento** | Carga y Estrés | Apache JMeter, k6, Gatling |
+
+---
+
+> [!info] Explicación: Red de Seguridad y Deuda Técnica
+> El testing automatizado actúa como un arnés de seguridad indestructible. Cuando un equipo aborda refactorizaciones estructurales para reducir la [[Deuda técnica]], la suite de pruebas automatizadas en el pipeline de [[Integración continua y despliegue continuo (CI-CD)]] notifica de inmediato si se introdujo alguna regresión en funcionalidades previamente operativas.
+
+---
 
 ## Notas relacionadas
-- [[técnicas pruebas]]
+- [[tecnicas pruebas]]
 - [[XP (eXtremme programming)]]
 - [[Integración continua y despliegue continuo (CI-CD)]]
 - [[Deuda técnica]]
-
-
-## Diagrama de Referencia
-
-```mermaid
-graph TD
-    A[Seguridad de la Información] --> B(Confidencialidad)
-    A --> C(Integridad)
-    A --> D(Disponibilidad)
-```
+- [[CARACTERÍSTICAS DE CALIDAD DE UN PRODUCTO DE SOFTWARE]]

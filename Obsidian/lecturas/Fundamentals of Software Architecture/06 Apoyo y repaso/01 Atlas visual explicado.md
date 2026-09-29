@@ -32,7 +32,7 @@ Arriba hay una cola compartida por dos trabajadores. La intención es repartir t
 
 Abajo, cocina y analítica son intereses diferentes. Ambos necesitan enterarse del pedido, de modo que el distribuidor produce una entrega para cada cola. Dentro de cocina todavía podrías tener dos trabajadores que repartan su propia carga. Por tanto, **difusión entre intereses y reparto dentro de un interés pueden coexistir**. Esta separación está ilustrada en el [tutorial oficial de publicación/suscripción de RabbitMQ](https://www.rabbitmq.com/tutorials/tutorial-three-python).
 
-El dibujo deliberadamente no escribe «exactamente una vez». Si un consumidor procesa un evento pero falla antes de confirmar, puede recibirlo de nuevo. Un identificador de pedido y una operación idempotente ayudan a evitar duplicar efectos; las garantías precisas dependen del protocolo y de cómo se persista el resultado.
+El dibujo deliberadamente no escribe «exactamente una vez». Si un consumidor procesa un evento pero falla antes de confirmar, puede recibirlo de nuevo. Un identificador de pedido y una operación **idempotente**, cuyo efecto no se multiplica al repetir la misma petición lógica, ayudan a evitar duplicar efectos; las garantías precisas dependen del protocolo y de cómo se persista el resultado.
 
 **Comprueba tu comprensión:** si añades tres réplicas de analítica a la misma cola, ¿todas verán cada evento? No: repartirán las entregas de esa cola. Si cada interés necesita su copia, requiere una suscripción independiente. Véase el [[Obsidian/lecturas/Fundamentals of Software Architecture/02 Pensamiento arquitectónico/00 Índice|capítulo 2]].
 
@@ -72,7 +72,7 @@ Tenemos cuatro métodos. Dos usan el campo `a`; los otros dos usan `b`. Cuatro m
 
 Que existan dos grupos disjuntos sugiere revisar si se mezclaron responsabilidades. Pero la decisión de separar requiere entender el dominio: quizá ambos grupos son partes inseparables de un mismo concepto, o quizá la clase es una bolsa de utilidades accidentales.
 
-**Trampa crucial:** el resultado 2 coincide con los dos grupos conexos de este ejemplo. No significa que LCOM1 cuente grupos. Si un campo fuera usado por cuatro métodos y otro por uno, los pares compartidos serían 6 y los disjuntos 4: LCOM1 daría cero, aun cuando el grafo tuviera dos componentes. Una variante que cuenta componentes y LCOM1 pueden discrepar.
+**Trampa crucial:** el resultado 2 coincide con los dos grupos conexos de este ejemplo. No significa que LCOM1 cuente grupos. En otro ejemplo, ahora con **cinco métodos**, cuatro usan únicamente el campo `a` y el quinto usa únicamente `b`, sin llamadas entre ambos grupos. Hay diez pares: seis compartidos y cuatro disjuntos. LCOM1 da `max(4 − 6, 0) = 0`, aunque el grafo sigue teniendo dos componentes. Una variante que cuenta componentes y LCOM1 pueden discrepar.
 
 **Prueba mental:** si todos los métodos acceden artificialmente a un campo de registro, la métrica podría mejorar sin mejorar las responsabilidades. Las métricas observan estructura; no comprenden por sí solas el significado.
 

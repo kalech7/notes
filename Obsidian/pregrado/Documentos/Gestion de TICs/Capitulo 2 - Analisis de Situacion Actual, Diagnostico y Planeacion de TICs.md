@@ -26,8 +26,9 @@ aliases:
   - Diagnóstico y Planeación Estratégica de TI
   - PETIC y Diagnóstico Situacional de Tecnologías
 related:
-  - "[[Capitulo 1 - Fundamentos de Gobernanza y Gestion de TICs]]"
-  - "[[Capitulo 3 - Gestion de Portafolio, Proyectos y Servicios de TI]]"
+  - "[[Capitulo 1 - Fundamentos de la Empresa, Organizacion y TICs]]"
+  - "[[Capitulo 3 - Estructuras Organizacionales, Procesos y Roles]]"
+  - "[[Capitulo 5 - COBIT 2019 - Gobierno y Gestion de IT]]"
 ---
 
 # Capítulo 2: Análisis de Situación Actual, Diagnóstico y Planeación Estratégica de TICs

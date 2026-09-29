@@ -1,3 +1,31 @@
+---
+title: "Listas de Control de Acceso (ACL)"
+date_created: 2026-09-28
+date_modified: 2026-09-28
+tags:
+  - redes
+  - seguridad-redes
+  - acl
+  - cisco
+  - filtrado-de-paquetes
+  - pregrado
+  - epn
+aliases:
+  - ACL (Listas de Control de Acceso)
+  - Listas de Control de Acceso
+  - Access Control Lists
+  - ACL Estándar y Extendida
+related:
+  - "[[Modelo OSI]]"
+  - "[[NAT y PAT]]"
+  - "[[Enrutamiento]]"
+  - "[[VLAN]]"
+  - "[[Inter-VLAN]]"
+  - "[[Port Security]]"
+---
+
+# Listas de Control de Acceso (ACL, Access Control Lists)
+
 Las **Listas de Control de Acceso (ACL, Access Control Lists)** son un poderoso y riguroso conjunto secuencial de instrucciones de software configuradas en los routers o switches multicapa. Operan como estrictos filtros lógicos y cortafuegos de hardware para inspeccionar de cerca los paquetes que viajan por las redes. 
 
 Su función primaria es evaluar todo el tráfico que intenta atravesar una interfaz (ya sea de entrada o de salida) y decidir, ejecutando reglas de software, si los paquetes deben ser permitidos (permit) para continuar su viaje o deben ser destruidos y denegados (deny) según criterios precisos preestablecidos por el administrador.

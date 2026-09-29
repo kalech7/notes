@@ -33,7 +33,9 @@ La observación del libro sobre procrastinación sirve para plantear una hipóte
 
 La tasa de llegada dice cuántas unidades aparecen por tiempo; la concurrencia dice cuántas permanecen activas a la vez; el trabajo por unidad dice cuánto consume cada una. Para una aproximación estable puede usarse $L \approx \lambda W$: concurrencia media $L$, tasa media de llegadas $\lambda$ y tiempo medio dentro del sistema $W$.
 
-**Ejemplo propio:** si llegan 100 matrículas por minuto y cada sesión permanece activa 6 minutos, habría alrededor de $100 \times 6 = 600$ sesiones concurrentes en promedio durante ese intervalo. Eso no afirma que existan exactamente 600 conexiones ni que la carga sea uniforme. Un botón habilitado a una hora precisa puede sincronizar solicitudes; reintentos y consultas repetidas pueden multiplicar el trabajo.
+**Ejemplo propio:** si se mantiene una llegada de 100 sesiones por minuto y cada sesión dura en promedio 6 minutos, el régimen sostenido tendría unas $100 \times 6 = 600$ sesiones concurrentes de media. **No es automáticamente el promedio de un pico de diez minutos que comienza sin sesiones activas:** al principio se acumulan sesiones y, al terminar las llegadas, todavía quedan sesiones abiertas. Para esa ventana corta hay que considerar entradas y salidas a lo largo del tiempo. Tampoco 600 sesiones significan exactamente 600 conexiones. La distinción entre promedios estables y ventanas transitorias se apoya en la [explicación de la ley de Little del MIT](https://web.mit.edu/urban_or_book/www/book/chapter4/4.4.html).
+
+Un botón habilitado a una hora precisa puede sincronizar solicitudes; reintentos y consultas repetidas pueden multiplicar el trabajo.
 
 | Dato disponible | Lo que todavía debes preguntar |
 |---|---|

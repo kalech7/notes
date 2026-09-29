@@ -29,7 +29,7 @@ El libro propone delegar piezas críticas y contribuir a funcionalidad menos urg
 
 Las alternativas del libro tienen propósitos distintos:
 
-- **POC frecuentes:** implementar un experimento para comprobar una incertidumbre. Comparar dos cachés exige cargas y criterios equivalentes. Los autores recomiendan código cuidado porque el prototipo puede convertirse en referencia; eso no demuestra que esté listo para producción.
+- **POC frecuentes:** una *proof of concept* o prueba de concepto es un experimento acotado para comprobar una incertidumbre. Comparar dos cachés exige cargas y criterios equivalentes. Los autores recomiendan código cuidado porque el prototipo puede convertirse en referencia; eso no demuestra que esté listo para producción.
 - **Deuda técnica:** reducir obstáculos acumulados. Matiz propio: no toda deuda es postergable; una dependencia vulnerable o una migración obligatoria puede estar en la ruta crítica.
 - **Corrección de bugs:** descubrir fallos reales de comprensión y estructura. Conviene elegir trabajos compatibles con la disponibilidad; un incidente urgente no debe depender de huecos en la agenda.
 - **Automatización:** eliminar comprobaciones repetitivas y crear verificaciones de arquitectura. Una regla que prohíba dependencias indebidas ofrece retroalimentación repetible, aunque no certifique la calidad completa del sistema.
@@ -37,7 +37,7 @@ Las alternativas del libro tienen propósitos distintos:
 
 ### Heurística para escoger una contribución
 
-Antes de asumir una tarea, responde cuatro preguntas: ¿está en la ruta crítica?, ¿cuántas horas continuas exige?, ¿otra persona puede continuar sin mí?, ¿el trabajo amplía conocimiento compartido? Una contribución saludable tolera interrupciones, deja evidencia y permite que el equipo decida. Emparejarse en un riesgo desconocido suele transferir más criterio que apropiarse de la implementación completa.
+Una tarea está en la **ruta crítica** cuando su retraso retrasa la entrega porque otras tareas necesarias dependen de ella y no hay margen para absorber la espera. Antes de asumir una tarea, responde cuatro preguntas: ¿está en la ruta crítica?, ¿cuántas horas continuas exige?, ¿otra persona puede continuar sin mí?, ¿el trabajo amplía conocimiento compartido? Una contribución saludable tolera interrupciones, deja evidencia y permite que el equipo decida. Emparejarse en un riesgo desconocido suele transferir más criterio que apropiarse de la implementación completa.
 
 | Mala señal | Alternativa más saludable |
 |---|---|

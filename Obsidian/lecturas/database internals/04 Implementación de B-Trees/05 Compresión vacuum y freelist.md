@@ -39,7 +39,7 @@ Para elegir codec deben medirse al menos relación, velocidad de compresión, ve
 
 **Lo que demuestra la imagen:** la página izquierda suma 240 bytes entre celdas muertas y huecos, pero un registro de 150 bytes no cabe porque ningún tramo es continuo. Reescribir las celdas vivas convierte el mismo total en un bloque utilizable. El flujo inferior separa responsabilidades: MVCC decide cuándo una versión puede morir y la freelist registra páginas que ya quedaron completamente disponibles.
 
-En una slotted page, borrar suele eliminar el offset, no limpiar los bytes. Actualizar puede escribir otra versión y dejar la anterior en la página. La celda vieja es lógicamente inaccesible desde el índice, pero sus bytes permanecen hasta ser sobrescritos o compactados.
+Sin lectores que necesiten el registro, borrar puede retirar o invalidar su slot sin limpiar los bytes. Con MVCC, un update o delete puede dejar una versión anterior todavía alcanzable para snapshots antiguos. Solo al dejar de ser necesaria se retiran sus referencias y se reutilizan sus bytes.
 
 ```text
 Header | offsets | libre | viva | basura | viva | basura
@@ -58,7 +58,7 @@ Con control multiversión, “no es la versión actual” no significa “nadie 
 stateDiagram-v2
  [*] --> Viva: creada y referenciada
  Viva --> Antigua: update crea otra versión
- Viva --> Inalcanzable: delete elimina referencia
+ Viva --> Antigua: delete deja versión para snapshots
  Antigua --> Inalcanzable: ningún snapshot la necesita
  Inalcanzable --> Reclamada: vacuum compacta
  Reclamada --> [*]: bytes reutilizables
@@ -66,11 +66,13 @@ stateDiagram-v2
 
 **Lo que demuestra la transición:** el update crea una versión antigua, pero todavía no la vuelve reciclable. La capacidad física solo puede recuperarse cuando desaparece de todos los snapshots relevantes. Vacuum aplica esa decisión de visibilidad; no la inventa.
 
+Aquí usamos *vacuum* para hablar de reclamación segura, y *compactación de página* para reunir huecos. No son operaciones idénticas en todos los motores: [PostgreSQL distingue VACUUM ordinario y VACUUM FULL](https://www.postgresql.org/docs/18/routine-vacuuming.html#VACUUM-FOR-SPACE-RECOVERY).
+
 ## Sincrónico o en background
 
 Si una escritura encuentra espacio total suficiente pero fragmentado, puede compactar en ese momento. Evita overflow o split, pero aumenta la latencia del usuario. Un proceso asincrónico suaviza las operaciones de foreground, aunque consume I/O y debe avanzar al ritmo de generación de basura.
 
-Al reescribir, las celdas vivas se agrupan. Si una página queda completamente libre, su page ID se incorpora a una **freelist persistente**. Persistirla evita dos fallos:
+Al reescribir, las celdas vivas se agrupan. Si una página queda completamente libre, su page ID se incorpora a una **freelist persistente**. Persistir y actualizar la freelist de manera recuperable ayuda a evitar dos fallos:
 
 - reutilizar una página todavía alcanzable;
 - perder páginas libres después de un reinicio.

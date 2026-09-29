@@ -33,11 +33,11 @@ flowchart LR
   L[(WAL durable)] -. permite reconstruir .-> M
 ```
 
-**Lo que demuestra el flujo:** tres cambios convergen en memoria y el lote puede reconocer que la versión nueva de A reemplaza a la anterior. Así se descarga menos trabajo redundante. El WAL no vacía el buffer: conserva evidencia durable para reconstruirlo tras un fallo.
+**Lo que demuestra el flujo:** tres cambios convergen en memoria y el lote puede reconocer que la versión nueva de A reemplaza a la anterior. Así se descarga menos trabajo redundante, siempre que ningún snapshot u otra garantía necesite la versión intermedia. El WAL no vacía el buffer: conserva evidencia durable para reconstruirlo tras un fallo.
 
 ## Mutabilidad: sobrescribir o publicar otra versión
 
-Una estructura **mutable** modifica una página en su ubicación lógica. Evita conservar muchas versiones y suele ofrecer una ruta directa de lectura, pero debe protegerse contra torn writes, concurrencia y fallos a mitad de actualización. WAL, latches y protocolos de recuperación hacen segura la aparente simplicidad de «cambiar en el sitio».
+Una estructura **mutable** modifica una página en su ubicación lógica. Puede evitar copiar la página completa a otra ubicación y suele ofrecer una ruta directa de lectura, pero debe protegerse contra torn writes, concurrencia y fallos a mitad de actualización. WAL, latches y protocolos de recuperación hacen segura la aparente simplicidad de «cambiar en el sitio». Un latch protege brevemente una estructura interna mientras un hilo la modifica; no equivale al lock transaccional que protege la operación lógica. Una página mutable también puede contener varias versiones de una fila: mutabilidad física y MVCC son decisiones distintas.
 
 Una estructura **inmutable** no altera lo publicado. Añade una versión, escribe un segmento nuevo o usa copy-on-write para producir páginas y una nueva raíz. Esto facilita snapshots y publicación atómica: lectores antiguos conservan la raíz anterior y lectores nuevos adoptan la nueva. El precio son versiones obsoletas, múltiples lugares por consultar y garbage collection.
 
@@ -90,7 +90,7 @@ Una escritura lógica de 100 bytes puede registrar WAL, ensuciar una página de 
 Optimizar una suele desplazar costo a otra. Más buffering reduce operaciones pequeñas, pero aumenta memoria y trabajo pendiente. Más compactación mejora lecturas y espacio, pero consume I/O. El diseño debe considerar p95/p99 y mantenimiento, no solo el tiempo ideal de una operación aislada.
 
 > [!example] La misma clave cambia cien veces
-> Aplicar cada cambio a una página ordenada mantiene una sola versión visible, pero toca repetidamente la estructura y el WAL. Acumularlos puede conservar solo el último valor al descargar, aunque exige que el log permita recuperar el estado pendiente y que las lecturas consulten memoria además de disco.
+> Aplicar cada cambio a una página ordenada toca repetidamente la estructura y el WAL. Acumularlos puede conservar solo el último valor al descargar si ninguna transacción necesita las versiones intermedias. Además, el log debe permitir recuperar el estado pendiente y las lecturas deben consultar memoria además de disco.
 
 ## Recupera la idea sin mirar
 

@@ -11,7 +11,7 @@ tags:
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]] → [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/00 Índice|Guía y fundamentos]]
 
-Los cuatro fenómenos comparten una dificultad: lo visible para una aplicación no muestra todo el estado físico o distribuido. Una actualización puede dejar bytes antiguos, un lector puede completar un campo ausente, un timeout puede ocultar un efecto terminado y una búsqueda puede devolver solo candidatos. Las imágenes son analogías originales; el texto explica el mecanismo y sus límites sin requerir los PDF.
+Las cinco escenas comparten una dificultad: lo visible para una aplicación no muestra todo el estado físico o distribuido. Una actualización puede dejar bytes antiguos, un lector puede completar un campo ausente, un timeout puede ocultar un efecto terminado y una búsqueda puede devolver solo candidatos. Las imágenes son analogías originales; el texto explica el mecanismo y sus límites sin requerir los PDF.
 
 > [!info] Recuerda antes
 > - Un mismo **dato lógico** puede tener varias representaciones físicas o versiones; las reglas de visibilidad deciden cuál responde una lectura.

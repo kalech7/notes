@@ -50,7 +50,7 @@ El *wire type* indica la forma básica de codificación, no todo el tipo semánt
 
 ### Un vistazo concreto a los bytes
 
-En un mensaje que contiene únicamente `id="A"`, el campo 1 de tipo delimitado por longitud empieza con `0A`, luego `01` por la longitud de un byte y finalmente `41`, el byte UTF-8 de `A`. La clave combina número y wire type: `(1 << 3) | 2 = 10`, o `0A` hexadecimal. El lector entiende el límite del campo aunque no conozca su nombre. Este ejemplo mínimo muestra cómo se delimitan los campos; no necesitas implementar manualmente el formato para entenderlo.
+En un mensaje que contiene únicamente `id="A"`, el campo 1 de tipo delimitado por longitud empieza con `0A`, luego `01` por la longitud de un byte y finalmente `41`, el byte UTF-8 de `A`. La clave combina número y wire type: `(1 << 3) | 2 = 10`, o `0A` hexadecimal. `<< 3` desplaza tres bits a la izquierda, equivalente aquí a multiplicar por 8; `| 2` coloca el tipo 2 en los tres bits inferiores. En este caso puedes comprobarlo como `1 × 8 + 2 = 10`. El lector entiende el límite del campo aunque no conozca su nombre. Este ejemplo mínimo muestra cómo se delimitan los campos; no necesitas implementar manualmente el formato para entenderlo.
 
 ### Varint: un número repartido en grupos de siete bits
 
@@ -72,7 +72,7 @@ Cada aparición de la etiqueta 3 aporta otro elemento. El esquema dice “acumul
 
 ### Del archivo .proto al programa que lo usa
 
-La definición `.proto` es una IDL: describe qué mensajes existen y sus campos. Un generador produce clases o estructuras y métodos de lectura/escritura para cada lenguaje. Tu aplicación construye `Pedido`, asigna valores y llama al codificador; el receptor invoca el decodificador correspondiente. No escribes manualmente cada byte, pero sí mantienes estable su significado. Apache Thrift pertenece a la misma familia de sistemas con IDL y etiquetas, con su propio ecosistema y formatos; no puede decodificarse con un lector Protobuf por esa semejanza.
+La definición `.proto` es una IDL (*Interface Definition Language*, lenguaje de definición de interfaces): describe qué mensajes existen y sus campos. Un generador produce clases o estructuras y métodos de lectura/escritura para cada lenguaje. Tu aplicación construye `Pedido`, asigna valores y llama al codificador; el receptor invoca el decodificador correspondiente. No escribes manualmente cada byte, pero sí mantienes estable su significado. Apache Thrift pertenece a la misma familia de sistemas con IDL y etiquetas, con su propio ecosistema y formatos; no puede decodificarse con un lector Protobuf por esa semejanza.
 
 ## Añadir y retirar sin reciclar identidades
 

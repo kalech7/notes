@@ -79,8 +79,8 @@ La última distinción es una ampliación para evitar una confusión frecuente; 
 > [!question]- 4. ¿Por qué una eliminación en un LSM no siempre borra físicamente la clave al momento?
 > Puede haber versiones antiguas en otros segmentos. Una marca de eliminación evita que vuelvan a verse. Su eliminación física debe esperar a que ya no oculte datos relevantes y a que las reglas de retención o snapshots lo permitan.
 
-> [!question]- 5. Si un B-tree tiene altura 4, ¿son siempre cuatro lecturas del disco?
-> No. Puede haber páginas en caché; la búsqueda puede requerir además datos fuera del índice o devolver muchas coincidencias. La altura orienta la navegación, no describe todo el costo.
+> [!question]- 5. Si un B-tree tiene cuatro niveles de páginas desde la raíz hasta una hoja, ¿son siempre cuatro lecturas del disco?
+> No. Puede haber páginas en caché; la búsqueda puede requerir además datos fuera del índice o devolver muchas coincidencias. Aquí contamos cuatro páginas en el camino; si la altura se define contando aristas, ese mismo camino tiene altura 3. El número de niveles orienta la navegación, no describe todo el costo.
 
 > [!question]- 6. ¿Por qué «LSM para escribir y B-tree para leer» no basta para elegir?
 > Es una intuición, no un resultado universal. Importan tamaño de valores, mezcla de operaciones, caché, compactación, hardware, concurrencia, latencia de cola y objetivos de espacio y durabilidad.

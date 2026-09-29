@@ -53,7 +53,7 @@ Después de analizar características y componentes, el arquitecto dispone de in
 
 Las decisiones arquitectónicas establecen reglas de construcción y delimitan lo permitido. El ejemplo del libro restringe el acceso a persistencia a las capas de negocio y servicios, impidiendo el acceso directo desde presentación. **Fuente: PDF 5–6, impresas 5–6; consecuencias en PDF 11, impresa 10.**
 
-En PedidoClaro, permitir que la pantalla consulte tablas directamente puede reducir trabajo inicial, pero vincula la interfaz a su organización. Si la tabla de pedidos cambia, también puede ser necesario cambiar pantallas. Una decisión que imponga una interfaz intermedia busca controlar esa dependencia y acepta el costo de mantener dicha interfaz.
+En PedidoClaro, permitir que la pantalla consulte tablas directamente puede reducir trabajo inicial, pero vincula la interfaz a su organización. Si la tabla de pedidos cambia, también puede ser necesario cambiar pantallas. Una decisión que imponga una interfaz intermedia busca controlar esa dependencia y acepta el costo de mantener dicha interfaz. Aquí, **interfaz** significa un conjunto de operaciones disponibles para otras partes del software, no una pantalla. Su **contrato** establece qué datos recibe, qué resultados ofrece y qué significan; por ejemplo, `confirmarPedido` debe aclarar qué garantiza cuando responde «confirmado».
 
 ![Decisiones: restricciones justificadas ](../Recursos%20visuales/Diagramas/cap01-diagrama-02.png)
 

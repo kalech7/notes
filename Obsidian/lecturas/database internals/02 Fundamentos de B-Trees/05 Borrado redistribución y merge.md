@@ -21,7 +21,7 @@ tags:
 
 ## Borrar primero, reparar solo si hace falta
 
-El borrado localiza la hoja, encuentra la entrada y la elimina. Si la ocupación sigue por encima del mínimo, la operación termina. Esta ruta es importante: un B-Tree no se reorganiza por cada eliminación. El trabajo estructural aparece únicamente cuando una página no-raíz queda por debajo del mínimo permitido, situación llamada **underflow**.
+El borrado localiza la hoja, encuentra la entrada y la elimina. Si la ocupación sigue por encima del mínimo, no hace falta redistribuir ni fusionar. Aun así, bajo nuestra convención de separador igual al mínimo del hijo derecho, borrar esa primera clave exige actualizar la frontera correspondiente, incluso en un ancestro si cambió el mínimo de un subárbol. Otras variantes conservan un separador antiguo si sigue separando correctamente los rangos. Esta ruta es importante: un B-Tree no se reorganiza por cada eliminación. La reparación de ocupación aparece cuando una página no-raíz queda por debajo del mínimo permitido, situación llamada **underflow**.
 
 Supón hojas con capacidad seis y mínimo tres. Borrar `30` de `[10, 20, 30, 40]` produce `[10, 20, 40]`; todavía hay tres entradas, así que no ocurre nada más. Si se elimina también `40`, la hoja queda en `[10, 20]` y debe recuperarse ocupación o desaparecer mediante una fusión.
 
@@ -46,7 +46,7 @@ Redistribuir mantiene el número de páginas, evita liberar espacio y normalment
 
 ## Merge: convertir dos páginas en una
 
-Si los hermanos están cerca del mínimo y sus contenidos juntos caben en una página, pedir prestado no resuelve el déficit de manera válida. Entonces se fusionan. Con izquierda `[10, 20]` y derecha `[30]`, el resultado puede ser `[10, 20, 30]`. El padre elimina el separador `30` y el puntero al hermano derecho. La página derecha deja de formar parte lógica del árbol.
+Si los hermanos están cerca del mínimo y sus contenidos juntos caben en una página, pedir prestado no resuelve el déficit de manera válida. Entonces se fusionan. Con el mismo máximo de seis y mínimo de tres, izquierda `[10, 20]` está por debajo del mínimo y derecha `[30, 40, 50]` no puede prestar. La fusión produce `[10, 20, 30, 40, 50]`, que sí cabe. El padre elimina el separador `30` y el puntero al hermano derecho. La página derecha deja de formar parte lógica del árbol.
 
 ```mermaid
 sequenceDiagram

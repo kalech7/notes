@@ -111,7 +111,7 @@ flowchart LR
    - *Demanda:* La necesidad expresa o latente de clientes internos o externos por servicios o productos específicos.
    - *Oportunidades:* Opciones de mercado, innovaciones tecnológicas o mejoras internas que pueden generar ventajas competitivas o eficiencias.
 2. **Los Principios Guía (Guiding Principles):** Recomendaciones universales y atemporales que guían las decisiones y el comportamiento de la organización en cualquier circunstancia.
-3. **Gobernanza (Governance):** El sistema mediante el cual la organización es dirigida y controlada (alineado con la norma [[ISO/IEC 38500]]). Comprende tres actividades clave: *Evaluar (Evaluate)* la estrategia, *Dirigir (Direct)* la asignación de recursos y *Monitorear (Monitor)* el desempeño y cumplimiento.
+3. **Gobernanza (Governance):** El sistema mediante el cual la organización es dirigida y controlada (alineado con la norma [[Capitulo 4 - Marcos de Referencia, Gobernanza y Operaciones de TICs|ISO/IEC 38500]]). Comprende tres actividades clave: *Evaluar (Evaluate)* la estrategia, *Dirigir (Direct)* la asignación de recursos y *Monitorear (Monitor)* el desempeño y cumplimiento.
 4. **La Cadena de Valor del Servicio (Service Value Chain - SVC):** El núcleo operativo; una matriz flexible de actividades que construyen y operan los servicios.
 5. **Prácticas de Gestión (Practices):** Conjuntos de recursos organizacionales (habilidades, herramientas, información, procesos) diseñados para desempeñar un tipo de trabajo específico.
 6. **Mejora Continua (Continual Improvement):** Un modelo iterativo aplicado transversalmente a todos los elementos del sistema para asegurar la evolución constante del rendimiento.

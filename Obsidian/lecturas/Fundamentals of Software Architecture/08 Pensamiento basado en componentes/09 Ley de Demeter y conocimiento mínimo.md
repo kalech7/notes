@@ -44,7 +44,7 @@ Cada flecha es una colaboración necesaria en el ejemplo. El cambio gráfico con
 
 ## Por qué un intermediario vacío no basta
 
-Si insertamos una caja entre Registrar e Inventario pero Registrar sigue teniendo que ordenar «disminuye existencias», su dependencia saliente simplemente apunta al intermediario. No hemos retirado el conocimiento relevante. Agregar una capa o un «coordinador» no es una aplicación automática de Demeter.
+Si insertamos una caja entre Registrar e Inventario, pero Registrar sigue decidiendo el umbral de stock bajo y ordenando por separado reponer y cambiar precios, no hemos retirado el conocimiento relevante. Pedir «disminuye existencias» sí puede seguir siendo una colaboración legítima de Registrar; el problema del ejemplo era que también decidía las consecuencias internas del inventario. Agregar una capa o un «coordinador» no es una aplicación automática de Demeter.
 
 Para que haya una mejora, identifica qué decisión deja de conocer el consumidor. Por ejemplo, Registrar no sabe el umbral exacto que causa reposición ni que ese umbral pueda cambiar con la temporada. Sigue conociendo que aceptar un pedido afecta existencias, porque esa colaboración es parte de su función.
 

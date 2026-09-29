@@ -45,8 +45,11 @@ Los términos están explicados según su función dentro de un motor de almacen
 **Column-oriented store**
 : Layout que agrupa valores de la misma columna. Favorece proyecciones, agregaciones, compresión y procesamiento vectorizado.
 
-**Compactación / vacuum**
-: Proceso que reescribe contenido vivo, recupera huecos dejados por datos inalcanzables y devuelve páginas vacías a la freelist.
+**Compactación de página**
+: Reorganización de celdas vivas para reunir huecos. En un LSM, compactación designa además la fusión de segmentos y el descarte seguro de versiones obsoletas.
+
+**Vacuum**
+: Mantenimiento que reclama espacio de versiones que ya no necesitan los lectores. Sus operaciones exactas dependen del motor; no siempre reescribe el archivo ni lo reduce.
 
 ## D–H
 
@@ -68,8 +71,11 @@ Los términos están explicados según su función dentro de un motor de almacen
 **Freelist**
 : Estructura persistente de page IDs disponibles para reutilizar. Debe sobrevivir a reinicios sin perder ni duplicar páginas.
 
-**Fragmentación interna de página**
-: Situación en la que el espacio libre existe pero está repartido en huecos; puede impedir una inserción que requiere bytes contiguos.
+**Fragmentación externa dentro de una página**
+: Espacio libre repartido entre celdas vivas; puede impedir una inserción que requiere bytes contiguos.
+
+**Fragmentación interna**
+: Espacio desperdiciado dentro de una asignación, como reservar 128 bytes para una celda de 65.
 
 **Hash file**
 : Organización que usa el hash de una clave para escoger bucket. Es buena para igualdad, pero no conserva orden para rangos.
@@ -157,7 +163,7 @@ Los términos están explicados según su función dentro de un motor de almacen
 : Puntero directo entre páginas del mismo nivel. Acelera recorridos laterales, pero complica splits, merges y concurrencia.
 
 **Slotted page**
-: Layout donde un arreglo ordenado de offsets crece desde un extremo y las celdas variables desde el otro. Separa orden lógico de ubicación física.
+: Layout con un directorio de offsets y celdas variables, habitualmente creciendo desde extremos opuestos. Un directorio ordenado facilita búsquedas; conservar IDs de slot estables requiere no reordenarlos o añadir otra capa.
 
 **Split**
 : División de un nodo sin espacio en dos nodos y promoción de una clave al padre. Puede propagarse hasta crear una raíz nueva.
@@ -169,7 +175,7 @@ Los términos están explicados según su función dentro de un motor de almacen
 : Marcador lógico de eliminación. Evita o pospone la reescritura inmediata, pero debe procesarse posteriormente.
 
 **Write-ahead log (WAL)**
-: Log que registra un cambio antes de que la página modificada se considere persistida. Permite redo/undo según el protocolo.
+: Log cuyos registros necesarios se hacen durables antes de persistir la página modificada. Permite redo/undo según el protocolo.
 
 ## Navegación
 

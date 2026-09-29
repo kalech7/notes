@@ -47,6 +47,12 @@ Un recurso se conserva solo si muestra al menos uno de estos elementos:
 
 Las figuras SVG son deterministas y editables. Los diagramas Mermaid permanecen junto a la explicación que les da contexto. No se mantiene una portada o ilustración puramente decorativa.
 
+## Revisión editorial del 29 de septiembre de 2026
+
+Se leyeron íntegramente las 42 notas del libro y se corrigieron ambigüedades concretas: identidad de slots frente a orden del directorio, altura y capacidad del árbol, borrados con MVCC, persistencia del WAL, límites de high keys y diferencias entre fanout y capacidad de hojas. También se aclararon ejemplos de búsqueda, fusión, formatos y mantenimiento.
+
+Fue una revisión de comprensión y coherencia entre notas, con consultas puntuales a documentación primaria de PostgreSQL y SQLite. No constituye un cotejo completo de cada afirmación con el PDF ni una nueva inspección visual de todas las imágenes. El detalle general está en [[Obsidian/lecturas/01 Revisión de claridad 2026-09-29|Revisión de claridad de la biblioteca]].
+
 ## Verificaciones
 
 - frontmatter YAML parseable;

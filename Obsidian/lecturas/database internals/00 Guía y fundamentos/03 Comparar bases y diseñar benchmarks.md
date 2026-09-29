@@ -52,7 +52,7 @@ flowchart LR
 
 ## Mide lo que el usuario realmente necesita
 
-El throughput medio no basta. Según el servicio, importan p50, p95 y p99 de latencia; operaciones por segundo sostenidas; tiempo de recuperación; pérdida admisible de datos; consumo de CPU, memoria, red y disco; amplificación; costo por unidad de carga; y comportamiento durante mantenimiento o fallos.
+El throughput medio no basta. Un percentil `p99 = 40 ms` significa que el 99 % de las operaciones medidas tardó como máximo 40 ms; el 1 % restante tardó más. Según el servicio, importan p50, p95 y p99 de latencia; operaciones por segundo sostenidas; tiempo de recuperación; pérdida admisible de datos; consumo de CPU, memoria, red y disco; amplificación; costo por unidad de carga; y comportamiento durante mantenimiento o fallos.
 
 Un benchmark conocido es un vocabulario común, no una garantía de representatividad. YCSB ofrece workloads portables para almacenes de datos. TPC-C modela una mezcla OLTP concurrente de lecturas y updates y exige propiedades funcionales y de durabilidad, no solo velocidad. Ambos pueden ser útiles si su mezcla y configuración se parecen al caso real; de lo contrario contestan otra pregunta.
 
@@ -87,7 +87,7 @@ La pregunta útil no es «¿qué diseño es mejor?», sino:
 
 | Error | Por qué invalida la conclusión | Corrección |
 |---|---|---|
-| dataset demasiado pequeño | mide RAM y no el camino de almacenamiento | exceder la memoria disponible y declarar el estado del caché |
+| dataset que no representa producción | puede medir solo RAM cuando producción necesita disco, o viceversa | reproducir la relación datos/RAM; si se estudia I/O, exceder la caché y declarar su estado |
 | configuraciones con garantías distintas | compara contratos diferentes | igualar durabilidad, consistencia, replicación e aislamiento |
 | medir pocos minutos | oculta compactación, checkpoints y crecimiento | ejecutar hasta observar varios ciclos de mantenimiento |
 | reportar solo el promedio | esconde colas y pausas | incluir percentiles, máximos razonados y series temporales |

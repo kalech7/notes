@@ -18,7 +18,7 @@ capitulo: 10
 
 Dibujar capas cerradas no impide que alguien importe una clase de persistencia desde un controlador. El gobierno arquitectónico convierte decisiones como «presentación utiliza negocio» en restricciones observables durante el desarrollo.
 
-El capítulo destaca que las arquitecturas por capas cuentan con herramientas maduras de pruebas estructurales. Utiliza **ArchUnit** para ejemplificar una función de aptitud que define capas a partir de paquetes y comprueba quién puede acceder a ellas. El objetivo es detectar desviaciones antes de que las dependencias prohibidas se normalicen.
+El capítulo destaca que las arquitecturas por capas cuentan con herramientas maduras de pruebas estructurales. Utiliza **ArchUnit** para ejemplificar una función de aptitud que define capas a partir de paquetes y comprueba quién puede acceder a ellas. Una **función de aptitud** es una comprobación de una propiedad arquitectónica; aquí verifica que el código respete las dependencias permitidas. El objetivo es detectar desviaciones antes de que las dependencias prohibidas se normalicen.
 
 ## Cómo interpretar el ejemplo 10-1
 
@@ -63,7 +63,7 @@ Si la ruta directa fue una decisión deliberada, la alternativa es cambiar expl�
 
 Una prueba estructural no prueba que el descuento sea correcto, que una consulta sea rápida o que no exista un fallo de autorización. Tampoco garantiza detectar todas las relaciones dinámicas, reflexivas o externas; su alcance depende de lo analizado y de la herramienta.
 
-Por ello se complementa con pruebas de comportamiento. La separación en capas facilita sustituir colaboradores con dobles para probar unidades, pero la confianza en una entrega también exige validar integración y recorridos relevantes. La puntuación modesta de testabilidad en el libro se refiere al costo de verificar cambios en un sistema desplegado como conjunto; no afirma que las pruebas unitarias sean imposibles.
+Por ello se complementa con pruebas de comportamiento. La separación en capas facilita sustituir colaboradores con **dobles de prueba** —sustitutos controlados, como una persistencia simulada— para probar unidades, pero la confianza en una entrega también exige validar integración y recorridos relevantes. La puntuación modesta de testabilidad en el libro se refiere al costo de verificar cambios en un sistema desplegado como conjunto; no afirma que las pruebas unitarias sean imposibles.
 
 ## Cómo encajan los equipos
 

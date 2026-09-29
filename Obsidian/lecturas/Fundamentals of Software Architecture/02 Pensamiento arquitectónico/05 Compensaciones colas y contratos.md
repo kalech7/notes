@@ -23,6 +23,8 @@ orden: 5
 
 El ejemplo del libro contiene un productor de pujas y tres servicios: captura, seguimiento y analítica. Todos necesitan información de la puja. Se comparan una publicación a un *topic* y publicaciones dirigidas a colas separadas. **Fuente: PDF pp. 26–29; impresas pp. 30–33.**
 
+Para leer el ejemplo: el **productor** envía mensajes; el **consumidor** los procesa; una **cola** conserva mensajes pendientes de entrega; y un **topic** representa un tema al que pueden suscribirse varios interesados. En RabbitMQ, un **exchange** recibe mensajes y los dirige a colas según reglas; la cola es la que los conserva. Los nombres y garantías concretos dependen del sistema de mensajería.
+
 En la topología dibujada con colas, el productor conoce tres destinos. Añadir un servicio de historial obliga a añadir otro destino y modificar esa coordinación. Con publicación/suscripción, el productor publica para suscriptores y el nuevo servicio puede incorporarse sin cambiar su lógica. Esa ventaja procede del **desacoplamiento respecto a los receptores**, no de una propiedad mágica del nombre «topic».
 
 El libro después examina acceso a datos, contratos y supervisión. Su intención pedagógica es valiosa: buscar costos después de identificar beneficios. Sin embargo, algunas afirmaciones son demasiado generales. La propia página PDF 29 introduce una excepción basada en separar *exchange* y cola.

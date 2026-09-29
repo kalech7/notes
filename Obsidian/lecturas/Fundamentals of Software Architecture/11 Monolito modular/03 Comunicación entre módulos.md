@@ -11,7 +11,7 @@ tags:
 
 [[Obsidian/lecturas/Fundamentals of Software Architecture/11 Monolito modular/00 Índice|← Índice del capítulo 11]]
 
-**El libro es tajante: en este estilo, que los módulos se comuniquen nunca es algo bueno, pero muchas veces es necesario.** Cada conversación entre módulos es un hilo que ata dos partes que querías mantener separadas. La pregunta no es cómo evitar toda comunicación, sino cómo mantenerla escasa y visible.
+**El libro trata la comunicación entre módulos como un costo de acoplamiento que conviene justificar.** Una colaboración necesaria para completar una compra no es por sí sola un error de diseño. Cada conversación entre módulos es un hilo que ata dos partes que querías mantener separadas. La pregunta no es cómo evitar toda comunicación, sino cómo mantenerla escasa y visible.
 
 ## 1. Por qué a veces no queda otra opción
 
@@ -38,7 +38,7 @@ public class ColocarPedido {
 }
 ```
 
-**El problema en la estructura monolítica** es que resulta **demasiado cómodo**: como todo está en el mismo repositorio, cualquier clase puede instanciar cualquier clase de otro módulo, incluidas las internas. El libro advierte que así es fácil pasar de una arquitectura bien estructurada al antipatrón **Big Ball of Mud** de la figura 9-1: una red de dependencias cruzadas donde tocar una pieza afecta a muchas otras.
+**El problema en la estructura monolítica** es que resulta **demasiado cómodo**: si se exponen clases internas como públicas y faltan controles de acceso, otros módulos pueden usarlas con facilidad. Compartir repositorio no anula por sí solo la encapsulación del lenguaje. El libro advierte que así es fácil pasar de una arquitectura bien estructurada al antipatrón **Big Ball of Mud** de la figura 9-1: una red de dependencias cruzadas donde tocar una pieza afecta a muchas otras.
 
 **El problema en la estructura modular** es distinto. Las clases del otro módulo están en otro artefacto (otro JAR o DLL), no en una carpeta del mismo repositorio. Un módulo que llama a otro **no compila si no tiene las referencias de sus clases**: hay que crear una **dependencia en tiempo de compilación** entre ambos. La respuesta habitual es extraer una **clase de interfaz compartida** a un JAR o DLL aparte, de modo que cada módulo compile contra esa interfaz y no contra el otro módulo:
 
@@ -57,12 +57,14 @@ Así cada módulo sigue compilando de forma independiente. Pero si la comunicaci
 
 ## 3. Qué es el «JAR Hell», con un caso concreto
 
-«Infierno de dependencias» describe la situación en que varias piezas necesitan **versiones incompatibles de la misma biblioteca**, y el sistema solo puede cargar una. Ejemplo propio:
+«Infierno de dependencias» describe la situación en que varias piezas necesitan **versiones incompatibles de la misma biblioteca**, dentro de un mismo contexto de carga. Ejemplo propio con un classpath convencional y un mismo cargador de clases:
 
 1. `pedidos.jar` se compiló contra `contratos-inventario` versión 1, cuyo método es `descontar(String articulo, int cantidad)`.
 2. El equipo de inventario publica la versión 2, que cambia el método a `descontar(String articulo, int cantidad, String almacen)`.
 3. `envíos.jar` ya usa la versión 2.
-4. Al ensamblar la unidad de despliegue solo puede quedar **una** versión del contrato en el *classpath*. Si queda la 2, pedidos falla en ejecución al buscar un método que ya no existe; si queda la 1, falla envíos.
+4. Aunque se incluyan ambos JAR, el mismo cargador resuelve cada nombre de clase a una sola definición; poner ambas versiones en el *classpath* no las hace compatibles. Si queda la 2, pedidos falla en ejecución al buscar un método que ya no existe; si queda la 1, falla envíos.
+
+Este ejemplo supone un mismo cargador de clases. Java permite cargadores distintos, pero aislar versiones requiere diseño adicional y no elimina incompatibilidades entre sus contratos; la [especificación de la JVM](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-5.html#jvms-5.3) identifica un tipo mediante su nombre y su cargador definidor.
 
 Con pocos contratos esto se gestiona. Con muchos módulos que se llaman entre sí, cada cambio de contrato obliga a coordinar versiones de varios artefactos a la vez. Por eso el libro concluye que, **en cualquiera de las dos estructuras, demasiada comunicación entre módulos termina mal**: maraña en una, infierno de versiones en la otra.
 
@@ -87,9 +89,9 @@ sequenceDiagram
     M-->>UI: Pedido confirmado
 ```
 
-El diagrama de secuencia muestra el flujo de colocar un pedido con mediador. La pantalla solo habla con el mediador, y el mediador conversa por turnos con Pedidos, Inventario y Pagos. Ningún módulo llama a otro: Pedidos no sabe que existe Pagos. Todas las flechas son llamadas locales dentro del mismo proceso, no mensajes por la red. El conocimiento del **orden** de los pasos, que antes estaba escondido dentro de `ColocarPedido`, ahora vive en un único sitio.
+El diagrama de secuencia muestra únicamente el recorrido exitoso de colocar un pedido con mediador. No resuelve qué ocurre si se descuenta inventario y después falla el cobro: hacen falta límites transaccionales o pasos de recuperación explícitos, incluso dentro de un proceso. La pantalla solo habla con el mediador, y el mediador conversa por turnos con Pedidos, Inventario y Pagos. Ningún módulo llama a otro: Pedidos no sabe que existe Pagos. Todas las flechas son llamadas locales dentro del mismo proceso, no mensajes por la red. El conocimiento del **orden** de los pasos, que antes estaba escondido dentro de `ColocarPedido`, ahora vive en un único sitio.
 
-El libro añade la observación clave: **aunque el mediador desacopla los módulos entre sí, cada módulo queda acoplado al mediador.** No elimina todo el acoplamiento; simplifica la arquitectura y mantiene a los módulos independientes unos de otros. Además, es el **mediador** —no los módulos dependientes— quien necesita algún tipo de API o interfaz para invocar la funcionalidad de cada módulo.
+El libro destaca que el mediador conserva acoplamiento. **En la variante dibujada, las dependencias estáticas salen del mediador hacia las interfaces de los módulos**: estos no necesitan importar ni conocer al mediador. Aun así, el flujo depende de que sus contratos encajen con la coordinación. Si los módulos también llaman al mediador, aparecen dependencias en sentido inverso. No hay que confundir colaboración en ejecución con dependencia de código. Además, es el **mediador** —no los módulos dependientes— quien necesita algún tipo de API o interfaz para invocar la funcionalidad de cada módulo.
 
 **Fuente:** PDF pp. 5–6 · impresas 169–170 · figura 11-5.
 
@@ -115,7 +117,7 @@ Con un mediador que llama a cada módulo, las dependencias son **n**. Si además
 | 6 | 30 | 6 | 12 |
 | 10 | 90 | 10 | 20 |
 
-Con tres módulos la ventaja es pequeña; con diez es enorme. Pero el número no lo es todo: las n dependencias del mediador convergen en **una sola pieza**, que conoce los flujos de todo el sistema. Si se le deja crecer sin control, se convierte en un componente gigante que todos los equipos modifican y que concentra el riesgo de cambio.
+Estas cifras comparan un grafo completamente conectado con una estrella; no demuestran una mejora frente a cualquier diseño real. Si diez módulos solo necesitaban dos relaciones directas, añadir un mediador podría aumentar las dependencias. Pero el número no lo es todo: las n dependencias del mediador convergen en **una sola pieza**, que conoce los flujos de todo el sistema. Si se le deja crecer sin control, se convierte en un componente gigante que todos los equipos modifican y que concentra el riesgo de cambio.
 
 ## 7. Cómo elegir en la práctica
 
@@ -127,13 +129,13 @@ Con tres módulos la ventaja es pequeña; con diez es enorme. Pero el número no
 | Un módulo necesita solo leer datos de otro | Contrato de consulta del módulo dueño | Evita leer sus tablas o clases internas directamente |
 
 > [!question]- Si con un mediador los módulos no se conocen, ¿por qué el libro dice que siguen acoplados?
-> Porque todos dependen del mediador: si cambia cómo el mediador invoca a Pagos, hay que coordinar ese cambio. El acoplamiento no desaparece, se traslada a un punto único y conocido.
+> Porque el flujo conserva contratos y coordinación. En la variante de llamadas unidireccionales, el mediador depende de las interfaces de los módulos; estos pueden no conocerlo. Un cambio incompatible en Pagos puede obligar a cambiar al mediador.
 
 > [!question]- ¿Quién necesita la interfaz de cada módulo en el enfoque mediador?
 > El mediador. Es él quien llama a los módulos; los módulos no necesitan conocer las interfaces de los demás.
 
 > [!question]- ¿Qué error concreto produce el JAR Hell?
-> Que en ejecución solo puede cargarse una versión de un artefacto compartido y algún módulo esperaba otra: aparecen fallos como métodos o clases inexistentes aunque cada módulo compilara correctamente por separado.
+> Que una clase del contrato se resuelve a una versión incompatible con la que esperaba algún módulo: aparecen fallos como métodos o clases inexistentes aunque cada módulo compilara correctamente por separado.
 
 ## Fuente principal
 

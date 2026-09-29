@@ -27,6 +27,12 @@ El alcance es **los temas visibles de los capítulos 4 y 5 adjuntos**. No equiva
 
 Las notas conservan ejemplos, preguntas y conexiones anteriores. Las adiciones explican el propósito, el mecanismo y sus límites; no se limitan a añadir nombres de tecnologías.
 
+## Revisión de claridad · 29 de septiembre de 2026
+
+Se leyeron las 30 notas del libro para revisar continuidad, términos y ejemplos. Se explicaron siglas y operaciones que se daban por conocidas; se desarrollaron los cálculos de distancia y `recall@k`; se precisaron la regla WAL, la idempotencia y el conteo de niveles del árbol. También se corrigieron la referencia al número de escenas del atlas, un enlace a ETL y separadores duplicados.
+
+Esta pasada es editorial y conceptual; no repite el cotejo íntegro con los PDF descrito en la revisión anterior. Los detalles de WAL e idempotencia se contrastaron con PostgreSQL y RFC 9110, citados en las notas respectivas. El resultado integrado y sus comprobaciones están en [[Obsidian/lecturas/01 Revisión de claridad 2026-09-29|la revisión de la carpeta de lecturas]].
+
 ## Capítulo 4: recorrido de la cobertura
 
 N1–N7 corresponden a las siete notas de almacenamiento listadas a continuación. La columna PDF usa páginas del visor; las 26 y 27 contienen fotografías de dos páginas impresas cada una.
@@ -135,7 +141,7 @@ Dos revisiones por subagentes contrastaron por separado almacenamiento y evoluci
 
 La comprobación de sintaxis no equivale a una verificación del render de todo el conjunto dentro de una sesión activa de Obsidian: las notas y recursos se validaron localmente. Los dos Mermaid incorporados al mapa maestro sí se renderizaron a imagen y se inspeccionaron. Los ejemplos no constituyen una prueba de rendimiento de motores reales ni una certificación de un sistema en producción.
 
-Los PDF siguen siendo referencias opcionales. Para estudiar puedes comenzar por [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|las cuatro escenas explicadas]] y avanzar hacia las notas del índice.
+Los PDF siguen siendo referencias opcionales. Para estudiar puedes comenzar por [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/01 Guía y fundamentos/02 Atlas visual explicado|las cinco escenas explicadas]] y avanzar hacia las notas del índice.
 
 ---
 
