@@ -1,0 +1,8 @@
+flowchart TD
+    A[Una función aparentemente común] --> B[Comparar demanda y consecuencias de fallo]
+    B --> C{¿Necesidades diferentes justifican un límite?}
+    C -->|Sí| D[Separar responsabilidades o entradas]
+    C -->|No| E[Conservar el componente]
+    D --> F[Diseñar contratos y comprobar coste]
+    E --> G[Validar cobertura de historias]
+    F --> G

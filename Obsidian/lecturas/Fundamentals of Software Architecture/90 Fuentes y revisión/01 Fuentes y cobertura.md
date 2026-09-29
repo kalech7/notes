@@ -10,6 +10,9 @@ tags:
 
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Fuentes y revisión](00%20%C3%8Dndice.md)
 
+> [!info] Actualización del 28 de septiembre de 2026
+> Esta nota conserva el inventario y la revisión iniciales de los capítulos 1–5. La colección ahora abarca material de los capítulos 1–10 y 155 páginas de PDF. La primera ampliación añadió 47 folios, documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|Ampliación capítulos 6 a 8]]. La segunda añade otros 35 folios: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/05 Ampliación capítulos 9 y 10|Ampliación capítulos 9 y 10]].
+
 ## Edición y materiales
 
 Se trabaja la **segunda edición** de *Fundamentals of Software Architecture*, de **Mark Richards y Neal Ford**, O’Reilly, 2025. El [índice oficial de la segunda edición](https://www.oreilly.com/library/view/fundamentals-of-software/9781098175504/ch01.html) se utilizó para confirmar edición, autores y nombres de capítulos. El contenido principal de esta guía procede de los archivos facilitados por el usuario, no de una edición distinta.
@@ -35,7 +38,7 @@ Se conservaron copias de los originales sin modificar su contenido. **31 + 18 + 
 | 21.37, páginas 1–11 | 55–65; sumar 54 |
 | 21.37, páginas 12–24 | 67–79; sumar 55 |
 
-No aparecen las páginas impresas **13–16, 36 y 66** en estos archivos. No se presupone que todos esos huecos contengan texto ni que sean todos páginas en blanco. No se reconstruyen ni se incluyen como páginas revisadas. Por tanto, la expresión «capítulos 1 a 5» describe la organización del material recibido, **no una afirmación de integridad de los cinco capítulos originales**. Tampoco se cubren los capítulos 6 en adelante; las ampliaciones sobre medición, ADR o reintentos se identifican como tales.
+No aparecen las páginas impresas **13–16, 36 y 66** en estos archivos. No se presupone que todos esos huecos contengan texto ni que sean todos páginas en blanco. No se reconstruyen ni se incluyen como páginas revisadas. Por tanto, la expresión «capítulos 1 a 5» describe la organización del material recibido, **no una afirmación de integridad de los cinco capítulos originales**. Esta era la cobertura inicial de los capítulos 1–5. El 28 de septiembre se añadieron los capítulos 6–8: consulta [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|la ampliación de cobertura]] para los dos PDF nuevos, sus páginas y figuras. Las secciones que siguen describen la entrega inicial; los ejemplos propios siguen identificados como tales.
 
 ## Matriz de cobertura del material disponible
 

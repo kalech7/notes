@@ -71,6 +71,9 @@ Sus componentes principales son:
 > **Evolución de los agentes:** Esta clasificación va desde lo más básico (reaccionar sin pensar) hasta lo más avanzado (aprender de los errores). Un agente de utilidad buscará siempre el camino más "feliz" (óptimo), mientras que el agente de aprendizaje será capaz de descubrir por sí mismo cuál es ese camino sin que un programador se lo dicte.
 
 ## Notas relacionadas
+- [[Agentes Inteligentes y Entornos de Tarea (PEAS)]]
+- [[Algoritmos de Busqueda no Informada y Heuristica]]
+- [[Busqueda con Adversarios (Minimax y Poda Alfa-Beta)]]
 - [[problemas en IA]]
 - [[machine learning]]
 - [[web semantica]]

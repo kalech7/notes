@@ -94,7 +94,8 @@ flowchart TD
 
 ## Notas relacionadas
 - [[Funcionamiento del Sistema de Memoria]]
-- [[Ejercicio Correspondencia directa.excalidraw]]
+- [[Jerarquia de Memoria y Memoria Cache]]
+- [[Pipeline de Instrucciones y Riesgos (Hazards)]]
 - [[Ejercicio Correspondencia directa.excalidraw]]
 
 ## Correspondencia Asociativa

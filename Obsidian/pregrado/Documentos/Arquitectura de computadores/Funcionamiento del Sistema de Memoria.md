@@ -61,5 +61,7 @@ Longitudes comunes de palabra son de 8, 16, 32 y 64 bits. Se considera tanto el 
 
 ## Notas relacionadas
 - [[Principios de funcionamiento]]
+- [[Jerarquia de Memoria y Memoria Cache]]
+- [[Pipeline de Instrucciones y Riesgos (Hazards)]]
 - [[Ejercicio Correspondencia directa.excalidraw]]
 - [[Documentos/computacion grafica/pipeline grafico|Pipeline gráfico]]

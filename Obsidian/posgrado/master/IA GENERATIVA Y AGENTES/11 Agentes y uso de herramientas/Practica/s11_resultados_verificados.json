@@ -1,0 +1,829 @@
+{
+  "verificacion": "9 escenarios y cuentas correctos",
+  "advertencia": "Simulación por reglas, sin LLM ni API; datos ficticios.",
+  "contextos_tokens": [
+    1000,
+    1500,
+    2000,
+    2500,
+    3000,
+    3500,
+    4000
+  ],
+  "total_entradas_tokens": 17500,
+  "corridas": [
+    {
+      "escenario": "exito",
+      "estado": "respuesta_final",
+      "complete": true,
+      "respuesta": "Las ventas pasaron de 12000 a 15000 USD: crecimiento de 25 %. Fuente: ventas_demo_v1.",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "kind": "call",
+          "id": "c2",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-03"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c2",
+          "ok": true,
+          "data": {
+            "mes": "2026-03",
+            "total": 15000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "kind": "call",
+          "id": "c3",
+          "name": "variacion_porcentual",
+          "args": {
+            "base": 12000,
+            "actual": 15000
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c3",
+          "ok": true,
+          "data": {
+            "porcentaje": 25.0
+          }
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "exito",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.2894,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "llamada",
+          "id": "c2",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-03"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0097,
+          "kind": "result",
+          "call_id": "c2",
+          "ok": true,
+          "data": {
+            "mes": "2026-03",
+            "total": 15000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 3,
+          "evento": "llamada",
+          "id": "c3",
+          "tool": "variacion_porcentual",
+          "input": {
+            "base": 12000,
+            "actual": 15000
+          }
+        },
+        {
+          "paso": 3,
+          "evento": "resultado",
+          "tool": "variacion_porcentual",
+          "ms": 0.0301,
+          "kind": "result",
+          "call_id": "c3",
+          "ok": true,
+          "data": {
+            "porcentaje": 25.0
+          }
+        },
+        {
+          "evento": "respuesta_final",
+          "texto": "Las ventas pasaron de 12000 a 15000 USD: crecimiento de 25 %. Fuente: ventas_demo_v1.",
+          "complete": true
+        }
+      ]
+    },
+    {
+      "escenario": "exito",
+      "estado": "max_pasos_alcanzado",
+      "complete": false,
+      "respuesta": "Se agotó el límite. Hay resultados registrados, pero no se emitió una respuesta final.",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "kind": "call",
+          "id": "c2",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-03"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c2",
+          "ok": true,
+          "data": {
+            "mes": "2026-03",
+            "total": 15000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "kind": "call",
+          "id": "c3",
+          "name": "variacion_porcentual",
+          "args": {
+            "base": 12000,
+            "actual": 15000
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c3",
+          "ok": true,
+          "data": {
+            "porcentaje": 25.0
+          }
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "exito",
+          "max_decisiones": 3
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0069,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "llamada",
+          "id": "c2",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-03"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0054,
+          "kind": "result",
+          "call_id": "c2",
+          "ok": true,
+          "data": {
+            "mes": "2026-03",
+            "total": 15000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 3,
+          "evento": "llamada",
+          "id": "c3",
+          "tool": "variacion_porcentual",
+          "input": {
+            "base": 12000,
+            "actual": 15000
+          }
+        },
+        {
+          "paso": 3,
+          "evento": "resultado",
+          "tool": "variacion_porcentual",
+          "ms": 0.0087,
+          "kind": "result",
+          "call_id": "c3",
+          "ok": true,
+          "data": {
+            "porcentaje": 25.0
+          }
+        },
+        {
+          "evento": "max_pasos_alcanzado",
+          "texto": "Se agotó el límite. Hay resultados registrados, pero no se emitió una respuesta final.",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "repeticion",
+      "estado": "max_pasos_alcanzado",
+      "complete": false,
+      "respuesta": "Se agotó el límite. Hay resultados registrados, pero no se emitió una respuesta final.",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "kind": "call",
+          "id": "c2",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c2",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "kind": "call",
+          "id": "c3",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c3",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "repeticion",
+          "max_decisiones": 3
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0123,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "llamada",
+          "id": "c2",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0061,
+          "kind": "result",
+          "call_id": "c2",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 3,
+          "evento": "llamada",
+          "id": "c3",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "paso": 3,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0049,
+          "kind": "result",
+          "call_id": "c3",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "evento": "max_pasos_alcanzado",
+          "texto": "Se agotó el límite. Hay resultados registrados, pero no se emitió una respuesta final.",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "desconocida",
+      "estado": "respuesta_final",
+      "complete": false,
+      "respuesta": "No se pudo completar: herramienta_desconocida",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "borrar_datos",
+          "args": {}
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "herramienta_desconocida"
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "desconocida",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "borrar_datos",
+          "input": {}
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "borrar_datos",
+          "ms": 0.0291,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "herramienta_desconocida"
+        },
+        {
+          "evento": "respuesta_final",
+          "texto": "No se pudo completar: herramienta_desconocida",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "mes_invalido",
+      "estado": "respuesta_final",
+      "complete": false,
+      "respuesta": "No se pudo completar: mes_invalido: se espera YYYY-MM",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-99"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "mes_invalido: se espera YYYY-MM"
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "mes_invalido",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-99"
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0845,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "mes_invalido: se espera YYYY-MM"
+        },
+        {
+          "evento": "respuesta_final",
+          "texto": "No se pudo completar: mes_invalido: se espera YYYY-MM",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "sin_datos",
+      "estado": "respuesta_final",
+      "complete": false,
+      "respuesta": "No se pudo completar: mes_no_disponible",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-01"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "mes_no_disponible"
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "sin_datos",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-01"
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.009,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "mes_no_disponible"
+        },
+        {
+          "evento": "respuesta_final",
+          "texto": "No se pudo completar: mes_no_disponible",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "base_cero",
+      "estado": "respuesta_final",
+      "complete": false,
+      "respuesta": "No se pudo completar: porcentaje_indefinido: base cero",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "variacion_porcentual",
+          "args": {
+            "base": 0,
+            "actual": 15000
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "porcentaje_indefinido: base cero"
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "base_cero",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "variacion_porcentual",
+          "input": {
+            "base": 0,
+            "actual": 15000
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "variacion_porcentual",
+          "ms": 0.0068,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": false,
+          "error": "porcentaje_indefinido: base cero"
+        },
+        {
+          "evento": "respuesta_final",
+          "texto": "No se pudo completar: porcentaje_indefinido: base cero",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "id_repetido",
+      "estado": "error_protocolo",
+      "complete": false,
+      "respuesta": "Mensaje mal formado o identificador repetido.",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        },
+        {
+          "kind": "call",
+          "id": "c1",
+          "name": "total_ventas",
+          "args": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "id_repetido",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "llamada",
+          "id": "c1",
+          "tool": "total_ventas",
+          "input": {
+            "mes": "2026-02"
+          }
+        },
+        {
+          "paso": 1,
+          "evento": "resultado",
+          "tool": "total_ventas",
+          "ms": 0.0127,
+          "kind": "result",
+          "call_id": "c1",
+          "ok": true,
+          "data": {
+            "mes": "2026-02",
+            "total": 12000,
+            "moneda": "USD",
+            "definicion": "ventas netas sin impuestos",
+            "fuente": "ventas_demo_v1"
+          }
+        },
+        {
+          "paso": 2,
+          "evento": "propuesta_rechazada",
+          "propuesta": {
+            "kind": "call",
+            "id": "c1",
+            "name": "total_ventas",
+            "args": {
+              "mes": "2026-02"
+            }
+          }
+        },
+        {
+          "evento": "error_protocolo",
+          "texto": "Mensaje mal formado o identificador repetido.",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "escenario": "malformado",
+      "estado": "error_protocolo",
+      "complete": false,
+      "respuesta": "Mensaje mal formado o identificador repetido.",
+      "historial": [
+        {
+          "kind": "user",
+          "text": "Compara marzo con febrero de 2026."
+        }
+      ],
+      "traza": [
+        {
+          "evento": "inicio",
+          "pregunta": "Compara marzo con febrero de 2026.",
+          "escenario": "malformado",
+          "max_decisiones": 4
+        },
+        {
+          "paso": 1,
+          "evento": "propuesta_rechazada",
+          "propuesta": {
+            "kind": "call",
+            "id": "c1"
+          }
+        },
+        {
+          "evento": "error_protocolo",
+          "texto": "Mensaje mal formado o identificador repetido.",
+          "complete": false
+        }
+      ]
+    }
+  ]
+}

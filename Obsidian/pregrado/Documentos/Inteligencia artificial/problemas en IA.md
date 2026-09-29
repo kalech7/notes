@@ -27,5 +27,8 @@ graph TD
 
 ## Notas relacionadas
 - [[conducta racional]]
+- [[Agentes Inteligentes y Entornos de Tarea (PEAS)]]
+- [[Algoritmos de Busqueda no Informada y Heuristica]]
+- [[Busqueda con Adversarios (Minimax y Poda Alfa-Beta)]]
 - [[machine learning]]
 - [[Algoritmo Dijkstra]]

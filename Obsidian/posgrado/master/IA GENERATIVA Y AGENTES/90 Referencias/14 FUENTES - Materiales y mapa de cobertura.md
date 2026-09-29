@@ -158,3 +158,74 @@ Las páginas 1, 3, 9, 15 y 19 son portada o separadores. Las referencias a códi
 Se añadieron ocho figuras originales (27–34), en PNG y SVG, reproducibles con `Recursos visuales/generar_visuales_s09.py`. Cada una tiene una explicación de su lectura en la nota que la utiliza. Las figuras numéricas son ejemplos calculados, salvo la 33, que reproduce cuatro cifras de la diapositiva 23 con atribución. Las ampliaciones precisan las unidades de relevancia, convenciones de AP/nDCG, límites de las anclas literales y el efecto del reranking sobre un corte menor que el conjunto de candidatos.
 
 Las consignas del PDF se trataron como contenido académico. No se ejecutó el laboratorio, no se configuró Docker y no se entregaron trabajos en nombre del usuario.
+
+
+## Sesión 10 incorporada
+
+Fuente principal: [[sesion-10.pdf]], *Taller 2 — Sistema RAG sobre base vectorial*, Daniel Andrés Riofrío Almeida, 26 de septiembre de 2026, 16 páginas. Se revisó el texto completo y la representación visual de las 16 páginas; se amplió la página 5 para leer su tabla. El original se conserva en `Materiales`.
+
+| Páginas | Notas | Cobertura |
+| --- | --- | --- |
+| 2–5 | 50–51 y 57 | Método baseline, componentes, criterios y evidencias. |
+| 7–9 | 52 | Ingesta, tokens, truncamiento y límites de heurísticas. |
+| 5, 7 y 10 | 53 | Golden set, anclas y disponibilidad en corpus, índice y contexto. |
+| 3, 11 y 13 | 54–55 | Hit Rate, MRR, denominadores, abstención y evaluación de respuestas. |
+| 13 | 56 | Hipótesis para fragmentación, híbrida, reranking y evaluación con RAGAS. |
+| 14–16 | 57 | Credenciales, reproducibilidad, recursos y puente hacia agentes. |
+| Síntesis | 58 | Dieciocho ejercicios con soluciones desplegables. |
+
+Las páginas 1, 6 y 12 son portada y separadores. No se ejecutó el laboratorio ni se inspeccionaron los archivos internos que el PDF cita. Las consignas se trataron como contenido académico, no como instrucciones para instalar, desplegar, publicar o entregar.
+
+Las figuras 35–40 son esquemas y cuentas didácticas originales; se guardan en PNG y SVG y se reproducen con `Recursos visuales/generar_visuales_s10.py` (Pillow). `verificar_ejemplos_s10.py` reproduce las cuentas de los ejemplos sin usar modelos ni API. Los resultados no son mediciones del corpus del usuario.
+
+Precisiones: el umbral de 200 caracteres es heurístico; 128 es el límite del caso del PDF y no universal; 900 palabras no se convierten aquí en un conteo medido de tokens; la ilustración de truncamiento usa 900 tokens y 126 útiles; un sufijo omitido no contribuye directamente al embedding, pero su fragmento puede recuperarse por el prefijo; MRR ≤ Hit Rate exige mismo corte y población; el detector mostrado usa inclusión de cadena; una pregunta puede ser respondible en los originales y no tener evidencia indexada. Se conserva la incertidumbre de la página 16 sobre la continuidad de los talleres.
+
+### Documentación técnica complementaria consultada el 27 de septiembre de 2026
+
+- [Sentence Transformers: configuración del encoder y límite de secuencia](https://www.sbert.net/docs/package_reference/sentence_transformer/model.html?highlight=hub).
+- [Sentence Transformers: recuperación y reranking](https://www.sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html).
+- [Qdrant: consultas híbridas y RRF](https://qdrant.tech/documentation/search/hybrid-queries/).
+- [RAGAS: fidelidad](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/).
+- [RAGAS: relevancia de respuesta](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/answer_relevance/).
+
+Se emplearon para aclarar conceptos, no para atribuir al laboratorio una API o configuración actual no verificada. Las cuentas RRF declaran posiciones desde 1 y c=60 como ejemplo propio; no se presentan como valores por defecto de Qdrant.
+
+
+## Sesión 11 incorporada
+
+Fuente principal: [[sesion-11.pdf]], *Qué es un agente y uso de herramientas*, Daniel Andrés Riofrío Almeida, 28 de septiembre de 2026, 26 páginas. Se extrajo todo el texto y se revisaron visualmente las 26 páginas. El PDF se conserva sin modificar en `Materiales`.
+
+| Páginas | Notas | Cobertura |
+| --- | --- | --- |
+| 2, 4–6 | 59–60 | Transición de RAG fijo a herramienta, definición operativa, chatbot, pipeline y agente. |
+| 8–11 | 61 y 64 | PEAS, racionalidad, tipos, observación parcial, harness y estado. |
+| 13–15 | 62 | Seis pasos, separación entre emisión y ejecución, correspondencia llamada–resultado. |
+| 16–17 | 63 | Catálogo, esquema, descripción y validación. |
+| 19–22 | 65 | Toolformer, ajuste fino, filtro por pérdida, resultados y limitaciones. |
+| 23–24 | 66 | Límite de pasos, simulación, trazas y depuración. |
+| 25–26 | 60 y 66 | Taxonomía de divulgación, cierre y contexto del Taller 3. |
+| Síntesis | 67 | 24 ejercicios, caso integrado y glosario. |
+
+Las páginas 1, 3, 7, 12 y 18 son portada o separadores. Los archivos internos que el PDF cita no se consideran inspeccionados. Las consignas se trataron como contenido académico; no se ejecutó el notebook docente ni se configuró un servicio externo.
+
+### Fuentes primarias adicionales consultadas
+
+- [[schick-2023-toolformer.pdf]]: §2–4, páginas PDF 2–7, tablas 3–6, y §7, página PDF 11. Lectura directa de la copia local para verificar el filtro, el protocolo, los resultados y la limitación de una llamada en la evaluación. Se contrastó la identidad del artículo con [arXiv](https://arxiv.org/abs/2302.04761).
+- [[Hands-On_Large_Language_Models.pdf]]: cap. 7, pp. impresas 209–210, 212, 217–219 (PDF 231–232, 234, 239–241), sobre memoria, cadenas y agentes; se inspeccionaron además PDF 243 y 245 para contexto, sin usar sus firmas de API como documentación vigente.
+- [Referencia oficial de objetos en JSON Schema](https://json-schema.org/understanding-json-schema/reference/object): propiedades, campos requeridos y campos adicionales. Consulta el 28 de septiembre de 2026, hora local.
+
+PEAS y la clasificación de agentes se explican con atribución a la presentación, que cita AIMA. No se afirma haber inspeccionado el capítulo de la edición citada por el docente.
+
+### Precisiones de la ampliación
+
+La definición operativa de agente del curso no se presenta como universal. Una herramienta única puede admitir distintas acciones y decisiones; una corrida sin herramientas no determina toda la arquitectura; un enrutador sin retorno no demuestra un bucle. La función de agente depende de pesos, contexto y código. La clasificación del agente LLM como basado en objetivos caracteriza el ejemplo del curso, no limita todos los sistemas con LLM.
+
+«El modelo no tiene memoria» se precisa como ausencia de recuperación automática de conversaciones previas en una llamada básica; el servicio o aplicación pueden gestionar estado. El reenvío completo es una implementación, no una obligación universal. La correspondencia llamada–resultado no implica ejecución de efectos exactamente una vez. La respuesta final tampoco prueba éxito.
+
+En Toolformer se separa generación del corpus, ajuste e inferencia; autosupervisión no significa cero demostraciones humanas. La restricción de una llamada se atribuye al protocolo evaluado. Los puntajes se conservan con tarea, comparador y condiciones. Las cifras no son resultados actuales ni mediciones propias.
+
+### Figuras y laboratorio
+
+Figuras originales 41–48, en PNG y SVG, generadas con `Recursos visuales/generar_visuales_s11.py` (Pillow). Se inspeccionaron las ocho y se corrigieron el margen del gráfico de contexto y el retorno del diagrama de parada. La figura 47 usa cifras históricas del paper local; las demás son esquemas o cálculos didácticos, sin mediciones de LLM.
+
+El archivo [[s11_laboratorio_bucle.py]] usa únicamente biblioteca estándar de Python y datos ficticios en memoria. [[s11_resultados_verificados.json]] conserva la salida de nueve escenarios: éxito, límite, repetición, herramienta desconocida, mes inválido, ausencia de datos, base cero, ID repetido y mensaje mal formado. Comprueba el emparejamiento de llamadas aceptadas con resultados y las cuentas de crecimiento y contexto. Es un simulador por reglas y no mide autonomía ni calidad de un LLM.

@@ -1,0 +1,9 @@
+flowchart TD
+    A[Capacidad del negocio] --> B[Características prioritarias]
+    B --> C[Elementos necesarios para funcionar]
+    C --> D[Límite candidato del quantum]
+    D --> E[Recorridos y dependencias externas]
+    E --> F[Medir el comportamiento observable]
+    F --> G{¿La evidencia coincide con el límite?}
+    G -->|Sí| H[Conservar y documentar]
+    G -->|No| C

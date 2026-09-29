@@ -33,3 +33,5 @@ sequenceDiagram
 - [[que es recuperacion de informacion]]
 - [[ranking]]
 - [[machine learning]]
+- [[Arquitectura Transformer y Mecanismo de Atencion]]
+- [[Reduccion de Dimensionalidad (PCA y t-SNE)]]

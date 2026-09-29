@@ -1,0 +1,9 @@
+flowchart TB
+    A[Capacidad del negocio] --> B{¿Cómo se implementa en nube?}
+    B --> C[Aplicación en contenedores]
+    C --> D[Orquestación y recursos subyacentes]
+    B --> E[Funciones y servicios administrados]
+    E --> F[Capacidades y restricciones del proveedor]
+    D --> G[Comportamiento observable del recorrido]
+    F --> G
+    G --> H[Validar objetivos y dependencias]

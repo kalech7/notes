@@ -50,5 +50,11 @@ El proceso de entrenamiento de una red neuronal ocurre en dos fases fundamentale
 
 ## Notas relacionadas
 - [[machine learning]]
+- [[tipos de machine learning]]
 - [[algoritmos parametricos y no parametricos]]
 - [[Gradient Descent]]
+- [[Redes Neuronales Convolucionales (CNN)]]
+- [[Redes Neuronales Recurrentes (RNN) y LSTM]]
+- [[Arquitectura Transformer y Mecanismo de Atencion]]
+- [[Aprendizaje por Refuerzo (Q-Learning y MDP)]]
+- [[Reduccion de Dimensionalidad (PCA y t-SNE)]]

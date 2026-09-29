@@ -198,3 +198,8 @@ Intenta responder antes de desplegar cada respuesta.
 
 > [!question]- ¿MAP es lo mismo que posterior predictiva?
 > No. MAP elige un valor del parámetro; la posterior predictiva describe resultados nuevos integrando sobre su incertidumbre.
+
+
+## Ampliación de agentes — sesión 11
+
+El [[67 S11 - Ejercicios resueltos y repaso activo#Glosario de bolsillo|glosario de la sesión 11]] desarrolla harness, herramientas, esquemas, observaciones, estado, trazas, utilidad, idempotencia y parada. Para distinguir el sentido de «agente» en el marco clásico y en el criterio operativo del curso, consulta [[60 S11 - Chatbot pipeline RAG y agente quién decide]] y [[61 S11 - PEAS racionalidad y observación parcial]].

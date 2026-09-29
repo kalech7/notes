@@ -8,9 +8,9 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 06 y las sesiones 08 y 09. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados. La sesión 07 no está incorporada en los materiales actuales.
+Este conjunto cubre las sesiones 00 a 06 y las sesiones 08, 09, 10 y 11. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria y control del bucle. La sesión 07 no está incorporada en los materiales actuales.
 
-**Alcance de «agentes»:** por ahora hay una introducción en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. Las sesiones disponibles todavía no desarrollan en profundidad planificación, uso de herramientas ni evaluación de agentes.
+**Alcance de «agentes»:** la introducción está en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. La sesión 11 desarrolla PEAS, selección y ejecución de herramientas, memoria, Toolformer, límites y trazas en [[59 S11 - Guía para entender agentes y herramientas]]. Los patrones avanzados de planificación y la evaluación sistemática de agentes quedan para sesiones posteriores.
 
 > [!tip] Cómo estudiar
 > Lee primero la situación concreta, sigue el gráfico y después relaciona cada símbolo con el ejemplo. Al final de cada nota responde las preguntas sin abrir las soluciones. Usa [[27 PRÁCTICA - Sesiones 02 a 05]] para comprobar la segunda mitad del recorrido.
@@ -109,7 +109,33 @@ Empieza por [[42 S09 - Guía para evaluar un RAG|la guía de la sesión 09]]. In
 6. [[48 S09 - Diagnóstico experimentos y Taller 2]]
 7. [[49 S09 - Ejercicios resueltos y repaso]]
 
-## 10. Referencias
+## 10. Taller RAG medible — sesión 10
+
+Empieza por [[50 S10 - Guía para comprender el taller RAG|la guía de la sesión 10]]. Nueve notas conectan el funcionamiento del sistema con el diagnóstico de fallas, seis figuras explicadas, un experimento numérico completo y dieciocho ejercicios resueltos.
+
+1. [[51 S10 - Del documento a una respuesta con evidencia]]
+2. [[52 S10 - Ingesta tokens y tres fallas silenciosas]]
+3. [[53 S10 - Golden set y límites de lo respondible]]
+4. [[54 S10 - Hit Rate y MRR con un experimento completo]]
+5. [[55 S10 - Abstención fidelidad y errores del evaluador]]
+6. [[56 S10 - Elegir una extensión y comprobar su efecto]]
+7. [[57 S10 - Reproducibilidad entregables y reflexión]]
+8. [[58 S10 - Ejercicios resueltos y repaso activo]]
+
+## 11. Agentes y uso de herramientas — sesión 11
+
+Empieza por [[59 S11 - Guía para entender agentes y herramientas|la guía de la sesión 11]]. Nueve notas desarrollan el mecanismo con un ejemplo continuo de ventas, ocho figuras explicadas, 24 ejercicios resueltos y un simulador local con nueve escenarios verificados.
+
+1. [[60 S11 - Chatbot pipeline RAG y agente quién decide]]
+2. [[61 S11 - PEAS racionalidad y observación parcial]]
+3. [[62 S11 - Function calling y bucle del agente paso a paso]]
+4. [[63 S11 - Diseñar herramientas esquemas y validación]]
+5. [[64 S11 - Memoria contexto y costo de repetir el historial]]
+6. [[65 S11 - Toolformer aprendizaje resultados y límites]]
+7. [[66 S11 - Límites trazas y laboratorio del bucle]]
+8. [[67 S11 - Ejercicios resueltos y repaso activo]]
+
+## 12. Referencias
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Glosario explicado]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Fuentes y cobertura por sesión]].
@@ -127,6 +153,8 @@ Empieza por [[42 S09 - Guía para evaluar un RAG|la guía de la sesión 09]]. In
 07 Embeddings y recuperación/
 08 RAG fragmentación y recuperación/
 09 Evaluación de RAG y patrones avanzados/
+10 Taller RAG medible/
+11 Agentes y uso de herramientas/
 90 Referencias/
 Materiales/
 Recursos visuales/

@@ -50,4 +50,9 @@ flowchart TD
 Para ver la ejecución paso a paso:
 [[Grafo Dijkstra corrida de escritorio.excalidraw]]
 
-Relacionado con: [[grafos corrida de escritorio BFS Y DFS.excalidraw]]
+Relacionado con: 
+- [[grafos corrida de escritorio BFS Y DFS.excalidraw]]
+- [[Algoritmo A-Estrella (A-Star)]] — Extensión con búsqueda heurística informada para reducir el espacio de búsqueda.
+- [[Arboles de Expansion Minima (Kruskal y Prim)]] — Algoritmos voraces sobre grafos ponderados con cola de prioridad análoga.
+- [[Complejidad Computacional (Big-O, P vs NP)]] — Análisis asintótico y clasificación de problemas tratables en tiempo polinomial P.
+

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<rect width="1600" height="1000" fill="#F4F7FB"/>
+<text x="65" y="45" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">RAG: conservar la evidencia en cada etapa</text>
+<text x="65" y="108" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#506479" dominant-baseline="text-before-edge">Preparación del corpus arriba; recorrido de cada pregunta abajo.</text>
+<rect x="65" y="190" width="320" height="160" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="87" y="212" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">1. Documentos</text>
+<text x="87" y="257" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Archivos originales</text>
+<text x="87" y="292" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">y versiones</text>
+<path d="M393,270 L443,270" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M443,270 L429.8362615716444,277.19138307906303" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M443,270 L429.8362615716444,262.80861692093697" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="455" y="190" width="320" height="160" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="477" y="212" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">2. Texto y fragmentos</text>
+<text x="477" y="257" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Extracción legible</text>
+<text x="477" y="292" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Cortes en tokens</text>
+<path d="M783,270 L833,270" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M833,270 L819.8362615716444,277.19138307906303" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M833,270 L819.8362615716444,262.80861692093697" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="845" y="190" width="320" height="160" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="867" y="212" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">3. Embeddings</text>
+<text x="867" y="257" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Representación de</text>
+<text x="867" y="292" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">la entrada efectiva</text>
+<path d="M1173,270 L1223,270" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M1223,270 L1209.8362615716444,277.19138307906303" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M1223,270 L1209.8362615716444,262.80861692093697" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="1235" y="190" width="300" height="160" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="1257" y="212" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">4. Colección</text>
+<text x="1257" y="257" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Vectores + IDs</text>
+<text x="1257" y="292" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Texto y fuentes</text>
+<path d="M1385,350 L1385,410" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M1385,410 L615,410" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M615,410 L615,475" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M615,475 L607.808616920937,461.8362615716444" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M615,475 L622.191383079063,461.8362615716444" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="65" y="490" width="320" height="175" rx="18" fill="#EAF2FC" stroke="#CBD6E2" stroke-width="2"/>
+<text x="87" y="512" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">Pregunta</text>
+<text x="87" y="557" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Qué necesita saber</text>
+<text x="87" y="592" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">la persona</text>
+<path d="M393,575 L443,575" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M443,575 L429.8362615716444,582.191383079063" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M443,575 L429.8362615716444,567.808616920937" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="455" y="490" width="320" height="175" rx="18" fill="#EAF2FC" stroke="#CBD6E2" stroke-width="2"/>
+<text x="477" y="512" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">Recuperación</text>
+<text x="477" y="557" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Ranking de candidatos</text>
+<text x="477" y="592" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">¿Llegó la evidencia?</text>
+<path d="M783,575 L833,575" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M833,575 L819.8362615716444,582.191383079063" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M833,575 L819.8362615716444,567.808616920937" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="845" y="490" width="320" height="175" rx="18" fill="#EAF2FC" stroke="#CBD6E2" stroke-width="2"/>
+<text x="867" y="512" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">Contexto</text>
+<text x="867" y="557" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Texto seleccionado</text>
+<text x="867" y="592" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">para el prompt</text>
+<path d="M1173,575 L1223,575" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M1223,575 L1209.8362615716444,582.191383079063" stroke="#2563A5" stroke-width="4" fill="none"/>
+<path d="M1223,575 L1209.8362615716444,567.808616920937" stroke="#2563A5" stroke-width="4" fill="none"/>
+<rect x="1235" y="490" width="300" height="175" rx="18" fill="#EAF2FC" stroke="#CBD6E2" stroke-width="2"/>
+<text x="1257" y="512" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">Respuesta</text>
+<text x="1257" y="557" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Usar y citar evidencia</text>
+<text x="1257" y="592" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">o abstenerse</text>
+<text x="880" y="430" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">El buscador consulta la colección</text>
+<rect x="65" y="735" width="450" height="155" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="87" y="757" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">Antes de consultar</text>
+<text x="87" y="802" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">¿Qué se leyó y qué se rechazó?</text>
+<text x="87" y="837" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">¿Qué tokens entraron al encoder?</text>
+<rect x="575" y="735" width="450" height="155" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="597" y="757" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">Al recuperar</text>
+<text x="597" y="802" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Hit Rate: presencia de relevantes.</text>
+<text x="597" y="837" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">MRR: posición del primer relevante.</text>
+<rect x="1085" y="735" width="450" height="155" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="1107" y="757" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">Al responder</text>
+<text x="1107" y="802" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">¿Se conserva lo que dice la fuente?</text>
+<text x="1107" y="837" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">¿La abstención es adecuada?</text>
+<path d="M65,935 L1535,935" stroke="#CBD6E2" stroke-width="2" fill="none"/>
+<text x="65" y="955" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#506479" dominant-baseline="text-before-edge">Esquema conceptual propio · Los vectores sirven para buscar; el generador recibe texto.</text>
+</svg>

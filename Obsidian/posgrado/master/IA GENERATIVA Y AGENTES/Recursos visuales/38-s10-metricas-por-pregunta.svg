@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<rect width="1600" height="1000" fill="#F4F7FB"/>
+<text x="65" y="45" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Hit Rate y MRR: ver los aportes de cada pregunta</text>
+<text x="65" y="108" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#506479" dominant-baseline="text-before-edge">Ocho preguntas respondibles. Verde = primer relevante; gris = candidato no relevante.</text>
+<text x="75" y="185" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Pregunta</text>
+<text x="335" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="463" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">2</text>
+<text x="591" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">3</text>
+<text x="719" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">4</text>
+<text x="847" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">5</text>
+<text x="1050" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">H@5</text>
+<text x="1260" y="185" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">RR@5</text>
+<text x="95" y="246" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q1</text>
+<rect x="292" y="233" width="105" height="48" rx="9" fill="#CDEEE6" stroke="#147D73" stroke-width="2"/>
+<text x="321" y="243" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">R</text>
+<rect x="420" y="233" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="233" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="233" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="233" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="245" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="1268" y="245" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="95" y="315" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q2</text>
+<rect x="292" y="302" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="420" y="302" width="105" height="48" rx="9" fill="#CDEEE6" stroke="#147D73" stroke-width="2"/>
+<text x="449" y="312" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">R</text>
+<rect x="548" y="302" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="302" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="302" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="314" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="1268" y="314" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1/2</text>
+<text x="95" y="384" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q3</text>
+<rect x="292" y="371" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="420" y="371" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="371" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="371" width="105" height="48" rx="9" fill="#CDEEE6" stroke="#147D73" stroke-width="2"/>
+<text x="705" y="381" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">R</text>
+<rect x="804" y="371" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="383" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="1268" y="383" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1/4</text>
+<text x="95" y="453" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q4</text>
+<rect x="292" y="440" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="420" y="440" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="440" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="440" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="440" width="105" height="48" rx="9" fill="#CDEEE6" stroke="#147D73" stroke-width="2"/>
+<text x="833" y="450" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">R</text>
+<text x="1072" y="452" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="1268" y="452" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1/5</text>
+<text x="95" y="522" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q5</text>
+<rect x="292" y="509" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="420" y="509" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="509" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="509" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="509" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="521" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">0</text>
+<text x="1268" y="521" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">0</text>
+<text x="95" y="591" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q6</text>
+<rect x="292" y="578" width="105" height="48" rx="9" fill="#CDEEE6" stroke="#147D73" stroke-width="2"/>
+<text x="321" y="588" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">R</text>
+<rect x="420" y="578" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="578" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="578" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="578" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="590" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="1268" y="590" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="95" y="660" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q7</text>
+<rect x="292" y="647" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="420" y="647" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="647" width="105" height="48" rx="9" fill="#CDEEE6" stroke="#147D73" stroke-width="2"/>
+<text x="577" y="657" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">R</text>
+<rect x="676" y="647" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="647" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="659" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1</text>
+<text x="1268" y="659" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">1/3</text>
+<text x="95" y="729" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">q8</text>
+<rect x="292" y="716" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="420" y="716" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="548" y="716" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="676" y="716" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<rect x="804" y="716" width="105" height="48" rx="9" fill="#E0E6EE" stroke="#CCD5E0" stroke-width="2"/>
+<text x="1072" y="728" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">0</text>
+<text x="1268" y="728" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">0</text>
+<rect x="65" y="817" width="650" height="88" rx="18" fill="#EAF2FC" stroke="#CBD6E2" stroke-width="2"/>
+<text x="87" y="839" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">A k = 3: H = 0,50 | MRR = 0,3542</text>
+<rect x="765" y="817" width="770" height="88" rx="18" fill="#E2F3EE" stroke="#CBD6E2" stroke-width="2"/>
+<text x="787" y="839" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">A k = 5: H = 0,75 | MRR = 0,4104</text>
+<path d="M65,935 L1535,935" stroke="#CBD6E2" stroke-width="2" fill="none"/>
+<text x="65" y="955" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#506479" dominant-baseline="text-before-edge">Datos inventados para aprender · Mismo corte y población: 0 ≤ MRR@k ≤ Hit Rate@k ≤ 1.</text>
+</svg>

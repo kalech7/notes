@@ -1,0 +1,5 @@
+flowchart LR
+    A[Subastas] -->|Solicitud síncrona de cobro| P[Pagos]
+    P -->|Resultado| A
+    A -->|Alternativa: publicar solicitud| Q[Cola]
+    Q -->|Entrega posterior| P

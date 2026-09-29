@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<rect width="1600" height="1000" fill="#F4F7FB"/>
+<text x="65" y="45" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">La extensión se elige después del diagnóstico</text>
+<text x="65" y="108" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#506479" dominant-baseline="text-before-edge">Los promedios orientan; inspeccionar casos permite formular una hipótesis.</text>
+<text x="65" y="185" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">SÍNTOMA</text>
+<text x="465" y="185" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">VERIFICA</text>
+<text x="885" y="185" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">PRUEBA</text>
+<text x="1215" y="185" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#2563A5" dominant-baseline="text-before-edge">OBSERVA</text>
+<rect x="65" y="245" width="1470" height="126" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="85" y="287" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Evidencia perdida</text>
+<text x="465" y="273" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Texto extraído, cortes</text>
+<text x="465" y="307" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">y límite del encoder</text>
+<text x="885" y="287" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">A · Fragmentación</text>
+<text x="1215" y="273" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Cobertura de evidencia</text>
+<text x="1215" y="307" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">y recuperación</text>
+<rect x="65" y="401" width="1470" height="126" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="85" y="443" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Falla en códigos</text>
+<text x="465" y="429" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Código correcto en</text>
+<text x="465" y="463" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">texto y candidatos</text>
+<text x="885" y="443" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">B · Híbrida</text>
+<text x="1215" y="429" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Aciertos en consultas</text>
+<text x="1215" y="463" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">con términos exactos</text>
+<rect x="65" y="557" width="1470" height="126" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="85" y="599" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Relevante llega tarde</text>
+<text x="465" y="585" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Posición dentro de</text>
+<text x="465" y="619" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">la lista de candidatos</text>
+<text x="885" y="599" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">C · Reranking</text>
+<text x="1215" y="585" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">MRR y cruces del</text>
+<text x="1215" y="619" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">corte final</text>
+<rect x="65" y="713" width="1470" height="126" rx="18" fill="white" stroke="#CBD6E2" stroke-width="2"/>
+<text x="85" y="755" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Recuperación sólida</text>
+<text x="465" y="741" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Afirmaciones, citas</text>
+<text x="465" y="775" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">y condiciones omitidas</text>
+<text x="885" y="755" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#147D73" dominant-baseline="text-before-edge">D · Evaluación</text>
+<text x="1215" y="741" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">Fidelidad y pertinencia</text>
+<text x="1215" y="775" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#193249" dominant-baseline="text-before-edge">con revisión de casos</text>
+<text x="65" y="894" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#193249" dominant-baseline="text-before-edge">Conserva corpus, referencia y condiciones comparables. Mide también costo y latencia.</text>
+<path d="M65,935 L1535,935" stroke="#CBD6E2" stroke-width="2" fill="none"/>
+<text x="65" y="955" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#506479" dominant-baseline="text-before-edge">No es una receta automática · Un reranker no añade candidatos ausentes; medir no mejora por sí solo.</text>
+</svg>

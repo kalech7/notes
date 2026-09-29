@@ -1,0 +1,182 @@
+from PIL import Image, ImageDraw, ImageFont
+from pathlib import Path
+import math
+OUT=Path(__file__).parent
+FONT='/System/Library/Fonts/Supplemental/Arial.ttf'
+BOLD='/System/Library/Fonts/Supplemental/Arial Bold.ttf'
+INK='#24313d'; GRAY='#edf0f2'; BLUE='#e9f1f8'; ACC='#436d90'
+def font(n=26,b=False): return ImageFont.truetype(BOLD if b else FONT,n)
+def canvas(title,sub,w=1600,h=950):
+ global im,d,W,H
+ W,H=w,h; im=Image.new('RGB',(W,H),'white'); d=ImageDraw.Draw(im)
+ d.text((55,30),title,font=font(38,True),fill=INK)
+ d.text((55,86),sub,font=font(22),fill=INK)
+ d.line((55,126,W-55,126),fill='#a9b3bc',width=2)
+def text(x,y,s,n=26,b=False,anchor=None): d.multiline_text((x,y),s,font=font(n,b),fill=INK,spacing=8,align='center',anchor=anchor)
+def box(x,y,w,h,s,n=25,fill=GRAY):
+ d.rounded_rectangle((x,y,x+w,y+h),radius=12,fill=fill,outline=INK,width=3)
+ bb=d.multiline_textbbox((0,0),s,font=font(n),spacing=8); th=bb[3]-bb[1]
+ text(x+w/2,y+(h-th)/2-4,s,n,anchor='ma')
+def arrow(points,label=None,offset=(0,-36),color=INK):
+ d.line(points,fill=color,width=4)
+ x,y=points[-1]; px,py=points[-2]; a=math.atan2(y-py,x-px)
+ p1=(x-16*math.cos(a-.5),y-16*math.sin(a-.5)); p2=(x-16*math.cos(a+.5),y-16*math.sin(a+.5))
+ d.polygon([(x,y),p1,p2],fill=color)
+ if label:
+  mid=points[len(points)//2];text(mid[0]+offset[0],mid[1]+offset[1],label,22,anchor='ma')
+def dashed(x,y,w,h,label=None):
+ for a,b in [((x,y),(x+w,y)),((x,y+h),(x+w,y+h)),((x,y),(x,y+h)),((x+w,y),(x+w,y+h))]:
+  L=math.dist(a,b)
+  for i in range(0,int(L),18):
+   j=min(i+10,L);d.line((a[0]+(b[0]-a[0])*i/L,a[1]+(b[1]-a[1])*i/L,a[0]+(b[0]-a[0])*j/L,a[1]+(b[1]-a[1])*j/L),fill=ACC,width=3)
+ if label: text(x+w/2,y+12,label,24,True,anchor='ma')
+def db(x,y,w=130,h=95,s='Datos'):
+ d.rectangle((x,y+16,x+w,y+h-16),fill='#d2d8dd',outline=INK,width=3)
+ d.ellipse((x,y+h-32,x+w,y+h),fill='#d2d8dd',outline=INK,width=3)
+ d.rectangle((x+3,y+16,x+w-3,y+h-17),fill='#d2d8dd')
+ d.ellipse((x,y,x+w,y+32),fill='#e6eaed',outline=INK,width=3)
+ text(x+w/2,y+43,s,22,anchor='ma')
+def service(x,y,w=155,h=130):
+ d.polygon([(x,y),(x+14,y-14),(x+w+14,y-14),(x+w,y)],fill='#d6dde3',outline=INK)
+ d.polygon([(x+w,y),(x+w+14,y-14),(x+w+14,y+h-14),(x+w,y+h)],fill='#c4cdd4',outline=INK)
+ box(x,y,w,h,'')
+ box(x+25,y+22,w-50,35,'',fill='white');box(x+25,y+74,w-50,35,'',fill='white')
+def finish(name,footer):
+ d.line((55,H-75,W-55,H-75),fill='#c6cdd2',width=2)
+ text(55,H-57,footer,20)
+ im.save(OUT/name)
+
+canvas('Del servicio al quantum','Diagrama didáctico propio · El límite incluye las dependencias necesarias para funcionar.',h=880)
+dashed(70,190,670,485,'Una base compartida: un quantum')
+box(115,290,220,110,'Catálogo');box(465,290,220,110,'Envíos')
+db(330,510,160,105,'Datos comunes')
+arrow([(225,400),(225,550),(330,550)]);arrow([(575,400),(575,550),(490,550)])
+dashed(820,190,315,485,'Quantum A');dashed(1190,190,315,485,'Quantum B')
+box(860,290,235,110,'Catálogo');db(905,510,150,105,'Catálogo')
+box(1230,290,235,110,'Envíos');db(1275,510,150,105,'Envíos')
+arrow([(977,400),(977,510)]);arrow([(1347,400),(1347,510)])
+arrow([(1095,345),(1230,345)]);text(1158,412,'Contrato\nexplícito',22,anchor='ma')
+text(400,725,'Contar servicios no basta para contar quanta.',25,True,anchor='ma')
+text(1160,725,'Revisar también dependencias y comunicación.',25,True,anchor='ma')
+finish('c07-01-limites.png','Elaboración propia a partir de pp. 96–99. Flechas = dependencia; línea punteada = límite propuesto.')
+
+canvas('Sincronía y asincronía: dónde espera el trabajo','Diagrama didáctico del ejemplo Subastas → Pagos · Libro p. 100.',h=960)
+text(70,170,'A. Llamada síncrona: el solicitante espera',28,True)
+box(90,245,270,130,'Subastas');box(1180,245,270,130,'Pagos\n500 ms / pago')
+arrow([(360,280),(1180,280)]);text(770,233,'Solicitud de pago',25,anchor='ma')
+arrow([(1180,340),(360,340)]);text(770,363,'Respuesta: el flujo depende de la capacidad de Pagos',24,anchor='ma')
+text(70,465,'B. Cola: acumula un pico y el consumidor procesa a su ritmo',28,True)
+box(90,550,270,130,'Subastas');box(630,530,300,170,'Cola de mensajes\n□  □  □  □  □',27,BLUE);box(1180,550,270,130,'Pagos\n2 pagos / s *')
+arrow([(360,615),(630,615)]);arrow([(930,615),(1180,615)])
+text(470,688,'Publicar',23,anchor='ma');text(1060,688,'Consumir',23,anchor='ma')
+text(780,778,'* Si un solo consumidor procesa un pago cada 500 ms, sin paralelismo ni sobrecostes.\nUna cola amortigua picos; no elimina una sobrecarga sostenida.',25,True,anchor='ma')
+finish('c07-02-sincronia-cola.png','Las flechas muestran intercambio/movimiento de mensajes; la cola y las cifras ampliadas son explicación didáctica.')
+
+canvas('Usar el alcance para orientar el estilo arquitectónico','Redibujo conceptual en español de las figuras 7-1 a 7-4 · Libro pp. 101–103.',h=1320)
+box(400,165,800,100,'Analizar el dominio y las características arquitectónicas',27,BLUE)
+arrow([(600,265),(340,340)]);arrow([(1000,265),(1170,340)])
+text(335,282,'Un conjunto suficiente',22,anchor='ma');text(1250,282,'Varios conjuntos / restricciones',22,anchor='ma')
+box(100,350,460,120,'1. Considerar una arquitectura\nmonolítica',27)
+box(850,350,650,120,'1. Considerar una arquitectura\ndistribuida',27)
+arrow([(330,470),(330,690)]);arrow([(1175,470),(1175,525)])
+box(850,530,650,105,'2. Delimitar quanta\nsegún cohesión y dependencias',27)
+dashed(870,675,195,155);dashed(1080,675,195,155);dashed(1290,675,195,155)
+box(890,698,155,50,'A',23);db(913,770,105,45,'')
+box(1098,695,155,50,'B',23);box(1098,765,155,50,'C',23)
+box(1308,695,155,50,'D',23);db(1330,770,105,45,'')
+arrow([(1175,635),(1175,672)])
+box(100,690,460,100,'2. Elegir persistencia',27)
+arrow([(330,790),(330,840)]);db(250,842,160,95,'Base de datos')
+arrow([(1175,835),(1175,880)])
+box(850,880,650,100,'3. Elegir persistencia\ncompartida o particionada',27)
+arrow([(1175,980),(1175,1035)])
+box(850,1040,650,110,'4. Elegir comunicación\nsíncrona / asíncrona',27)
+box(95,1010,470,140,'Elegir el estilo monolítico\nque mejor encaje\ny validar los compromisos',26,BLUE)
+arrow([(330,940),(330,1010)])
+text(800,1180,'Iterar: la persistencia y la comunicación pueden obligar a revisar los límites.',25,True,anchor='ma')
+finish('c07-03-decision-estilo.png','Cajas = decisiones/elementos; cilindros = persistencia; contornos punteados = quanta candidatos. No es un algoritmo infalible.')
+
+canvas('Going Green: de la oferta al destino del dispositivo','Redibujo explicativo de la figura 7-5 · Libro pp. 103–104.',h=1100)
+box(80,205,240,170,'Persona\ny dispositivo',28)
+box(610,185,365,160,'Interfaces públicas\nSitio web / quiosco',27)
+arrow([(320,245),(610,245)]);text(465,198,'1. Modelo y estado',23,anchor='ma')
+arrow([(610,305),(320,305)]);text(465,333,'2. Oferta',23,anchor='ma')
+box(1120,440,380,145,'Evaluación\ndel dispositivo',29)
+arrow([(320,365),(480,365),(480,510),(1120,510)])
+text(780,457,'3. Acepta y entrega / envía',25,anchor='ma')
+box(1120,690,380,140,'Reciclaje /\ncontabilidad',29)
+arrow([(1310,585),(1310,690)]);text(1450,620,'4. Resultado',22,anchor='ma')
+arrow([(1120,730),(200,730),(200,375)]);text(640,687,'5. Pago a la persona',25,anchor='ma')
+box(500,820,270,90,'Reventa',27);box(810,820,270,90,'Reciclaje',27)
+arrow([(1230,830),(1230,940),(950,940),(950,910)]);arrow([(1230,940),(635,940),(635,910)])
+text(695,760,'6. Decidir destino; generar registros e informes',24,anchor='ma')
+finish('c07-04-going-green-flujo.png','Es un flujo de negocio: las flechas incluyen información, objetos físicos y dinero; no son llamadas de red.')
+
+canvas('Going Green: tres grupos de prioridades','Redibujo explicativo de la figura 7-6 · Libro p. 104.',h=920)
+box(85,225,380,220,'Atención al cliente\nOferta y estado',30,BLUE)
+box(605,225,380,220,'Evaluación\nde dispositivos',30,BLUE)
+box(1125,225,380,220,'Reciclaje, informes\ny contabilidad',30,BLUE)
+for x in (275,795,1315): arrow([(x,445),(x,510)])
+box(85,520,380,225,'Escalabilidad\nDisponibilidad\nAgilidad',29)
+box(605,520,380,225,'Mantenibilidad\nDesplegabilidad\nTestabilidad\n→ Agilidad',28)
+box(1125,520,380,225,'Seguridad\nIntegridad de datos\nAuditabilidad',29)
+text(800,785,'La prioridad cambia por contexto. Las garantías mínimas siguen siendo necesarias en todos.',24,True,anchor='ma')
+finish('c07-05-going-green-prioridades.png','Flechas = asociación entre capacidad y prioridades; no indican ejecución ni dependencias entre servicios.')
+
+canvas('Going Green: siete servicios, tres quanta','Redibujo estructural fiel de la figura 7-7 · Libro p. 105.',h=940,w=1700)
+dashed(55,190,435,610,'Quantum 1 · Interfaz pública')
+dashed(510,190,250,610,'Quantum 2')
+dashed(780,190,865,610,'Quantum 3 · Operación interna')
+names=['Oferta','Estado\ndel artículo','Evaluación','Recepción','Reciclaje','Contabilidad','Informes']
+xs=[85,305,558,815,1025,1235,1445]
+for x,s in zip(xs,names):
+ text(x+78,275,s,25,True,anchor='ma');service(x,365)
+# Static dependency wiring, as in figure; no call-order implied.
+for a,b,yy in [(162,272,646),(382,272,646),(635,635,626),(892,1220,674),(1102,1220,645),(1312,1220,645),(1522,1220,674)]:
+ d.line([(a,495),(a,yy),(b,yy)],fill=INK,width=4)
+db(202,590,140,140,'Datos');db(565,590,140,140,'Datos');db(1150,590,140,140,'Datos')
+text(850,829,'Base compartida dentro de cada contorno: las características se evalúan en ese alcance.',27,True,anchor='ma')
+finish('c07-06-going-green-quanta.png','Cajas = servicios con componentes; cilindros = bases de datos; líneas = dependencia estática; contornos = quanta.')
+
+canvas('Del propósito al límite: comprobar el alcance','Diagrama didáctico propio · Las flechas ordenan preguntas; no son llamadas de red.',h=1330)
+steps=[('1. Capacidad del negocio',170),('2. Características prioritarias',315),('3. Elementos necesarios para funcionar',460),('4. Límite candidato del quantum',605),('5. Recorridos y dependencias externas',750),('6. Medir el comportamiento observable',895)]
+for title,y in steps:
+ box(320,y,840,95,title,29,BLUE if y==170 else GRAY)
+ if y<895: arrow([(740,y+95),(740,y+145)])
+box(480,1040,520,115,'¿La evidencia coincide\ncon el límite?',29,BLUE)
+arrow([(740,990),(740,1040)])
+box(1100,1040,390,115,'Conservar\ny documentar',29)
+arrow([(1000,1098),(1100,1098)]);text(1050,1058,'Sí',25,True,anchor='ma')
+arrow([(480,1098),(150,1098),(150,507),(320,507)])
+d.rectangle((60,785,245,900),fill='white')
+text(150,800,'No:\nrevisar\ndependencias',24,True,anchor='ma')
+finish('c07-07-proposito-alcance.png','Cajas = pasos del análisis; retorno = revisar el modelo cuando las dependencias observadas contradicen el límite.')
+
+canvas('Acoplamiento dinámico: dos opciones de comunicación','Diagrama didáctico propio · Se comparan alternativas; no se ejecutan ambas por obligación.',h=920)
+box(100,235,300,155,'Subastas',31,BLUE);box(1175,235,300,155,'Pagos',31,BLUE)
+arrow([(400,275),(1175,275)]);text(785,217,'Solicitud síncrona de cobro',29,anchor='ma')
+arrow([(1175,350),(400,350)]);text(785,375,'Resultado: el solicitante espera',28,anchor='ma')
+box(645,615,300,145,'Cola',31,BLUE)
+arrow([(250,390),(250,686),(645,686)])
+text(440,555,'Alternativa:\npublicar solicitud',27,anchor='ma')
+arrow([(945,686),(1325,686),(1325,390)])
+text(1100,555,'Entrega\nposterior',27,anchor='ma')
+text(800,800,'La cola separa los momentos de producción y consumo; la necesidad de pagar permanece.',25,True,anchor='ma')
+finish('c07-08-acoplamiento-dinamico.png','Cajas = participantes; flechas = solicitudes, resultados o entrega de mensajes. Se omiten errores y reintentos.')
+
+canvas('Nube: dos formas de delegar capacidades','Diagrama didáctico propio · Ambas ramas necesitan validar el comportamiento de la solución.',h=1250)
+box(450,165,700,90,'Capacidad del negocio',29,BLUE)
+arrow([(800,255),(800,305)])
+box(470,305,660,100,'¿Cómo se implementa en nube?',29)
+arrow([(620,405),(400,475)]);arrow([(980,405),(1200,475)])
+box(100,475,600,120,'Aplicación en contenedores',29,BLUE)
+box(900,475,600,120,'Funciones y servicios administrados',29,BLUE)
+arrow([(400,595),(400,655)]);arrow([(1200,595),(1200,655)])
+box(100,655,600,125,'Orquestación y\nrecursos subyacentes',29)
+box(900,655,600,125,'Capacidades y restricciones\ndel proveedor',29)
+arrow([(400,780),(400,850),(650,900)])
+arrow([(1200,780),(1200,850),(950,900)])
+box(450,900,700,100,'Comportamiento observable del recorrido',29,BLUE)
+arrow([(800,1000),(800,1050)])
+box(450,1050,700,65,'Validar objetivos y dependencias',28)
+finish('c07-09-nube-delegacion.png','Flechas = aspectos que condicionan la evaluación. Las dos opciones pueden combinarse en una solución real.')

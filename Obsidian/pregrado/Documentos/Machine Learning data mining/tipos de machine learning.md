@@ -37,3 +37,6 @@ flowchart TD
 - [[algoritmos parametricos y no parametricos]]
 - [[Ajuste de modelos]]
 - [[metricas para clasificadores]]
+- [[Aprendizaje por Refuerzo (Q-Learning y MDP)]]
+- [[Reduccion de Dimensionalidad (PCA y t-SNE)]]
+- [[Redes neuronales]]
