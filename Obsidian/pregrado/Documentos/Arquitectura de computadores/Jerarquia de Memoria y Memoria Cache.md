@@ -1,7 +1,7 @@
 ---
 title: "Jerarquía de Memoria y Memoria Caché"
 date_created: 2026-09-28
-date_modified: 2026-09-28
+date_modified: 2026-09-29
 tags:
   - arquitectura-de-computadores
   - jerarquia-de-memoria
@@ -306,14 +306,31 @@ $$\text{Penalización de Fallo L1} = T_{h, L2} + (M_{L2} \times T_{\text{DRAM}})
 
 $$\text{AMAT} = T_{h, L1} + (M_{L1} \times \text{Penalización L1}) = 1\text{ ns} + (0.05 \times 11\text{ ns}) = 1\text{ ns} + 0.55\text{ ns} = 1.55\text{ ns}$$
 
-> [!note] Conclusión del Ejercicio
+> [!note] Conclusión del Rendimiento
 > A pesar de que la memoria DRAM tarda $70\text{ ns}$ por acceso, la presencia de la jerarquía L1/L2 bien dimensionada reduce el tiempo medio de acceso efectivo percibido por el núcleo a apenas **$1.55\text{ ns}$**, un factor de aceleración de más de $45\times$.
 
----
+### Paso 3: Cálculo de la Sobrecarga Total de Hardware en Silicio (Tag RAM y Bits de Control)
+¿Cuánta memoria física real de semiconductores SRAM se requiere en el chip para implementar esta caché L1 de datos de $64\text{ KB}$, asumiendo política de escritura *Write-Back* y reemplazo LRU de 4 vías?
+
+1. **Bits de datos útiles por línea:**
+   $$64\text{ bytes} \times 8\text{ bits/byte} = 512\text{ bits}$$
+2. **Bits de metadatos y control por línea:**
+   - Etiqueta (*Tag*): $18\text{ bits}$
+   - Bit de Validez ($V$): $1\text{ bit}$
+   - Bit de Modificado ($D$ - *Dirty Bit* para Write-Back): $1\text{ bit}$
+   - Bits de Reemplazo LRU: Para 4 vías por conjunto, se requieren $\log_2(4) = 2\text{ bits}$ por línea para rastrear la prioridad de uso.
+   - **Total de metadatos por línea:** $18 + 1 + 1 + 2 = 22\text{ bits}$
+3. **Total de bits físicos de SRAM por línea:**
+   $$512\text{ (datos)} + 22\text{ (control/tag)} = 534\text{ bits}$$
+4. **Capacidad Total del Arreglo SRAM de Caché L1:**
+   $$\text{Bits Totales} = 1.024\text{ líneas} \times 534\text{ bits} = 546.816\text{ bits} = 68.352\text{ Bytes} \approx 66.75\text{ KB}$$
+*El hardware real implementado consume un $4.3\%$ adicional de transistores en silicio únicamente para almacenar etiquetas y bits de estado.*
 
 ---
 
-## 6. Coherencia de Caché en Sistemas Multinúcleo y las 4 Cs de Fallos
+---
+
+## 7. Coherencia de Caché en Sistemas Multinúcleo y las 4 Cs de Fallos
 
 En los procesadores modernos con múltiples núcleos (*Multi-Core*), cada núcleo dispone de sus propias memorias caché privadas de nivel 1 (L1i y L1d) y nivel 2 (L2), mientras comparten una gran caché de último nivel (L3 / LLC) y la memoria DRAM principal.
 
@@ -342,7 +359,7 @@ flowchart TD
 
 ---
 
-### 6.1 Mecanismos de Coherencia: Snooping vs. Directorios
+### 7.1 Mecanismos de Coherencia: Snooping vs. Directorios
 
 Existen dos estrategias principales para mantener la coherencia en el silicio:
 
@@ -355,7 +372,7 @@ Existen dos estrategias principales para mantener la coherencia en el silicio:
 
 ---
 
-### 6.2 El Protocolo MESI (Protocolo Illinois)
+### 7.2 El Protocolo MESI (Protocolo Illinois)
 
 El protocolo de coherencia por invalidación más extendido en la industria es **MESI**. Cada línea de la memoria caché añade **2 bits de estado** para clasificar su condición en uno de cuatro estados formales:
 
@@ -390,7 +407,22 @@ stateDiagram-v2
 
 ---
 
-### 6.3 El Fenómeno del Falso Compartir (False Sharing)
+### 7.3 Traza Práctica Paso a Paso de MESI en un Sistema Dual-Core
+
+Para visualizar con precisión el funcionamiento del protocolo, analicemos la traza temporal de dos núcleos (Núcleo 0 y Núcleo 1) interactuando sobre la misma variable en memoria principal $X$ (con valor inicial $X = 100$ en DRAM):
+
+| Tiempo | Operación de CPU | Transacción en Bus | Estado Núcleo 0 | Estado Núcleo 1 | Estado en DRAM | Explicación Técnica |
+| :---: | :--- | :--- | :---: | :---: | :---: | :--- |
+| **$t_0$** | Estado inicial | Ninguna | **I** | **I** | $X=100$ | Ambas cachés vacías. |
+| **$t_1$** | **Núcleo 0: Lee $X$** | `BusRd` | **E** ($X=100$) | **I** | $X=100$ | Fallo en N0. N0 carga el bloque. Como ningún otro núcleo lo tiene, entra en **Exclusive (E)**. |
+| **$t_2$** | **Núcleo 1: Lee $X$** | `BusRd` | **S** ($X=100$) | **S** ($X=100$) | $X=100$ | Fallo en N1. N0 espía (`snooping`) la petición y avisa que lo tiene. Ambos transitan a **Shared (S)**. |
+| **$t_3$** | **Núcleo 0: Escribe $X=200$** | `BusUpgr` | **M** ($X=200$) | **I** | $X=100$ | N0 quiere escribir pero está en S. Emite `BusUpgr` para invalidar a los demás. N1 pasa a **Invalid (I)**. N0 pasa a **Modified (M)**. |
+| **$t_4$** | **Núcleo 0: Escribe $X=300$** | *(Ninguna)* | **M** ($X=300$) | **I** | $X=100$ | Como N0 ya está en **M**, tiene permiso exclusivo de escritura. ¡Cero tráfico en el bus! |
+| **$t_5$** | **Núcleo 1: Lee $X$** | `BusRd` | **S** ($X=300$) | **S** ($X=300$) | $X=300$ | Fallo en N1. N0 detecta que tiene el dato en **M** (sucio). N0 aborta la respuesta de la RAM, provee el dato $300$ directamente a N1 y actualiza la RAM (*Write-Back*). Ambos quedan en **S**. |
+
+---
+
+### 7.4 El Fenómeno del Falso Compartir (False Sharing)
 
 El **Falso Compartir (*False Sharing*)** es una de las anomalías de rendimiento más destructivas en la programación paralela y concurrente multinúcleo.
 
@@ -429,7 +461,7 @@ WorkerState threads_data[MAX_CORES]; // Cada hilo opera en una línea física di
 
 ---
 
-### 6.4 La Taxonomía de las 4 Cs de Fallos de Caché (Hill & Smith)
+### 7.5 La Taxonomía de las 4 Cs de Fallos de Caché (Hill & Smith)
 
 Para diagnosticar y optimizar la tasa de aciertos de un computador, el arquitecto de computadores Mark Hill clasificó todos los fallos de caché en **cuatro categorías fundamentales (las 4 Cs)**:
 
@@ -444,6 +476,30 @@ Para diagnosticar y optimizar la tasa de aciertos de un computador, el arquitect
    - *Solución arquitectónica:* Incrementar el grado de asociatividad $K$ (ej. pasar de 2-way a 4-way u 8-way Set Associative) o emplear algoritmos de dispersión pseudoaleatoria de índices (*Hash/Skewed Caches*). En una caché totalmente asociativa, los fallos de conflicto son exactamente cero.
 4. **Coherence Misses (Coherencia - La 4ta C en Sistemas Multiprocesador):**
    - Ocurren cuando un núcleo intenta leer una línea válida de su propia caché, pero esta ha sido invalidada porque otro núcleo de la CPU escribió en esa misma dirección de memoria física para mantener la coherencia mediante el protocolo MESI.
+
+---
+
+## 8. Integración con Memoria Virtual: Cachés VIVT, PIPT y VIPT
+
+Como se estudia en profundidad en [[Memoria Virtual, Paginacion y Arquitectura de la MMU]], las instrucciones del procesador operan sobre **direcciones virtuales**, mientras que la memoria RAM física opera sobre **direcciones físicas**. Esto plantea un dilema arquitectónico de diseño: **¿en qué momento se realiza la traducción de direcciones respecto a la consulta en caché?**
+
+```mermaid
+flowchart TD
+    subgraph ModelosCacheVirtual [Modelos de Integración Caché - MMU]
+        VIVT["<b>VIVT (Virtually Indexed, Virtually Tagged)</b><br>• Rápido (No consulta TLB para acierto)<br>• Problema severo: Aliasing / Homónimos<br>• Requiere purgar caché en cada cambio de contexto del SO"]
+        PIPT["<b>PIPT (Physically Indexed, Physically Tagged)</b><br>• Seguro y transparente para el SO<br>• Lento: TLB en el camino crítico antes de acceder a la caché"]
+        VIPT["<b>VIPT (Virtually Indexed, Physically Tagged)</b><br>• <b>El estándar moderno en L1</b><br>• Indexación de caché en paralelo con la traducción TLB<br>• Cero latencia añadida y sin problemas de homónimos"]
+    end
+```
+
+### ¿Por qué VIPT es el Estándar de la Industria?
+En los sistemas de memoria virtual paginada, las páginas son típicamente de **$4\text{ KiB}$**. Esto significa que los $12$ bits menos significativos de una dirección corresponden al **desplazamiento de página (*Page Offset*)**, los cuales **nunca son modificados por la traducción de la MMU**:
+$$\text{Dirección Virtual}[11..0] \equiv \text{Dirección Física}[11..0]$$
+
+Si la memoria caché L1 se diseña de modo que el campo de Índice (*Index*) y el campo de Desplazamiento (*Offset*) quepan dentro de esos 12 bits:
+$$\text{Bits de Index} + \text{Bits de Offset} \le 12\text{ bits}$$
+El hardware puede **iniciar la búsqueda e indexación del conjunto en la memoria caché L1 al mismo tiempo que la TLB traduce los bits superiores a la dirección física**. 
+Cuando el Tag físico sale de la TLB, los datos de las $N$ vías ya han sido leídos en la caché y están listos para la comparación de etiquetas. Se obtiene la velocidad de una caché virtual con la total robustez y coherencia de una caché física.
 
 ---
 

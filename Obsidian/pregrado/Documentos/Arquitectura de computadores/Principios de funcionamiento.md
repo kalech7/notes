@@ -223,6 +223,132 @@ flowchart TD
 
 * Para un procesador con caché asociativa de 8 vías ($K=8$), el hardware solo necesita 8 comparadores de etiquetas por acceso, independientemente de que la caché tenga miles de líneas en total.
 
+### 6.1 Ejercicio Práctico Resuelto (Asociativa por Conjuntos de 4 Vías)
+Con los mismos parámetros del sistema de los ejercicios anteriores:
+- Memoria principal de $16\text{ MB} = 2^{24}\text{ bytes}$ (bus de direcciones de $n = 24\text{ bits}$).
+- Capacidad de datos de la memoria caché de $64\text{ KB} = 2^{16}\text{ bytes}$.
+- Tamaño de bloque / línea de $4\text{ bytes} = 2^2\text{ bytes}$ ($K = 4$ bytes).
+- Grado de asociatividad: **4 vías por conjunto** ($K_{\text{vías}} = 4$).
+
+**Cálculo paso a paso de los campos de la dirección:**
+1. **Bits de Palabra / Desplazamiento ($w$ - Offset):**
+   $$w = \log_2(\text{Tamaño Bloque}) = \log_2(4) = 2\text{ bits}$$
+2. **Número Total de Líneas en Caché ($L$):**
+   $$L = \frac{\text{Tamaño Caché}}{\text{Tamaño Bloque}} = \frac{2^{16}\text{ B}}{2^2\text{ B}} = 2^{14} = 16.384\text{ líneas}$$
+3. **Número Total de Conjuntos ($S$):**
+   $$S = \frac{\text{Líneas Totales}}{\text{Vías por Conjunto}} = \frac{16.384}{4} = 4.096\text{ conjuntos} = 2^{12}\text{ conjuntos}$$
+4. **Bits de Conjunto ($d$ - Set Index):**
+   $$d = \log_2(S) = \log_2(4.096) = 12\text{ bits}$$
+5. **Bits de Etiqueta (*Tag*):**
+   $$\text{Tag} = n - (d + w) = 24 - (12 + 2) = 24 - 14 = 10\text{ bits}$$
+
+*Estructura de la dirección:* `[Tag: 10 bits] | [Conjunto: 12 bits] | [Offset: 2 bits]`.
+
+---
+
+### 6.2 Cuadro Sinóptico Comparativo de las Tres Funciones de Mapeo
+Para el mismo computador ($16\text{ MB}$ RAM, $64\text{ KB}$ Caché, bloques de $4\text{ Bytes}$):
+
+| Característica | Mapeo Directo ($1\text{ Vía}$) | Asociativo por Conjuntos ($4\text{ Vías}$) | Totalmente Asociativo ($16.384\text{ Vías}$) |
+| :--- | :--- | :--- | :--- |
+| **Bits de Tag** | $8\text{ bits}$ | $10\text{ bits}$ | $22\text{ bits}$ |
+| **Bits de Índice** | $14\text{ bits}$ (Línea) | $12\text{ bits}$ (Conjunto) | $0\text{ bits}$ (Sin índice) |
+| **Bits de Offset** | $2\text{ bits}$ | $2\text{ bits}$ | $2\text{ bits}$ |
+| **Comparadores de Tag** | $1$ comparador de $8\text{ bits}$ | $4$ comparadores de $10\text{ bits}$ | $16.384$ comparadores de $22\text{ bits}$ |
+| **Flexibilidad de Ubicación** | $1$ sola línea posible | $4$ posibles líneas en el conjunto | Cualquier línea de la caché |
+| **Riesgo de Vapuleo (Thrashing)**| Muy Alto (por conflicto) | Bajo | Nulo (0 fallos de conflicto) |
+| **Costo y Consumo Hardware** | Mínimo | Moderado / Óptimo industrial | Prohibitivo para cachés grandes |
+
+---
+
+### 6.3 Cálculo de la Capacidad Real en Silicio (Sobrecarga de Bits de Hardware / Overhead)
+
+> [!important] Concepto Clave de Examen Politécnico
+> Una caché de «64 KB» almacena **64 KB de datos útiles**, pero requiere mucha más memoria SRAM en el silicio para almacenar los **metadatos de control** de cada línea:
+> - **Bits de Etiqueta (Tag):** $10\text{ bits}$.
+> - **Bit de Validez ($V$):** $1\text{ bit}$ (indica si la línea contiene datos válidos del proceso actual).
+> - **Bit de Modificado ($D$ - Dirty Bit):** $1\text{ bit}$ (en políticas *Write-Back*, indica si el dato fue modificado respecto a la DRAM).
+> - **Bits de Reemplazo LRU:** Para 4 vías, aproximadamente $2\text{ bits}$ por línea para codificar el orden de uso.
+
+**Cálculo:**
+- **Tamaño de datos por línea:** $4\text{ bytes} \times 8 = 32\text{ bits}$.
+- **Metadatos por línea:** $10\text{ (Tag)} + 1\text{ (V)} + 1\text{ (D)} + 2\text{ (LRU)} = 14\text{ bits}$.
+- **Total de bits físicos por línea:** $32 + 14 = 46\text{ bits}$.
+- **Capacidad Total en Silicio:**
+  $$\text{Tamaño Físico SRAM} = 16.384\text{ líneas} \times 46\text{ bits} = 753.664\text{ bits} = 94.208\text{ Bytes} \approx 92\text{ KB}$$
+*La memoria caché real ocupa un 43.7% más de espacio físico en el chip que la capacidad nominal de datos.*
+
+---
+
+## 7. Traza Práctica de Accesos a Memoria (Paso a Paso)
+
+Para dominar cómo la caché responde en tiempo de ejecución, analicemos la siguiente simulación detallada:
+
+### Parámetros de la Caché:
+- Sistema con direcciones de **8 bits** ($256\text{ bytes}$ direccionables).
+- Caché de **Mapeo Directo** con $4\text{ líneas}$ ($m = 4$).
+- Tamaño de bloque: **4 bytes** ($B = 4$).
+
+**Descomposición de la dirección de 8 bits:**
+- Offset ($w$): $\log_2(4) = 2\text{ bits}$ (Bits 1..0).
+- Índice de Línea ($r$): $\log_2(4) = 2\text{ bits}$ (Bits 3..2).
+- Tag ($s - r$): $8 - (2 + 2) = 4\text{ bits}$ (Bits 7..4).
+
+```
+Dirección (8 bits): [ Tag: Bits 7..4 ] | [ Línea: Bits 3..2 ] | [ Offset: Bits 1..0 ]
+```
+
+### Secuencia de Accesos de la CPU:
+Se ejecutan 6 lecturas de memoria consecutivas con las siguientes direcciones hexadecimales:
+`0x04`, `0x08`, `0x06`, `0x14`, `0x04`, `0x24`.
+
+#### Análisis Detallado Acceso por Acceso:
+
+1. **Acceso a `0x04`:**
+   - Binario: `0000 0100` $\rightarrow$ `Tag = 0000 (0x0)`, `Línea = 01 (L1)`, `Offset = 00`.
+   - Estado de Línea 1: Inválida ($V=0$).
+   - **Resultado: MISS (Fallo Frío / Compulsory Miss)**.
+   - *Acción Hardware:* Se carga el bloque desde RAM (bytes `0x04` a `0x07`) en Línea 1. Se fija `Tag = 0x0`, `V = 1`.
+
+2. **Acceso a `0x08`:**
+   - Binario: `0000 1000` $\rightarrow$ `Tag = 0000 (0x0)`, `Línea = 10 (L2)`, `Offset = 00`.
+   - Estado de Línea 2: Inválida ($V=0$).
+   - **Resultado: MISS (Fallo Frío / Compulsory Miss)**.
+   - *Acción Hardware:* Se carga el bloque (bytes `0x08` a `0x0B`) en Línea 2. Se fija `Tag = 0x0`, `V = 1`.
+
+3. **Acceso a `0x06`:**
+   - Binario: `0000 0110` $\rightarrow$ `Tag = 0000 (0x0)`, `Línea = 01 (L1)`, `Offset = 10`.
+   - Estado de Línea 1: Válida ($V=1$) y `Tag` almacenado es `0x0` (¡Coincide!).
+   - **Resultado: HIT (Acierto de Caché)**.
+   - *Razón:* Aprovechamiento de **Localidad Espacial**; la dirección `0x06` ya viajó dentro del bloque cargado por el acceso `0x04`.
+
+4. **Acceso a `0x14`:**
+   - Binario: `0001 0100` $\rightarrow$ `Tag = 0001 (0x1)`, `Línea = 01 (L1)`, `Offset = 00`.
+   - Estado de Línea 1: Válida ($V=1$), pero su `Tag` es `0x0` (Difiere de `0x1`).
+   - **Resultado: MISS (Fallo por Conflicto / Conflict Miss)**.
+   - *Acción Hardware:* El bloque nuevo desaloja y expulsa al bloque anterior de la Línea 1. Se actualiza `Tag = 0x1`.
+
+5. **Acceso a `0x04`:**
+   - Binario: `0000 0100` $\rightarrow$ `Tag = 0000 (0x0)`, `Línea = 01 (L1)`, `Offset = 00`.
+   - Estado de Línea 1: Válida ($V=1$), pero su `Tag` actual es `0x1`.
+   - **Resultado: MISS (Fallo por Conflicto / Conflict Miss - Fenómeno de Vapuleo o Thrashing)**.
+   - *Acción Hardware:* El bloque `0x04` debe volver a traerse desde la lenta DRAM, expulsando al bloque `0x14`.
+
+6. **Acceso a `0x24`:**
+   - Binario: `0010 0100` $\rightarrow$ `Tag = 0010 (0x2)`, `Línea = 01 (L1)`, `Offset = 00`.
+   - Estado de Línea 1: Válida ($V=1$), pero su `Tag` actual es `0x0`.
+   - **Resultado: MISS (Fallo por Conflicto)**.
+
+### Resumen de la Simulación:
+- **Total de Accesos:** 6
+- **Aciertos (Hits):** 1 (`0x06`)
+- **Fallos (Misses):** 5 (2 Obligatorios / Fríos, 3 por Conflicto)
+- **Tasa de Aciertos (*Hit Rate*):** $\frac{1}{6} \approx 16.67\%$
+- **Tasa de Fallos (*Miss Rate*):** $\frac{5}{6} \approx 83.33\%$
+
+> [!tip] Lección Arquitectónica
+> Este ejercicio demuestra palpablemente la debilidad del mapeo directo: las direcciones `0x04`, `0x14` y `0x24` compiten por la misma Línea 1, produciendo vapuleo (*thrashing*) constante mientras las Líneas 0 y 3 permanecen completamente ociosas. Una caché asociativa por conjuntos de 2 o 4 vías habría evitado todos los fallos por conflicto.
+
 ---
 
 ## Notas relacionadas

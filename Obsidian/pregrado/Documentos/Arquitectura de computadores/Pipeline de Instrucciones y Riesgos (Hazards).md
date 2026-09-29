@@ -1,7 +1,7 @@
 ---
 title: "Pipeline de Instrucciones y Riesgos (Hazards)"
 date_created: 2026-09-28
-date_modified: 2026-09-28
+date_modified: 2026-09-29
 tags:
   - arquitectura-de-computadores
   - pipelining
@@ -125,6 +125,20 @@ Si las etapas estuvieran perfectamente balanceadas y sin sobrecarga de registros
 > 2. **Sobrecarga de Registros de Segmentación ($t_{\text{latch}}$):** El tiempo de *setup* y propagación de los registros flip-flop impone un límite asintótico; aumentar $k$ infinitamente degrada el rendimiento.
 > 3. **Riesgos de Pipeline (*Hazards*):** Provocan paradas (*stalls* / burbujas), aumentando el $CPI$ real por encima de 1.
 
+### 2.1 Ecuación Fundamental del Rendimiento de CPU con Hazards
+
+El tiempo total de ejecución de un programa en un procesador segmentado se formula rigurosamente como:
+
+$$\text{Tiempo de Ejecución} = \text{IC} \times \text{CPI}_{\text{real}} \times \tau'$$
+
+Donde $\text{IC}$ es el recuento de instrucciones (*Instruction Count*) y el $\text{CPI}_{\text{real}}$ se degrada respecto al ideal ($CPI_{\text{ideal}} = 1$) debido a la suma de penalizaciones por paradas (*stalls*):
+
+$$\text{CPI}_{\text{real}} = 1 + \text{Paradas}_{\text{Estructurales}} + \text{Paradas}_{\text{Datos}} + \text{Paradas}_{\text{Control}}$$
+
+$$\text{Speedup Real} = \frac{\text{CPI}_{\text{no-seg}} \times \tau}{\left( 1 + \text{Paradas}_{\text{hazards}} \right) \times \tau'}$$
+
+El objetivo primordial del arquitecto de hardware y del compilador es diseñar caminos de reenvío, buffers de predicción y reordenamiento de instrucciones para mantener $\text{Paradas}_{\text{hazards}} \to 0$, aproximando el $\text{CPI}$ a $1.0$.
+
 ---
 
 ## 3. Los 3 Riesgos de Pipeline (*Hazards*) y sus Soluciones
@@ -183,7 +197,39 @@ flowchart LR
     MEM_Out -->|Forwarding 1 ciclo después| MuxB
 ```
 
-- **Unidad de Reenvío (*Forwarding Unit*):** Monitorea si el registro destino de `EX/MEM` o `MEM/WB` coincide con los registros fuente `Rs` o `Rt` de la instrucción en etapa `ID/EX`, y conmuta los multiplexores de entrada de la ALU en tiempo real.
+##### Lógica Booleana Exacta de la Unidad de Reenvío (*Forwarding Unit*)
+Para controlar los multiplexores `ForwardA` y `ForwardB` de entrada a la ALU, la unidad de reenvío evalúa en cada ciclo las siguientes condiciones formales:
+
+> [!important] ¿Por qué verificar `RegWrite` y `Register != 0`?
+> 1. **`RegWrite == 1`:** Solo se debe reenviar si la instrucción previa efectivamente va a escribir en un registro (instrucciones como `SW` o `BEQ` no escriben en registros).
+> 2. **`RegisterRd != $zero`:** En MIPS, el registro `$0` está cableado rígidamente a cero (`$zero = 0`). Cualquier instrucción que intente escribir en `$0` no debe alterar su valor ni provocar reenvío erróneo.
+
+1. **Riesgo EX (Reenvío desde la etapa EX/MEM hacia EX):**
+   ```
+   // Para el operando fuente Rs:
+   if (EX/MEM.RegWrite and (EX/MEM.RegisterRd != 0) and (EX/MEM.RegisterRd == ID/EX.RegisterRs))
+       ForwardA = 10 (Selecciona la salida ALU de EX/MEM)
+
+   // Para el operando fuente Rt:
+   if (EX/MEM.RegWrite and (EX/MEM.RegisterRd != 0) and (EX/MEM.RegisterRd == ID/EX.RegisterRt))
+       ForwardB = 10 (Selecciona la salida ALU de EX/MEM)
+   ```
+
+2. **Riesgo MEM (Reenvío desde la etapa MEM/WB hacia EX):**
+   *Condición de Prioridad:* Si tanto la instrucción en `EX/MEM` como la instrucción en `MEM/WB` escriben en el mismo registro, **la instrucción en `EX/MEM` contiene el dato más reciente** y debe tener prioridad absoluta:
+   ```
+   // Para el operando fuente Rs:
+   if (MEM/WB.RegWrite and (MEM/WB.RegisterRd != 0)
+       and not (EX/MEM.RegWrite and (EX/MEM.RegisterRd != 0) and (EX/MEM.RegisterRd == ID/EX.RegisterRs))
+       and (MEM/WB.RegisterRd == ID/EX.RegisterRs))
+       ForwardA = 01 (Selecciona el dato de MEM/WB)
+
+   // Para el operando fuente Rt:
+   if (MEM/WB.RegWrite and (MEM/WB.RegisterRd != 0)
+       and not (EX/MEM.RegWrite and (EX/MEM.RegisterRd != 0) and (EX/MEM.RegisterRd == ID/EX.RegisterRt))
+       and (MEM/WB.RegisterRd == ID/EX.RegisterRt))
+       ForwardB = 01 (Selecciona el dato de MEM/WB)
+   ```
 
 #### Solución 2: Parada de Pipeline (*Stall*) ante Riesgo Carga-Uso (*Load-Use Data Hazard*)
 El reenvío de datos **no puede viajar hacia atrás en el tiempo**. Si una instrucción `LW` es seguida inmediatamente por una instrucción que consume ese dato, el dato de memoria no está disponible sino hasta el final de la etapa MEM (ciclo 4), mientras que la siguiente instrucción lo necesita al inicio de su etapa EX (ciclo 3).
@@ -195,13 +241,13 @@ ADD  $t0, $s0, $s1:        IF     ID  [STALL]   EX    MEM   WB
 ```
 
 - **Unidad de Detección de Riesgos (*Hazard Detection Unit*):**
-  Si detecta:
+  Opera en la etapa **ID** y evalúa la condición:
   $$\text{ID/EX.MemRead} == 1 \quad \mathbf{y} \quad (\text{ID/EX.RegisterRt} == \text{IF/ID.RegisterRs} \lor \text{ID/EX.RegisterRt} == \text{IF/ID.RegisterRt})$$
-  Fuerza una **parada de pipeline (burbuja)**:
-  1. Mantiene el $PC$ sin cambios ($PC \leftarrow PC$).
-  2. Mantiene el registro `IF/ID` sin modificar.
-  3. Inserta una instrucción nula (`NOP` o burbuja de ceros) en el registro `ID/EX`.
-  4. Tras la burbuja de 1 ciclo, el dato de MEM se reenvía a EX mediante *forwarding* convencional.
+  Si se cumple, fuerza una **parada de pipeline (burbuja)**:
+  1. Congela el Contador de Programa ($PC \leftarrow PC$).
+  2. Congela el registro de segmentación `IF/ID` para no perder la instrucción decodificada.
+  3. Inserta una instrucción nula (`NOP`, todas las señales de control a 0) en el registro `ID/EX`.
+  4. En el ciclo siguiente, el dato de memoria ya está en `MEM/WB` y se reenvía a la ALU sin demoras adicionales.
 
 #### Solución 3: Optimización y Reordenamiento por el Compilador
 Como se estudia en [[Fases del Compilador y Analisis Lexico|Compiladores e Infraestructuras de Optimización]], el optimizador del backend puede reordenar instrucciones independientes para separar la instrucción `LW` de su consumidora, rellenando la ranura crítica y eliminando la burbuja sin alterar la semántica.
@@ -233,6 +279,21 @@ flowchart TD
    - Requiere dos errores consecutivos para cambiar la predicción, evitando fallos oscilatorios en bucles anidados.
    - **BTB (*Branch Target Buffer*):** Caché que recuerda la dirección calculada de salto anticipadamente para saltar sin perder ni 1 solo ciclo en caso de acierto de predicción.
 4. **Salto Retardado (*Delayed Branch*):** Utilizado en MIPS clásico. La instrucción ubicada en la ranura posterior al branch (*branch delay slot*) **se ejecuta siempre**, tanto si el salto se toma como si no. El compilador ubica una instrucción útil en este slot.
+
+---
+
+### 3.4 Manejo de Excepciones e Interrupciones en el Pipeline (Excepciones Precisas)
+
+Como se profundiza en [[Sistemas Operativos/Procesos, Hilos y Planificacion de CPU]], un procesador debe ser capaz de suspender la ejecución ante eventos imprevistos:
+- **Excepciones Internas (Síncronas):** Desbordamiento aritmético en EX (*Arithmetic Overflow*), instrucción ilegal en ID, fallo de página en MEM (*Page Fault* en la MMU).
+- **Interrupciones Externas (Asíncronas):** Solicitudes de periféricos de E/S recibidas por líneas de interrupción de hardware ([[Buses, Interconexion y Comunicacion de Entrada-Salida (DMA e Interrupciones)]]).
+
+> [!important] Concepto de Excepción Precisa (*Precise Exception*)
+> Un pipeline implementa **excepciones precisas** si, al ocurrir una trampa en la instrucción $I_k$:
+> 1. Todas las instrucciones anteriores a $I_k$ ($I_1, I_2, \dots, I_{k-1}$) se completan en su totalidad y confirman sus cambios en el banco de registros y memoria (*Commit*).
+> 2. La instrucción $I_k$ y todas las posteriores ($I_{k+1}, I_{k+2}, \dots$) son inmediatamente anuladas y purgadas (*Flushed*) del pipeline mediante señales sincrónicas de control.
+> 3. La dirección de $I_k$ se guarda en el registro de hardware **EPC (*Exception Program Counter*)**.
+> 4. El procesador conmuta a modo privilegiado (*Kernel Mode*) y salta a la rutina manejadora del Sistema Operativo en la dirección fija `0x80000180`.
 
 ---
 
@@ -277,6 +338,64 @@ gantt
     MEM         :6, 7
     WB          :7, 8
 ```
+
+---
+
+## 5. Ejercicio Práctico Resuelto de Análisis de Dependencias y Pipeline
+
+### Enunciado del Problema:
+Considere el siguiente fragmento de código ensamblador MIPS:
+
+```assembly
+I1: lw   $s1, 0($t0)        # Carga dato de memoria en $s1
+I2: add  $s2, $s1, $t1       # $s2 = $s1 + $t1
+I3: sub  $s3, $s1, $s2       # $s3 = $s1 - $s2
+I4: sw   $s3, 4($t0)        # Guarda $s3 en memoria
+```
+
+### Paso 1: Identificación Formal de Dependencias de Datos (RAW)
+1. **$I1 \rightarrow I2$ en `$s1`:** $I1$ escribe `$s1` en WB; $I2$ lee `$s1` en ID/EX. (**RAW**).
+2. **$I1 \rightarrow I3$ en `$s1`:** $I1$ escribe `$s1` en WB; $I3$ lee `$s1` en ID/EX. (**RAW**).
+3. **$I2 \rightarrow I3$ en `$s2`:** $I2$ escribe `$s2` en WB; $I3$ lee `$s2` en ID/EX. (**RAW**).
+4. **$I3 \rightarrow I4$ en `$s3`:** $I3$ escribe `$s3` en WB; $I4$ lee `$s3` en MEM (dato a guardar). (**RAW**).
+
+### Paso 2: Análisis de Ejecución en Hardware SIN Reenvío (Solo Stalls)
+Sin hardware de forwarding, una instrucción debe esperar a que la anterior complete su etapa WB (ciclo de reloj en que escribe en el banco de registros). Con lectura en la segunda mitad del ciclo ($\phi_2$) y escritura en la primera mitad ($\phi_1$):
+- Entre $I1$ y $I2$: Se requieren **2 paradas (stalls)**.
+- Entre $I2$ y $I3$: Se requieren **2 paradas (stalls)**.
+- Entre $I3$ y $I4$: Se requieren **2 paradas (stalls)**.
+*Total de ciclos para 4 instrucciones:* $5 + 3 + 2 + 2 + 2 = 14\text{ ciclos}$ ($\text{CPI} = 14 / 4 = 3.5$).
+
+### Paso 3: Análisis de Ejecución en Hardware CON Reenvío y Detección de Riesgos
+Con unidad de forwarding y detección de riesgos:
+1. **$I1 \rightarrow I2$ (Carga-Uso / Load-Use Hazard):**
+   - $I1$ es `lw`. El dato `$s1` solo está disponible al final de la etapa MEM de $I1$ (ciclo CC4).
+   - $I2$ necesita `$s1` al inicio de su etapa EX (ciclo CC3).
+   - **Acción:** La unidad de detección fuerza **1 ciclo de parada (burbuja)** en CC4.
+   - En CC5: El dato de $I1$ en `MEM/WB` se reenvía directamente a la entrada de la ALU para $I2$ (`ForwardA = 01`).
+2. **$I2 \rightarrow I3$:**
+   - $I2$ produce `$s2` al final de su etapa EX (ciclo CC5).
+   - $I3$ necesita `$s2` al inicio de su etapa EX (ciclo CC6).
+   - **Acción:** Reenvío inmediato de `EX/MEM` a la ALU de $I3$ (`ForwardB = 10`). **0 paradas**.
+3. **$I3 \rightarrow I4$:**
+   - $I3$ produce `$s3` en su etapa EX (ciclo CC6).
+   - $I4$ necesita `$s3` no para calcular la dirección en EX, sino como dato de almacenamiento en MEM (ciclo CC8).
+   - **Acción:** Reenvío desde `MEM/WB` a la entrada de datos de la etapa MEM de $I4$. **0 paradas**.
+
+#### Cuadro Cronológico con Reenvío:
+
+| Instrucción | CC1 | CC2 | CC3 | CC4 | CC5 | CC6 | CC7 | CC8 | CC9 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **I1: lw** | IF | ID | EX | MEM | WB | | | | |
+| **I2: add** | | IF | ID | **STALL** | EX | MEM | WB | | |
+| **I3: sub** | | | IF | **Pausa** | ID | EX | MEM | WB | |
+| **I4: sw** | | | | **Pausa** | IF | ID | EX | MEM | WB |
+
+- **Ciclos Totales:** **9 ciclos** (en lugar de 14).
+- **CPI Resultante:** $\text{CPI} = \frac{9}{4} = 2.25$.
+
+### Paso 4: Optimización por el Compilador (Reordenamiento de Instrucciones)
+Si existiera una instrucción independiente en el programa (por ejemplo, `addi $t0, $t0, 8`), el compilador la insertaría **inmediatamente después del `lw`**, llenando la ranura de carga (*Load Delay Slot*). De este modo, la burbuja se eliminaría al 100%, alcanzando un CPI ideal de $1.0$ en régimen estacionario.
 
 ---
 
