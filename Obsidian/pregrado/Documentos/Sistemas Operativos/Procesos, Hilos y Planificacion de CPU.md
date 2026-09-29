@@ -31,6 +31,65 @@ En la arquitectura de los sistemas operativos modernos, la abstracción central 
 
 ---
 
+## 0. ¿Qué es el Kernel del Sistema Operativo y cómo funciona?
+
+El **Kernel** (o *Núcleo*) es el componente de software más importante y fundamental de una computadora. Es el primer programa que se carga en la memoria RAM durante el proceso de arranque (*Bootstrapping*) y permanece en ejecución constante hasta que la máquina se apaga.
+
+```mermaid
+flowchart TD
+    subgraph Ring3 ["Espacio de Usuario (Ring 3 - Sin Privilegios)"]
+        App1["Navegador Web (Chrome)"]
+        App2["Juego / PyTorch"]
+        App3["Servidor Web (Nginx)"]
+        LibC["Biblioteca Estándar (glibc / Win32)"]
+    end
+
+    subgraph Trap ["Frontera de Seguridad Hardware (Syscalls / Interrupciones)"]
+        SyscallGate["Instrucción SYSCALL / SYSENTER / INT 0x80"]
+    end
+
+    subgraph Ring0 ["Espacio de Kernel (Ring 0 - Privilegios Totales)"]
+        direction TB
+        Sched["<b>Planificador de CPU (Scheduler)</b>"]
+        VM["<b>Gestor de Memoria Virtual y Paginación</b>"]
+        VFS["<b>Sistema Virtual de Archivos (VFS)</b>"]
+        Drivers["<b>Controladores de Dispositivos (Drivers)</b><br>SSD, Red, GPU (nvidia.ko)"]
+    end
+
+    subgraph Hardware ["Capa de Silicio y Hardware Físico"]
+        HW_CPU["CPU"]
+        HW_RAM["Memoria RAM Física"]
+        HW_IO["Periféricos (NVMe, NIC, GPU)"]
+    end
+
+    App1 --> LibC
+    App2 --> LibC
+    App3 --> LibC
+    LibC --> SyscallGate
+    SyscallGate --> Ring0
+    Ring0 --> Hardware
+```
+
+### 0.1 El Modo Dual de Hardware: Ring 0 vs. Ring 3
+Para evitar que un programa defectuoso o un virus pueda destruir el sistema operativo o espiar a otros procesos, los procesadores modernos (x86, ARM) implementan **anillos de protección (*Protection Rings*)** por hardware:
+1. **Ring 0 (Modo Kernel / Supervisor):**
+   - El código que se ejecuta aquí tiene **acceso irrestricto y absoluto** a todo el silicio: puede ejecutar cualquier instrucción de máquina (incluidas instrucciones privilegiadas como desactivar interrupciones `CLI`, modificar tablas de páginas cargando el registro `CR3` o programar controladores DMA).
+   - Aquí corre **exclusivamente el Kernel del Sistema Operativo** y sus módulos/drivers.
+2. **Ring 3 (Modo Usuario / User Space):**
+   - Aquí se ejecutan todas las aplicaciones de usuario (tu editor de código, videojuegos, navegadores, scripts de Python).
+   - Las instrucciones peligrosas están físicamente bloqueadas por la CPU. Si un programa en Ring 3 intenta tocar directamente la memoria física o comunicarse con el disco sin permiso, la CPU emite una excepción de hardware (*General Protection Fault #GP*) y el kernel aborta el proceso de inmediato (*Segmentation Fault*).
+
+### 0.2 Las Llamadas al Sistema (Syscalls)
+Cuando una aplicación en Ring 3 necesita realizar una operación sobre el mundo real (leer un archivo del SSD, enviar un paquete por internet, crear un hilo o enviar un tensor a la GPU), debe cruzar la frontera de seguridad solicitándolo formalmente al Kernel mediante una **Llamada al Sistema (*Syscall*)**:
+- La CPU suspende la aplicación, eleva el nivel de privilegio de Ring 3 a Ring 0, ejecuta la rutina de atención del kernel tras validar los parámetros, y finalmente regresa al modo usuario devolviendo el resultado.
+
+> [!important] Distinción Crucial: Kernel del S.O. vs. Kernel de GPU
+> No confundir ambos términos:
+> - **El Kernel del Sistema Operativo (Linux, Windows, macOS):** Es el administrador supremo que gobierna la máquina entera en Ring 0.
+> - **El Kernel de GPU (en CUDA u OpenAI Triton):** Es una **función matemática paralela** escrita para ser clonada y ejecutada por miles de hilos simultáneamente en la tarjeta gráfica. El Kernel del S.O. simplemente actúa como el puente que autoriza y comisiona la transferencia del Kernel de GPU hacia la VRAM (ver detalle completo en [[Multiprocesamiento/Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)|Programación de GPU con CUDA y OpenAI Triton]]).
+
+---
+
 ## 1. Concepto Formal de Proceso
 
 Un **proceso** se define formalmente como un **programa en ejecución**. Mientras que un programa es una entidad pasiva almacenada en un medio de almacenamiento secundario (código binario compilado en formato ejecutable como ELF en Linux o PE en Windows), un proceso es una entidad activa que posee un contador de programa (*Program Counter* - PC), un conjunto de registros de CPU, un espacio de direcciones de memoria asignado y un conjunto de recursos del sistema asociados.

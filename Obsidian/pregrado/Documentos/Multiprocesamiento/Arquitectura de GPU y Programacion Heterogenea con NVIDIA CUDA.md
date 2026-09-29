@@ -24,6 +24,7 @@ related:
   - "[[Fundamentos de Computacion Paralela y Leyes de Escalamiento]]"
   - "[[Programacion Paralela con OpenMP y MPI]]"
   - "[[Jerarquia de Memoria y Memoria Cache]]"
+  - "[[Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)]]"
 ---
 
 # Arquitectura de GPU y Programación Heterogénea con NVIDIA CUDA
@@ -533,3 +534,16 @@ nvcc -O3 -arch=sm_80 matrix_mul_tiled.cu -o matrix_mul_tiled
    - **No existe divergencia de warps:** Todos los hilos del Warp 0 evalúan la condición como verdadera y toman el camino `if`. Todos los hilos del Warp 1 la evalúan como falsa y toman el camino alternativo. Dado que la divergencia solo ocurre **intra-warp** (entre hilos del mismo warp), ambos warps ejecutan a plena eficiencia sin serialización.
 3. **¿Cuál es la diferencia fundamental entre Memoria Compartida (`__shared__`) y Memoria Global en términos de hardware y ciclo de reloj?**  
    *Respuesta esperada:* La Memoria Compartida reside físicamente en el silicio del SM (*on-chip SRAM*), con una latencia mínima de 1 a 5 ciclos de reloj y organizada en bancos de acceso simultáneo, pero su alcance está restringido al bloque de hilos. La Memoria Global es memoria DRAM externa (*off-chip*), de gran capacidad (GBs) y accesible por toda la GPU, pero con una latencia penalizada de 200 a 800 ciclos de reloj.
+
+---
+
+## 8. Siguiente Paso de Aprendizaje: Guía Práctica de CUDA y OpenAI Triton
+
+Para estudiantes que inician desde cero en la programación de aceleradores o que buscan dominar el paradigma moderno de **programación a nivel de bloques** utilizado en Inteligencia Artificial y LLMs:
+
+👉 Consulta la nota especializada: **[[Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)]]**
+- Desmitificación conceptual: **Kernel de Sistema Operativo** (Ring 0, drivers, interrupciones) vs. **Kernel de GPU** (SIMT, funciones matemáticas clonadas).
+- La invocación del kernel explicada paso a paso: llamadas al sistema (`ioctl`), DMA, registros *Doorbell* por MMIO y colas circulares PCIe.
+- Código canónico comentado desde cero en **CUDA C/C++** (`vectorAdd.cu`) con deducción de indexación 1D/2D.
+- Programación moderna de alto rendimiento con **OpenAI Triton en Python**: por qué sustituye a CUDA en PyTorch 2.0 y cómo optimiza la memoria mediante *Kernel Fusion* (caso de estudio Softmax).
+

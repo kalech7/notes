@@ -28,6 +28,7 @@ related:
   - "[[Memoria Virtual, Paginacion y Arquitectura de la MMU]]"
   - "[[Buses, Interconexion y Comunicacion de Entrada-Salida (DMA e Interrupciones)]]"
   - "[[Arquitectura de GPU y Aceleradores Hardware en el Computador]]"
+  - "[[Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)]]"
 ---
 
 # Arquitectura de Computadores (Microarquitectura, Jerarquía de Memoria, Buses y GPU)
@@ -101,7 +102,8 @@ flowchart TD
         G_SM["<b>[[Arquitectura de GPU y Aceleradores Hardware en el Computador#2. Anatomía Interna de una GPU Moderna|Streaming Multiprocessors, Tensor Cores y RT Cores]]</b>"]
         G_SIMT["<b>[[Arquitectura de GPU y Aceleradores Hardware en el Computador#3. El Modelo de Ejecución: SIMD vs. SIMT|Modelo SIMT, Warps de 32 hilos y Coalescencia]]</b>"]
         G_UMA["<b>[[Arquitectura de GPU y Aceleradores Hardware en el Computador#5. Arquitectura de Memoria Unificada (UMA): El Enfoque SoC de Apple Silicon y APUs|Memoria Unificada (UMA), PCIe BAR y DirectStorage]]</b>"]
-        GPU --> G_Phil & G_SM & G_SIMT & G_UMA
+        G_Prog["<b>[[Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)|Programación GPU: CUDA C/C++ y OpenAI Triton]]</b>"]
+        GPU --> G_Phil & G_SM & G_SIMT & G_UMA & G_Prog
     end
 
     AC --> Modulo1
@@ -374,7 +376,13 @@ El surgimiento del aprendizaje profundo y la computación científica ha desplaz
      - *Divergencia de Ramas (Branch Divergence):* La bifurcación `if/else` enmascara hilos y serializa la ejecución en el tiempo, reduciendo el rendimiento a la mitad.
      - *Pérdida de Coalescencia de Memoria:* Accesos continuos fusionan 32 solicitudes en 1 sola transacción de 128 bytes (100% de eficiencia); accesos dispersos forzan 32 transacciones independientes (3.125% de eficiencia).
    - **Interconexión Host-Device:** El cuello de botella del bus PCIe frente a la VRAM (31.5 GB/s vs 1.000+ GB/s), la solución de **Resizable BAR** (mapeo del 100% de la VRAM en 64 bits eliminando la ventana restrictiva de 256 MiB) y **DirectStorage / RTX IO** con descompresión paralela en GPU.
-   - **[[Arquitectura de GPU y Aceleradores Hardware en el Computador#5. Arquitectura de Memoria Unificada (UMA): El Enfoque SoC de Apple Silicon y APUs|Arquitectura de Memoria Unificada (UMA)]]**: El modelo SoC de Apple Silicon (M-Max / M-Ultra) con bus de 512-1024 bits y anchos de banda de 400 a 800+ GB/s, eliminando la necesidad de copias PCIe (*Zero-Copy*) y permitiendo ejecutar modelos masivos de IA de 70B+ parámetros íntegramente en memoria unificada compartida.
+    - **[[Arquitectura de GPU y Aceleradores Hardware en el Computador#5. Arquitectura de Memoria Unificada (UMA): El Enfoque SoC de Apple Silicon y APUs|Arquitectura de Memoria Unificada (UMA)]]**: El modelo SoC de Apple Silicon (M-Max / M-Ultra) con bus de 512-1024 bits y anchos de banda de 400 a 800+ GB/s, eliminando la necesidad de copias PCIe (*Zero-Copy*) y permitiendo ejecutar modelos masivos de IA de 70B+ parámetros íntegramente en memoria unificada compartida.
+
+2. **[[Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)]]:**
+   - **Desmitificación del "Kernel":** Diferenciación conceptual estricta entre el **Kernel del Sistema Operativo** (árbitro de recursos en Ring 0, drivers de dispositivo, interrupciones y MMIO) y el **Kernel de GPU** (función matemática compilada y clonada en miles de hilos paralelos SIMT).
+   - **Mecanismo de Despacho de Hardware:** El puente PCIe, buffers DMA en memoria anclada (*pinned memory*), registros *Doorbell* por MMIO y colas circulares de comandos.
+   - **Programación CUDA C/C++:** Deducción matemática de la indexación unidimensional ($i = \text{blockIdx.x} \times \text{blockDim.x} + \text{threadIdx.x}$) y multidimensional, gestión de memoria con `cudaMalloc`/`cudaMemcpy` y código canónico `vectorAdd`.
+   - **Programación Moderna con OpenAI Triton:** Abstracción a nivel de bloques (*Block-Level Programming*) en Python, optimización automática de registros/SRAM y fusión de kernels (*Kernel Fusion*) para Transformers y LLMs.
 
 ---
 
@@ -382,5 +390,5 @@ El surgimiento del aprendizaje profundo y la computación científica ha desplaz
 
 - **[[Sistemas Operativos/Gestion de Memoria y Memoria Virtual|Sistemas Operativos]]:** La MMU, el TLB y las interrupciones de excepción por fallo de página (#PF) son los cimientos físicos sobre los cuales el kernel implementa la memoria virtual por demanda, la paginación con algoritmos de reemplazo y los niveles de protección de privilegios por hardware (Ring 0 Kernel vs Ring 3 Usuario).
 - **[[Compiladores/Fases del Compilador y Analisis Lexico|Compiladores]]:** El backend del compilador realiza la asignación de registros mediante coloración de grafos sobre el repertorio ISA del procesador, programa la reorganización de instrucciones para evitar bloqueos por dependencias RAW en el pipeline y optimiza los bucles de código para maximizar los aciertos en la memoria caché L1.
-- **[[Multiprocesamiento/Arquitectura de GPU y Programacion Heterogenea con NVIDIA CUDA|Multiprocesamiento]]:** Cómputo paralelo a escala, topologías de memoria NUMA (*Non-Uniform Memory Access*), coherencia de caché entre zócalos múltiples y programación de kernels masivos en CUDA sobre mallas de bloques, warps y memoria compartida.
+- **[[Multiprocesamiento/Arquitectura de GPU y Programacion Heterogenea con NVIDIA CUDA|Multiprocesamiento]]:** Cómputo paralelo a escala, topologías NUMA, coherencia de caché y programación de kernels masivos con **[[Programacion de GPU con CUDA y OpenAI Triton (Desde Cero)|CUDA C/C++ y OpenAI Triton]]** sobre mallas de bloques, warps y memoria compartida.
 - **[[computacion grafica/Computacion Grafica|Computación Gráfica]]:** El pipeline gráfico configurable acelerado en silicio (Vertex Shaders, Fragment/Pixel Shaders), rasterización en hardware, búferes de profundidad Z-buffer y framebuffers alojados en la memoria de video VRAM.
