@@ -311,8 +311,147 @@ $$\text{AMAT} = T_{h, L1} + (M_{L1} \times \text{Penalización L1}) = 1\text{ ns
 
 ---
 
+---
+
+## 6. Coherencia de Caché en Sistemas Multinúcleo y las 4 Cs de Fallos
+
+En los procesadores modernos con múltiples núcleos (*Multi-Core*), cada núcleo dispone de sus propias memorias caché privadas de nivel 1 (L1i y L1d) y nivel 2 (L2), mientras comparten una gran caché de último nivel (L3 / LLC) y la memoria DRAM principal.
+
+Esta topología física introduce el **Problema de la Coherencia de Caché**: ¿qué ocurre si el Núcleo 0 y el Núcleo 1 cargan en sus cachés privadas la misma variable `X = 5`, y luego el Núcleo 0 ejecuta una instrucción que modifica `X = 10`? Si no existe un mecanismo de hardware que sincronice las cachés, el Núcleo 1 continuará leyendo el valor obsoleto `X = 5` de su propia L1, corrompiendo la semántica del programa concurrente.
+
+```mermaid
+flowchart TD
+    subgraph MultiCoreSystem ["El Problema de Incoherencia de Caché"]
+        direction LR
+        subgraph Core0 ["Núcleo 0"]
+            C0_Exec["Modifica X = 10"] --> L1_0["Caché L1 (Privada)<br><b>X = 10 (Modificado)</b>"]
+        end
+        
+        subgraph Core1 ["Núcleo 1"]
+            C1_Exec["Lee X: ¿Ve 5 o 10?"] --> L1_1["Caché L1 (Privada)<br><b>X = 5 (¡Dato Rancio/Obsoleto!)</b>"]
+        end
+
+        BusInterconnect["Bus del Sistema / Red Interconexión Coherente"]
+        RAM_Mem["Memoria Principal RAM<br>X = 5"]
+        
+        L1_0 <--> BusInterconnect
+        L1_1 <--> BusInterconnect
+        BusInterconnect <--> RAM_Mem
+    end
+```
+
+---
+
+### 6.1 Mecanismos de Coherencia: Snooping vs. Directorios
+
+Existen dos estrategias principales para mantener la coherencia en el silicio:
+
+1. **Protocolos de Espionaje de Bus (*Bus Snooping*):**
+   - Utilizados en procesadores de computadoras personales y servidores pequeños donde los núcleos comparten un bus o anillo (*Ring Bus / Mesh*) común.
+   - Cada controlador de caché monitorea continuamente ("espía") todas las transacciones de lectura y escritura que otros núcleos anuncian en el bus. Si un núcleo observa que otro intenta escribir en una dirección que él tiene en su caché, invalida o actualiza su propia copia de inmediato.
+2. **Protocolos Basados en Directorio (*Directory-Based*):**
+   - Utilizados en supercomputadores y servidores masivos con arquitectura **NUMA (Non-Uniform Memory Access)** con decenas o cientos de sockets.
+   - Dado que el tráfico de difusión (*broadcast*) del snooping saturaría la red, se mantiene un "directorio" centralizado o distribuido en el controlador de memoria que registra exactamente qué núcleos tienen una copia de cada bloque. Las invalidaciones se envían únicamente a los núcleos interesados vía mensajes punto a punto.
+
+---
+
+### 6.2 El Protocolo MESI (Protocolo Illinois)
+
+El protocolo de coherencia por invalidación más extendido en la industria es **MESI**. Cada línea de la memoria caché añade **2 bits de estado** para clasificar su condición en uno de cuatro estados formales:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Invalid: Inicio / Bloque Vacío
+
+    Invalid --> Shared: Lectura Local (PrRd) /<br>Otros núcleos tienen copia
+    Invalid --> Exclusive: Lectura Local (PrRd) /<br>Ningún otro núcleo tiene copia
+    Invalid --> Modified: Escritura Local (PrWr) /<br>BusRdX (Invalida a otros)
+
+    Exclusive --> Modified: Escritura Local (PrWr) /<br>Silenciosa (Sin tráfico de bus)
+    Exclusive --> Shared: Lectura Remota en Bus (BusRd)
+
+    Shared --> Modified: Escritura Local (PrWr) /<br>BusUpgr (Invalida copias remotas)
+    Shared --> Invalid: Escritura Remota en Bus (BusRdX)
+
+    Modified --> Shared: Lectura Remota en Bus (BusRd) /<br>Escribe copia en RAM
+    Modified --> Invalid: Escritura Remota en Bus (BusRdX) /<br>Escribe copia en RAM e invalida
+```
+
+| Estado MESI | Nombre | ¿Datos Válidos? | ¿Copia Limpia o Sucia? | ¿Otros Núcleos la Tienen? | Permiso de Escritura |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **M** | **Modified** (Modificado) | Sí | **Sucia** (Difiere de la RAM) | **No** (Copia exclusiva) | Inmediato, sin avisar al bus |
+| **E** | **Exclusive** (Exclusivo) | Sí | **Limpia** (Idéntica a la RAM) | **No** (Copia exclusiva) | Inmediato (Pasa a estado M) |
+| **S** | **Shared** (Compartido) | Sí | **Limpia** (Idéntica a la RAM) | **Sí** (Múltiples núcleos) | Requiere invalidar a los demás (`BusUpgr`) |
+| **I** | **Invalid** (Inválido) | **No** | Indefinido (Línea sin datos útiles) | Indefinido | Provoca fallo de caché si se accede |
+
+#### Operaciones Clave del Protocolo:
+- **Transición Silenciosa (E -> M):** Si un núcleo tiene una línea en estado **Exclusive (E)**, significa que nadie más en todo el procesador la tiene copiada. Cuando el núcleo decide modificarla, no necesita emitir ningún mensaje por el bus: conmuta silenciosamente el estado a **Modified (M)** en cero nanosegundos, reduciendo drásticamente el tráfico del sistema.
+- **Protocolo MOESI:** Arquitecturas como AMD x86-64 y ARM introducen un quinto estado: **Owner (O)**. Si una línea está en estado $M$ y otro núcleo quiere leerla, el núcleo original pasa a estado $O$ y el solicitante a estado $S$. El núcleo "propietario" suministra los datos directamente al solicitante a través de la interconexión rápida, **evitando tener que escribir inmediatamente el bloque en la lenta memoria RAM principal**.
+
+---
+
+### 6.3 El Fenómeno del Falso Compartir (False Sharing)
+
+El **Falso Compartir (*False Sharing*)** es una de las anomalías de rendimiento más destructivas en la programación paralela y concurrente multinúcleo.
+
+- **Causa Física:** La memoria caché no transfiere variables individuales de 4 bytes, sino **líneas de caché completas de 64 bytes**.
+- Si dos hilos que se ejecutan en núcleos de CPU físicamente separados operan sobre variables que en el código son completamente independientes (`varA` y `varB`), pero que el compilador ubicó contiguas en la memoria dentro de los mismos 64 bytes:
+  1. El Núcleo 0 escribe en `varA`. El protocolo MESI invalida la línea completa de 64 bytes en el Núcleo 1.
+  2. El Núcleo 1 intenta escribir en `varB`. Como su línea fue invalidada, sufre un fallo de caché y solicita la línea al Núcleo 0, invalidando la línea en el Núcleo 0.
+  3. La línea de caché pasa saltando de un núcleo a otro a través de la interconexión como una pelota de tenis (**Cache Ping-Pong**), degradando el rendimiento del programa concurrente por un factor de hasta $20\times$.
+
+```mermaid
+flowchart TD
+    subgraph CacheLine64 ["Línea de Caché de 64 Bytes en Memoria Física"]
+        direction LR
+        VarA["int varA (4 bytes)<br>Usado SOLO por Hilo 0"]
+        VarB["int varB (4 bytes)<br>Usado SOLO por Hilo 1"]
+        Resto["56 bytes de espacio adyacente"]
+    end
+
+    subgraph PingPong ["Bucle Destructivo de Coherencia MESI"]
+        Core0["Núcleo 0 escribe varA<br>Pasa línea a estado Modified (M)"] -->|Invalida línea en| Core1["Núcleo 1 lee/escribe varB<br>Sufre Cache Miss! Solicita línea"]
+        Core1 -->|Invalida línea en| Core0
+    end
+```
+
+#### Solución en Software: Alineamiento de Líneas de Caché (Padding)
+Para erradicar el falso compartir, los programadores fuerzan al compilador a separar las variables en líneas de caché físicas distintas mediante directivas de alineamiento:
+
+```cpp
+// En C++11 en adelante:
+struct alignas(64) WorkerState {
+    uint64_t counter; // Ocupa sus propios 64 bytes exclusivos
+};
+
+WorkerState threads_data[MAX_CORES]; // Cada hilo opera en una línea física distinta
+```
+
+---
+
+### 6.4 La Taxonomía de las 4 Cs de Fallos de Caché (Hill & Smith)
+
+Para diagnosticar y optimizar la tasa de aciertos de un computador, el arquitecto de computadores Mark Hill clasificó todos los fallos de caché en **cuatro categorías fundamentales (las 4 Cs)**:
+
+1. **Compulsory Misses (Obligatorios o Fríos / *Cold Start*):**
+   - Ocurren en el primerísimo acceso a un bloque de memoria que jamás había sido cargado en la caché desde el arranque del sistema.
+   - *Solución arquitectónica:* Aumentar el tamaño del bloque/línea (localidad espacial) o implementar unidades de precarga por hardware (**Hardware Prefetchers**) que detectan patrones secuenciales y traen los bloques antes de que la CPU los solicite.
+2. **Capacity Misses (Capacidad):**
+   - Ocurren porque el conjunto de trabajo (*Working Set*) del programa es físicamente más grande que la capacidad total de almacenamiento de la memoria caché.
+   - *Solución arquitectónica:* Incrementar la capacidad total en megabytes de la memoria caché (a costa de mayor área de silicio, mayor consumo energético y ligera mayor latencia de acceso).
+3. **Conflict Misses (Conflicto o Colisión):**
+   - Ocurren exclusivamente en memorias con **Correspondencia Directa** o **Asociativas por Conjuntos**, cuando múltiples bloques de memoria requeridos por el programa compiten y mapean exactamente al mismo conjunto de la caché, expulsándose mutuamente aun cuando el resto de los conjuntos de la caché estén totalmente vacíos.
+   - *Solución arquitectónica:* Incrementar el grado de asociatividad $K$ (ej. pasar de 2-way a 4-way u 8-way Set Associative) o emplear algoritmos de dispersión pseudoaleatoria de índices (*Hash/Skewed Caches*). En una caché totalmente asociativa, los fallos de conflicto son exactamente cero.
+4. **Coherence Misses (Coherencia - La 4ta C en Sistemas Multiprocesador):**
+   - Ocurren cuando un núcleo intenta leer una línea válida de su propia caché, pero esta ha sido invalidada porque otro núcleo de la CPU escribió en esa misma dirección de memoria física para mantener la coherencia mediante el protocolo MESI.
+
+---
+
 ## Notas Relacionadas y Enlaces de Vault
 - [[Funcionamiento del Sistema de Memoria]] — Conceptos fundamentales de organización y tecnologías de memoria interna y externa.
 - [[Principios de funcionamiento]] — Elementos de diseño de caché, mapeo directo y asociativo preliminar.
+- [[Memoria Virtual, Paginacion y Arquitectura de la MMU]] — Traducción de direcciones lógicas, TLB y paginación en hardware.
+- [[Buses, Interconexion y Comunicacion de Entrada-Salida (DMA e Interrupciones)]] — Enlaces de bus PCIe, controladores de interrupción APIC y DMA.
+- [[Arquitectura de GPU y Aceleradores Hardware en el Computador]] — Jerarquía de memorias masivas de GPU, VRAM de alto ancho de banda y modelo SIMT.
 - [[Pipeline de Instrucciones y Riesgos (Hazards)]] — Impacto de las latencias de memoria y cachés Harvard en el pipeline de la CPU.
-- [[Fases del Compilador y Analisis Lexico]] — Gestión eficiente de buffers de lectura en memoria para scanners de alto rendimiento.
+

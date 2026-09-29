@@ -281,7 +281,11 @@ gantt
 ---
 
 ## Notas Relacionadas y Enlaces de Vault
+- [[Arquitectura de Computadores]] — Mapa general de la materia y fundamentos de microarquitectura.
 - [[Funcionamiento del Sistema de Memoria]] — Principios de jerarquía de memorias internas y buses de transferencia.
 - [[Principios de funcionamiento]] — Estructura de buses, retardos y funciones de correspondencia.
 - [[Jerarquia de Memoria y Memoria Cache]] — Implementación de cachés Harvard L1 (I-Cache y D-Cache) para resolver riesgos estructurales.
+- [[Memoria Virtual, Paginacion y Arquitectura de la MMU]] — Traducción en hardware mediante la MMU y latencias de TLB en el pipeline.
+- [[Buses, Interconexion y Comunicacion de Entrada-Salida (DMA e Interrupciones)]] — Manejo de interrupciones de hardware en las etapas finales del pipeline.
+- [[Arquitectura de GPU y Aceleradores Hardware en el Computador]] — Pipeline paralelo SIMT masivo y conmutación de Warps frente al pipeline superescalar de CPU.
 - [[Fases del Compilador y Analisis Lexico]] — Optimización y reordenamiento de instrucciones en la fase de generación de código máquina.

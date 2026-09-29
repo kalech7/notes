@@ -1,67 +1,121 @@
-**Ubicación**
-* **Interna:** Relacionada principalmente con la memoria principal, luego la memoria caché y los registros del procesador.
-* **Externa:** Relacionada con dispositivos periféricos de almacenamiento masivo (discos duros, estado sólido, cintas).
+---
+title: "Funcionamiento del Sistema de Memoria y Tecnologías de Almacenamiento"
+date_created: 2023-07-30
+date_modified: 2026-09-29
+tags:
+  - arquitectura-de-computadores
+  - memoria
+  - dram
+  - sram
+  - rom
+  - flash
+  - jerarquia-de-memoria
+aliases:
+  - Funcionamiento del Sistema de Memoria
+  - Características del Sistema de Memoria
+  - Tecnologías de Memoria
+related:
+  - "[[Arquitectura de Computadores]]"
+  - "[[Jerarquia de Memoria y Memoria Cache]]"
+  - "[[Principios de funcionamiento]]"
+  - "[[Memoria Virtual, Paginacion y Arquitectura de la MMU]]"
+  - "[[Buses, Interconexion y Comunicacion de Entrada-Salida (DMA e Interrupciones)]]"
+  - "[[Pipeline de Instrucciones y Riesgos (Hazards)]]"
+---
+
+# Funcionamiento del Sistema de Memoria y Tecnologías de Almacenamiento
+
+El subsistema de memoria de un computador se caracteriza a través de parámetros físicos y organizacionales fundamentales:
+
+## 1. Características Esenciales de la Memoria
+
+### Ubicación
+* **Interna:** Accesible directamente por el procesador sin intermediación de controladores de periféricos. Comprende los registros de la CPU, la memoria caché (L1/L2/L3) y la memoria principal (RAM).
+* **Externa:** Reside en dispositivos periféricos de almacenamiento masivo secundarios y terciarios (unidades de estado sólido SSD, discos magnéticos HDD, cintas, almacenamiento en la nube). Requiere que los bloques de datos se transfieran primero a la memoria principal antes de ser procesados por la CPU.
 
 > [!info] Explicación
-> **Memoria Interna vs Externa:** La memoria interna es accesible directamente por la CPU y es muy rápida. La externa requiere que los datos pasen primero a la memoria principal.
-
-## Jerarquía de Memoria
-
-```mermaid
-graph TD
-    A[Registros de CPU\nVelocidad Muy Alta - Capacidad Muy Baja] --> B[Memoria Caché L1/L2/L3\nSRAM]
-    B --> C[Memoria Principal RAM\nDRAM]
-    C --> D[Almacenamiento Secundario\nSSD / HDD / Flash]
-    D --> E[Almacenamiento Terciario / Offline\nCintas Magnéticas / Nube\nVelocidad Baja - Capacidad Muy Alta]
-```
-
-**Capacidad**
-* Se expresa normalmente en términos de bytes (8 bits) o de palabras.
-Longitudes comunes de palabra son de 8, 16, 32 y 64 bits. Se considera tanto el tamaño de la palabra como el número total de palabras para definir la capacidad.
-
-**Unidad de Transferencia**
-* En memorias internas es igual al número de líneas de entrada/salida de datos del módulo de memoria. A menudo es igual a la longitud de palabra.
-
-> [!info] Explicación
-> La **capacidad** determina cuántos datos se pueden guardar, mientras que la **unidad de transferencia** dicta cuántos datos viajan simultáneamente.
+> **Memoria Interna vs Externa:** La memoria interna es accesible directamente por la CPU y es extremadamente rápida (latencias medidas en nanosegundos). La externa requiere controladores de bus (SATA, PCIe NVMe) y rutinas de Entrada/Salida para transferir los datos hacia la RAM física.
 
 ---
 
-* **Palabra:** Es la unidad «natural» de organización de la memoria.
-* **Unidades direccionables:** Por defecto la unidad direccionable es la palabra. En algunos casos se direcciona a nivel de byte. La relación entre la longitud A de una dirección y el número N de unidades direccionables, es 2<sup>A</sup> = 𝑁.
-* **Unidad de transferencia:** Es el número de bits que se leen o escriben en memoria a la vez.
-	* *Palabra* (entre caché y procesador)
-	* *Bloques* (entre memoria interna y caché)
+## 2. Jerarquía de Memoria
+
+```mermaid
+graph TD
+    A[Registros de CPU\nVelocidad Muy Alta - Capacidad Muy Baja] --> B[Memoria Caché L1/L2/L3\nSRAM en silicio de CPU]
+    B --> C[Memoria Principal RAM\nDRAM en canales de memoria]
+    C --> D[Almacenamiento Secundario\nSSD NVMe / SATA / HDD / Flash]
+    D --> E[Almacenamiento Terciario / Offline\nCintas Magnéticas / Almacenamiento en Nube\nVelocidad Baja - Capacidad Masiva]
+```
+
+### Capacidad
+* Se expresa normalmente en términos de bytes (8 bits) o de palabras de máquina.
+* Longitudes comunes de palabra son de 16, 32 y 64 bits. La capacidad total depende tanto de la longitud de la palabra como del número total de palabras direccionables.
+
+### Unidad de Transferencia
+* En memorias internas es igual al número de líneas eléctricas del bus de datos que entran o salen del módulo de memoria.
+* A menudo coincide con la longitud de palabra o con un bloque completo de palabras:
+	* **Palabra:** Unidad de transferencia atómica entre los registros de la CPU y la memoria caché.
+	* **Bloque o Línea de Caché (típicamente 64 bytes):** Unidad de transferencia entre la memoria principal RAM y la caché (aprovechando la localidad espacial).
+	* **Página (típicamente 4 KiB):** Unidad de transferencia entre almacenamiento secundario (SSD) y memoria principal RAM gestionada por la [[Memoria Virtual, Paginacion y Arquitectura de la MMU|MMU y el Sistema Operativo]].
 
 > [!info] Explicación
-> Entre procesador y caché se mueven **palabras**, pero entre caché y RAM se mueven **bloques** enteros por el principio de localidad espacial.
+> La **capacidad** determina cuántos datos se pueden almacenar, mientras que la **unidad de transferencia** dicta cuántos bits viajan simultáneamente por las líneas del bus en cada ciclo.
 
-## Método de acceso
-* **Secuencial:** La memoria se organiza en unidades de datos llamadas registros. El acceso se realiza mediante una secuencia lineal específica. Se utiliza un mecanismo de lectura/escritura que se traslada desde su posición actual a la deseada pasando por todos los datos intermedios. Ejemplo: Unidad de cinta magnética.
-* **Directo:** Tiene asociado un mecanismo de lectura/escritura. Los bloques individuales o registros tienen una dirección única basada en su ubicación física. Se salta primero a la vecindad general y luego se busca de forma secuencial. Ejemplo: Unidad de disco duro (HDD).
-* **Aleatorio:** Cada posición tiene un mecanismo de acceso único, cableado físicamente. La posición puede seleccionarse aleatoriamente y ser accedida directamente en un tiempo constante, sin importar su ubicación. Ejemplo: La memoria principal (RAM).
-* **Asociativa:** Permite hacer una comparación de ciertas posiciones de bits dentro de una palabra buscando que coincidan con unos valores dados. Ejemplo: Las memorias caché emplean acceso asociativo para buscar datos por su contenido (etiquetas) en lugar de por su dirección.
+---
 
-> [!info] Explicación
-> **Secuencial**: Lee desde el inicio (cintas). **Directo**: Salta a un sector y luego busca (HDD). **Aleatorio**: Acceso instantáneo a cualquier parte (RAM). **Asociativa**: Busca por contenido, no por dirección (Caché).
+## 3. Unidades y Direccionamiento
 
-## Tipos de memoria:
-* **Memoria dinámica (DRAM):** Está compuesta de celdas que almacenan los datos como la carga eléctrica de capacitores, los cuales tienen la tendencia a descargarse, por lo que requieren periodos constantes de refrescamiento de la carga. Es esencialmente un dispositivo analógico. Las memorias DRAM se utilizan como memoria principal.
-* **Memoria estática (SRAM):** Es un dispositivo digital que utiliza los mismos elementos lógicos (flip-flops) usados en el procesador. Las memorias SRAM no requieren refresco constante y son muy rápidas, por lo que se usan en la caché.
-* **Memorias ROM (Read Only Memory):** Son memorias de solo lectura. Originalmente se grababan durante el proceso de fabricación con determinados programas específicos. Ejemplos: microprogramas, BIOS, firmware.
-* **PROM (Programable Read Only Memory):** Pueden ser grabadas por el usuario con ayuda de un dispositivo especial, aunque una sola vez.
-* **EPROM (Erasable Programable Read Only Memory):** Pueden ser grabadas o borradas por el usuario con ayuda de un dispositivo especial que emplea una luz ultravioleta. Es posible reprogramarlas varias veces.
-* **EEPROM (Electrically Erasable Programable Read Only Memory):** Pueden ser grabadas o borradas eléctricamente por el usuario. Es posible reprogramarlas sin retirarlas del circuito (como las BIOS actuales).
-* **Flash memory:** Es una variante de la EEPROM. Su nombre se debe a que pueden ser borradas en grandes bloques a alta velocidad.
+* **Palabra:** Es la unidad «natural» de organización de la arquitectura. Corresponde al tamaño de los registros de propósito general y al ancho estándar de las operaciones de la ALU (32 o 64 bits).
+* **Unidades direccionables:** En los computadores contemporáneos, la memoria se direcciona a nivel de **byte individual (Byte-Addressable)**. La relación entre la longitud $A$ de una dirección del bus y el número $N$ de bytes direccionables es:
+  $$N = 2^A$$
+  (Un bus de 32 bits direcciona hasta $2^{32}\text{ bytes} = 4\text{ GiB}$; un bus de 48 bits direcciona hasta $2^{48}\text{ bytes} = 256\text{ TiB}$).
+
+---
+
+## 4. Métodos de Acceso a Memoria
+
+* **Secuencial:** La memoria se organiza en unidades lineales de datos. El acceso debe realizarse siguiendo una secuencia física estricta. El mecanismo de lectura/escritura debe desplazarse a través de todos los registros intermedios para alcanzar el dato deseado. El tiempo de acceso es altamente variable y dependiente de la posición actual. *Ejemplo:* Unidades de cinta magnética lineal.
+* **Directo:** Los bloques de datos tienen direcciones físicas únicas basadas en su geometría tridimensional (pistas, sectores, cilindros). El mecanismo físico salta rápidamente a la vecindad general y luego realiza una búsqueda secuencial corta. El tiempo de acceso es variable. *Ejemplo:* Unidades de disco duro mecánico (HDD).
+* **Aleatorio (Random Access):** Cada posición de memoria tiene un circuito de direccionamiento cableado e independiente. Cualquier celda física puede seleccionarse y leerse/escribirse exactamente en el **mismo tiempo constante ($O(1)$)**, sin importar su ubicación física ni el orden de accesos previos. *Ejemplo:* La memoria principal (RAM - Random Access Memory).
+* **Asociativo (Content-Addressable Memory - CAM):** Permite comparar simultáneamente ciertas posiciones de bits en todas las palabras almacenadas buscando coincidencias con un patrón de entrada (*Tag*). Se accede al dato por su **contenido** y no por su dirección numérica. *Ejemplo:* Las memorias caché y el **TLB (*Translation Lookaside Buffer*)** de la MMU.
+
+---
+
+## 5. Tecnologías de Memoria de Semiconductores
+
+```mermaid
+flowchart TD
+    Semi["Memorias de Semiconductores"]
+    
+    Semi --> Volatiles["Memorias Volátiles (Pierden datos sin energía)"]
+    Semi --> NoVolatiles["Memorias No Volátiles (Retienen datos permanentemente)"]
+    
+    Volatiles --> SRAM["<b>SRAM (Static RAM)</b><br>• Celdas de 6 transistores (Flip-flops)<br>• Ultrarrápida (0.5 - 2 ns)<br>• No requiere refresco<br>• Baja densidad, muy cara<br>• <i>Uso: Cachés L1, L2, L3</i>"]
+    Volatiles --> DRAM["<b>DRAM (Dynamic RAM)</b><br>• Celdas de 1 transistor + 1 condensador<br>• Muy alta densidad, económica<br>• Fugas eléctricas: <b>requiere refresco constante</b><br>• Latencia media (50 - 80 ns)<br>• <i>Uso: Memoria Principal DDR4/DDR5</i>"]
+    
+    NoVolatiles --> ROM["ROM (Mascara en fábrica)"]
+    NoVolatiles --> PROM["PROM (Programable una vez con fusible)"]
+    NoVolatiles --> EPROM["EPROM (Borrable por luz ultravioleta)"]
+    NoVolatiles --> EEPROM["EEPROM (Borrable eléctricamente a nivel de byte)"]
+    NoVolatiles --> Flash["<b>Memoria Flash (NAND / NOR)</b><br>• Variante moderna de EEPROM<br>• Borrado rápido por bloques masivos<br>• Muy alta densidad y bajo costo<br>• <i>Uso: SSDs NVMe, BIOS/UEFI, Pendrives</i>"]
+```
 
 ![[Pasted image 20230730184430.png]]
 
-> [!info] Explicación
-> La SRAM es más rápida pero cara (se usa en caché). La DRAM es más lenta, necesita refresco, pero es barata y densa (se usa en RAM). Flash es no volátil y rápida para reescribir bloques completos.
+### Comparativa: SRAM vs. DRAM
+- **SRAM (Static RAM):** Construida con circuitos biestables (*flip-flops* de 4 a 6 transistores CMOS). Es totalmente digital y no experimenta pérdida de carga mientras mantenga suministro eléctrico. Consume mayor área de silicio y genera más calor, pero alcanza tiempos de conmutación sub-nanosegundo. Por ello, domina las memorias caché integradas en el procesador.
+- **DRAM (Dynamic RAM):** Construida con celdas ultra compactas de **un solo transistor y un condensador microscópico (1T-1C)**. Los condensadores almacenan la información como carga electrostática; sin embargo, debido a corrientes parásitas de fuga, la carga se disipa en cuestión de milisegundos. Requiere un **circuito de refresco periódico** que lee y reescribe continuamente cada fila de la matriz de memoria miles de veces por segundo. Esta característica física la hace más lenta, pero su bajísimo costo y masiva densidad por milímetro cuadrado la consagran como la tecnología indiscutible de la memoria principal.
+
+---
 
 ## Notas relacionadas
-- [[Principios de funcionamiento]]
-- [[Jerarquia de Memoria y Memoria Cache]]
-- [[Pipeline de Instrucciones y Riesgos (Hazards)]]
-- [[Ejercicio Correspondencia directa.excalidraw]]
-- [[Documentos/computacion grafica/pipeline grafico|Pipeline gráfico]]
+- [[Arquitectura de Computadores]] — Mapa de contenidos general de la materia.
+- [[Principios de funcionamiento]] — Diseño de caché, organización de bloques y mapeo directo/asociativo.
+- [[Jerarquia de Memoria y Memoria Cache]] — AMAT, políticas de reemplazo y protocolo de coherencia MESI.
+- [[Memoria Virtual, Paginacion y Arquitectura de la MMU]] — Traducción de direcciones virtuales, tablas multinivel y TLB.
+- [[Buses, Interconexion y Comunicacion de Entrada-Salida (DMA e Interrupciones)]] — Interconexión PCIe, controladores de memoria y DMA.
+- [[Arquitectura de GPU y Aceleradores Hardware en el Computador]] — Memoria VRAM GDDR6/HBM de alto ancho de banda y UMA.
+- [[Pipeline de Instrucciones y Riesgos (Hazards)]] — Penalizaciones por accesos a memoria en el pipeline del procesador.
+- [[pipeline grafico|Pipeline Gráfico en Computación Gráfica]] — Framebuffers y rasterización.
+- [[Ejercicio Correspondencia directa.excalidraw]] — Ejercicio visual de correspondencia directa.
