@@ -86,7 +86,7 @@ Si puedes explicar estas cinco frases sin mirar las notas, ya tienes la base de 
 1. Un embedding es una representación aprendida; la cercanía depende de la tarea y de la métrica.
 2. El vector de un token de entrada, su salida contextualizada y el vector del texto no son lo mismo.
 3. SBERT entrena sobre relaciones entre textos y permite calcular cada embedding por separado.
-4. Producto punto equivale a coseno **en valor** solo si ambos vectores tienen norma 1.
+4. Normalizar ambos vectores a norma 1 **garantiza** que producto punto y coseno tengan el mismo valor; también puede haber igualdad en casos particulares sin ambas normas unitarias.
 5. Recuperar un texto cercano no garantiza que afirme lo correcto ni que el contenido relevante haya entrado al modelo.
 
 ## Fuente y alcance

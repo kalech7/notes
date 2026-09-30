@@ -1,0 +1,16 @@
+{
+  "fecha_local": "2026-09-29",
+  "notas_nuevas": 11,
+  "archivos_markdown_revisados": 17,
+  "wikilinks_comprobados": 284,
+  "embeds_comprobados": 9,
+  "fragmentos_python_con_sintaxis_valida": 5,
+  "figuras_inspeccionadas": 8,
+  "originales_identicos_sha256": {
+    "s3-lun-estudiante.ipynb": "17baf4a2bfe1cba85f2b3232660324ee9b88f2f1fc9fb5d13b76cb072a9a858e",
+    "s3-mar-estudiante.ipynb": "d3f7565c16ff4ced9aaa4fdc9ed27f100f55132fc23f43f7d6eafe165f4eb1bf",
+    "sesion-12.pdf": "f9d971ad2c9830df8d4abb8c3031fbc774dc32caf8acad2368236b98048464cb"
+  },
+  "errores": [],
+  "alcance": "enlaces, YAML, anclas citadas, sintaxis y copias; no valida todo el vault"
+}

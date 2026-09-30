@@ -90,6 +90,26 @@ Hay VAE para texto, aunque tienen dificultades. Una de ellas es que el decodific
 
 **Qué debes recordar:** el codificador ayuda a inferir códigos para datos conocidos; el decodificador utiliza códigos para modelar y generar datos. El entrenamiento conecta ambas partes.
 
+## Por qué la cota tiene exactamente esos dos términos
+
+El modelo generativo define $p_\theta(x,z)=p(z)p_\theta(x\mid z)$. Para cualquier distribución aproximada adecuada $q_\phi(z\mid x)$ se cumple:
+
+$$\log p_\theta(x)=\mathcal L(x)+D_{KL}(q_\phi(z\mid x)\Vert p_\theta(z\mid x)).$$
+
+Al desarrollar $\mathcal L(x)=\mathbb E_q[\log p_\theta(x,z)-\log q_\phi(z\mid x)]$ y separar la conjunta, aparece la reconstrucción esperada menos la KL al prior. Hay **dos KL distintas**: la KL al prior está dentro del objetivo; la KL a la posterior verdadera es la brecha que demuestra que el objetivo es una cota. No se intercambian.
+
+En un GMM, el paso E puede calcular exactamente la posterior del componente. En el VAE habitual, la integral y la posterior son intratables, por lo que una red aprende una aproximación. Esto impide aplicar directamente ese EM exacto y cerrado; existen extensiones variacionales y aproximadas de EM. No significa que cualquier método relacionado con EM sea imposible.
+
+Para un codificador gaussiano diagonal y prior normal estándar, la penalización se calcula sin integrar numéricamente:
+
+$$D_{KL}=\frac12\sum_j(\mu_j^2+\sigma_j^2-1-\log\sigma_j^2).$$
+
+Con una sola coordenada, media 2 y desviación 0.5, da aproximadamente 2.318. El término de reconstrucción suele estimarse con una o unas pocas muestras reparametrizadas. Si el decodificador supone píxeles Bernoulli, usa una log-verosimilitud categórica binaria; si supone una gaussiana de varianza fija, se relaciona con error cuadrático más constantes. La elección de «error de reconstrucción» debe corresponder al modelo de observaciones.
+
+La presión hacia el prior puede llevar a **colapso posterior**: $q(z\mid x)$ se parece al prior para muchos datos y un decodificador potente ignora el código. No es una imposibilidad universal de generar texto. Tampoco un VAE está obligado a emitir todas las coordenadas a la vez: un decodificador autorregresivo puede generar por pasos.
+
+Este puente amplía [[sesion-02.pdf#page=4|Sesión 02, pp. 4–5]], con las identidades de [[kingma-2013-vae.pdf|Kingma y Welling, §2]].
+
 ## Fuentes de esta explicación
 
 Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.

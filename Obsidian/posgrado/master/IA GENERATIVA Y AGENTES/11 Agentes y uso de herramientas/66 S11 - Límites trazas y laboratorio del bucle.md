@@ -1,5 +1,7 @@
 ---
 title: "66 S11 - Límites trazas y laboratorio del bucle"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -23,7 +25,7 @@ El modelo puede insistir en una búsqueda que no devuelve nada, repetir una llam
 
 ![[48-s11-parada.png]]
 
-**Cómo leerlo:** antes de pedir otra decisión se comprueba el contador. Una respuesta final cierra la ejecución. Una llamada sigue por validación, ejecución y observación. Si no quedan pasos, la salida informa que la tarea quedó incompleta.
+Antes de pedir otra decisión se comprueba el contador. Una respuesta final cierra la ejecución. Una llamada sigue por validación, ejecución y observación. Si no quedan pasos, la salida informa que la tarea quedó incompleta.
 
 ## 2. Define primero qué estás contando
 
@@ -125,6 +127,6 @@ Una intervención útil modifica una causa plausible: una descripción, un resul
 
 El PDF sitúa el Taller 3 el sábado 3 de octubre de 2026, con 25 % según la p. 26, y anuncia patrones de razonamiento, MCP y sistemas multiagente para las siguientes sesiones. Aquí se registra como información del material, no como verificación independiente del calendario vigente.
 
-La actividad de p. 24 propone declarar herramientas, ejecutar llamadas, construir el bucle y conservar una traza. La presentación indica que dispone de un simulador sin credenciales. No se inspeccionó ese notebook; el programa de estas notas es independiente.
+La actividad de p. 24 propone declarar herramientas, ejecutar llamadas, construir el bucle y conservar una traza. La presentación indica que dispone de un simulador sin credenciales. El notebook recibido se inspeccionó después y está explicado en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado|la nota 68]]. El programa de esta nota sigue siendo una simulación independiente con otras cifras: febrero 12000 y marzo 15000. No hay que mezclar sus resultados con marzo 2695 y abril 1670 del notebook.
 
 **Fuente:** [[sesion-11.pdf#page=23|pp. 23–26]]. La clasificación de fallos, el laboratorio y la separación de presupuestos son ampliaciones explicativas.

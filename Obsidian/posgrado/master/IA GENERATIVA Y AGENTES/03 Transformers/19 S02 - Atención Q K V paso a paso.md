@@ -14,10 +14,10 @@ tags:
 
 Después del embedding, cada token es un vector **aislado**: el vector de «banco» es el mismo en «banco central» y en «banco del parque». Para predecir bien el siguiente token, cada posición necesita incorporar información de las demás.
 
-La atención es la operación que hace esa mezcla. Toma los vectores de todas las posiciones permitidas y produce, para cada posición, un vector nuevo que ya incluye contexto. En «me senté en el banco del parque», la salida de atención para «banco» puede tomar parte de su información de «senté» y «parque».
+La atención es la operación que hace esa mezcla. Toma los vectores de todas las posiciones permitidas y produce, para cada posición, un vector nuevo que ya incluye contexto. En atención bidireccional, «banco» en «me senté en el banco del parque» puede combinar «senté» y «parque». En un decoder causal, «banco» puede consultar «senté», pero no «parque», que viene después; la representación de la posición final «parque» sí puede integrar todo ese prefijo.
 
 > [!important] Idea central
-> Entrada: un vector por token, sin contexto. Salida: un vector por token, **con** contexto. La cantidad de vectores y su posición no cambian; cambia lo que contiene cada uno.
+> En el primer bloque, la entrada parte de embeddings y posición. En bloques posteriores ya contiene contexto de capas previas. La atención incorpora o refina información entre posiciones; conserva la cantidad de vectores y cambia su contenido.
 
 ## 1. La atención es una suma ponderada
 
@@ -88,7 +88,7 @@ $W_Q$, $W_K$ y $W_V$ son parámetros del modelo. En cambio, los pesos de atenci�
 
 ### ¿Por qué tres matrices y no usar $X$ directamente?
 
-Si se usara $QK^\top=XX^\top$, cada token se compararía consigo mismo mediante $x_i\cdot x_i=\lVert x_i\rVert^2$. Ese valor suele ser el mayor de su fila, así que **cada token se atendería sobre todo a sí mismo** por construcción geométrica, no por significado.
+Si se usara $QK^\top=XX^\top$, cada token tendría score propio $x_i\cdot x_i=\lVert x_i\rVert^2$, y la matriz sería simétrica. Con normas iguales, Cauchy–Schwarz garantiza que ningún producto con otro vector supera ese score propio, aunque puede empatar. Con normas distintas no hay tal garantía: $x_1=[1,0]$ y $x_2=[2,0]$ dan score propio 1 y score hacia el otro 2 para la primera fila. La afirmación de dominio propio de la sesión 02, p. 12, necesita esa condición; las proyecciones no se justifican por un dominio universal de la diagonal.
 
 Las proyecciones separadas resuelven tres problemas:
 
@@ -243,7 +243,7 @@ Si los componentes de $q$ y $k$ son independientes, con media 0 y varianza 1, en
 
 $$q\cdot k=\sum_{j=1}^{d_k}q_jk_j\quad\Rightarrow\quad \operatorname{Var}(q\cdot k)=d_k.$$
 
-Cada producto $q_jk_j$ tiene varianza 1, y la suma de $d_k$ términos independientes tiene varianza $d_k$. La desviación típica crece como $\sqrt{d_k}$. Con $d_k=64$, los scores suelen tener magnitudes cercanas a 8, no a 1.
+Cada producto $q_jk_j$ tiene varianza 1, y la suma de $d_k$ términos independientes tiene varianza $d_k$. La desviación típica crece como $\sqrt{d_k}$. Con $d_k=64$, la desviación estándar bajo estos supuestos es 8: es una escala de dispersión, no que todos los scores valgan aproximadamente 8.
 
 ¿Qué problema causa? Softmax reacciona a las **diferencias absolutas** entre scores:
 
@@ -262,7 +262,7 @@ Dividir entre $\sqrt{d_k}$ devuelve la varianza a 1:
 
 $$\operatorname{Var}\!\left(\frac{q\cdot k}{\sqrt{d_k}}\right)=\frac{d_k}{d_k}=1.$$
 
-No cambia el orden de los scores, pero evita que su magnitud crezca solo porque aumentó la dimensión. El notebook del curso lo comprueba con $d=4,\ 64,\ 256$: con 256 y sin escalar, softmax colapsa a *one-hot*.
+No cambia el orden de los scores, pero evita que su magnitud crezca solo porque aumentó la dimensión. La sesión 02, p. 15, describe una demostración con $d=4,\ 64,\ 256$. Una muestra de dimensión alta puede producir pesos casi *one-hot* sin escala, pero no todas las matrices de dimensión 256 lo harán. La justificación es probabilística, no un umbral universal.
 
 ## 7. Máscara causal
 
@@ -316,7 +316,7 @@ En el modelo base del paper, $d_{model}=512$ y $h=8$, así que $d_k=d_v=512/8=64
 - Al concatenar 8 salidas de 64 se recuperan 512 dimensiones.
 - $W_O$, de tamaño $512\times512$, mezcla la información de todas las cabezas y devuelve la forma original $n\times d_{model}$. Así se puede sumar la conexión residual.
 
-Si $d_k=d_v=d_{model}/h$, repartir la dimensión entre cabezas mantiene un costo parecido al de una cabeza de dimensión completa, con el mismo $d_{model}$ y la misma longitud de secuencia. No se añade capacidad: se **reparte**.
+Si $d_k=d_v=d_{model}/h$, repartir la dimensión entre cabezas mantiene un costo parecido al de una cabeza de dimensión completa, con el mismo $d_{model}$ y la misma longitud de secuencia. Se conserva el ancho total y un orden de costo parecido, pero sí cambia la familia de funciones: varias distribuciones de atención pueden combinar diferentes posiciones a la vez. Igual ancho o número parecido de parámetros no implica igual capacidad de representación.
 
 ### Más cabezas no siempre es mejor
 
@@ -328,7 +328,7 @@ Vaswani et al. compararon distintas cantidades de cabezas con cómputo constante
 | 8 | 64 | **25.8** |
 | 32 | 16 | 25.4 |
 
-Con demasiadas cabezas, cada una queda con tan pocas dimensiones que compara peor.
+En ese experimento, 32 cabezas rindieron menos que 8. La reducción de dimensión por cabeza ofrece una explicación posible, pero esa tabla no demuestra que toda arquitectura empeore por esa única causa ni fija un óptimo universal.
 
 > [!warning] Interpretación cuidadosa
 > Un heatmap muestra pesos de combinación. Por sí solo no demuestra que una cabeza «entienda» gramática ni que el peso más alto sea una explicación causal de la respuesta. El paper dice que muchas cabezas **parecen exhibir** comportamientos sintácticos: se observa después, no se programa.
@@ -337,7 +337,7 @@ Con demasiadas cabezas, cada una queda con tan pocas dimensiones que compara peo
 
 ### Dentro del bloque
 
-La salida de la atención no va directamente a la LM head. Dentro de cada bloque transformer ocurre, de forma simplificada:
+La salida de la atención no va directamente a la LM head. En un bloque de tipo **pre-norm**, omitiendo dropout, ocurre de forma simplificada:
 
 $$H=X+\operatorname{MHA}(\operatorname{Norm}(X)),\qquad \text{salida}=H+\operatorname{FFN}(\operatorname{Norm}(H)).$$
 
@@ -357,6 +357,14 @@ La matriz $A$ tiene tamaño $n\times n$. Duplicar la longitud del contexto multi
 4. La salida de cada token es la **suma ponderada** de los values: una mezcla, no una elección.
 5. Varias cabezas hacen esto en paralelo en subespacios distintos, y $W_O$ reúne sus resultados.
 
+## Alcance de la caché y de la matriz cuadrática
+
+Al procesar el prompt completo, el modelo calcula keys y values para sus posiciones. En generación causal, agregar un token no cambia las representaciones anteriores: ninguna de ellas puede leer ese futuro. Una **caché KV** conserva las keys y values de cada capa y permite que la query del token nuevo las consulte sin recalcular todo el prefijo. Guarda activaciones temporales, no conocimiento nuevo en los pesos.
+
+Con $n$ posiciones previas, una query nueva compara contra aproximadamente $n$ keys por cabeza: la parte de atención de ese paso crece linealmente con $n$. Generar muchos tokens sigue acumulando ese costo; construir las interacciones de una secuencia completa conserva el orden cuadrático. La caché crece con contexto, capas y dimensiones de K y V. **FlashAttention** reduce movimiento de datos y evita materializar toda la matriz de atención en memoria; no convierte por sí solo la atención densa exacta en una operación de costo aritmético lineal. [Dao et al., FlashAttention, 2022](https://arxiv.org/abs/2205.14135).
+
+La salida $Z=AV$ es una combinación convexa de values solo en el cálculo simplificado de cada cabeza con pesos no negativos que suman 1. Proyección de salida, suma residual y transformaciones posteriores ya no tienen esa interpretación. Durante entrenamiento puede aplicarse dropout a los pesos de atención; entonces una realización concreta tampoco está obligada a sumar exactamente 1. El ejemplo numérico de esta nota omite dropout.
+
 ## Fuentes de esta explicación
 
 - [[sesion-02.pdf#page=11|Sesión 02, páginas 11–18: Q, K, V, escalado, máscara y multi-cabeza]]
@@ -373,7 +381,7 @@ La matriz $A$ tiene tamaño $n\times n$. Duplicar la longitud del contexto multi
 > K participa en la puntuación de relevancia; V contiene la información que finalmente se combina.
 
 > [!question]- ¿Por qué no usar directamente $XX^\top$ como scores?
-> Cada token tendría su mayor score consigo mismo, porque $x_i\cdot x_i=\lVert x_i\rVert^2$. Además, la relación sería simétrica. Las proyecciones $W_Q\neq W_K$ permiten relaciones asimétricas y aprendidas.
+> El score propio es $\lVert x_i\rVert^2$, pero solo es máximo garantizado con normas iguales; con $x_1=[1,0]$ y $x_2=[2,0]$, la primera fila tiene 1 hacia sí y 2 hacia el otro. $XX^\top$ sí es siempre simétrica. Proyecciones separadas permiten aprender relaciones asimétricas y separar selección de contenido.
 
 > [!question]- En la matriz de atención, ¿qué representa la fila $i$ y qué la columna $j$?
 > La fila $i$ es la posición que consulta, con su query. La columna $j$ es la posición consultada, con su key y su value. $A_{ij}$ indica qué fracción de $v_j$ entra en la salida de $i$.
@@ -385,7 +393,7 @@ La matriz $A$ tiene tamaño $n\times n$. Duplicar la longitud del contexto multi
 > Cada posición vería el token que debe predecir. La pérdida bajaría copiando, no prediciendo, y en generación, donde el futuro no existe, el modelo fallaría.
 
 > [!question]- ¿Qué ocurre con softmax si no se divide entre $\sqrt{d_k}$ y $d_k$ es grande?
-> Los scores crecen con desviación típica $\sqrt{d_k}$, softmax se vuelve casi *one-hot* y sus gradientes son casi 0; el entrenamiento se estanca.
+> Bajo los supuestos de media cero y varianza uno, la dispersión de los scores crece como $\sqrt{d_k}$. Si sus diferencias son grandes, softmax puede saturarse y producir gradientes pequeños. Es una dificultad posible, no una garantía de estancamiento para toda entrada.
 
 > [!question]- En el ejemplo, ¿por qué la fila de «duerme» es uniforme con o sin escalado?
 > Sus tres scores son iguales, $[1,1,1]$. Dividir todos entre $\sqrt2$ los mantiene iguales, y softmax de valores iguales siempre da un reparto uniforme.

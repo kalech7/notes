@@ -53,7 +53,7 @@ El índice conserva entonces un vector calculado con una porción del contenido,
 
 ![Texto almacenado frente a texto representado](<../Recursos visuales/21-s08-truncamiento.png>)
 
-**Cómo leer el gráfico:** es un escenario didáctico de 900 **tokens**, no una medición de las 900 palabras de la diapositiva. Si el presupuesto útil fuera 128 tokens, se representaría como máximo el 14,2 % de esos tokens. La proporción de tokens retenidos no equivale a porcentaje de significado preservado ni a exactitud de recuperación.
+es un escenario didáctico de 900 **tokens**, no una medición de las 900 palabras de la diapositiva. Si el presupuesto útil fuera 128 tokens, se representaría como máximo el 14,2 % de esos tokens. La proporción de tokens retenidos no equivale a porcentaje de significado preservado ni a exactitud de recuperación.
 
 El contenido omitido no contribuye directamente a ese vector. Aun así, podría llegar al generador si el fragmento se recupera por su parte inicial o mediante otra búsqueda y se entrega el payload completo. Por eso «no está representado» es más preciso que «es absolutamente imposible recuperarlo».
 

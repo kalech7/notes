@@ -115,4 +115,19 @@ El ajuste fino cambia parámetros y puede enseñar comportamientos, formatos o c
 
 **Ampliación conceptual:** conexión con [[21 S03 - Preentrenamiento autosupervisado y MLE]] y [[19 S02 - Atención Q K V paso a paso]]. Se consultó también [[Hands-On_Large_Language_Models.pdf#page=272|cap. 8, pp. impresas 250–252 (PDF 272–274)]] para el paso de búsqueda a generación.
 
+## RAG-Sequence y RAG-Token en el trabajo original
+
+En el RAG de Lewis y colaboradores, el documento recuperado $z$ es una variable latente: el retriever asigna $p_\eta(z\mid x)$ y el generador asigna probabilidades de respuesta condicionadas por pregunta $x$ y documento $z$. Se aproxima la suma a un conjunto top-k. Para una respuesta de $T$ tokens:
+
+$$p_{\mathrm{seq}}(y\mid x)\approx\sum_z p_\eta(z\mid x)\prod_{i=1}^{T}p_\theta(y_i\mid x,z,y_{<i}).$$
+
+**RAG-Sequence** mantiene un mismo documento latente durante toda la secuencia; suma las posibilidades de documento después de formar la probabilidad de cada respuesta completa. **RAG-Token** permite combinar documentos en cada paso:
+
+$$p_{\mathrm{token}}(y\mid x)\approx\prod_{i=1}^{T}\sum_z p_\eta(z\mid x)p_\theta(y_i\mid x,z,y_{<i}).$$
+
+La diferencia es el lugar de la suma respecto del producto. Por ejemplo, un token puede apoyarse más en una biografía y otro en un documento sobre su obra. No son probabilidades de que la afirmación sea verdadera. El esquema moderno del taller recupera y concatena pasajes en un prompt; esa implementación ayuda a entender la idea general de RAG, pero no implementa automáticamente estas dos marginalizaciones. La sesión 08 las menciona en la p. 26; las fórmulas amplían esa distinción.
+
+
 **Fuente:** [[sesion-08.pdf#page=4|páginas 4–7]]. Continúa con [[36 S08 - Fragmentos tokens y truncamiento]].
+
+Fuente primaria de las marginalizaciones y encoders DPR: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/lewis-2020-rag.pdf#page=3|Lewis et al., PDF p. 3]]. En las sumas, $z$ recorre los documentos top-k recuperados.

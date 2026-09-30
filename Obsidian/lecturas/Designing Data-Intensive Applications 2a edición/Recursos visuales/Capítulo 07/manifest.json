@@ -1,0 +1,82 @@
+[
+  {
+    "file": "07-01-sharding-y-replicacion.png",
+    "figure": "7-1",
+    "pdf": 2,
+    "printed": 252,
+    "note_number": "01",
+    "explanation": "Cada caja exterior es una máquina; las cajas interiores son las copias de shards que guarda. Un shard tiene un solo líder y dos seguidores, pero una máquina puede ser líder de un shard y seguidora de otros. Las flechas representan la replicación desde el líder hacia las otras copias del mismo shard. La escritura del shard 4 llega a su líder, en el nodo 4."
+  },
+  {
+    "file": "07-02-rangos-enciclopedia.png",
+    "figure": "7-2",
+    "pdf": 6,
+    "printed": 256,
+    "note_number": "02",
+    "explanation": "Los doce volúmenes reproducen los límites alfabéticos de la figura del libro. Cada entrada pertenece al volumen cuyo rango contiene su título: no hace falta mirar todos los volúmenes. Los rangos no abarcan la misma cantidad de letras; la distribución de títulos determina dónde conviene colocar sus fronteras."
+  },
+  {
+    "file": "07-03-hash-modulo-rebalanceo.png",
+    "figure": "7-3",
+    "pdf": 9,
+    "printed": 259,
+    "note_number": "05",
+    "explanation": "Las cajas agrupan los mismos hashes, del 0 al 23, antes y después de añadir el cuarto nodo. Con tres nodos se calcula hash % 3; con cuatro, hash % 4. La operación cambia el destino de 18 de los 24 valores de este ejemplo, aunque solo se haya añadido una máquina. Los números son hashes, no necesariamente las claves originales."
+  },
+  {
+    "file": "07-04-shards-fijos-rebalanceo.png",
+    "figure": "7-4",
+    "pdf": 10,
+    "printed": 260,
+    "note_number": "05",
+    "explanation": "Los veinte shards mantienen su identidad y las claves asignadas a cada uno. Para repartirlos entre cinco máquinas, los shards s4, s9, s14 y s19 migran al nuevo nodo 4; los otros dieciséis se quedan en sus nodos. Las flechas sólidas representan las cuatro transferencias y las líneas discontinuas muestran las asignaciones que no cambian."
+  },
+  {
+    "file": "07-05-rangos-de-hash.png",
+    "figure": "7-5",
+    "pdf": 11,
+    "printed": 261,
+    "note_number": "03",
+    "explanation": "Las seis marcas de tiempo son consecutivas, pero los hashes originales del libro se dispersan por el espacio de 16 bits: de 0 a 65.535. Cada flecha termina en el shard dueño del intervalo que contiene su hash. El shard 2 no recibe ninguna de estas seis claves: una distribución útil a gran escala no exige que cada muestra pequeña use todos los shards."
+  },
+  {
+    "file": "07-06-rangos-virtuales-nodo-nuevo.png",
+    "figure": "7-6",
+    "pdf": 12,
+    "printed": 262,
+    "note_number": "05",
+    "explanation": "Las barras reproducen los límites de hash y los propietarios de la figura original; n0 significa nodo 0 y así sucesivamente. El nodo 3 se incorpora tomando dos subrangos del nodo 1 y uno del nodo 2. Los rangos tienen tamaños distintos y cada máquina almacena varios rangos separados. Las cifras indican fronteras, no dos copias de la misma clave en rangos vecinos."
+  },
+  {
+    "file": "07-07-rutas-de-peticiones.png",
+    "figure": "7-7",
+    "pdf": 16,
+    "printed": 266,
+    "note_number": "06",
+    "explanation": "Las tres alternativas buscan la misma clave foo, almacenada en el nodo 2. En la primera, un nodo elegido inicialmente reenvía la petición; en la segunda, una capa de routing elige el nodo; en la tercera, el cliente se conecta directamente. Las bandas rayadas muestran dónde debe estar el conocimiento de la asignación de shards a máquinas. Los cilindros representan el almacenamiento de datos."
+  },
+  {
+    "file": "07-08-zookeeper-mapa-shards.png",
+    "figure": "7-8",
+    "pdf": 17,
+    "printed": 267,
+    "note_number": "06",
+    "explanation": "ZooKeeper conserva la asignación autoritativa de los doce rangos a shards, nodos y direcciones IP. Danube está dentro de Ceara–Deluc, por lo que el router envía la petición al nodo 2. Las flechas discontinuas representan registro y actualización del mapa; la flecha sólida representa la petición de datos. ZooKeeper aporta metadatos de coordinación: la lectura del dato se ejecuta en el nodo propietario."
+  },
+  {
+    "file": "07-09-indices-locales-autos.png",
+    "figure": "7-9",
+    "pdf": 19,
+    "printed": 269,
+    "note_number": "04",
+    "explanation": "Los datos se reparten por ID y cada índice local contiene únicamente los IDs del shard donde reside. color:red devuelve 191 y 306 en el shard 0, y 768 en el shard 1. La consulta por color necesita buscar en ambos y combinar los resultados porque no conoce los IDs de antemano. Las seis filas y las listas de IDs conservan el ejemplo del libro; los colores mantienen sus términos originales en inglés."
+  },
+  {
+    "file": "07-10-indice-global-autos.png",
+    "figure": "7-10",
+    "pdf": 20,
+    "printed": 270,
+    "note_number": "04",
+    "explanation": "Los registros siguen distribuidos por ID, pero el índice global se reparte por el término indexado. La lista color:red del shard 0 reúne 191, 306 y 768, aunque 768 vive en el shard 1 de datos. Una consulta al índice obtiene todos esos IDs; recuperar los automóviles completos todavía requiere consultar sus shards de datos. Las flechas discontinuas muestran que los registros 768 y 893 del shard 1 alimentan entradas del índice global del shard 0. Los colores mantienen sus nombres originales en inglés para conservar los rangos a–r y s–z de la figura del libro."
+  }
+]

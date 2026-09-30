@@ -1,5 +1,7 @@
 ---
 title: "67 S11 - Ejercicios resueltos y repaso activo"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -182,3 +184,5 @@ No supongas que sumar diez días calendario equivale a diez días hábiles. El a
 | Parada por límite | Terminación impuesta por el presupuesto definido, sin presumir éxito. |
 
 **Fuente:** síntesis de [[sesion-11.pdf]] y de las ampliaciones documentadas en las notas 60–66. Preguntas, caso integrado y soluciones son de elaboración propia.
+
+Continúa con [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado|Notebook del lunes explicado y revisado]] y después con [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]].

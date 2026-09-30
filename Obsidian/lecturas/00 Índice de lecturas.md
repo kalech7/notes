@@ -14,9 +14,9 @@ Este espacio está al mismo nivel que **freelance**, **posgrado** y **pregrado**
 
 | Lectura | Material trabajado | Punto de entrada |
 |---|---|---|
-| *Designing Data-Intensive Applications*, segunda edición — Martin Kleppmann y Chris Riccomini | Capítulos 4 y 5 de los dos escaneos compartidos | [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí\|Empezar DDIA]] |
-| *Fundamentals of Software Architecture*, segunda edición — Mark Richards y Neal Ford | Material de los capítulos 1 a 11 presente en ocho escaneos; 171 páginas de PDF, con cobertura y huecos documentados | [[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí\|Empezar arquitectura de software]] |
-| *Database Internals* — Alex Petrov | Parte I del PDF compartido: arquitectura del DBMS, B-Trees, formatos de archivo e implementación | [[Obsidian/lecturas/database internals/00 Empieza aquí\|Empezar Database Internals]] |
+| *Designing Data-Intensive Applications*, segunda edición — Martin Kleppmann y Chris Riccomini | Capítulos 4 a 7: cuatro escaneos, notas detalladas, figuras y laboratorios | [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí\|Empezar DDIA]] |
+| *Fundamentals of Software Architecture*, segunda edición — Mark Richards y Neal Ford | Material de los capítulos 1 a 15 presente en doce escaneos; 272 páginas de PDF, con cobertura y huecos documentados | [[Obsidian/lecturas/Fundamentals of Software Architecture/00 Empieza aquí\|Empezar arquitectura de software]] |
+| *Database Internals* — Alex Petrov | Capítulos 1–11 en seis escaneos: almacenamiento local, B-Trees, transacciones, LSM Trees, fallas, liderazgo y replicación; alcance documentado | [[Obsidian/lecturas/database internals/00 Empieza aquí\|Empezar Database Internals]] |
 
 ## Mapas para comprender el conjunto
 

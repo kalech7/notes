@@ -1,0 +1,330 @@
+{
+  "tipo": "simulacion local determinista; no mide LLM",
+  "fallos_verificador_original": {
+    "[]": "AttributeError",
+    "null": "AttributeError",
+    "{\"categoria\": [], \"urgencia\": 4}": "TypeError",
+    "{\"categoria\": \"tecnico\", \"urgencia\": true}": [
+      true,
+      "OK"
+    ]
+  },
+  "verificador_corregido": {
+    "[]": [
+      false,
+      "La raíz debe ser un objeto JSON"
+    ],
+    "null": [
+      false,
+      "La raíz debe ser un objeto JSON"
+    ],
+    "{\"categoria\": [], \"urgencia\": 4}": [
+      false,
+      "categoria debe ser tecnico o ventas, sin tilde"
+    ],
+    "{\"categoria\": \"tecnico\", \"urgencia\": true}": [
+      false,
+      "urgencia debe ser un entero, no un booleano ni decimal"
+    ],
+    "{\"categoria\": \"tecnico\", \"urgencia\": 4}": [
+      true,
+      "OK"
+    ],
+    "{\"categoria\": \"ventas\", \"urgencia\": 4.0}": [
+      false,
+      "urgencia debe ser un entero, no un booleano ni decimal"
+    ],
+    "{\"categoria\": \"técnico\", \"urgencia\": 4}": [
+      false,
+      "categoria debe ser tecnico o ventas, sin tilde"
+    ],
+    "no es JSON": [
+      false,
+      "Entrega solo JSON válido, sin texto adicional"
+    ]
+  },
+  "loop_sin_adaptar": {
+    "estado": "repeticion",
+    "traza": [
+      {
+        "paso": 1,
+        "tipo": "tool",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "input": {
+          "mes": "2026-03"
+        },
+        "resultado": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}",
+        "error": false
+      },
+      {
+        "paso": 2,
+        "tipo": "parada",
+        "motivo": "repeticion"
+      }
+    ],
+    "mensajes": [
+      {
+        "role": "user",
+        "content": "¿Cuánto vendimos en marzo?"
+      },
+      {
+        "role": "assistant_tool_use",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "input": {
+          "mes": "2026-03"
+        }
+      },
+      {
+        "role": "tool_result",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "content": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+      }
+    ]
+  },
+  "corridas_adaptadas": {
+    "¿Cuánto vendimos en marzo?": {
+      "estado": "respuesta_final",
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "tool",
+          "id": "c1",
+          "name": "estadisticas_ventas",
+          "input": {
+            "mes": "2026-03"
+          },
+          "resultado": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}",
+          "error": false
+        },
+        {
+          "paso": 2,
+          "tipo": "final",
+          "texto": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75)."
+        }
+      ],
+      "mensajes": [
+        {
+          "role": "user",
+          "content": "¿Cuánto vendimos en marzo?"
+        },
+        {
+          "role": "assistant_tool_use",
+          "id": "c1",
+          "name": "estadisticas_ventas",
+          "input": {
+            "mes": "2026-03"
+          }
+        },
+        {
+          "role": "tool_result",
+          "id": "c1",
+          "name": "estadisticas_ventas",
+          "content": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+        }
+      ]
+    },
+    "¿Qué productos vendemos?": {
+      "estado": "respuesta_final",
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "tool",
+          "id": "c1",
+          "name": "listar_productos",
+          "input": {},
+          "resultado": "[\"laptop\", \"monitor\", \"teclado\"]",
+          "error": false
+        },
+        {
+          "paso": 2,
+          "tipo": "final",
+          "texto": "Los productos son: [\"laptop\", \"monitor\", \"teclado\"]"
+        }
+      ],
+      "mensajes": [
+        {
+          "role": "user",
+          "content": "¿Qué productos vendemos?"
+        },
+        {
+          "role": "assistant_tool_use",
+          "id": "c1",
+          "name": "listar_productos",
+          "input": {}
+        },
+        {
+          "role": "tool_result",
+          "id": "c1",
+          "name": "listar_productos",
+          "content": "[\"laptop\", \"monitor\", \"teclado\"]"
+        }
+      ]
+    },
+    "Dame el detalle de ventas de marzo en sierra": {
+      "estado": "respuesta_final",
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "tool",
+          "id": "c1",
+          "name": "consultar_ventas",
+          "input": {
+            "mes": "2026-03",
+            "region": "sierra"
+          },
+          "resultado": "[{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]",
+          "error": false
+        },
+        {
+          "paso": 2,
+          "tipo": "final",
+          "texto": "Detalle encontrado: [{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]"
+        }
+      ],
+      "mensajes": [
+        {
+          "role": "user",
+          "content": "Dame el detalle de ventas de marzo en sierra"
+        },
+        {
+          "role": "assistant_tool_use",
+          "id": "c1",
+          "name": "consultar_ventas",
+          "input": {
+            "mes": "2026-03",
+            "region": "sierra"
+          }
+        },
+        {
+          "role": "tool_result",
+          "id": "c1",
+          "name": "consultar_ventas",
+          "content": "[{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]"
+        }
+      ]
+    },
+    "¿Cuál es el sentido de la vida?": {
+      "estado": "respuesta_final",
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "final",
+          "texto": "¿Puedes reformular? Puedo consultar ventas, estadísticas o productos."
+        }
+      ],
+      "mensajes": [
+        {
+          "role": "user",
+          "content": "¿Cuál es el sentido de la vida?"
+        }
+      ]
+    }
+  },
+  "detector": {
+    "TRAZA_SANA": false,
+    "TRAZA_LOOP": true,
+    "TRAZA_FABRICA": false
+  },
+  "reflexion": {
+    "estado": "verificado",
+    "respuesta": "{\"categoria\": \"tecnico\", \"urgencia\": 4}",
+    "traza": [
+      {
+        "intento": 1,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      },
+      {
+        "intento": 2,
+        "respuesta": "{\"categoria\": \"técnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional"
+        ],
+        "ok": false,
+        "critica": "categoria debe ser tecnico o ventas, sin tilde"
+      },
+      {
+        "intento": 3,
+        "respuesta": "{\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional",
+          "categoria debe ser tecnico o ventas, sin tilde"
+        ],
+        "ok": true,
+        "critica": "OK"
+      }
+    ]
+  },
+  "reflexion_agotada": {
+    "estado": "intentos_agotados",
+    "respuesta": null,
+    "traza": [
+      {
+        "intento": 1,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      },
+      {
+        "intento": 2,
+        "respuesta": "{\"categoria\": \"técnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional"
+        ],
+        "ok": false,
+        "critica": "categoria debe ser tecnico o ventas, sin tilde"
+      }
+    ]
+  },
+  "presupuesto_coste": {
+    "estado": "presupuesto",
+    "gastado": 6,
+    "traza": [
+      {
+        "paso": 1,
+        "gasto_acumulado": 2
+      },
+      {
+        "paso": 2,
+        "gasto_acumulado": 4
+      },
+      {
+        "paso": 3,
+        "gasto_acumulado": 6
+      }
+    ]
+  },
+  "presupuesto_pasos": {
+    "estado": "max_pasos",
+    "gastado": 10,
+    "traza": [
+      {
+        "paso": 1,
+        "gasto_acumulado": 2
+      },
+      {
+        "paso": 2,
+        "gasto_acumulado": 4
+      },
+      {
+        "paso": 3,
+        "gasto_acumulado": 6
+      },
+      {
+        "paso": 4,
+        "gasto_acumulado": 8
+      },
+      {
+        "paso": 5,
+        "gasto_acumulado": 10
+      }
+    ]
+  },
+  "crecimiento_porcentual": -38.0334
+}

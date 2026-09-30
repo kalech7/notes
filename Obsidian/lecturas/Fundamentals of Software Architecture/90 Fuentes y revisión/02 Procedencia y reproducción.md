@@ -32,6 +32,10 @@ Para regenerar los SVG, ejecuta el script con Python 3. Las versiones PNG ya est
 
 Todos los recursos se explican en el atlas y se relacionan con sus capítulos. No se requiere conectividad para leer las notas, ver los archivos conservados o consultar los PDF locales.
 
+## Ampliación visual de los capítulos 13–14
+
+Los recursos de `Capítulo 13` y `Capítulo 14` recrean mecanismos del libro con rótulos en español. Sus notas de cobertura documentan el cotejo de las figuras y las precisiones. La carpeta `Comparación capítulos 11 a 14` conserva dos PNG y `generar_comparacion.py` (Pillow), originales de esta guía: topologías típicas y dimensiones de independencia. Ambos se revisaron visualmente y se explican en la nota transversal. Se utilizaron dos subagentes para desarrollar los capítulos y un tercero para auditar fuentes y claridad, con integración central.
+
 ---
 
 [← Índice de este bloque](00%20%C3%8Dndice.md)

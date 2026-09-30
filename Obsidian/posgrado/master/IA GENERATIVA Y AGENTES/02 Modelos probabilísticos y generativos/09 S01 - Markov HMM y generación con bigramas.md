@@ -69,7 +69,7 @@ El **modelo oculto de Markov (HMM)** distingue el estado oculto z y el dato obse
 
 ![Estados y observaciones de un HMM](<../Recursos visuales/06-hmm.png>)
 
-Sigue las flechas horizontales para ver cambios de estado. Sigue las verticales para ver cómo un estado se relaciona con una observación. El modelo puede verse como una mezcla cuyo componente cambia siguiendo una cadena.
+Las flechas horizontales representan transiciones entre estados ocultos y las verticales representan emisiones. El modelo se parece a una mezcla cuyo componente cambia siguiendo una cadena; el dato observado no es el estado.
 
 ## 7. Cómo usa el historial, con números
 
@@ -90,6 +90,19 @@ $$P(z_1,x_1,\ldots,z_n,x_n)=P(z_1)P(x_1\mid z_1)\prod_{t=2}^{n}P(z_t\mid z_{t-1}
 Hay tres piezas: estado inicial, transiciones entre estados y emisiones de observaciones. Para calcular la probabilidad de los datos sin conocer los estados se suman los caminos ocultos posibles. Los algoritmos de cadenas reutilizan cálculos para evitar enumerar cada camino por separado.
 
 La lección principal es distinguir **el estado que suponemos** de **la observación que recibimos**.
+
+## Completa la actualización del HMM con una observación
+
+Tras la predicción de la sección 7 tenemos estable 0.78 y exigida 0.22. Supón que el ruido nuevo es «fuerte», con probabilidad 0.1 si está estable y 0.8 si está exigida. Los aportes son $0.78(0.1)=0.078$ y $0.22(0.8)=0.176$. La probabilidad predicha de ruido fuerte era su suma, 0.254. La posterior queda:
+
+$$P(\text{estable}\mid\text{historial y ruido fuerte})=0.078/0.254\approx0.3071,$$
+$$P(\text{exigida}\mid\text{historial y ruido fuerte})=0.176/0.254\approx0.6929.$$
+
+No basta elegir el estado más probable antes de escuchar: ambos caminos contribuyen a la nueva creencia. Si vuelves a predecir, la probabilidad de estable será $0.3071(0.9)+0.6929(0.3)\approx0.4843$.
+
+**Filtrado** es inferir el estado actual usando las observaciones hasta ahora. **Suavizado de estados** usa también observaciones posteriores para revisar un estado pasado. **Viterbi** busca una ruta completa de estados con máxima probabilidad; esa ruta no equivale necesariamente a elegir por separado el estado de mayor probabilidad en cada instante. Este suavizado de estados tampoco es el suavizado de Laplace de los conteos: comparten palabra, pero resuelven problemas distintos.
+
+Estas cuentas completan el ejemplo didáctico; la estructura de filtrado y predicción corresponde a [[bishop-2006-prml.pdf#page=640|Bishop, §13.2.2, PDF 640–645]].
 
 ## Fuentes de esta explicación
 

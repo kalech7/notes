@@ -23,7 +23,7 @@ La presentación ofrece cuatro extensiones. La elección debe responder a un pro
 
 ![[40-s10-diagnostico-extensiones.png]]
 
-**Cómo leerlo:** para cada síntoma, revisa primero la evidencia indicada. Después elige la intervención que podría afectar esa causa. La última columna muestra qué debe cambiar si la hipótesis era correcta. No son promesas de mejora.
+Para cada síntoma, revisa primero la evidencia indicada. Después elige la intervención que podría afectar esa causa. La última columna muestra qué debe cambiar si la hipótesis era correcta. No son promesas de mejora.
 
 ## 2. Opción A: otra fragmentación
 
@@ -93,5 +93,21 @@ Registra por pregunta: evidencia esperada, candidatos, respuesta, métricas y di
 
 > [!abstract] La conclusión válida puede ser una ausencia de mejora
 > «La extensión no elevó Hit Rate y añadió latencia; por ahora no hay evidencia suficiente para adoptarla» es una conclusión útil cuando está respaldada por la comparación.
+
+## La extensión real: mejora parcial de orden
+
+La entrega comparó búsqueda densa con **BM25 + RRF**, hasta veinte candidatos por cada ruta y constante RRF 60, sobre el mismo golden set. Sus salidas archivadas son:
+
+| Corte | Hit denso | Hit híbrido | MRR denso | MRR híbrido |
+| --- | ---: | ---: | ---: | ---: |
+| k=3 | 0.875 | 0.750 | 0.5625 | 0.5625 |
+| k=5 | 0.875 | 0.875 | 0.5625 | 0.59375 |
+
+A cinco mejora MRR en 0.03125 sin ganar preguntas. A tres pierde un acierto: una evidencia pasa del puesto 1 al 4, mientras otras se adelantan. «La búsqueda híbrida mejora» sería una conclusión incompleta; su efecto depende del corte y de qué caso pesa. La extensión no registró generación comparable: no permite inferir mejor abstención, fidelidad o calidad final.
+
+La inspección multi-fragmento encontró coberturas literales 0.5, 0.5 y 0 para las preguntas 4, 5 y 6 en ambos cortes. En la 4 aparecen pasajes alternativos que explican la distinción requerida, aunque falte una ancla esperada: hay que revisar el juicio antes de concluir insuficiencia. En la 5 falta la evidencia específica sobre solapamiento y diversidad del contexto; en la 6 ambas anclas existen en el corpus pero no llegan al top-5. Estos casos apuntan a mecanismos distintos. Tampoco se observó que los cinco vecinos de la pregunta sobre duplicados fueran cinco copias: no atribuyas automáticamente el fallo a una premisa incluida en la propia pregunta.
+
+Fuente adicional: entrega archivada, `resultados_extension.csv`, `evidencias/comparacion_extension.csv`, `cobertura_multi_fragmento.json` y análisis de casos. No se reejecutó la extensión.
+
 
 **Fuente:** PDF, pp. 3, 13 y 15. Las hipótesis, ejemplos de fusión y cálculos de reranking son ampliaciones propias.

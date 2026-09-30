@@ -31,7 +31,7 @@ Por tanto, la respuesta es $120/200=0.6$: **60 %**. La pista hizo subir la proba
 
 ![Bayes explicado mediante conteos](<../Recursos visuales/03-bayes-conteos.png>)
 
-Sigue las flechas y observa cómo cambia el grupo que contamos. La respuesta final usa únicamente los correos con «oferta».
+Las ramas separan los 1 000 correos por clase y luego por presencia de la palabra. Los 120 spam y 80 normales de las cajas finales forman el grupo de 200 correos con «oferta»; ese grupo es el denominador de la posterior.
 
 ## 3. Dos preguntas que se parecen, pero no son iguales
 
@@ -83,6 +83,16 @@ Una posterior bayesiana conserva una distribución de valores posibles e incorpo
 La nota [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números]] desarrolla este caso lentamente. Antes de avanzar, asegúrate de poder resolver el ejemplo de correos sin memorizar la fórmula.
 
 Cuando veas una letra p aplicada a valores continuos, como $\theta$, suele indicar una **densidad**. Su altura no es la probabilidad de un punto: las probabilidades corresponden a áreas bajo la curva. El gráfico de la ampliación lo muestra.
+
+## La verosimilitud no es una probabilidad sobre el parámetro
+
+En la moneda, $p(D\mid\theta)$ fija los lanzamientos observados y varía $\theta$. Con siete caras y tres cruces contiene el factor $\theta^7(1-\theta)^3$. Si describes solo el conteo, aparece además $\binom{10}{7}$; es constante respecto de $\theta$ y no cambia el MLE. La verosimilitud no tiene obligación de integrar uno sobre los valores de $\theta$.
+
+La posterior sí es una distribución sobre ese parámetro. Para parámetros continuos, la evidencia se calcula integrando:
+
+$$p(D)=\int p(D\mid\theta)p(\theta)\,d\theta.$$
+
+Para clases discretas se suman los términos, como hicimos con spam y normal. La fórmula condicionada exige evidencia positiva: no podemos dividir por una pista que el modelo declaró imposible. Un prior también es un supuesto que debe justificarse y comprobarse; la actualización bayesiana es correcta **dentro del modelo**, pero no corrige por sí sola datos sesgados ni una verosimilitud mal elegida.
 
 ## Fuentes de esta explicación
 

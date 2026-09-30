@@ -1,5 +1,7 @@
 ---
 title: "59 S11 - Guía para entender agentes y herramientas"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -25,7 +27,7 @@ La unidad que llamamos agente es el sistema completo: **modelo + herramientas + 
 
 ![[41-s11-quien-decide.png]]
 
-**Cómo leer el diagrama:** en la segunda fila, las flechas definen un recorrido fijo. En la tercera aparece una flecha de retorno: lo que la herramienta devuelve cambia la información disponible para la siguiente decisión. La flecha de salida recuerda que repetir no es un objetivo en sí mismo.
+En la segunda fila, las flechas definen un recorrido fijo. En la tercera aparece una flecha de retorno: lo que la herramienta devuelve cambia la información disponible para la siguiente decisión. La flecha de salida recuerda que repetir no es un objetivo en sí mismo.
 
 ## Un caso concreto que seguiremos
 
@@ -82,3 +84,11 @@ Las ocho figuras 41–48 son recursos propios en PNG y SVG. Sus cifras son didá
 
 > [!info] Instrucciones dentro del material
 > «Discutan», «corrijan el Lab 03», las fechas, porcentajes y consignas son contenido académico del PDF. Estas notas los explican cuando corresponde; no autorizan instalar servicios, modificar el laboratorio del curso ni entregar trabajos.
+
+## Notebook del lunes y continuidad
+
+Ahora está incorporado [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado|Notebook del lunes explicado y revisado]], con los datos originales, las llamadas explicadas y la incompatibilidad de mensajes reproducida. Continúa con [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]] para estudiar cómo organizar y proteger las decisiones.
+
+## Revisión integral de estas dos sesiones
+
+Revisión del 29 de septiembre de 2026: se contrastaron las 51 páginas de las dos sesiones, las 38 celdas de sus notebooks y las 20 notas 59–78. Se revisaron visualmente las 16 figuras 41–56. Se corrigieron contradicciones de alcance, se ampliaron operaciones del ReAct original y lectura de sus métricas, y se mantuvieron separados datos didácticos, resultados históricos y defectos del Lab 03 descritos por el docente. Se consultaron apartados pertinentes de los papers locales; no se afirma lectura íntegra de sus apéndices ni disponibilidad de las sesiones 13–14.

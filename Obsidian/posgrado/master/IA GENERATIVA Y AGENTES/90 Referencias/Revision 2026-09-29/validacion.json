@@ -1,0 +1,389 @@
+{
+  "notas": 87,
+  "wikilinks": 794,
+  "embeds": 36,
+  "mermaid": [
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/18 S02 - Transformer de extremo a extremo.md",
+      "indice": 0,
+      "sha256_source": "ee087f0e0713ebaad4f6a8c98017bfc1f9d657927c3e319629a81ac116823bd1",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/18 S02 - Transformer de extremo a extremo.md",
+      "indice": 1,
+      "sha256_source": "16854d9661c915ba0c5b4fc1239cbc4e2f893f5106422f0381e301e925cd6f8c",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/19 S02 - Atención Q K V paso a paso.md",
+      "indice": 0,
+      "sha256_source": "646daa3f37378e742604b7b1cab388d1923b1f22deee31a5d9ae77154ec2350c",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/19 S02 - Atención Q K V paso a paso.md",
+      "indice": 1,
+      "sha256_source": "0c11cb2852779c347b7e09c08b79f03bd2602bd07e8b28f0210a391423aee9c1",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/20 S02 - Posición familias y decoder-only.md",
+      "indice": 0,
+      "sha256_source": "eb8c026bb39d5ee46b77f7e3db8067da540023a103671cc7a0fbbd1baef3d517",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/20 S02 - Posición familias y decoder-only.md",
+      "indice": 1,
+      "sha256_source": "14efc65305835ad3b4e09b26803231fa19c7732eb62804149e251bda2c88f43b",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/21 S03 - Preentrenamiento autosupervisado y MLE.md",
+      "indice": 0,
+      "sha256_source": "3f71f91635632cf4c2ed14859f7d8c2a7a88eb799d744d1be769365df9b12613",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/22 S03 - SFT RLHF DPO y Constitutional AI.md",
+      "indice": 0,
+      "sha256_source": "b7a4fb6bebdd8eda726af15a9f6d46bca6585763440eb21e0ad0bb60bfe94813",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/22 S03 - SFT RLHF DPO y Constitutional AI.md",
+      "indice": 1,
+      "sha256_source": "449b22d343c6582575e7f6cb442c1b0cea3077023ce91dd2c66b418cbb81723b",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/23 S04 - Greedy temperatura top-k y top-p.md",
+      "indice": 0,
+      "sha256_source": "901f89b56f6a754f3ca52193e294d9b6d5e147863eda51a7707dcc690e6ae238",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+      "indice": 0,
+      "sha256_source": "c98d9372ddc79521ed9e3407543b9612f25631a08c4552bbeaf6afa081c2ee41",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+      "indice": 1,
+      "sha256_source": "f5798316ce3a7b2e073956cc8c513d7805d7cc231b699e5b3dc5c93ce6df38ba",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+      "indice": 2,
+      "sha256_source": "0dae6327070da364c0407ffe92d8ce241f95a7d1726d8d37fbf97b82b013bba6",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/25 S04 - Salidas estructuradas costo y razonamiento interno.md",
+      "indice": 0,
+      "sha256_source": "0a1776fd0815ec36bcb8e69e454b449261e46bc66369ee0aea274bb68c8b52b2",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/26 S05 - Diseñar una comparación de modelos.md",
+      "indice": 0,
+      "sha256_source": "100d1891f65819bc001393f25f510caee31824f80c6f5625e1e29813ae5effd4",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/28 S06 - Qué es un embedding y qué significa cercanía.md",
+      "indice": 0,
+      "sha256_source": "7ada95f32f2d5e83511329e7efdb7043e73505bb7270037efefa6eabb3acec4e",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/29 S06 - De tokens a un vector de texto.md",
+      "indice": 0,
+      "sha256_source": "4b84f37cb8dc24644e38100c10044ba5382a4bffd73aa331f615f208300cbc3c",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/30 S06 - Cómo se entrena SBERT y por qué permite buscar.md",
+      "indice": 0,
+      "sha256_source": "ebae826f5b28ef3b7584487d90f78ee67a293617ef56e0be255d5ecfcf9476c1",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/30 S06 - Cómo se entrena SBERT y por qué permite buscar.md",
+      "indice": 1,
+      "sha256_source": "1795021bcbc5f800372d6ffe9ab56cbd9ced65a004e3befd083838d158da6404",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/32 S06 - Elegir modelo y reconocer límites.md",
+      "indice": 0,
+      "sha256_source": "c6942d29d671ff28ae582bc9187af913381902e257d2599bdaeff6488919122c",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/32 S06 - Elegir modelo y reconocer límites.md",
+      "indice": 1,
+      "sha256_source": "639b07b07ce24fa61c709bcefa390891eb15d802ac61c8f1a741c27937b24b95",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/51 S10 - Del documento a una respuesta con evidencia.md",
+      "indice": 0,
+      "sha256_source": "96d325a40521616daa8d10bb23ae6174db02c5c6f2e8bcf206eef5d712e42cf7",
+      "render": "correcto"
+    },
+    {
+      "archivo": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/70 S12 - ReAct pensamiento acción observación y evidencia.md",
+      "indice": 0,
+      "sha256_source": "f4894d89ea049199c42140d7e6b4ca4a627bdbd5bfb3e1bc43888b0c89cf1aa6",
+      "render": "correcto"
+    }
+  ],
+  "enlaces_Markdown_locales": 28,
+  "imagenes_Markdown": 28,
+  "SVG_validos": 62,
+  "PNG_validos": 62,
+  "fuentes_copiadas": [
+    {
+      "archivo": "s3-lun-estudiante.ipynb",
+      "coincide_con_Descargas": true,
+      "sha256": "17baf4a2bfe1cba85f2b3232660324ee9b88f2f1fc9fb5d13b76cb072a9a858e"
+    },
+    {
+      "archivo": "s3-mar-estudiante.ipynb",
+      "coincide_con_Descargas": true,
+      "sha256": "d3f7565c16ff4ced9aaa4fdc9ed27f100f55132fc23f43f7d6eafe165f4eb1bf"
+    },
+    {
+      "archivo": "sesion-12.pdf",
+      "coincide_con_Descargas": true,
+      "sha256": "f9d971ad2c9830df8d4abb8c3031fbc774dc32caf8acad2368236b98048464cb"
+    },
+    {
+      "archivo": "sesion-07.pdf",
+      "coincide_con_Descargas": true,
+      "sha256": "468473bcfa3b0c95c8cdb47408bb756238df6195ae0d9d64a61008e17e39c5d5"
+    }
+  ],
+  "sesiones": [
+    {
+      "archivo": "sesion-00.pdf",
+      "paginas": 15
+    },
+    {
+      "archivo": "sesion-01.pdf",
+      "paginas": 20
+    },
+    {
+      "archivo": "sesion-02.pdf",
+      "paginas": 24
+    },
+    {
+      "archivo": "sesion-03-1.pdf",
+      "paginas": 24
+    },
+    {
+      "archivo": "sesion-04.pdf",
+      "paginas": 32
+    },
+    {
+      "archivo": "sesion-05.pdf",
+      "paginas": 15
+    },
+    {
+      "archivo": "sesion-06.pdf",
+      "paginas": 21
+    },
+    {
+      "archivo": "sesion-07.pdf",
+      "paginas": 24
+    },
+    {
+      "archivo": "sesion-08.pdf",
+      "paginas": 28
+    },
+    {
+      "archivo": "sesion-09.pdf",
+      "paginas": 25
+    },
+    {
+      "archivo": "sesion-10.pdf",
+      "paginas": 16
+    },
+    {
+      "archivo": "sesion-11.pdf",
+      "paginas": 26
+    },
+    {
+      "archivo": "sesion-12.pdf",
+      "paginas": 25
+    }
+  ],
+  "paginas_sesiones": 295,
+  "PDFs_con_anclas_verificados": 28,
+  "errores": [],
+  "fecha": "2026-09-29",
+  "zona_horaria": "America/Guayaquil",
+  "alcance": "Todas las notas académicas de IA GENERATIVA Y AGENTES; no toda la bóveda",
+  "notas_originales_leidas": 79,
+  "notas_originales_modificadas": 64,
+  "notas_nuevas_incluido_informe": 8,
+  "archivos_md_modificados": [
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/00 INICIO - Ruta de aprendizaje.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/01 S00 - Qué es la IA y cómo evaluar inteligencia.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/02 S00 - Reglas modelos y aprendizaje desde datos.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/03 S00 - Perceptrón redes neuronales y XOR.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/04 S00 - Correlación causalidad y límites de las predicciones.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/05 S01 - Probabilidad y teorema de Bayes paso a paso.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/08 S01 - GMM variables latentes y algoritmo EM.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/09 S01 - Markov HMM y generación con bigramas.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/10 S01 - VAE espacio latente y ELBO.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/18 S02 - Transformer de extremo a extremo.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/19 S02 - Atención Q K V paso a paso.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/20 S02 - Posición familias y decoder-only.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/21 S03 - Preentrenamiento autosupervisado y MLE.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/22 S03 - SFT RLHF DPO y Constitutional AI.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/23 S04 - Greedy temperatura top-k y top-p.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/25 S04 - Salidas estructuradas costo y razonamiento interno.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/26 S05 - Diseñar una comparación de modelos.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/27 PRÁCTICA - Sesiones 02 a 05.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/28 S06 - Qué es un embedding y qué significa cercanía.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/29 S06 - De tokens a un vector de texto.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/30 S06 - Cómo se entrena SBERT y por qué permite buscar.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/31 S06 - Coseno producto punto y normalización.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/32 S06 - Elegir modelo y reconocer límites.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/33 PRÁCTICA - Embeddings y similitud semántica.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/34 S08 - Guía para entender fragmentación y recuperación.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/35 S08 - RAG contexto memoria y generación fundamentada.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/36 S08 - Fragmentos tokens y truncamiento.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/38 S08 - Búsqueda léxica densa y fusión RRF.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/42 S09 - Guía para evaluar un RAG.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/43 S09 - Hit Rate Recall MRR MAP y nDCG paso a paso.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/44 S09 - Golden sets anotación y caducidad.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/45 S09 - Preguntas negativas y abstención.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/46 S09 - Evaluar respuestas fidelidad y citas.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/47 S09 - GraphRAG y recuperación multimodal.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/48 S09 - Diagnóstico experimentos y Taller 2.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/50 S10 - Guía para comprender el taller RAG.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/51 S10 - Del documento a una respuesta con evidencia.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/52 S10 - Ingesta tokens y tres fallas silenciosas.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/53 S10 - Golden set y límites de lo respondible.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/54 S10 - Hit Rate y MRR con un experimento completo.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/55 S10 - Abstención fidelidad y errores del evaluador.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/56 S10 - Elegir una extensión y comprobar su efecto.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/57 S10 - Reproducibilidad entregables y reflexión.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/58 S10 - Ejercicios resueltos y repaso activo.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/59 S11 - Guía para entender agentes y herramientas.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/60 S11 - Chatbot pipeline RAG y agente quién decide.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/61 S11 - PEAS racionalidad y observación parcial.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/62 S11 - Function calling y bucle del agente paso a paso.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/63 S11 - Diseñar herramientas esquemas y validación.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/64 S11 - Memoria contexto y costo de repetir el historial.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/65 S11 - Toolformer aprendizaje resultados y límites.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/66 S11 - Límites trazas y laboratorio del bucle.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/67 S11 - Ejercicios resueltos y repaso activo.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/70 S12 - ReAct pensamiento acción observación y evidencia.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/72 S12 - Pasos presupuestos timeouts y condiciones de parada.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/73 S12 - Reflexion entre intentos memoria y aprendizaje.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/76 S12 - Toolsets validación errores y límites efectivos.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/77 S12 - Laboratorio local y soluciones del martes.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/78 S12 - Ejercicios resueltos y repaso activo.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/12 GLOSARIO - Diccionario explicado para estas sesiones.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/14 FUENTES - Materiales y mapa de cobertura.md"
+  ],
+  "archivos_md_nuevos": [
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/84 S07 - Colecciones payload filtros y operación.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/85 S07 - Ejercicios resueltos de búsqueda vectorial.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/80 S07 - Búsqueda exacta aproximación y costo.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/83 S07 - Recall del índice latencia y memoria.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/81 S07 - IVF celdas centroides y nprobe.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/82 S07 - HNSW capas conexiones y exploración.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07B Bases de datos vectoriales/79 S07 - Guía de búsqueda vectorial e índices.md",
+    "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/15 REVISIÓN - Calidad cobertura y claridad 2026-09-29.md"
+  ],
+  "diagramas_mermaid_renderizados": 23,
+  "figuras_revisadas_visualmente": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "canvas_rutas_reparadas": 25,
+  "canvas_ampliado_hasta_sesion": 12,
+  "cuentas_S07": "distancias, comparaciones IVF, memoria float32 y recall verificados",
+  "practicas_locales": {
+    "S10": "verificar_ejemplos_s10.py: cuentas correctas",
+    "S11": "s11_laboratorio_bucle.py:9 escenarios pasan; informe agentes.json",
+    "S12": "s12_laboratorio_local.py: comprobaciones pasan; informe agentes.json"
+  },
+  "notebooks_celdas_leidas": {
+    "s1-lun-estudiante.ipynb": 19,
+    "s3-lun-estudiante.ipynb": 18,
+    "s3-mar-estudiante.ipynb": 20
+  },
+  "limites": "No se ejecutaron APIs, modelos ni servicios externos. Fuentes ausentes y lectura parcial de apoyos en informe Markdown y registros por bloque."
+}

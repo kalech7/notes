@@ -22,8 +22,6 @@ Imagina un asistente que consulta un reglamento universitario. Le preguntas por 
 
 ![[27-s09-tres-evaluaciones.png]]
 
-### Cómo leer el diagrama
-
 Lee de izquierda a derecha. El **índice** devuelve vecinos próximos según una representación numérica; la **recuperación** debe aportar evidencia pertinente; la **generación** debe usarla correctamente. Debajo de cada etapa aparece su referencia de comparación.
 
 El primer bloque pregunta si una búsqueda aproximada reproduce los vecinos de una búsqueda exacta. El segundo pregunta si esos vecinos contienen lo que un humano anotó como necesario. El tercero pregunta si la respuesta está sustentada y atiende la consulta. Las flechas muestran dependencia entre etapas, no una garantía de éxito: un 1,0 en el primer bloque no obliga a obtener 1,0 en el segundo.

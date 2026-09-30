@@ -108,4 +108,13 @@ El RAG fijo de estas notas sigue pasos predeterminados. Un agente incorpora deci
 
 La página 16 señala una tensión entre la continuidad de talleres en el sílabo y el cambio de datos del Taller 3. La presenta como pendiente de confirmación. Lo que podemos extraer con seguridad es el método: conservar referencias, registrar resultados y evaluar. No asumimos que el siguiente taller exija el mismo corpus.
 
+## Qué conserva y qué no demuestra el archivo entregado
+
+La entrega histórica registra 22 notas, 109 fragmentos, manifest de hashes, configuración y salidas. Su arquitectura usa BGE-M3 en una RTX 3050 Ti, vectores normalizados, Qdrant persistente mediante Podman y Gemma 3 4B local por Ollama. Podman sustituyó Docker Desktop tras un problema de su máquina virtual; el requisito sustantivo del caso era conservar la base y su API local, no el nombre del gestor de contenedores.
+
+Las notas se amplían en esta auditoría del 29 de septiembre. Por eso los hashes, identificadores de fragmentos y métricas del snapshot del 27 **no describen automáticamente el corpus actual**. Para reproducir aquel experimento se usa el corpus preservado dentro del ZIP y su manifest; para medir estas notas revisadas hace falta una nueva versión y volver a anotar o reasociar evidencias. No sobrescribas los resultados anteriores como si se hubieran obtenido sobre la versión nueva.
+
+Un CSV agregado puede conservar acierto y posición sin conservar respuesta completa o prompt efectivo. Para revisar fidelidad hacen falta esos artefactos adicionales. El contraste archivado no permite confirmar que Gemma local corresponda al identificador `open_weight_pequeno` del catálogo oficial del curso: el nombre y `verified_at` de esa fila permanecen sin verificar. Esto no borra las mediciones identificadas como `gemma3:4b`, pero tampoco permite atribuirles una identidad de catálogo no documentada. La revisión actual fue estática, no comprobó el estado actual de una GPU, un contenedor, un servicio o una clave.
+
+
 **Fuente:** PDF, pp. 1–5, 7 y 14–16. Las precisiones sobre persistencia, versiones y costos son ampliaciones conceptuales.

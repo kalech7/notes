@@ -129,7 +129,7 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 
 **RAG:** buscar información pertinente y entregarla al modelo para que responda con ese contexto. Ejemplo: recuperar un apartado de tu PDF antes de explicarlo.
 
-**Agente:** sistema que puede elegir acciones, usar herramientas, observar sus resultados y decidir si continúa o termina una tarea. Por ejemplo: buscar datos, ejecutar un cálculo y comprobar si resolvió la pregunta. El LLM puede ser una parte del sistema; darle un prompt o hacer una sola búsqueda no constituye por sí solo un ciclo de agente.
+**Agente:** en el marco clásico, sistema que percibe un entorno y actúa sobre él. En el criterio operativo de este curso, el agente basado en LLM puede elegir acciones, usar herramientas, observar sus resultados y decidir si continúa o termina una tarea. Por ejemplo: buscar datos, ejecutar un cálculo y comprobar si resolvió la pregunta. El LLM puede ser una parte del sistema; darle un prompt o hacer una sola búsqueda no constituye por sí solo un ciclo de agente.
 
 ## Embeddings y recuperación: vocabulario de la sesión 06
 
@@ -148,6 +148,34 @@ Una letra puede cambiar de significado entre contextos. Por ejemplo, K cuenta co
 **Normalización L2:** dividir un vector por su norma para dejarla en 1. Con consulta y documento normalizados, producto punto y coseno coinciden en valor. [[31 S06 - Coseno producto punto y normalización#2. Qué hace normalizar|Derivación]].
 
 **Truncamiento:** descarte de tokens que exceden el máximo aceptado por el modelo; puede ocultar al buscador la parte final de un fragmento sin producir un error visible. [[32 S06 - Elegir modelo y reconocer límites#2. El límite de tokens puede borrar contenido sin error visible|Caso 512/128]].
+
+## Índices, bases vectoriales y RAG — sesiones 07 a 10
+
+**kNN:** búsqueda de los k vecinos más cercanos según una medida. «Exacto» significa devolver el top-k sobre los vectores disponibles, sin garantizar que contenga evidencia útil. [[80 S07 - Búsqueda exacta aproximación y costo]].
+
+**ANN:** búsqueda aproximada que reduce candidatos y puede perder vecinos del exacto. Su recall compara IDs con ese exacto; el recall de evidencia compara contra documentos anotados como relevantes. Son referencias distintas. [[83 S07 - Recall del índice latencia y memoria]].
+
+**IVF:** índice que agrupa vectores en listas. `nlist` fija cuántas; `nprobe`, cuántas se abren al consultar. Abrir solo una puede perder el vecino al otro lado de una frontera. [[81 S07 - IVF celdas centroides y nprobe]].
+
+**HNSW:** grafo de proximidad con capas para orientar y refinar la búsqueda. `M` controla conexiones; `ef_construction`, exploración al construir; `ef_search`, exploración al consultar, según la implementación. Más exploración no vuelve mejores los embeddings. [[82 S07 - HNSW capas conexiones y exploración]].
+
+**Payload:** metadatos asociados a un punto, como fuente, texto o tema. Un filtro define qué puntos pueden responder a la consulta; la similitud ordena candidatos elegibles. [[84 S07 - Colecciones payload filtros y operación]].
+
+**Fragmentación (chunking):** dividir documentos en unidades recuperables. El solapamiento repite parte del texto entre vecinos para conservar continuidad, pero puede duplicar evidencia y aumentar costo. [[37 S08 - Estrategias de fragmentación y solapamiento]].
+
+**BM25:** puntaje de recuperación léxica que considera coincidencias de términos, rareza y longitud del documento. **RRF:** fusión de listas que suma aportes según la posición de cada resultado; no mezcla directamente scores de escalas distintas. [[38 S08 - Búsqueda léxica densa y fusión RRF]].
+
+**Reranking:** volver a puntuar una lista de candidatos con otro criterio o modelo. No puede rescatar un fragmento que nunca llegó a esa lista. [[39 S08 - Reranking contexto y abstención]].
+
+**Golden set:** preguntas, evidencia y expectativas anotadas para evaluar un sistema. Su cobertura, caducidad y ambigüedades afectan qué significa una buena métrica. [[44 S09 - Golden sets anotación y caducidad]].
+
+**Hit Rate@k:** fracción de consultas que recuperan al menos una evidencia anotada en las primeras k posiciones. **Recall@k de evidencia:** fracción de elementos relevantes recuperados, con denominador definido por la anotación. **MRR:** promedio del inverso de la posición del primer relevante. Recuperar uno no prueba que estén todos los necesarios. [[43 S09 - Hit Rate Recall MRR MAP y nDCG paso a paso]].
+
+**MAP de recuperación:** media de las precisiones promedio por consulta; no confundirla con MAP bayesiano, estimación que maximiza la posterior. **nDCG:** ganancia acumulada descontada dividida por el ideal calculado con todos los elementos relevantes elegibles, no solo los recuperados. [[43 S09 - Hit Rate Recall MRR MAP y nDCG paso a paso]].
+
+**Abstención:** reconocer que la evidencia disponible no permite responder. Hay que evaluar tanto abstención correcta en preguntas negativas como abstención indebida en preguntas respondibles. **Fidelidad:** respaldo de las afirmaciones en el contexto; una cita existente no basta si no respalda lo afirmado. [[45 S09 - Preguntas negativas y abstención]] y [[46 S09 - Evaluar respuestas fidelidad y citas]].
+
+**p95 / p99 de latencia:** percentiles: tiempos que no superan aproximadamente el 95 % o 99 % de las consultas de la muestra. No son el máximo ni garantías para cualquier consulta futura. [[83 S07 - Recall del índice latencia y memoria]].
 
 ## Tres distinciones para repasar siempre
 
@@ -203,3 +231,29 @@ Intenta responder antes de desplegar cada respuesta.
 ## Ampliación de agentes — sesión 11
 
 El [[67 S11 - Ejercicios resueltos y repaso activo#Glosario de bolsillo|glosario de la sesión 11]] desarrolla harness, herramientas, esquemas, observaciones, estado, trazas, utilidad, idempotencia y parada. Para distinguir el sentido de «agente» en el marco clásico y en el criterio operativo del curso, consulta [[60 S11 - Chatbot pipeline RAG y agente quién decide]] y [[61 S11 - PEAS racionalidad y observación parcial]].
+
+## Ampliación de patrones — sesión 12
+
+El [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/78 S12 - Ejercicios resueltos y repaso activo#Glosario de bolsillo|glosario de la sesión 12]] define trayectoria, Thought, Action, Observation, verificador, reflexión, ablación y replanning. Las notas 70–76 explican sus diferencias y mecanismos.
+
+
+## MCP y descubrimiento — sesión 13
+
+| Término | Explicación | Ejemplo |
+| --- | --- | --- |
+| MCP | Protocolo para intercambiar capacidades y contexto con proveedores | Descubrir y solicitar una consulta de ventas |
+| Host | Aplicación que coordina modelo, clientes y políticas | Agente analista |
+| Cliente MCP | Conector que habla con un servidor | Cliente del proveedor de ventas |
+| Servidor MCP | Proveedor de recursos, herramientas o plantillas | Servicio que publica consultar_ventas |
+| Catálogo | Lista de contratos publicados | Nombre, descripción y esquema de entrada |
+| Descubrimiento | Obtener capacidades durante la ejecución | Consultar tools/list |
+| Adaptador | Conversión entre contratos de dos componentes | Traducir inputSchema al formato de la API del modelo |
+| Dispatcher | Componente que enruta una llamada | Resolver ventas__consultar_ventas hacia su servidor |
+| JSON-RPC | Formato para pedir una operación y correlacionar su respuesta | Método tools/call con id 7 |
+| Tool | Operación invocable | Calcular un total |
+| Resource | Contenido disponible para contexto | Reporte de ventas |
+| Prompt | Plantilla reutilizable de mensajes | Estructura de comparación de períodos |
+| TTL | Tiempo de frescura de una respuesta cacheada | ttlMs en milisegundos |
+| Costo marginal | Trabajo adicional de incorporar la siguiente capacidad | Añadir una tool sin editar la lógica del agente |
+
+Desarrollo: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|índice de la sesión 13]]. Definiciones didácticas propias basadas en el PDF de clase y la documentación oficial contrastada; fuentes en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|registro de S13]].

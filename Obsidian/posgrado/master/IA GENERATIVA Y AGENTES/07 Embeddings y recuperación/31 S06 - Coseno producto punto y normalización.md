@@ -90,6 +90,17 @@ En datos reales hay que gestionar vectores de norma cero y asegurar que consulta
 > [!question]- Comprueba tu comprensión
 > **Si normalizo solo los documentos, ¿qué se conserva y qué se pierde?** Se conserva el ranking dentro de cada consulta respecto del coseno; se pierde la escala comparable del puntaje entre consultas, lo que afecta umbrales fijos.
 
+## Igualdad de valores y coincidencia de orden
+
+Ambas normas unitarias son una condición **suficiente**, no necesaria en cada par. Para vectores no nulos,
+
+$$q\cdot s=\cos(q,s)\iff (q\cdot s=0)\ \text{o}\ (\|q\|\|s\|=1).$$
+
+Por ejemplo, $q=(2,0)$ y $s=(0.5,0)$ tienen normas 2 y 0.5, y tanto producto punto como coseno valen 1. Si son ortogonales, ambos puntajes valen 0 cualquiera que sea el producto de normas. La normalización de ambos lados garantiza la equivalencia para todos los pares sin depender de esas coincidencias.
+
+Con documentos unitarios y una consulta fija no nula, también se conserva el orden por distancia euclídea, porque $\|q-\hat s_i\|^2=\|q\|^2+1-2q\cdot\hat s_i$. La escala de valores sigue siendo diferente. Incluso un coseno correctamente normalizado requiere calibrar umbrales en preguntas representativas: un $0.7$ no significa por sí mismo «70 % de confianza» ni asegura la misma dificultad entre consultas.
+
+
 ## Fuente y alcance
 
 - [[sesion-06.pdf#page=13|Sesión 06, p. 13]]: fórmulas y equivalencia bajo norma 1.

@@ -70,3 +70,8 @@ Fue una revisión de comprensión y coherencia entre notas, con consultas puntua
 ---
 
 **Anterior:** [[Obsidian/lecturas/database internals/90 Fuentes y revisión/01 Fuentes y cobertura|Fuentes y cobertura]] · **Índice:** [[Obsidian/lecturas/database internals/90 Fuentes y revisión/00 Índice|Fuentes]] · **Siguiente:** [[Obsidian/lecturas/database internals/90 Fuentes y revisión/03 Procedencia de recursos visuales|Procedencia visual]]
+
+
+## Ampliación del capítulo 6 · 30 de septiembre de 2026
+
+El capítulo 6 añade índice, nueve notas temáticas, laboratorio y repaso resuelto, doce gráficos revisados y referencias por página. La validación específica se registra en [[Obsidian/lecturas/database internals/90 Fuentes y revisión/05 Cobertura y validación del capítulo 6|Cobertura y validación del capítulo 6]].

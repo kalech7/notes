@@ -115,4 +115,4 @@ Si puedes contestar con un ejemplo numérico, ya no estás memorizando un dibujo
 
 ---
 
-**Anterior:** [[Obsidian/lecturas/database internals/04 Implementación de B-Trees/05 Compresión vacuum y freelist|Compresión y mantenimiento]] · **Índice:** [[Obsidian/lecturas/database internals/04 Implementación de B-Trees/00 Índice|Capítulo 4]] · **Siguiente:** [[Obsidian/lecturas/database internals/05 Práctica y repaso/00 Índice|Práctica y repaso]]
+**Anterior:** [[Obsidian/lecturas/database internals/04 Implementación de B-Trees/05 Compresión vacuum y freelist|Compresión y mantenimiento]] · **Índice:** [[Obsidian/lecturas/database internals/04 Implementación de B-Trees/00 Índice|Capítulo 4]] · **Siguiente:** [[Obsidian/lecturas/database internals/05 Procesamiento de transacciones y recuperación/00 Índice|Capítulo 5: transacciones y recuperación]]

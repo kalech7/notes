@@ -101,3 +101,7 @@ Su función pedagógica es reunir en una sola cadena causal las responsabilidade
 ---
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]]
+
+## Figuras de los capítulos 6 y 7
+
+Se añadieron 26 recreaciones con Python/Pillow a partir de los gráficos de los escaneos. Sus scripts, correspondencia de páginas y revisiones están documentados en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/04 Cobertura y validación de capítulos 6 y 7|la ampliación del 29 de septiembre]].

@@ -1,5 +1,7 @@
 ---
 title: "62 S11 - Function calling y bucle del agente paso a paso"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -25,7 +27,7 @@ La expresión *function calling* se refiere a esta interacción estructurada. En
 
 ![[43-s11-llamada-y-resultado.png]]
 
-**Cómo leerlo:** sigue las flechas de arriba hacia abajo. La propuesta sale del modelo, pasa por el harness y llega a la herramienta. El dato hace el camino inverso. Solo después el modelo dispone del resultado para decidir otra vez.
+Las flechas recorren el intercambio entre tres participantes. La propuesta sale del modelo, pasa por el harness y llega a la herramienta. El dato hace el camino inverso. Solo después el modelo dispone del resultado para decidir otra vez.
 
 ## 2. Los seis pasos de la sesión
 

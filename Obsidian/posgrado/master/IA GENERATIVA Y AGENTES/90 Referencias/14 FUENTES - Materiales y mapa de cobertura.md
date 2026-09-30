@@ -9,6 +9,8 @@ tags:
 
 [[00 INICIO - Ruta de aprendizaje|Volver al índice]]
 
+Este es un registro acumulativo: cada apartado conserva el alcance de su incorporación. El estado actual se resume en la [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión global del 29 de septiembre]]. La lectura posterior del ZIP del Taller 2 está documentada al final.
+
 ## Material base leído
 
 - [[sesion-00.pdf]]: 15 páginas. Se utilizó el contenido académico de las páginas 4–15; se excluyó la presentación personal. Las páginas separadoras solo organizan el recorrido.
@@ -115,7 +117,7 @@ No se añadieron precios, rankings de modelos o afirmaciones de mercado que se d
 
 Las notas 34–41 explican las relaciones conceptuales antes de introducir cálculos. Distinguen texto almacenado de texto representado, palabras de tokens, límite del embedding de ventana del generador y recuperación de reordenamiento. Presentan la inflación por solapamiento como aproximación de textos largos e incluyen una cuenta finita con supuestos explícitos. Un puntaje BM25 cero no prueba ausencia de respuesta; una búsqueda top-k necesita una política de rechazo; un reranker no tiene necesariamente salida calibrada entre 0 y 1; y un prompt con etiquetas no garantiza fidelidad.
 
-La referencia a 900 palabras del PDF no se convirtió en una medida real de tokens. La figura didáctica usa explícitamente 900 tokens y presupuesto útil de 128. Los resultados de Lewis se atribuyen a la presentación; para esta ampliación no se revisó de nuevo el artículo completo ni se ejecutó el notebook o Lab 02. Los archivos fuente y configuraciones internas que citan las diapositivas no se dan por inspeccionados. La sesión 07 no está incorporada; la sesión 09 se añadió posteriormente, según la cobertura siguiente.
+La referencia a 900 palabras del PDF no se convirtió en una medida real de tokens. La figura didáctica usa explícitamente 900 tokens y presupuesto útil de 128. Los resultados de Lewis se atribuyen a la presentación; para esta ampliación no se revisó de nuevo el artículo completo ni se ejecutó el notebook o Lab 02. Los archivos fuente y configuraciones internas que citan las diapositivas no se dan por inspeccionados. La sesión 07 se incorporó en la auditoría del 29 de septiembre; su cobertura se registra al final de esta nota. La sesión 09 se añadió posteriormente, según la cobertura siguiente.
 
 ### Ampliación explicativa de la sesión 08
 
@@ -229,3 +231,85 @@ En Toolformer se separa generación del corpus, ajuste e inferencia; autosupervi
 Figuras originales 41–48, en PNG y SVG, generadas con `Recursos visuales/generar_visuales_s11.py` (Pillow). Se inspeccionaron las ocho y se corrigieron el margen del gráfico de contexto y el retorno del diagrama de parada. La figura 47 usa cifras históricas del paper local; las demás son esquemas o cálculos didácticos, sin mediciones de LLM.
 
 El archivo [[s11_laboratorio_bucle.py]] usa únicamente biblioteca estándar de Python y datos ficticios en memoria. [[s11_resultados_verificados.json]] conserva la salida de nueve escenarios: éxito, límite, repetición, herramienta desconocida, mes inválido, ausencia de datos, base cero, ID repetido y mensaje mal formado. Comprueba el emparejamiento de llamadas aceptadas con resultados y las cuentas de crecimiento y contexto. Es un simulador por reglas y no mide autonomía ni calidad de un LLM.
+
+
+## Sesión 12 y notebooks de la semana 3 incorporados
+
+Revisión del 29 de septiembre de 2026, fecha local de Ecuador. Fuente principal: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-12.pdf|sesion-12.pdf]], *Patrones de agentes y diseño del toolset*, Daniel Andrés Riofrío Almeida, 25 páginas. Se extrajo todo el texto, se renderizaron las 25 páginas y se revisaron sus representaciones visuales. Numeración impresa = página PDF (1–25).
+
+Se leyeron completas las 18 celdas de [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/s3-lun-estudiante.ipynb|s3-lun-estudiante.ipynb]] y las 20 de [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/s3-mar-estudiante.ipynb|s3-mar-estudiante.ipynb]], sin salidas guardadas. Ambos originales se copiaron sin cambios desde Descargas a `Materiales`, como los otros cuadernos fuente. El lunes se integra en la sección 11; el martes complementa la 12. Las correcciones están en notas y práctica aparte.
+
+| Fuente / páginas o celdas | Notas | Cobertura |
+| --- | --- | --- |
+| Lunes, celdas 0–17 | 68 | Dataset, funciones, esquemas, adaptación, historial, errores, ejercicios y taxonomía |
+| PDF 1–2 | 69 | Objetivo, vínculo con sesión 11 y vocabulario de la traza |
+| PDF 4–8 | 70 | Definición ReAct, contexto, resultados y límites de comparadores |
+| PDF 9–10; martes 3–8 | 71–72 | Tres trazas, equivalencia, errores del detector y protecciones |
+| PDF 12–14 | 73 | Actor, evaluación, reflexión, memorias y composición con ReAct |
+| PDF 15–16; martes 11–15 | 74, 77 | Ablación, calidad del verificador, errores reproducidos y mini-Reflexion |
+| PDF 18–19; martes 17–19 | 75 | Plan y ejecución, replanning y clasificación por niveles |
+| PDF 21–24 | 76 | Contrato, seis defectos descritos del Lab 03, esquema SQL y límites |
+| PDF 25; martes 16 | 69, 77 | Contexto del Taller 3 y reflexión sobre un baseline |
+| Síntesis de los tres adjuntos | 78 | 24 preguntas desplegables y un caso de ventas resuelto |
+
+PDF 3, 11, 17 y 20 son separadores; 1 es portada. Las actividades, comandos, porcentajes y requisitos de los documentos se trataron como contenido académico, no como instrucciones para desplegar, entregar, conectarse a servicios ni modificar el laboratorio del curso.
+
+### Fuentes primarias contrastadas y precisiones
+
+- ReAct, copia local [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s3-agentes/yao-2023-react.pdf|yao-2023-react.pdf]]: §2, PDF 3–4; tablas 1–2, PDF 5–6; tabla 3, PDF 8. Se comprobaron números, régimen, denominadores y direcciones de conmutación. Identidad contrastada con [arXiv](https://arxiv.org/abs/2210.03629).
+- Reflexion, copia local [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s3-agentes/shinn-2023-reflexion.pdf|shinn-2023-reflexion.pdf]]: §3–4, PDF 3–8; limitaciones, PDF 9. Algoritmo 1 en PDF 4 inspeccionado visualmente: la condición impresa usa `or`, incompatible con la intención de terminar por éxito o máximo; la explicación y la práctica utilizan continuación acotada con `and` o un `for`. Identidad contrastada con [arXiv](https://arxiv.org/abs/2303.11366). La copia local lleva lenguaje de preprint; sus cifras se atribuyen a esa copia, sin fingir que corresponden a todas las versiones posteriores.
+- [JSON Schema, referencia oficial de objetos](https://json-schema.org/understanding-json-schema/reference/object): `properties`, `required` y política de campos adicionales. Consulta del 29 de septiembre, hora local.
+
+La consulta de los artículos fue seleccionada, no una lectura completa de sus apéndices. Plan-and-Execute se enseña como mecanismo del curso sin atribuir una mejora cuantificada a una fuente primaria no recibida. Los defectos del Lab 03 se explican según las diapositivas: sus archivos no se inspeccionaron.
+
+Precisiones: un pensamiento actualiza contexto sin comprobarse a sí mismo; las observaciones pueden ser erróneas; no toda implementación ReAct exige un Thought por acción; 0 % de alucinaciones en una categoría de fallas no implica ausencia universal; 35,1 y 64,6 proceden de combinaciones con direcciones distintas; mejor corrida y promedio ALFWorld difieren; pass@1 del procedimiento con reintentos no equivale a una generación bruta; la tasa de aceptación engañosa del verificador condiciona sobre tests aprobados; no se convierte «20 %» en puntos porcentuales; límites requieren timeouts si las operaciones pueden bloquearse; un parámetro público puede coexistir con un máximo interno efectivo; los nombres Self-Critique y Self-Reflection no prueban identidad universal.
+
+### Revisión de notebooks y laboratorio complementario
+
+Se reprodujo la incompatibilidad entre `tool_result_meta` del simulador del lunes y el par de mensajes de su consigna. Se identificó el requisito de `curso/actividades`, los ejercicios vacíos, el uso prematuro de `traza`, la selección limitada por palabras y el manejo de solo `tool_calls[0]`. No se ejecutó la fábrica de conexiones ni se leyó `.env`.
+
+Se reprodujeron cuatro defectos del verificador del martes: `[]` y `null` lanzan `AttributeError`, categoría lista lanza `TypeError`, y booleano `true` pasa como entero. El complemento rechaza esos casos de manera controlada; no inventa un rango para urgencia ni verifica la clasificación semántica de un ticket. No detecta claves duplicadas de JSON.
+
+[[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/Practica/s12_laboratorio_local.py|s12_laboratorio_local.py]] usa biblioteca estándar y extrae mediante AST solo datos y definiciones seleccionadas. [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/Practica/s12_resultados_verificados.json|s12_resultados_verificados.json]] conserva resultados: totales y promedios originales, emparejamiento llamada–resultado, cuatro corridas adaptadas, repetición original, detector sobre tres trazas, verificador corregido, reintentos exitosos/agotados y cortes por pasos/costo. El generador de mini-Reflexion recibe y utiliza críticas mediante reglas; no demuestra aprendizaje de LLM.
+
+### Figuras y comprobación editorial
+
+Ocho figuras originales 49–56, PNG y SVG, reproducibles con `Recursos visuales/generar_visuales_s12.py` (Pillow). Se inspeccionaron visualmente las ocho: sin texto cortado ni solapamientos. Las barras históricas usan ReAct tabla 1 y Reflexion tabla 3; las otras seis son esquemas propios. Cada figura tiene explicación en prosa en la nota correspondiente. La ampliación inicial entregó diagramas como imágenes reproducibles; la auditoría global añadió un flujo Mermaid en la nota 70.
+
+Comprobación completada: YAML válido en las 11 notas nuevas; enlaces y anclas revisados en esas notas y los seis archivos de navegación/fuentes modificados; cinco fragmentos Python con sintaxis válida; ocho figuras revisadas; SVG válidos; las tres copias fuente coinciden byte a byte con los adjuntos. La práctica local terminó con sus comprobaciones correctas. El registro está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/Practica/s12_revision_editorial.json|s12_revision_editorial.json]]. Ese registro corresponde a la ampliación inicial y sus enlaces. La auditoría posterior cubre todas las notas de este curso; no toda la bóveda ni la ejecución del Lab 03.
+
+
+## Sesión 07 recuperada y revisión global — 29 de septiembre de 2026
+
+[[sesion-07.pdf]], *Bases de datos vectoriales*, 22 de septiembre de 2026: 24 páginas leídas completas y revisadas visualmente, numeración PDF = visible. Se recuperó de Descargas y se copió sin modificaciones a `Materiales`. El notebook `s2-mar` citado no se encontró en los materiales disponibles.
+
+| Páginas | Notas | Cobertura |
+| --- | --- | --- |
+| 1–5 | 79–80 | Problema, búsqueda exacta, N/d/k y límites de alta dimensión |
+| 7–10, 14 | 81 | IVF, fronteras, nlist/nprobe y comparaciones |
+| 11–14 | 82 | HNSW, capas, construcción y consulta |
+| 16–19 | 83 | Recall, latencia, memoria y separación de evaluaciones |
+| 21–24 | 84 | Colección, punto, payload, filtros, operación y contexto del taller |
+| Síntesis | 85 | Quince ejercicios con soluciones razonadas |
+
+Los seis gráficos 57–62 son propios y están explicados en las notas. Las cifras del ejemplo de recall 0,98 y Hit Rate 0,55 proceden de la presentación, no de una corrida local. Las memorias float32 y las comparaciones IVF se calcularon explícitamente. Las precisiones sobre IVFFlat frente a IVF-PQ, HNSW y persistencia se contrastaron con fuentes primarias enlazadas en las notas; no se usaron versiones actuales para inventar resultados de las demos docentes.
+
+La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|auditoría global de calidad, cobertura y claridad]] reúne la revisión de tres subagentes y la revisión editorial común. Los registros de bloques anteriores describen el momento en que se incorporaron; el informe global indica el estado actual y evita atribuir ejecución a archivos solo leídos.
+
+
+### Auditoría de fundamentos y archivos reales del Taller 2
+
+Se releyeron las 25 notas de fundamentos, las 130 páginas de sesiones 00–05 y las 19 celdas del notebook `s1-lun`. Se inspeccionaron también 24 diapositivas clave por imagen, los 15 gráficos de esas notas y el gráfico guardado del notebook. Los papers y libros se contrastaron por pasajes, detallados en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/Revision 2026-09-29/fundamentos.json|registro de fundamentos]]. FlashAttention, RoFormer y el modo estricto de Pydantic se contrastaron con sus fuentes primarias enlazadas en notas 19, 20 y 25. No se afirma lectura completa de los libros ni inspección de notebooks no recibidos.
+
+Para RAG se releyeron las 31 notas y las 90 páginas de sesiones 06, 08, 09 y 10. En esta auditoría sí se inspeccionó estáticamente [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/talleres/taller 2/Entrega_Taller_02.zip|Entrega_Taller_02.zip]], snapshot del 27 de septiembre: scripts de ingesta, pipeline y evaluación; ambos golden sets; CSV de resultados; evidencias de métricas, cobertura, casos difíciles y configuración; documentos Nimbus; e informe de 22 páginas leído completo por texto, con nueve páginas inspeccionadas además visualmente. No se ejecutó el servicio ni se reprodujeron llamadas del laboratorio. Esto amplía el alcance de las revisiones iniciales descritas arriba, en las que esos archivos aún no habían sido inspeccionados.
+
+La entrega archivada declara 22 notas de las sesiones 06–09, 109 fragmentos, BGE-M3, Qdrant/Podman y Gemma 3:4b/Ollama. Los CSV permiten recalcular baseline Hit Rate=7/8=0,875 y MRR=0,5625 para k=3 y k=5. En la extensión híbrida, Hit@3 cae a 0,75; Hit@5 conserva 0,875 y MRR@5 sube a 0,59375. El archivo de extensión no contiene generación comparable, así que no prueba una mejora de las respuestas. Las cuentas y sus denominadores están en [[54 S10 - Hit Rate y MRR con un experimento completo]] y [[56 S10 - Elegir una extensión y comprobar su efecto]].
+
+El evaluador usa «alguno de los IDs anotados», que no comprueba haber recuperado todas las evidencias necesarias. Su prompt archivado no obliga explícitamente a citar. El ejemplo de anotación mezcla dos plazos distintos: aprobación previa y presentación posterior de facturas. Estas limitaciones se explican en las notas correspondientes. Los resultados pertenecen al snapshot archivado: editar apuntes y reingerir cambia el corpus y exige una corrida nueva para atribuir resultados al estado actual.
+
+
+## Sesión 13 incorporada el 30 de septiembre de 2026
+
+Se incorporó [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-13.pdf|sesion-13.pdf]], 26 páginas, con revisión del texto y de todas sus figuras. [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|S13: MCP y casos de uso]] añade el índice y las notas 86–93, siete figuras reproducibles, cuatro diagramas Mermaid, veinte preguntas resueltas y un simulador educativo ejecutado. La paginación visible coincide con las páginas PDF.
+
+El mapa completo de páginas, las precisiones sobre revisión 2026-07-28, los límites de material y el resultado de la validación están en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|fuentes y validación de S13]]. Esta incorporación amplía la cobertura posterior a la revisión histórica del 29 de septiembre; no cambia el alcance de esa revisión previa.

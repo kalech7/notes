@@ -87,7 +87,7 @@ f.save('45-s11-crecimiento-contexto','Datos calculados, no mediciones. Con 6 lla
 f=Figure('46 · Toolformer: construir datos y ajustar pesos','La pérdida de predicción sirve para filtrar llamadas candidatas útiles.')
 for x,s in [(55,'1. Texto original\n+ demostraciones'),(500,'2. Muestrear\nllamadas candidatas'),(945,'3. Ejecutar APIs\ny obtener resultados')]:f.box(x,180,395,125,s)
 f.line([(450,245),(500,245)],arrow=True);f.line([(895,245),(945,245)],arrow=True)
-f.box(945,460,395,145,'4. Filtrar\nConservar si la reducción\nde pérdida supera el umbral',ORANGE)
+f.box(945,460,395,145,'4. Filtrar\nConservar si la reducción\nde pérdida alcanza el umbral',ORANGE)
 f.box(500,460,395,145,'5. Corpus aumentado\nTexto con llamadas\ny resultados',GREEN)
 f.box(55,460,395,145,'6. Ajuste fino\nLos parámetros cambian\nθ → θ nuevo',GREEN)
 f.line([(1140,305),(1140,460)],arrow=True);f.line([(945,530),(895,530)],arrow=True);f.line([(500,530),(450,530)],arrow=True)
@@ -101,7 +101,7 @@ for i,(label,a,b,other) in enumerate(rows):
  for yy,val,col,lab in [(y+38,a,'#16866b','Toolformer'),(y+78,b,'#7a8da1',other)]:
   f.rect(430,yy,val*8,28,col,col);f.text(1080,yy,lab,19);f.text(440+val*8,yy,f'{val:.1f}',20)
 for v in [0,20,40,60,80]:f.text(425+v*8,755,str(v),19)
-f.text(1070,744,'Puntaje (%)',20)
+f.text(1130,750,'Puntaje (%)',20)
 f.save('47-s11-toolformer-resultados','Fuente: paper local, tablas 3–6, pp. PDF 6–7. No comparar directamente los puntajes entre tareas.')
 
 f=Figure('48 · Parar también forma parte del diseño','Definición del ejemplo: un paso es una decisión del modelo, incluso si finaliza.')

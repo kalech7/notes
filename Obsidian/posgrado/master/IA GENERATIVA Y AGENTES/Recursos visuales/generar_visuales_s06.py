@@ -60,7 +60,7 @@ save(fig, "16-embeddings-vecindad")
 labels = ["BERT CLS", "BERT promedio", "GloVe promedio", "SBERT-NLI base", "SBERT-NLI large"]
 values = [29.19, 54.81, 61.32, 74.89, 76.55]
 fig, ax = plt.subplots(figsize=(10, 5), layout="constrained")
-fig.suptitle("Comparar por coseno requiere entrenar el espacio", fontsize=17, fontweight="bold")
+fig.suptitle("La calidad del coseno depende del entrenamiento", fontsize=17, fontweight="bold")
 bars = ax.barh(labels[::-1], values[::-1], color=[TEAL, BLUE, GRAY, GRAY, GRAY], height=0.63)
 for bar, value in zip(bars, values[::-1]):
     ax.text(value + 0.9, bar.get_y() + bar.get_height() / 2, f"{value:.2f}", va="center")

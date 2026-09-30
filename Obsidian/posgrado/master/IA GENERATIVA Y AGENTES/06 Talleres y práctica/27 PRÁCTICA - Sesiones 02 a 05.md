@@ -100,12 +100,12 @@ Para cada salida, identifica el primer fallo:
 A. Aquí está: {"categoria": "ventas", "urgencia": 3}
 B. {"categoria": "ventas", "urgencia": "3"}
 C. {"categoria": "magia", "urgencia": 3}
-D. Salida: {"categoria": "ventas", "urgencia": 3}
+D. {"categoria": "ventas", "urgencia": 3}
    Ticket original: «La aplicación muestra un error al iniciar sesión»
 ```
 
 > [!success]- Solución
-> A falla al parsear si se exige que toda la salida sea JSON. B pasa sintaxis, pero falla el tipo de `urgencia`. C pasa sintaxis y tipos, pero `magia` está fuera del conjunto de categorías permitido. D pasa forma y dominio, pero la categoría correcta del ticket sería `tecnico`: falla la corrección semántica.
+> A falla al parsear si se exige que toda la salida sea JSON. B pasa sintaxis, pero falla el tipo de `urgencia`. C pasa sintaxis y tipos, pero `magia` está fuera del conjunto de categorías permitido. Si el enum está dentro del esquema, C también incumple ese esquema. D contiene solo el objeto JSON como salida; la línea del ticket es el dato del enunciado. Pasa forma y dominio, pero la categoría correcta del ticket sería `tecnico`: falla la corrección semántica.
 
 ## 10. Costo
 
@@ -144,6 +144,27 @@ Escribe antes de abrir la respuesta:
 
 > [!question]- ¿Cuál es la diferencia entre validar forma y validar acierto?
 > La forma comprueba sintaxis, claves y tipos. El acierto compara el contenido con la realidad o con una respuesta esperada.
+
+## 13. Detecta el supuesto oculto en atención
+
+Con $x_1=[1,0]$ y $x_2=[2,0]$, calcula $XX^\top$. ¿Es siempre máxima la diagonal de cada fila?
+
+> [!success]- Solución
+> $XX^\top=\begin{bmatrix}1&2\\2&4\end{bmatrix}$. En la primera fila el score hacia el otro vector es mayor que el propio. La matriz es simétrica, pero dominio propio requiere normas iguales para estar garantizado. Proyecciones diferentes permiten una compatibilidad aprendida y asimétrica.
+
+## 14. Una etiqueta preferida no es una certeza
+
+Con diferencia de recompensa 0, ¿qué probabilidad asigna Bradley–Terry a que la primera respuesta sea preferida? ¿Qué ocurre con diferencia $\log2$?
+
+> [!success]- Solución
+> $\sigma(0)=0.5$ y $\sigma(\log2)=2/3$. Si esa es la ganadora observada, las pérdidas son $-\log0.5\approx0.693$ y $-\log(2/3)\approx0.405$. Es un modelo probabilístico de preferencias, no una prueba de que la respuesta sea verdadera.
+
+## 15. Un experimento limpio y otro contaminado
+
+Diseña un caso con resultado verificable, añade una pista irrelevante y explica qué debe mantenerse fijo para atribuir un cambio a la contaminación.
+
+> [!success]- Solución
+> Caso limpio: 23 fichas menos 20 más 6, respuesta 9. Caso contaminado: misma cuenta con una nota externa que sugiere 29. Conserva modelo, configuración, criterio y respuesta esperada. Registra limpio/contaminado como condición y repite si hay muestreo. Si la pista cambia los datos reales de la cuenta, ya no es una contaminación irrelevante.
 
 ## Ruta de repaso recomendada
 

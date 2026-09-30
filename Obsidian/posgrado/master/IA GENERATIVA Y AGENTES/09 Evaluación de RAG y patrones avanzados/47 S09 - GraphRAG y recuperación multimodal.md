@@ -30,8 +30,6 @@ Una **comunidad** es un grupo de nodos que, según el criterio del algoritmo, es
 
 ![[32-s09-graphrag.png]]
 
-### Cómo leer el diagrama
-
 La fila superior ocurre durante la preparación. Los documentos se dividen, se extraen entidades y relaciones, se organiza un grafo, se detectan comunidades y se escriben resúmenes de esas comunidades. La fila inferior ocurre cuando llega una pregunta: varios resúmenes generan respuestas parciales y una reducción las integra.
 
 Las flechas muestran transformaciones de información. El paso de arriba a abajo señala que la consulta reutiliza trabajo previo. No representa una búsqueda vectorial que devuelve sin más un documento; describe el patrón de consulta global explicado por la sesión.
@@ -83,8 +81,6 @@ El patrón avanzado no elimina la necesidad de evaluar. Puede mejorar la interpr
 
 ![[33-s09-promedio-y-segmentos.png]]
 
-### Cómo leer el gráfico
-
 El eje horizontal contiene dos métodos tal como se comparan en la diapositiva 23. El vertical es exactitud porcentual, de 0 a 100. La barra azul es global; la naranja corresponde al subconjunto de preguntas incontestables. Los números están transcritos del PDF, que los atribuye a DocBench en el trabajo *RAG-Anything*; no se ejecutó ese benchmark aquí.
 
 RAG-Anything tiene mayor exactitud global: 63,4 frente a 61,0. Pero MM-GraphRAG tiene mayor exactitud en incontestables: 60,5 frente a 46,0. La conclusión se invierte al cambiar de segmento. Por eso el método «mejor» depende de qué errores importan y de cómo se compone la evaluación.
@@ -92,6 +88,16 @@ RAG-Anything tiene mayor exactitud global: 63,4 frente a 61,0. Pero MM-GraphRAG 
 La distancia es 2,4 **puntos porcentuales** en global a favor de RAG-Anything y 14,5 puntos en incontestables a favor de MM-GraphRAG. No son mejoras relativas del 2,4 % y del 14,5 %.
 
 El PDF también cita una ablación de reranking de 63,4 a 62,4: un punto en esa evaluación. No permite concluir que todo reranker aporta solo un punto, ni comparar esa magnitud directamente con nDCG de otro conjunto de datos.
+
+## El mecanismo multimodal de RAG-Anything
+
+El trabajo original no se limita a añadir imágenes al mismo saco de texto. Primero separa unidades de texto, imagen, tabla y ecuación, y conserva su contexto: una figura con su pie, una tabla con sus encabezados, una fórmula con sus definiciones. Luego construye dos grafos: uno textual de entidades y relaciones, y otro que conecta las unidades no textuales con descripciones y entidades de su entorno. Los alinea y combina para recuperar por similitud y por relaciones estructurales.
+
+Las descripciones textuales ayudan a localizar una imagen; después el sistema puede recuperar el artefacto visual original para que un modelo con visión lo interprete al responder. Una descripción permite buscar, pero puede omitir un detalle del dibujo, por lo que no siempre sustituye leer la imagen. Esta separación explica por qué conservar solo el nombre de un PNG en Markdown no implementa RAG multimodal.
+
+Los resultados DocBench anteriores se confirman en la tabla 2 del paper. El experimento usa GPT-4o-mini como modelo base y juez, salida de una oración y reglas concretas para los baselines: el baseline directo recibe como máximo 50 páginas por documento. Por eso las cifras comparan **sistemas bajo ese protocolo**, con capacidad de extracción, recuperación, contexto y juicio; no aíslan universalmente el efecto de «usar un grafo».
+
+Fuentes primarias: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/rag-anything-2025.pdf#page=4|RAG-Anything, pp. 3–4]] para doble grafo, [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/rag-anything-2025.pdf#page=7|pp. 7–8]] para generación y evaluación; [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/edge-2024-graphrag.pdf#page=4|GraphRAG, pp. 2–4]] para comunidades y consulta global.
 
 > [!abstract] Para recordar
 > La arquitectura debe corresponder a la pregunta y la evaluación debe corresponder al tipo de respuesta que esperas.

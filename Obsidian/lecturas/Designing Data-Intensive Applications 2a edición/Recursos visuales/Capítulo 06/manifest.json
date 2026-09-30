@@ -1,0 +1,130 @@
+[
+  {
+    "file": "figura-6-01.png",
+    "figure": "6-1",
+    "pdf": 3,
+    "printed": 199,
+    "note_number": 1,
+    "explanation": "El usuario que modifica la foto envía la escritura al líder. El líder guarda el cambio y lo transmite a sus seguidores, dibujados como cilindros. Otra persona puede consultar un seguidor: recibe la copia que este haya alcanzado a aplicar. Las flechas de replicación transportan cambios de datos; la aplicación no escribe directamente en los seguidores."
+  },
+  {
+    "file": "figura-6-02.png",
+    "figure": "6-2",
+    "pdf": 4,
+    "printed": 200,
+    "note_number": 2,
+    "explanation": "El líder espera la confirmación del seguidor 1 antes de responder al usuario: ese seguidor participa de forma síncrona. La flecha hacia el seguidor 2 tarda más y su confirmación llega después del éxito comunicado al usuario. Esa segunda réplica es asíncrona. Una escritura confirmada, por tanto, no implica que todas las copias estén actualizadas."
+  },
+  {
+    "file": "figura-6-03.png",
+    "figure": "6-3",
+    "pdf": 14,
+    "printed": 210,
+    "note_number": 5,
+    "explanation": "El comentario llega al líder y recibe un OK. La consulta posterior se dirige al seguidor 2 cuando la replicación todavía está en camino, por lo que devuelve una lista vacía. El dato no desapareció: el usuario leyó una copia atrasada. Leer las propias escrituras exige dirigir esa lectura a una réplica que ya haya aplicado el cambio."
+  },
+  {
+    "file": "figura-6-04.png",
+    "figure": "6-4",
+    "pdf": 17,
+    "printed": 213,
+    "note_number": 6,
+    "explanation": "La primera consulta del usuario 2345 llega al seguidor 1 y encuentra el comentario. La segunda consulta llega al seguidor 2, que sigue atrasado, y el comentario deja de verse. Las lecturas monótonas impiden este retroceso para una misma persona: una lectura posterior no debe devolver un estado más antiguo que el ya observado."
+  },
+  {
+    "file": "figura-6-05.png",
+    "figure": "6-5",
+    "pdf": 18,
+    "printed": 214,
+    "note_number": 6,
+    "explanation": "Poons escribe la pregunta en el shard 1 y Cake la conoce antes de contestar en el shard 2. La copia del shard 1 tarda más en ponerse al día, mientras la del shard 2 entrega pronto la respuesta al observador. Así, el observador recibe el efecto antes que su causa. Un prefijo consistente o un mecanismo que preserve las dependencias causales evita esa historia incompleta."
+  },
+  {
+    "file": "figura-6-06.png",
+    "figure": "6-6",
+    "pdf": 20,
+    "printed": 216,
+    "note_number": 7,
+    "explanation": "Cada región tiene un líder que atiende las escrituras de sus usuarios y transmite cambios a una copia local. Las flechas entre regiones conectan los líderes de forma asíncrona. Esa independencia permite seguir trabajando durante una desconexión entre regiones, pero también hace posible que dos líderes cambien el mismo dato antes de conocer el cambio ajeno; por eso aparecen los bloques de resolución de conflictos."
+  },
+  {
+    "file": "figura-6-07.png",
+    "figure": "6-7",
+    "pdf": 22,
+    "printed": 218,
+    "note_number": 7,
+    "explanation": "Los cilindros representan líderes y las flechas indican qué nodos transmiten escrituras directamente a cuáles. En el anillo, un cambio pasa de nodo en nodo. En la estrella, un nodo central redistribuye los cambios. En todos con todos, cada líder envía cambios a los demás; hay rutas alternativas, aunque los distintos retrasos de red todavía pueden alterar el orden de llegada."
+  },
+  {
+    "file": "figura-6-08.png",
+    "figure": "6-8",
+    "pdf": 23,
+    "printed": 219,
+    "note_number": 7,
+    "explanation": "La inserción de A llega pronto al líder 3, por lo que B puede incrementar la fila ya creada. Sin embargo, el mensaje original hacia el líder 2 viaja despacio y la actualización lo adelanta. El líder 2 intenta modificar una fila que aún no existe. No son escrituras concurrentes: el UPDATE depende del INSERT, y esa dependencia debe respetarse al aplicar la replicación."
+  },
+  {
+    "file": "figura-6-09.png",
+    "figure": "6-9",
+    "pdf": 27,
+    "printed": 223,
+    "note_number": 9,
+    "explanation": "Ambos líderes parten del título A. Uno acepta B y el otro acepta C, y cada usuario recibe confirmación antes de que los líderes intercambien cambios. Al replicar, cada líder descubre una modificación incompatible con la suya. La concurrencia significa que ninguna modificación se basó en la otra, aunque sus relojes indiquen horas diferentes."
+  },
+  {
+    "file": "figura-6-10.png",
+    "figure": "6-10",
+    "pdf": 30,
+    "printed": 226,
+    "note_number": 9,
+    "explanation": "El dispositivo 1 elimina el libro y añade jabón; el dispositivo 2 elimina el DVD. Si el servidor fusiona únicamente mediante la unión de los conjuntos que recibe, conserva el DVD de una rama y el libro de la otra: reaparecen ambos artículos borrados. Registrar también las operaciones de eliminación permite conservar su intención y obtener únicamente {jabón} en este ejemplo."
+  },
+  {
+    "file": "figura-6-11.png",
+    "figure": "6-11",
+    "pdf": 31,
+    "printed": 227,
+    "note_number": 10,
+    "explanation": "Los dos rombos muestran las mismas ediciones: una persona añade n al inicio de ice y otra añade ! al final. En OT, insertar n desplaza las posiciones, por lo que la inserción de ! debe transformarse de índice 3 a índice 4. En el CRDT ilustrado, cada carácter tiene una identidad estable: ! se inserta después de 3A y no hay que cambiar esa referencia cuando aparece n. Ambos mecanismos hacen que las dos ramas converjan en nice!, aunque internamente representan y combinan las operaciones de maneras diferentes."
+  },
+  {
+    "file": "figura-6-12.png",
+    "figure": "6-12",
+    "pdf": 34,
+    "printed": 230,
+    "note_number": 11,
+    "explanation": "La escritura de la nueva foto se confirma en las réplicas 1 y 2 aunque la réplica 3 esté desconectada. Después, la lectura de dos copias recibe tanto la versión 7 como la versión 6, detecta cuál quedó atrasada y devuelve la nueva foto. La flecha final transmite la versión 7 a la réplica 3: es reparación en lectura. El dibujo simplifica el número de solicitudes para destacar el quórum y la reparación."
+  },
+  {
+    "file": "figura-6-13.png",
+    "figure": "6-13",
+    "pdf": 36,
+    "printed": 232,
+    "note_number": 11,
+    "explanation": "Los tres nodos que confirman la escritura forman W y los tres que responden a la lectura forman R. Aunque se elijan los grupos con el menor solapamiento posible, ambos incluyen a la réplica 3: 3 + 3 − 5 = 1. Las flechas grises y las cruces indican solicitudes que no contribuyen al quórum. Esta intersección asegura acceso a una copia de una escritura confirmada bajo los supuestos habituales, pero por sí sola no resuelve escrituras concurrentes ni garantiza linealizabilidad."
+  },
+  {
+    "file": "figura-6-14.png",
+    "figure": "6-14",
+    "pdf": 42,
+    "printed": 238,
+    "note_number": 13,
+    "explanation": "A envía X = A y B envía X = B sin haber observado la escritura ajena. El nodo 2 recibe B después de A, pero el nodo 3 recibe A después de B; el nodo 1 no acepta la solicitud de B. Una consulta posterior puede obtener A, B y A de las tres copias. El orden de llegada local no identifica una última escritura común: hace falta detectar la concurrencia y aplicar una política explícita de resolución."
+  },
+  {
+    "file": "figura-6-15.png",
+    "figure": "6-15",
+    "pdf": 44,
+    "printed": 240,
+    "note_number": 13,
+    "explanation": "Las cinco escrituras llegan en el orden numerado de la línea central, pero cada cliente solo conoce la respuesta de su operación anterior. El contexto 1 del paso 3 permite reemplazar [leche], pero no [huevos], que apareció concurrentemente. El contexto 2 del paso 4 y el contexto 3 del paso 5 dejan también una versión hermana que su cliente aún no había visto. La tabla distingue el nuevo valor enviado de todos los valores que conserva el servidor; al final quedan dos ramas, y una fusión posterior puede reunir sus artículos."
+  },
+  {
+    "file": "figura-6-16.png",
+    "figure": "6-16",
+    "pdf": 46,
+    "printed": 242,
+    "note_number": 13,
+    "explanation": "El grafo conecta una edición con las anteriores que su cliente ya conocía. Añadir harina depende de la leche; añadir jamón depende tanto de los huevos como de la leche; añadir tocino depende de harina y huevos. No existe un camino causal entre harina y jamón, ni entre jamón y tocino: esas parejas son concurrentes. Las dos salidas muestran las versiones hermanas que quedaron al final de la figura anterior."
+  }
+]

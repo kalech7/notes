@@ -117,6 +117,18 @@ flowchart TD
 
 Si el problema es «el modelo no conoce mis documentos», la solución no es automáticamente fine-tuning ni razonamiento: normalmente se investiga recuperación aumentada con generación.
 
+## Qué evidenció el trabajo de cadena de razonamiento
+
+La comparación de Wei et al. usa pocos ejemplos con pasos intermedios dentro del prompt. En su resultado histórico de GSM8K, PaLM 540B pasó aproximadamente de 18 % con prompting estándar a 57 % con cadena de razonamiento, usando **greedy**. Cambió el contenido de las demostraciones; el muestreo no fue la causa de ese salto. El estudio encontró ganancias especialmente en problemas de varios pasos y modelos grandes de las familias evaluadas, y escasas o negativas en algunas tareas de un paso. No establece una ley universal de 100B parámetros aplicable a cualquier modelo posterior. [[wei-2022-chain-of-thought.pdf#page=2|Wei et al., Fig. 2, PDF 2]] y [[wei-2022-chain-of-thought.pdf#page=4|§§3.1–3.2, PDF 4–5]].
+
+Ejemplo propio: «Había 23 fichas; se usaron 20 y se compraron 6». La solución comprobable es $(23-20)+6=9$. Un procedimiento que ignore la resta puede responder 29 aunque imite la forma de una explicación. Evaluar con una calculadora o una función de referencia detecta ese error; premiar que escriba muchos pasos no lo detecta.
+
+## Votar y buscar necesitan una regla de decisión
+
+Si cuatro rutas contestan «9», «9.0», «nueve» y «3», primero hay que convertir las tres primeras a una misma respuesta canónica y después contar votos. En preguntas abiertas esa equivalencia puede ser difícil. Una mayoría también puede repetir el mismo error sistemático: no constituye un verificador independiente. Más muestras aumentan trabajo y costo; ejecutarlas en paralelo puede reducir la latencia de pared, por lo que n muestras no implica siempre n veces más tiempo para el usuario.
+
+En un árbol de búsqueda real, el controlador conserva estados candidatos, expande algunos y utiliza una puntuación o un verificador para decidir qué explorar. Esa puntuación también puede equivocarse y podar una ruta buena. Pedir «simula tres expertos» en una sola respuesta puede dar ideas alternativas, pero no implementa por sí solo ese controlador, sus estados ni su backtracking. El diagrama de la sección 7 muestra la estructura de búsqueda, mientras el de auto-consistencia muestra rutas completas evaluadas al final.
+
 ## Fuentes de esta explicación
 
 - [[sesion-04.pdf#page=10|Sesión 04, páginas 10–17: zero/one/few-shot, CoT, auto-consistencia y árboles]]

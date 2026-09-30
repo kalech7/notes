@@ -101,6 +101,21 @@ La máscara obliga a que las representaciones respeten el prefijo. Durante entre
 - Si existe una entrada separada que debe consultarse durante la salida, la arquitectura encoder-decoder ofrece atención cruzada.
 - Si todo puede escribirse como un prefijo seguido de continuación, decoder-only es suficiente como planteamiento.
 
+## Posición absoluta y relativa con un ejemplo pequeño
+
+La codificación sinusoidal del original alterna senos y cosenos:
+
+$$PE(pos,2j)=\sin\!\left(\frac{pos}{10000^{2j/d}}\right),\qquad
+PE(pos,2j+1)=\cos\!\left(\frac{pos}{10000^{2j/d}}\right).$$
+
+$pos$ es la posición, $j$ identifica un par de coordenadas y $d$ es el ancho del modelo. En posición cero, cada par vale [0,1]. En la siguiente posición cambia según su frecuencia. Las coordenadas lentas y rápidas permiten distinguir posiciones con escalas diferentes; no son una etiqueta de significado del token. Esta fórmula puede evaluarse fuera de las posiciones vistas, pero eso **no garantiza** que el modelo generalice bien a contextos más largos.
+
+Para entender RoPE basta un par de coordenadas: una rotación de ángulo $\alpha$ transforma $[a,b]$ en $[a\cos\alpha-b\sin\alpha,\ a\sin\alpha+b\cos\alpha]$. Se usa un ángulo dependiente de la posición y se rota Q y K antes de puntuarlos. Al comparar dos posiciones, la diferencia entre sus ángulos introduce información de separación. [Su et al., RoFormer, 2021](https://arxiv.org/abs/2104.09864). Una posición absoluta aprendida, en cambio, consulta una fila de una tabla; salir de sus índices requiere una decisión adicional del diseño.
+
+La clasificación de familias describe usos frecuentes, no exclusividad de tareas. Un decoder también puede clasificar con una cabeza o mediante texto; un encoder-decoder también genera. El esquema de la sección 3 ayuda a reconocer su flujo de información, pero la elección final de arquitectura necesita examinar objetivo, datos y restricciones.
+
+Fuente de la fórmula fija: [[vaswani-2017-attention-is-all-you-need.pdf#page=6|Vaswani et al., §3.5, PDF 6]]. La descripción de RoPE amplía el mecanismo de [[sesion-02.pdf#page=21|Sesión 02, p. 21]].
+
 ## Fuentes de esta explicación
 
 - [[sesion-02.pdf#page=21|Sesión 02, páginas 21–23: posición, familias y P(X)]]

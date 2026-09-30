@@ -19,7 +19,7 @@ $$f_\theta:\text{texto}\longrightarrow \mathbb{R}^{d},\qquad u=f_\theta(x).$$
 - $x$ es una oración, fragmento o documento de entrada.
 - $\theta$ son los parámetros aprendidos del modelo.
 - $d$ es el número fijo de componentes del vector. El PDF da ejemplos de 384, 1024, 1536 y 3072 dimensiones; no todos los modelos usan el mismo $d$.
-- $u$ es el vector final del **texto completo**. No hay que confundirlo con los vectores de sus tokens.
+- $u$ es el vector final del **texto que efectivamente procesa el modelo**, después de aplicar su tokenización y límite de entrada. No hay que confundirlo con los vectores de sus tokens.
 
 > [!important] La promesa exacta
 > La proximidad de vectores resulta útil si el modelo fue entrenado para que **la medida elegida** refleje la semejanza relevante para nuestra tarea. Convertir texto en números, por sí solo, no crea significado ni garantiza buenas búsquedas.
@@ -78,6 +78,11 @@ Para la consulta «Olvidé mi contraseña», esperaríamos que el primero tenga 
 
 > [!question]- Comprueba tu comprensión
 > **¿Un vector cercano demuestra que un documento responde bien?** No. Es una señal de recuperación que hay que verificar con el contenido, la tarea y ejemplos etiquetados.
+
+## Compatibilidad entre consulta y documento
+
+El esquema usa el mismo modelo en ambos lados, como SBERT simétrico. Lo indispensable es que las dos representaciones pertenezcan a un **espacio compatible aprendido para compararlas**. Un sistema de recuperación puede utilizar modos o prefijos distintos para consultas y documentos, o dos encoders entrenados conjuntamente. Compartir dimensión, por ejemplo 384 números, no establece esa compatibilidad. Al cambiar el encoder de documentos hay que regenerar sus vectores; al cambiar el modo de consulta hay que comprobar que el modelo lo diseñó para el índice existente.
+
 
 ## Fuente y alcance
 

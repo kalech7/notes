@@ -91,6 +91,11 @@ Si cada coordenada se almacena como `float32`, solo los valores vectoriales ocup
 > [!question]- Comprueba tu comprensión
 > **¿MAX selecciona el «token más importante»?** No necesariamente. Selecciona un máximo independiente para cada coordenada; distintos tokens pueden aportar coordenadas distintas.
 
+## Por qué también se enmascara el máximo
+
+En max pooling, los tokens de relleno también deben excluirse. Si los valores reales de una dimensión son $-0.7$ y $-0.2$, y el relleno aporta $0$, un máximo sin máscara devolvería $0$, que no describe ningún token del texto. Se enmascara esa posición con un valor que no pueda ganar, conceptualmente $-\infty$, antes de calcular el máximo. En mean pooling se excluye del numerador y del denominador. La máscara evita que dos textos iguales cambien de vector solo porque el lote usa longitudes de relleno distintas.
+
+
 ## Fuente y alcance
 
 - [[sesion-06.pdf#page=5|Sesión 06, p. 5]]: token de entrada, encoder contextual y vector de texto.

@@ -27,7 +27,7 @@ Compara dos preguntas del corpus ficticio: una solicita el plazo de equivalencia
 
 ![[39-s10-matriz-abstencion.png]]
 
-**Cómo leerla:** las filas representan lo que la referencia permite responder; las columnas, la decisión observada. Los dos colores favorables corresponden a responder cuando hay evidencia y abstenerse cuando falta. Aun así, «responder» no significa «responder correctamente»: la celda correspondiente requiere una evaluación adicional del contenido.
+Las filas representan lo que la referencia permite responder; las columnas, la decisión observada. Los dos colores favorables corresponden a responder cuando hay evidencia y abstenerse cuando falta. Aun así, «responder» no significa «responder correctamente»: la celda correspondiente requiere una evaluación adicional del contenido.
 
 El taller pide dos tasas con denominadores distintos:
 
@@ -93,5 +93,14 @@ Una cita permite rastrear el origen, pero su sola presencia no demuestra soporte
 > Si Hit Rate@5 = 1 y MRR@5 = 1, ¿puede la respuesta ser incorrecta?
 >
 > Sí. La primera evidencia relevante llega siempre en primer lugar, pero el generador aún puede omitir condiciones, combinar reglas incompatibles o inventar detalles.
+
+## Tasas observadas y límites de la inspección
+
+En el baseline archivado, la abstención correcta fue $2/2=1$ en k=3 y k=5. La indebida fue $4/8=0.5$ en k=3 y $2/8=0.25$ en k=5. Hit y MRR se mantuvieron iguales: la generación puede aprovechar distinto contexto sin cambiar la primera evidencia reconocida por el evaluador.
+
+El código distingue generación real de «modo inspección»: en este último devuelve abstención `None` y no incluye esos casos en las tasas. Cada tasa debe acompañarse del número de casos con generación. Si solo generas las preguntas fáciles, una tasa sobre ese subconjunto no describe todas las respondibles; muestra también la cobertura de ejecución. Un fallo de servicio que cae a inspección deja una observación ausente, no una abstención correcta.
+
+La búsqueda para Hit/MRR y la búsqueda dentro de `answer()` se ejecutan por separado en el snapshot. Si el índice o el ranking cambian entre ambas, los pasajes medidos no están garantizados como los que vio el generador. La atribución causal requiere guardar y comparar el contexto efectivo. No se comprobó fidelidad de todas las respuestas mediante una rúbrica formal en esta revisión, por lo que las tasas de abstención no certifican corrección global.
+
 
 **Fuente:** PDF, pp. 10–11 y 13. El ejemplo, la matriz y las limitaciones del detector son desarrollos didácticos basados en la operación mostrada.

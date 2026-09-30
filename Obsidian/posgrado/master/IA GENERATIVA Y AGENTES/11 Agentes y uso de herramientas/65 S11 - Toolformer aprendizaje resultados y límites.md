@@ -1,5 +1,7 @@
 ---
 title: "65 S11 - Toolformer aprendizaje resultados y límites"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -29,7 +31,7 @@ Que una herramienta use otro modelo también cuenta: una herramienta se define p
 
 ![[46-s11-toolformer-aprendizaje.png]]
 
-**Cómo leerlo:** la fila superior propone y ejecuta llamadas. La inferior filtra los ejemplos y termina modificando los parámetros. No es el bucle de un asistente resolviendo la tarea de un usuario; es la preparación de datos de entrenamiento y el ajuste posterior.
+La fila superior propone y ejecuta llamadas. La inferior filtra los ejemplos y termina modificando los parámetros. No es el bucle de un asistente resolviendo la tarea de un usuario; es la preparación de datos de entrenamiento y el ajuste posterior.
 
 1. Se parte de texto y de unas pocas demostraciones escritas para cada API.
 2. El modelo propone posiciones y llamadas candidatas dentro del texto.
@@ -76,7 +78,7 @@ La comparación no implica que los modelos capaces de function calling nunca hay
 
 ![[47-s11-toolformer-resultados.png]]
 
-**Cómo leerlo:** compara las dos barras de cada fila, no filas entre sí. En matemáticas, el comparador es el mismo Toolformer con llamadas desactivadas; en LAMA y QA es GPT-3; en árabe es GPT-J sin ajustar. Cambiar el comparador cambia la pregunta experimental.
+Las dos barras de cada fila representan una comparación distinta. En matemáticas, el comparador es el mismo Toolformer con llamadas desactivadas; en LAMA y QA es GPT-3; en árabe es GPT-J sin ajustar. Cambiar el comparador cambia la pregunta experimental.
 
 ### Completar hechos: LAMA, tabla 3
 

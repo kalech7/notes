@@ -17,7 +17,7 @@ No imagines todavía una red enorme. Solo necesitamos dos entradas, una suma y u
 
 ![Cómo calcula un perceptrón](<../Recursos visuales/01-perceptron.png>)
 
-Lee de izquierda a derecha: las entradas llegan a la suma; el resultado pasa por una condición; la condición produce 0 o 1.
+Las entradas llegan a la suma ponderada. El umbral transforma el puntaje en la decisión 0 o 1; las flechas representan operaciones, no probabilidades.
 
 ## 2. Qué hace cada parte de la fórmula
 
@@ -69,6 +69,16 @@ $\eta$ controla el tamaño del cambio. Si acierta, la diferencia entre resultado
 Corregir un ejemplo puede empeorar otro. La convergencia del algoritmo clásico requiere que los datos sean separables por una frontera lineal en la representación utilizada. Incluso entonces, separar el entrenamiento no garantiza acertar en casos nuevos.
 
 En redes profundas se distingue **retropropagación**, que calcula cómo influye cada parámetro en la pérdida mediante derivadas, y **optimizador**, que utiliza esa información para actualizarlo. El escalón del perceptrón no es la activación habitual para entrenar esas redes con gradientes.
+
+## Una prueba breve de por qué una sola recta falla en XOR
+
+Usando salida 1 cuando el puntaje es no negativo, XOR exigiría simultáneamente:
+
+$$b<0,\quad w_1+b\geq0,\quad w_2+b\geq0,\quad w_1+w_2+b<0.$$
+
+Las dos desigualdades centrales implican $w_1+w_2\geq-2b$. Por tanto $w_1+w_2+b\geq-b>0$, contradiciendo la última condición. El límite no procede de una mala semilla o de pocos ejemplos; procede de esa familia de funciones.
+
+La solución con capa oculta se puede definir por completo: $h_1=\mathbf1[x_1+x_2-0.5\geq0]$ implementa OR y $h_2=\mathbf1[x_1+x_2-1.5\geq0]$ implementa AND. La salida $\mathbf1[h_1-2h_2-0.5\geq0]$ devuelve 0,1,1,0 para las entradas (0,0),(0,1),(1,0),(1,1). $\mathbf1$ vale uno cuando la condición entre corchetes es verdadera. La construcción ilustra capacidad de representación; todavía no especifica un algoritmo de entrenamiento con gradientes para esos escalones.
 
 ## Fuentes de esta explicación
 

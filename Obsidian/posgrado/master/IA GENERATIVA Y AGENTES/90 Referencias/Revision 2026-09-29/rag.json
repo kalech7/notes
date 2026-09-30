@@ -1,0 +1,787 @@
+{
+  "agente": "rag",
+  "fecha_revision": "2026-09-29",
+  "zona": "America/Guayaquil",
+  "alcance": "Notas28–58 en carpetas07/08/09/10",
+  "notas_leidas": [
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/28 S06 - Qué es un embedding y qué significa cercanía.md",
+      "numero": 28,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/29 S06 - De tokens a un vector de texto.md",
+      "numero": 29,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/30 S06 - Cómo se entrena SBERT y por qué permite buscar.md",
+      "numero": 30,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/31 S06 - Coseno producto punto y normalización.md",
+      "numero": 31,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/32 S06 - Elegir modelo y reconocer límites.md",
+      "numero": 32,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/33 PRÁCTICA - Embeddings y similitud semántica.md",
+      "numero": 33,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/34 S08 - Guía para entender fragmentación y recuperación.md",
+      "numero": 34,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/35 S08 - RAG contexto memoria y generación fundamentada.md",
+      "numero": 35,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/36 S08 - Fragmentos tokens y truncamiento.md",
+      "numero": 36,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/37 S08 - Estrategias de fragmentación y solapamiento.md",
+      "numero": 37,
+      "lectura_completa": true,
+      "modificada": false
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/38 S08 - Búsqueda léxica densa y fusión RRF.md",
+      "numero": 38,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/39 S08 - Reranking contexto y abstención.md",
+      "numero": 39,
+      "lectura_completa": true,
+      "modificada": false
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/40 S08 - Diagnóstico de fallos y decisiones del taller.md",
+      "numero": 40,
+      "lectura_completa": true,
+      "modificada": false
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/41 S08 - Recordatorio y preguntas de comprensión.md",
+      "numero": 41,
+      "lectura_completa": true,
+      "modificada": false
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/42 S09 - Guía para evaluar un RAG.md",
+      "numero": 42,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/43 S09 - Hit Rate Recall MRR MAP y nDCG paso a paso.md",
+      "numero": 43,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/44 S09 - Golden sets anotación y caducidad.md",
+      "numero": 44,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/45 S09 - Preguntas negativas y abstención.md",
+      "numero": 45,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/46 S09 - Evaluar respuestas fidelidad y citas.md",
+      "numero": 46,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/47 S09 - GraphRAG y recuperación multimodal.md",
+      "numero": 47,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/48 S09 - Diagnóstico experimentos y Taller 2.md",
+      "numero": 48,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/49 S09 - Ejercicios resueltos y repaso.md",
+      "numero": 49,
+      "lectura_completa": true,
+      "modificada": false
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/50 S10 - Guía para comprender el taller RAG.md",
+      "numero": 50,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/51 S10 - Del documento a una respuesta con evidencia.md",
+      "numero": 51,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/52 S10 - Ingesta tokens y tres fallas silenciosas.md",
+      "numero": 52,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/53 S10 - Golden set y límites de lo respondible.md",
+      "numero": 53,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/54 S10 - Hit Rate y MRR con un experimento completo.md",
+      "numero": 54,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/55 S10 - Abstención fidelidad y errores del evaluador.md",
+      "numero": 55,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/56 S10 - Elegir una extensión y comprobar su efecto.md",
+      "numero": 56,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/57 S10 - Reproducibilidad entregables y reflexión.md",
+      "numero": 57,
+      "lectura_completa": true,
+      "modificada": true
+    },
+    {
+      "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/58 S10 - Ejercicios resueltos y repaso activo.md",
+      "numero": 58,
+      "lectura_completa": true,
+      "modificada": true
+    }
+  ],
+  "archivos_modificados": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/28 S06 - Qué es un embedding y qué significa cercanía.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/29 S06 - De tokens a un vector de texto.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/30 S06 - Cómo se entrena SBERT y por qué permite buscar.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/31 S06 - Coseno producto punto y normalización.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/32 S06 - Elegir modelo y reconocer límites.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/07 Embeddings y recuperación/33 PRÁCTICA - Embeddings y similitud semántica.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/34 S08 - Guía para entender fragmentación y recuperación.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/35 S08 - RAG contexto memoria y generación fundamentada.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/36 S08 - Fragmentos tokens y truncamiento.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/08 RAG fragmentación y recuperación/38 S08 - Búsqueda léxica densa y fusión RRF.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/42 S09 - Guía para evaluar un RAG.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/43 S09 - Hit Rate Recall MRR MAP y nDCG paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/44 S09 - Golden sets anotación y caducidad.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/45 S09 - Preguntas negativas y abstención.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/46 S09 - Evaluar respuestas fidelidad y citas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/47 S09 - GraphRAG y recuperación multimodal.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/09 Evaluación de RAG y patrones avanzados/48 S09 - Diagnóstico experimentos y Taller 2.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/50 S10 - Guía para comprender el taller RAG.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/51 S10 - Del documento a una respuesta con evidencia.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/52 S10 - Ingesta tokens y tres fallas silenciosas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/53 S10 - Golden set y límites de lo respondible.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/54 S10 - Hit Rate y MRR con un experimento completo.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/55 S10 - Abstención fidelidad y errores del evaluador.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/56 S10 - Elegir una extensión y comprobar su efecto.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/57 S10 - Reproducibilidad entregables y reflexión.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/10 Taller RAG medible/58 S10 - Ejercicios resueltos y repaso activo.md"
+  ],
+  "numero_notas_leidas": 31,
+  "numero_notas_modificadas": 26,
+  "backup_originales": "/tmp/rag-originales",
+  "pdfs_revisados": [
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-06.pdf",
+      "paginas_texto_completo": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "paginas_revision_visual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ]
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-08.pdf",
+      "paginas_texto_completo": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "paginas_revision_visual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ]
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-09.pdf",
+      "paginas_texto_completo": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "paginas_revision_visual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-10.pdf",
+      "paginas_texto_completo": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "paginas_revision_visual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/talleres/taller 2/Informe_Taller_02.pdf",
+      "paginas_texto_completo": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "paginas_revision_visual": [
+        1,
+        4,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/libros/Hands-On_Large_Language_Models.pdf",
+      "paginas_texto_completo": [
+        254,
+        257,
+        258,
+        259,
+        266,
+        272,
+        273,
+        274
+      ],
+      "paginas_revision_visual": [
+        254,
+        257,
+        258,
+        259,
+        266,
+        272,
+        273,
+        274
+      ],
+      "alcance": "Todas las páginas complementarias citadas en notas35/36/38/39; no todo el libro"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/reimers-2019-sentence-bert.pdf",
+      "paginas_texto_completo": [
+        2,
+        3
+      ],
+      "alcance": "Secciones primarias relevantes, no lectura integral de cada paper"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/lewis-2020-rag.pdf",
+      "paginas_texto_completo": [
+        2,
+        3
+      ],
+      "alcance": "Secciones primarias relevantes, no lectura integral de cada paper"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/edge-2024-graphrag.pdf",
+      "paginas_texto_completo": [
+        2,
+        3,
+        4
+      ],
+      "alcance": "Secciones primarias relevantes, no lectura integral de cada paper"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/rag-anything-2025.pdf",
+      "paginas_texto_completo": [
+        3,
+        4,
+        7,
+        8
+      ],
+      "alcance": "Secciones primarias relevantes, no lectura integral de cada paper"
+    }
+  ],
+  "fuentes_web_primarias": [
+    {
+      "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+      "uso": "longitud entrenamiento128/default256",
+      "fecha_consulta": "2026-09-29"
+    },
+    {
+      "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "uso": "max_seq_length128",
+      "fecha_consulta": "2026-09-29"
+    },
+    {
+      "url": "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/",
+      "uso": "definición fidelidad",
+      "fecha_consulta": "2026-09-29"
+    }
+  ],
+  "archivo_taller": {
+    "ruta": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/talleres/taller 2/Entrega_Taller_02.zip",
+    "sha256": "04ceffdb4ed762fc6953d12ec5807c0809bb9d4d18557f276375c65627adb802",
+    "entradas": 118,
+    "archivos_inspeccionados": [
+      "Taller_02/ejemplos/nimbus_gastos.md",
+      "Taller_02/ejemplos/nimbus_remoto.md",
+      "Taller_02/evaluation.py",
+      "Taller_02/evidencias/cobertura_multi_fragmento.json",
+      "Taller_02/evidencias/comparacion_extension.csv",
+      "Taller_02/evidencias/contraste_generador.json",
+      "Taller_02/evidencias/hipotesis_extension.json",
+      "Taller_02/evidencias/reflexiones_borrador.json",
+      "Taller_02/evidencias/tabla_metricas_baseline.csv",
+      "Taller_02/evidencias/tres_casos_dificiles.json",
+      "Taller_02/evidencias/verificacion_ejecucion.json",
+      "Taller_02/golden_ejemplo.json",
+      "Taller_02/golden_set.json",
+      "Taller_02/ingestion.py",
+      "Taller_02/rag_pipeline.py",
+      "Taller_02/resultados.csv",
+      "Taller_02/resultados_extension.csv"
+    ],
+    "modo": "lectura y extracción selectiva estática a /tmp, sin ejecución de código archivado",
+    "INFORME_ENTREGA_md": "lectura selectiva; PDF22p leído íntegro"
+  },
+  "figuras_revisadas": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/16-embeddings-vecindad.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/17-sbert-sts-historico.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/18-coseno-producto-punto.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/19-normalizacion-umbral.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/20-s08-mapa-rag.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/21-s08-truncamiento.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/22-s08-solapamiento.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/23-s08-rrf.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/24-s08-dos-etapas.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/25-s08-diagnostico.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/26-s08-texto-vector-texto.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/27-s09-tres-evaluaciones.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/28-s09-metricas-y-posicion.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/29-s09-anotacion-estable.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/30-s09-abstencion.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/31-s09-afirmaciones-y-citas.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/32-s09-graphrag.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/33-s09-promedio-y-segmentos.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/34-s09-resolucion-hit-rate.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/35-s10-cadena-evidencia.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/36-s10-truncamiento.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/37-s10-corpus-y-contexto.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/38-s10-metricas-por-pregunta.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/39-s10-matriz-abstencion.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/40-s10-diagnostico-extensiones.png"
+  ],
+  "hallazgos": [
+    {
+      "tema": "normalización",
+      "notas": [
+        31,
+        33
+      ],
+      "hallazgo": "Ambas normas1 garantizan igualdad dot/coseno pero no son necesarias para un par; igualdad también con dot0 o producto de normas1. Ranking de documentos unitarios coincide con coseno aun consulta no unitaria; escala y calibración son cuestiones separadas.",
+      "estado": "corregido y explicado con fórmulas y ejemplos"
+    },
+    {
+      "tema": "embeddings y pooling",
+      "notas": [
+        28,
+        29,
+        30
+      ],
+      "hallazgo": "Compatibilidad no equivale solo a misma dimensión ni exige siempre mismo encoder; max pooling debe enmascarar padding; se amplían pérdidas CE/MSE/triplet y NLI.",
+      "estado": "ampliado"
+    },
+    {
+      "tema": "límites y truncamiento",
+      "notas": [
+        32,
+        52
+      ],
+      "hallazgo": "all-MiniLM-L6-v2 entrenamiento128 no implica default128 (ficha default256); modelo multilingüe ficha128. Un sufijo truncado no influye en el vector pero puede llegar en payload. Baseline realBGE-M3 límite8192 y máximo515 descarta culpar a límite128 de esos casos.",
+      "estado": "corregido con fuentes primarias y caso real"
+    },
+    {
+      "tema": "RAG original",
+      "notas": [
+        35
+      ],
+      "hallazgo": "Distinción RAG-Sequence vs RAG-Token requiere mostrar posición de marginalización y separar del pipeline concatenación del taller.",
+      "estado": "ampliado y fórmula verificada p3Lewis"
+    },
+    {
+      "tema": "BM25",
+      "notas": [
+        38
+      ],
+      "hallazgo": "Se añade cuenta numérica de saturación y longitud e IDF con parámetros explícitos.",
+      "estado": "ampliado"
+    },
+    {
+      "tema": "evaluación retrieval",
+      "notas": [
+        43,
+        44,
+        48,
+        58
+      ],
+      "hallazgo": "IDCG incluye relevantes juzgados omitidos; Recall de fragmentos alternativos no equivale a suficiencia; cobertura por requisitos AND/OR, precisión y duplicados. Métrica ANN distingue calidad vectorial y relevancia tarea.",
+      "estado": "corregido y ampliado"
+    },
+    {
+      "tema": "golden ejemplo del lab",
+      "notas": [
+        53
+      ],
+      "hallazgo": "Ítem4 pregunta aprobación30díasANTES pero esperado mezcla facturas30díasDESPUÉS; nimbus_remoto/gastos confirman desajuste temporal. Ítem6 neg indexable sírespondible corpus original.",
+      "estado": "documentado sin alterar originalZIP"
+    },
+    {
+      "tema": "evaluador real",
+      "notas": [
+        44,
+        53,
+        55
+      ],
+      "hallazgo": "evaluation.py usa cualquier documento fuente y una ancla; ignora evidencias_esperadas. Evalúa retrieval y answer con dos recuperaciones distintas; modoinspección None es observación faltante, denominadores tasas requieren cobertura.",
+      "estado": "integrado en notas con límites causales"
+    },
+    {
+      "tema": "prompt y citas",
+      "notas": [
+        46,
+        51
+      ],
+      "hallazgo": "Prompt archivado no exige cita explícita aunque PDF08sí; fidelidad/citas requieren rúbrica de afirmaciones, vacíos y soporte conjunto.",
+      "estado": "ampliado"
+    },
+    {
+      "tema": "resultados históricos",
+      "notas": [
+        54,
+        55,
+        56,
+        57
+      ],
+      "hallazgo": "BaselineHit7/8=.875/MRR.5625; abstención correcta2/2 e indebida4/8→2/8 al subirk. Híbrida pierdeHitk3ymejoraMRRk5; sin generacióncomparables extensión. Mismo0.70 puede surgir de poblacionesdiferentes.",
+      "estado": "recalculado e integrado; ejemplos previos conservados"
+    },
+    {
+      "tema": "multimodal y GraphRAG",
+      "notas": [
+        47
+      ],
+      "hallazgo": "Se amplía doblegrafo/proxiesrecuperaciónyartefactosvisualesoriginales. TablaDocBench y límitesprotocolo verificadas en paper p7–8.",
+      "estado": "ampliado"
+    },
+    {
+      "tema": "vigencia de experimento",
+      "notas": [
+        57
+      ],
+      "hallazgo": "Corpus actualmodificado no equivale snapshot27Sep22notas/109chunks. Catálogo open_weight_pequeno/verified_at no verificable en archivo.",
+      "estado": "documentado sin inventar ejecución"
+    },
+    {
+      "tema": "figuras",
+      "notas": [
+        30,
+        45
+      ],
+      "hallazgo": "PNG17título demasiadoabsoluto; PNG30ejemplo3/4dibujadoen.5aunque scripts.75. Coordinadorregeneró ambos; comprobé finalesvisualmente.",
+      "estado": "resuelto por coordinador"
+    },
+    {
+      "tema": "prosa de figuras",
+      "notas": [
+        34,
+        36,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "hallazgo": "Se eliminan rótulos Cómo leer... conservando explicación natural de ejes, colores, relaciones y origen didáctico.",
+      "estado": "corregido"
+    }
+  ],
+  "validacion": {
+    "issues": [],
+    "links_checked": 231,
+    "mermaids_basic_checked": 7,
+    "recomputed": [
+      {
+        "k": 3,
+        "N": 8,
+        "hit": 0.875,
+        "mrr": 0.5625
+      },
+      {
+        "k": 5,
+        "N": 8,
+        "hit": 0.875,
+        "mrr": 0.5625
+      }
+    ],
+    "figuras_visualizadas": 25,
+    "yaml_frontmatter": 31,
+    "mermaid_alcance": "7 diagramas existentes de este subconjunto comprobados localmente en encabezados/cercas; coordinador confirma renderizado global de23Mermaid, sin nuevos diagramas añadidos por este agente.",
+    "cuentas_didacticas": {
+      "triplet_0_4_0_9_margen1": 0.5,
+      "bm25_F_tres": 1.5714285714285714,
+      "bm25_F_largo": 0.7096774193548387,
+      "ndcg_0_2_1": 0.6590018048024133
+    }
+  },
+  "limites_honestos": [
+    "No se reejecutaron embeddings, Qdrant, LLMs, notebooks o laboratorio; no se usaron APIs, credenciales ni servicios.",
+    "Se revisaron todas las páginas de las cuatro sesiones asignadas; de fuentes complementarias se inspeccionaron páginas pertinentes declaradas, sin afirmar lectura íntegra de todos los papers/libros.",
+    "No se auditó con una rúbrica formal la fidelidad de todas las respuestas; hay revisión cualitativa de casos históricos y métricas recalculadas.",
+    "No se confirman infraestructura actual, identidad oficial open_weight_pequeno ni verified_at; se describe snapshot archivado.",
+    "No se editaron fuentes14/90, índices generales, README, canvas, scripts o figuras compartidas; coordinador maneja esos elementos.",
+    "La sesión07 recuperada es responsabilidad del coordinador y está fuera de este subconjunto."
+  ],
+  "evaluacion_completitud": {
+    "lectura_notas": "31/31 completas",
+    "lectura_material_docente": "90/90 páginas completas en texto y revisión visual",
+    "cobertura": "Se conservan contenidos previos y ejemplos; se cierran vacíos de exactitud y mecanismos centrales detectados. Cubierta arquitectura, fragmentación, recuperación, evaluación, patronesavanzados y taller medible respecto a las cuatro sesiones asignadas.",
+    "completitud_absoluta": "No se afirma completitud frente a toda la literatura ni rendimiento actual del laboratorio; alcance/fuentes/exclusiones documentados."
+  }
+}

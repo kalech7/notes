@@ -39,8 +39,6 @@ En nuestro ejemplo hay dos afirmaciones y solo una sustentada: 1/2 = 0,5. Para h
 
 ![[31-s09-afirmaciones-y-citas.png]]
 
-### Cómo leer el diagrama
-
 El bloque izquierdo muestra la evidencia disponible. Los dos bloques del centro separan las afirmaciones de una única respuesta. La línea verde indica soporte: los 60 créditos aparecen en el contexto. La línea roja indica falta de soporte: el 30 de junio no está establecido.
 
 El bloque derecho resume el conteo: una de dos afirmaciones respaldada. Los colores representan un juicio explícito sobre este ejemplo, no una probabilidad producida por el modelo. Una cita al mismo documento junto a toda la respuesta no transforma la línea roja en verde.
@@ -75,6 +73,13 @@ Un modelo juez puede automatizar parte de la revisión, pero sus salidas depende
 Como ampliación metodológica, una evaluación cuidada fija la rúbrica, registra las versiones, presenta la evidencia necesaria y contrasta una muestra de juicios con revisión humana. «Sin referencia» suele significar sin una respuesta ideal previamente redactada; todavía necesitas la pregunta y el contexto para juzgar soporte y relevancia.
 
 Las métricas automáticas sirven para localizar casos a revisar y comparar bajo un protocolo estable. No convierten un juicio semántico en una verdad infalible.
+
+## Cuando una razón no tiene denominador
+
+Si la respuesta se abstiene sin formular afirmaciones verificables, la razón de fidelidad basada en afirmaciones sustentadas tiene denominador cero. Se informa como **no aplicable** según la rúbrica; asignarle automáticamente 1 premiaría un sistema que nunca responde. Evalúa la decisión de abstenerse con la referencia de respondibilidad y la utilidad con otra dimensión.
+
+La unidad de afirmación también importa: «son 60 créditos y vence el 30 de junio» puede contener dos hechos evaluables aunque sea una sola oración. Fija el procedimiento para dividir afirmaciones antes de comparar sistemas. Una cita puede apoyar una parte y no la otra. Cuando una conclusión necesita dos fuentes conjuntamente, evalúa el conjunto de referencias que la respalda, sin exigir que cada documento aislado pruebe toda la conclusión. La fórmula de fidelidad basada en afirmaciones coincide con la explicación primaria de [Ragas](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/); las convenciones de segmentación y casos vacíos deben quedar documentadas.
+
 
 > [!abstract] Para recordar
 > Recuperar la fuente, usarla fielmente y citarla correctamente son tres logros relacionados, pero distintos.

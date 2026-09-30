@@ -53,6 +53,14 @@ Era una propuesta de investigación, no una demostración de que todos esos prob
 
 **Lo que debes poder explicar al terminar:** cómo distinguir una demostración convincente de una capacidad comprobada. La siguiente nota responde otra pregunta: [[02 S00 - Reglas modelos y aprendizaje desde datos|¿cómo construimos el conocimiento que usa el sistema?]]
 
+## Una evaluación que detecte el problema de los 990 correos
+
+En el ejemplo inicial, «normal siempre» acierta 990 veces y deja pasar los 10 spam. La **sensibilidad de spam** es $TP/(TP+FN)$: spam detectados dividido entre todos los spam reales. Da $0/(0+10)=0$. La **precisión de spam** es $TP/(TP+FP)$: qué proporción de los mensajes bloqueados era realmente spam. Como el sistema no bloqueó ninguno, su denominador es cero y esa precisión queda indefinida, salvo que se declare una convención.
+
+$TP$ son verdaderos positivos, $FN$ spam no detectados y $FP$ normales bloqueados. El resultado muestra por qué una evaluación necesita más de un número. También hay que comprobar grupos y tipos de caso: un promedio alto puede esconder que el sistema falla siempre con cierto idioma o documento largo. Los casos de prueba deben permanecer separados de los que usaste para diseñar reglas y prompts; si adaptas el sistema a cada caso de prueba, ya no estás comprobando capacidad sobre ejemplos nuevos.
+
+Estas métricas y ejemplos son una ampliación didáctica: concretan el criterio operativo, sin ampliar lo que demuestra la prueba de Turing.
+
 ## Fuentes de esta explicación
 
 Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.

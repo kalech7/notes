@@ -1,5 +1,7 @@
 ---
 title: "64 S11 - Memoria contexto y costo de repetir el historial"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -53,7 +55,7 @@ Este estado es más pequeño que una conversación extensa, pero debe preservar 
 
 ![[45-s11-crecimiento-contexto.png]]
 
-**Cómo leer el gráfico:** el eje horizontal cuenta llamadas de herramienta completadas; el vertical indica los tokens que tendría la entrada de la siguiente decisión. Cada vuelta añade 500 tokens en este ejemplo. La línea horizontal es un presupuesto ficticio de entrada, no la capacidad de un modelo comercial.
+El eje horizontal cuenta llamadas de herramienta completadas; el vertical indica los tokens que tendría la entrada de la siguiente decisión. Cada vuelta añade 500 tokens en este ejemplo. La línea horizontal es un presupuesto ficticio de entrada, no la capacidad de un modelo comercial.
 
 Supuestos propios:
 

@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-24T19:04:44.220776</dc:date>
+    <dc:date>2026-09-29T20:25:46.127754</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 45.1584 150.2208 45.1584 155.5488
 L 45.1584 308.9952 
 Q 45.1584 314.3232 51.7824 314.3232 
 z
-" clip-path="url(#p4a5d44ad6d)" style="fill: #f1f6fb; stroke: #2466a2; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p4aab0a5336)" style="fill: #f1f6fb; stroke: #2466a2; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 343.2384 213.0912 
@@ -53,7 +53,7 @@ Q 336.6144 139.5648 336.6144 144.8928
 L 336.6144 207.7632 
 Q 336.6144 213.0912 343.2384 213.0912 
 z
-" clip-path="url(#p4a5d44ad6d)" style="fill: #eef7f2; stroke: #25805d; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p4aab0a5336)" style="fill: #eef7f2; stroke: #25805d; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 343.2384 335.6352 
@@ -66,7 +66,7 @@ Q 336.6144 262.1088 336.6144 267.4368
 L 336.6144 330.3072 
 Q 336.6144 335.6352 343.2384 335.6352 
 z
-" clip-path="url(#p4a5d44ad6d)" style="fill: #fcf0f0; stroke: #ba4545; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p4aab0a5336)" style="fill: #fcf0f0; stroke: #ba4545; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 621.4464 293.0112 
@@ -79,7 +79,7 @@ Q 614.8224 166.2048 614.8224 171.5328
 L 614.8224 287.6832 
 Q 614.8224 293.0112 621.4464 293.0112 
 z
-" clip-path="url(#p4a5d44ad6d)" style="fill: #fff7e9; stroke: #bf761b; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p4aab0a5336)" style="fill: #fff7e9; stroke: #bf761b; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #19334b" transform="translate(130.477687 201.839813)">CONTEXTO</text>
@@ -147,7 +147,7 @@ L 608.809979 267.607338
   </g>
  </g>
  <defs>
-  <clipPath id="p4a5d44ad6d">
+  <clipPath id="p4aab0a5336">
    <rect x="34.56" y="77.76" width="794.88" height="319.68"/>
   </clipPath>
  </defs>

@@ -106,6 +106,19 @@ EM puede terminar en una solución local: mejora respecto de cambios cercanos si
 
 Este GMM no modela el orden de los puntos. Para representar una secuencia necesitamos otra estructura, como [[09 S01 - Markov HMM y generación con bigramas|un HMM]].
 
+## El paso M también aprende la dispersión
+
+Llama $N_k=\sum_i\gamma_{ik}$ al número efectivo de observaciones. Para un GMM con covarianzas completas, el paso M calcula:
+
+$$\pi_k^{new}=\frac{N_k}{N},\qquad \mu_k^{new}=\frac{\sum_i\gamma_{ik}x_i}{N_k},$$
+$$\Sigma_k^{new}=\frac{\sum_i\gamma_{ik}(x_i-\mu_k^{new})(x_i-\mu_k^{new})^\top}{N_k}.$$
+
+Primero se calcula la nueva media y después se miden desviaciones respecto de **esa** media. En una dimensión la covarianza es una varianza. Para los datos 0,2,10 y responsabilidades 0.9,0.8,0.1 del primer componente, la media es $13/9$ y la varianza aproximadamente 5.247. Aunque el 10 aporta poco al centro, su gran distancia influye en la dispersión. Se divide por $N_k$ porque esta es una estimación de máxima verosimilitud ponderada, no la fórmula de varianza muestral insesgada.
+
+El objetivo observado es $\sum_i\log[\sum_k\pi_k\mathcal N(x_i\mid\mu_k,\Sigma_k)]$: el logaritmo de una suma impide separar directamente los componentes. EM usa la posterior del latente para trabajar con el promedio de la log-conjunta. Con un paso E exacto y un paso M que maximiza ese objetivo auxiliar, la log-verosimilitud observada no disminuye. Esto no asegura mejora estricta en cada ciclo ni máximo global; un procedimiento aproximado, una regularización distinta o errores numéricos requieren examinar su propio objetivo. Si un componente se contrae alrededor de un único punto, la densidad puede crecer sin límite: por eso las singularidades son un problema real, además de los máximos locales.
+
+Fuente del desarrollo: [[sesion-02.pdf#page=3|Sesión 02, p. 3]] y [[bishop-2006-prml.pdf#page=459|Bishop, §9.2.2, PDF 459]].
+
 ## Fuentes de esta explicación
 
 Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.

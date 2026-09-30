@@ -54,8 +54,6 @@ Los 60 créditos son inventados para explicar el mecanismo; no describen tu maes
 
 ![[29-s09-anotacion-estable.png]]
 
-### Cómo leer el diagrama
-
 Las dos filas de arriba representan dos divisiones del mismo documento. En la primera, `doc-02` contiene el requisito de créditos; en la segunda, `doc-02` contiene otra sección y el requisito se desplazó a `doc-03`. El color verde representa la evidencia, no un identificador.
 
 La coincidencia de la cadena `doc-02` no demuestra que el texto siga siendo el mismo. El bloque inferior fija la referencia en el documento y en una frase, que puede localizarse de nuevo después del cambio. Las flechas indican esa búsqueda de evidencia, no una garantía de que cualquier fragmentación preserve toda la frase.
@@ -79,7 +77,7 @@ La p. 14 propone revisar si los IDs esperados siguen existiendo antes de interpr
 
 Supón que una respuesta necesita una regla en A y una excepción en B. Encontrar A permite un Hit = 1, pero no demuestra cobertura completa. Para medir Recall necesitas anotar dos unidades y comprobar cada una.
 
-El predicado `acierta(hit, item)` mostrado en el PDF comprueba pertenencia a cualquiera de los documentos fuente y una frase. Por sí solo identifica un acierto individual; **no demuestra que se recuperaron todas las evidencias de una pregunta multi-documento**. Sin inspeccionar el evaluador completo no debemos atribuirle esa capacidad.
+El predicado `acierta(hit, item)` mostrado en el PDF comprueba pertenencia a cualquiera de los documentos fuente y una frase. Por sí solo identifica un acierto individual; **no demuestra que se recuperaron todas las evidencias de una pregunta multi-documento**. La entrega archivada permite comprobarlo: `evaluation.py` usa documentos fuente y una sola cadena `fragmento_esperado`; no utiliza la lista adicional `evidencias_esperadas`. La cobertura de varias evidencias se calcula por separado en el notebook. Por tanto, su Hit y MRR no equivalen a cobertura completa.
 
 Como ampliación conceptual, puedes representar varias evidencias mediante pares documento-pasaje y calcular la fracción cubierta. Si dos fragmentos del mismo documento contienen la misma evidencia, no deberían contarse como dos requisitos diferentes. Si existen pasajes alternativos igualmente válidos, anótalos como alternativas para evitar penalizar una respuesta correcta.
 

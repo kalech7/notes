@@ -35,7 +35,7 @@ Todos los documentos, preguntas, valores y resultados de este caso son **didáct
 
 ![[35-s10-cadena-evidencia.png]]
 
-**Cómo leerlo:** la fila superior prepara los documentos antes de las consultas. La inferior usa el índice para responder. Cada flecha necesita conservar información útil: del archivo al texto, del texto al fragmento, del fragmento al vector y de la evidencia a la respuesta. Las cajas inferiores indican qué observar para descubrir dónde se rompe la cadena.
+La fila superior prepara los documentos antes de las consultas. La inferior usa el índice para responder. Cada flecha necesita conservar información útil: del archivo al texto, del texto al fragmento, del fragmento al vector y de la evidencia a la respuesta. Las cajas inferiores indican qué observar para descubrir dónde se rompe la cadena.
 
 La base vectorial conserva vectores y puede guardar texto y metadatos asociados. El generador utiliza texto recuperado; no lee directamente las coordenadas del embedding como si fueran un documento.
 
@@ -69,4 +69,4 @@ Si embeddings, tokens y coseno todavía te resultan confusos, repasa [[28 S06 - 
 
 Fuente principal: [[sesion-10.pdf]], *Taller 2 — Sistema RAG sobre base vectorial*, Daniel Andrés Riofrío Almeida, 16 páginas, sesión del 26 de septiembre de 2026. La portada y los separadores están en las páginas 1, 6 y 12. Las notas desarrollan el contenido de las restantes páginas y añaden ejemplos, derivaciones y seis figuras propias.
 
-Las referencias del PDF a archivos del curso, al laboratorio y a sus revisiones se presentan como afirmaciones de la presentación: no se inspeccionó ese código para estas notas. Las reglas del taller y sus fechas se explican como contenido académico histórico; no constituyen instrucciones para ejecutar Docker, usar credenciales, publicar un corpus o entregar trabajos.
+Además del PDF, se inspeccionó estáticamente la entrega archivada `Entrega_Taller_02.zip`: código de ingesta, recuperación y evaluación, golden set, resultados CSV y evidencias. Los resultados describen la ejecución histórica registrada el 27 de septiembre de 2026; esta revisión del 29 de septiembre no volvió a ejecutarla. Las reglas del taller y sus fechas se explican como contenido académico histórico; no constituyen instrucciones para ejecutar Docker, usar credenciales, publicar un corpus o entregar trabajos.

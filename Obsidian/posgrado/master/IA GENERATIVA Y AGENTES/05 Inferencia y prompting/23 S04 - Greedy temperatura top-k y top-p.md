@@ -116,6 +116,18 @@ Para un experimento, registra la configuración y ejecuta varias corridas cuando
 
 El modelo aprendió una distribución. Al aplicar $T\neq1$, top-k o top-p, se muestrea de una distribución transformada. Eso puede ser deliberadamente útil, pero ya no es exactamente la distribución original.
 
+## Por qué greedy puede perder la secuencia más probable
+
+Supón que en el primer paso A tiene probabilidad 0.6 y B 0.4. Si escoges A, sus dos continuaciones posibles tienen probabilidad 0.5 cada una. Si escoges B, C tiene 0.9 y D 0.1. Para secuencias de exactamente dos tokens, la mejor ruta por A vale $0.6(0.5)=0.30$, mientras BC vale $0.4(0.9)=0.36$. Greedy escoge A por la decisión local y pierde BC. El ejemplo fija longitud dos para no confundir continuación con probabilidad de terminar.
+
+## Top-p a mano y límites de sus parámetros
+
+En la distribución A 0.60, B 0.25, C 0.10, D 0.04, E 0.01, top-p = 0.90 conserva A, B y C: los dos primeros suman 0.85, insuficiente, y los tres suman 0.95. Tras normalizar quedan 0.632, 0.263 y 0.105. Si $p=0.80$, conserva solo A y B y produce aproximadamente 0.706 y 0.294. El token que cruza el umbral se incluye: excluirlo dejaría masa menor que la solicitada.
+
+Para esta definición se usa $0<p\leq1$ y top-k entero entre 1 y el tamaño del vocabulario. Un empate en scores requiere una regla de desempate; si el algoritmo conserva todos los empatados puede devolver más de k. Algunos proveedores usan 0 para desactivar un filtro, pero eso es una convención de su implementación, no la definición matemática. Con $T\to0^+$ la masa se concentra en los máximos; si hay varios máximos empatados, el límite reparte entre ellos y la rama argmax debe desempatar por su cuenta.
+
+Subir temperatura o filtrar la cola también puede empeorar una respuesta: una alternativa poco probable puede ser la correcta. La tabla de pruebas de la sección 8 propone experimentos, no garantías de solución.
+
 ## Fuentes de esta explicación
 
 - [[sesion-04.pdf#page=2|Sesión 04, páginas 2–8: greedy, temperatura, top-k y top-p]]

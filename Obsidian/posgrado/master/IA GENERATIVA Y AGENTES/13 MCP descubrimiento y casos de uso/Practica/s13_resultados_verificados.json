@@ -1,0 +1,99 @@
+{
+  "tipo": "simulador educativo; no prueba conformidad MCP ni selección de LLM",
+  "catalogo_antes": [
+    "ventas__consultar_ventas"
+  ],
+  "catalogo_despues": [
+    "cambio__convertir_moneda",
+    "ventas__consultar_ventas"
+  ],
+  "catalogo_colision_local": [
+    "cambio__consultar_ventas",
+    "cambio__convertir_moneda",
+    "ventas__consultar_ventas"
+  ],
+  "ventas": {
+    "isError": false,
+    "resultado": {
+      "mes": "2026-03",
+      "total": 2695
+    }
+  },
+  "conversion_tasa_ficticia": {
+    "isError": false,
+    "resultado": 200
+  },
+  "fuente_agente_igual": true,
+  "sha256_fuente_agente": "97a908907d283938df021cc0bc9b79d5c23110248debb134bcf3500689379aef",
+  "rechazos_verificados": {
+    "mes_fuera_de_dominio": {
+      "isError": true,
+      "error": "Valor no permitido: mes"
+    },
+    "campo_faltante": {
+      "isError": true,
+      "error": "Falta campo: mes"
+    },
+    "campo_extra": {
+      "isError": true,
+      "error": "Hay campos no permitidos"
+    },
+    "tipo_incorrecto": {
+      "isError": true,
+      "error": "Tipo incorrecto: monto"
+    },
+    "bool_no_es_monto": {
+      "isError": true,
+      "error": "Tipo incorrecto: monto"
+    },
+    "nombre_desconocido": {
+      "isError": true,
+      "error": "Nombre fuera del catálogo descubierto"
+    }
+  },
+  "rutas_distinguidas": true,
+  "cuentas": [
+    {
+      "M": 1,
+      "N": 3,
+      "integraciones": 3,
+      "piezas": 4,
+      "producto_mayor": false
+    },
+    {
+      "M": 1,
+      "N": 10,
+      "integraciones": 10,
+      "piezas": 11,
+      "producto_mayor": false
+    },
+    {
+      "M": 2,
+      "N": 2,
+      "integraciones": 4,
+      "piezas": 4,
+      "producto_mayor": false
+    },
+    {
+      "M": 2,
+      "N": 3,
+      "integraciones": 6,
+      "piezas": 5,
+      "producto_mayor": true
+    },
+    {
+      "M": 3,
+      "N": 4,
+      "integraciones": 12,
+      "piezas": 7,
+      "producto_mayor": true
+    },
+    {
+      "M": 5,
+      "N": 5,
+      "integraciones": 25,
+      "piezas": 10,
+      "producto_mayor": true
+    }
+  ]
+}

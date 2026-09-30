@@ -22,6 +22,11 @@ Este bloque conserva la procedencia del material y sus límites.
 
 6. [Ampliación capítulo 11](06%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2011.md): escaneo del monolito modular, 16 páginas, mapa de figuras e imprecisiones del libro.
 
+7. [Ampliación capítulo 12](07%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2012.md): pipeline, 12 páginas, cuatro figuras, precisiones y validación.
+
+8. [Ampliación capítulo 13](08%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2013.md): núcleo, plugins, 16 páginas y precisiones verificadas.
+9. [Ampliación capítulo 14](09%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2014.md): servicios de dominio, 18 páginas y discrepancias de la fuente.
+
 ## PDF de referencia
 
 - [Introducción y pensamiento arquitectónico](../Materiales/01%20Introducci%C3%B3n%20y%20pensamiento%20arquitect%C3%B3nico.pdf).
@@ -34,3 +39,12 @@ Este bloque conserva la procedencia del material y sus límites.
 - [Fundamentos de estilos arquitectónicos](../Materiales/06%20Fundamentos%20de%20estilos%20arquitect%C3%B3nicos.pdf).
 - [Arquitectura por capas](../Materiales/07%20Arquitectura%20por%20capas.pdf).
 - [Monolito modular](../Materiales/08%20Monolito%20modular.pdf).
+
+- [Arquitectura pipeline](../Materiales/09%20Arquitectura%20pipeline.pdf).
+
+- [Arquitectura microkernel](../Materiales/10%20Arquitectura%20microkernel.pdf).
+- [Arquitectura basada en servicios](../Materiales/11%20Arquitectura%20basada%20en%20servicios.pdf).
+
+10. [Ampliación capítulo 15](10%20Ampliaci%C3%B3n%20cap%C3%ADtulo%2015.md): EDA, 55 páginas, 40 figuras, contratos, entrega, mediación y datos.
+
+- [Arquitectura dirigida por eventos](../Materiales/12%20Arquitectura%20dirigida%20por%20eventos.pdf).

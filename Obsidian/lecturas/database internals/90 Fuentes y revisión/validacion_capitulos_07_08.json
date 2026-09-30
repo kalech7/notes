@@ -1,0 +1,38 @@
+{
+  "stats": {
+    "wikilinks": 288,
+    "markdown_local": 0,
+    "pdf_anchors": 30,
+    "yaml_new": 31,
+    "mermaid": 9,
+    "png_embeds": 5
+  },
+  "issues": [],
+  "pdfs": [
+    {
+      "file": "07 Almacenamiento estructurado como log.pdf",
+      "identical": true,
+      "pages": 36,
+      "sha256": "60faf5b4584f6fdbc051fb377f59e2903fbf192ca7b5191496401a224dbf7eae"
+    },
+    {
+      "file": "08 Sistemas distribuidos.pdf",
+      "identical": true,
+      "pages": 26,
+      "sha256": "74681231bac1f955c54baa99b233268b7f9368b144754d2f51695dba8d477668"
+    }
+  ],
+  "new_notes": 31,
+  "chapters": [
+    {
+      "folder": "07 Almacenamiento estructurado como log",
+      "notes": 16,
+      "words": 12035
+    },
+    {
+      "folder": "08 Introducción a sistemas distribuidos",
+      "notes": 13,
+      "words": 9573
+    }
+  ]
+}

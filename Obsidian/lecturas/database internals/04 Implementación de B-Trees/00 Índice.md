@@ -27,4 +27,4 @@ Lee las notas del 01 al 06. Cada una aísla un mecanismo para que puedas estudia
 
 *Lo que demuestra la imagen:* a la izquierda existen bytes libres, pero ningún tramo contiguo suficiente; a la derecha, vacuum conserva las celdas vivas y reúne el espacio en un intervalo utilizable. La transformación no es cosmética: cambia si una escritura cabe. La nota 05 explica por qué MVCC decide cuándo esa recolección es segura.
 
-**Al terminar:** [[Obsidian/lecturas/database internals/05 Práctica y repaso/00 Índice|Continuar con práctica y repaso]].
+**Al terminar:** [[Obsidian/lecturas/database internals/05 Procesamiento de transacciones y recuperación/00 Índice|Continuar con el capítulo 5: transacciones y recuperación]]. También puedes volver a [[Obsidian/lecturas/database internals/05 Práctica y repaso/00 Índice|práctica y repaso de capítulos 1–4]].

@@ -1,0 +1,703 @@
+{
+  "agent": "fundamentos",
+  "date": "2026-09-29",
+  "scope_folders": [
+    "01 Fundamentos de IA",
+    "02 Modelos probabilísticos y generativos",
+    "03 Transformers",
+    "04 Entrenamiento y alineamiento",
+    "05 Inferencia y prompting",
+    "06 Talleres y práctica"
+  ],
+  "notes_read": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/01 S00 - Qué es la IA y cómo evaluar inteligencia.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/02 S00 - Reglas modelos y aprendizaje desde datos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/03 S00 - Perceptrón redes neuronales y XOR.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/04 S00 - Correlación causalidad y límites de las predicciones.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/05 S01 - Probabilidad y teorema de Bayes paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/06 S01 - Modelos discriminativos y generativos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/07 S01 - Naive Bayes con un ejemplo de spam.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/08 S01 - GMM variables latentes y algoritmo EM.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/09 S01 - Markov HMM y generación con bigramas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/10 S01 - VAE espacio latente y ELBO.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/11 S01 - Del bigrama al LLM y primeros conceptos de agentes.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/18 S02 - Transformer de extremo a extremo.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/19 S02 - Atención Q K V paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/20 S02 - Posición familias y decoder-only.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/16 AMPLIACIÓN - Cómo aprende un LLM desde el texto.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/21 S03 - Preentrenamiento autosupervisado y MLE.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/22 S03 - SFT RLHF DPO y Constitutional AI.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/23 S04 - Greedy temperatura top-k y top-p.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/25 S04 - Salidas estructuradas costo y razonamiento interno.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/13 PRÁCTICA - Repaso integrado y ejercicios resueltos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/26 S05 - Diseñar una comparación de modelos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/27 PRÁCTICA - Sesiones 02 a 05.md"
+  ],
+  "notes_read_count": 25,
+  "files_modified": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/01 S00 - Qué es la IA y cómo evaluar inteligencia.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/02 S00 - Reglas modelos y aprendizaje desde datos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/03 S00 - Perceptrón redes neuronales y XOR.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/01 Fundamentos de IA/04 S00 - Correlación causalidad y límites de las predicciones.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/05 S01 - Probabilidad y teorema de Bayes paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/08 S01 - GMM variables latentes y algoritmo EM.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/09 S01 - Markov HMM y generación con bigramas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/10 S01 - VAE espacio latente y ELBO.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/18 S02 - Transformer de extremo a extremo.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/19 S02 - Atención Q K V paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/03 Transformers/20 S02 - Posición familias y decoder-only.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/21 S03 - Preentrenamiento autosupervisado y MLE.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/22 S03 - SFT RLHF DPO y Constitutional AI.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/23 S04 - Greedy temperatura top-k y top-p.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/05 Inferencia y prompting/25 S04 - Salidas estructuradas costo y razonamiento interno.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/26 S05 - Diseñar una comparación de modelos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/27 PRÁCTICA - Sesiones 02 a 05.md"
+  ],
+  "modified_count": 18,
+  "reviewed_unchanged": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/06 S01 - Modelos discriminativos y generativos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/07 S01 - Naive Bayes con un ejemplo de spam.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/11 S01 - Del bigrama al LLM y primeros conceptos de agentes.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/02 Modelos probabilísticos y generativos/15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/04 Entrenamiento y alineamiento/16 AMPLIACIÓN - Cómo aprende un LLM desde el texto.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/13 PRÁCTICA - Repaso integrado y ejercicios resueltos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas.md"
+  ],
+  "backup_directory": "/tmp/ia-fundamentos/originales",
+  "backup_manifest": [
+    {
+      "path": "01 Fundamentos de IA/01 S00 - Qué es la IA y cómo evaluar inteligencia.md",
+      "sha256": "f675c156eda29e0bcd3eaf0cc18d43faf7dbbb8e4050759089855227c153bc90"
+    },
+    {
+      "path": "01 Fundamentos de IA/02 S00 - Reglas modelos y aprendizaje desde datos.md",
+      "sha256": "cfb080065959e1055a887d85ee54e64c2b027cd83967ef9e36429fbe919dba5a"
+    },
+    {
+      "path": "01 Fundamentos de IA/03 S00 - Perceptrón redes neuronales y XOR.md",
+      "sha256": "b5fc0ed5c6c5fe96c541eb5adbd556a1ba44364e52cf62011938a2dd7ca2603b"
+    },
+    {
+      "path": "01 Fundamentos de IA/04 S00 - Correlación causalidad y límites de las predicciones.md",
+      "sha256": "d165af3cc962fe59e1f264f03d92a2c8a679209ca4e192871ba5b385049c972f"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/05 S01 - Probabilidad y teorema de Bayes paso a paso.md",
+      "sha256": "4711da58658273138e380c2dc9a07fa955c350b2fe4e18e7ee52cbc68b3bd5ed"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/06 S01 - Modelos discriminativos y generativos.md",
+      "sha256": "e8aad9f08792d9187bb357e062a0ee7e3b759aa30f349055ddeb85e38600db16"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/07 S01 - Naive Bayes con un ejemplo de spam.md",
+      "sha256": "ce6305f3b23c7acf24867067e88c5318bbc5040c9b71d8cb64190db632333398"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/08 S01 - GMM variables latentes y algoritmo EM.md",
+      "sha256": "d13264d4cd42d4dbe861ba66ef0570c76b32647de056d019cdef03029735957e"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/09 S01 - Markov HMM y generación con bigramas.md",
+      "sha256": "b615fa83b2bfef9e7a9b67b2243d09d5d41340259137fb10bc063299d91bd2b5"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/10 S01 - VAE espacio latente y ELBO.md",
+      "sha256": "690399d03ca52463f05d68e893257d1ea624a2f8455efaa442adc751a9378c7a"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/11 S01 - Del bigrama al LLM y primeros conceptos de agentes.md",
+      "sha256": "79661d1ef93c600acdf93a5505e464bb26bc35b2b43faa55cc18dfdeab3818e6"
+    },
+    {
+      "path": "02 Modelos probabilísticos y generativos/15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números.md",
+      "sha256": "28cb677c0898c4d6019e5055777ad5a93d1e7ad4abe6fe885a7f399e46b3115c"
+    },
+    {
+      "path": "03 Transformers/18 S02 - Transformer de extremo a extremo.md",
+      "sha256": "e9fe10f0b3b8382bf6f9ea0091a2e738cab1142460b8c2282796e0e450bc19cb"
+    },
+    {
+      "path": "03 Transformers/19 S02 - Atención Q K V paso a paso.md",
+      "sha256": "cd109b81934598fe64a4c7ea12cf67adc12ef56f6be7c9867de5eec4fe0d9fc3"
+    },
+    {
+      "path": "03 Transformers/20 S02 - Posición familias y decoder-only.md",
+      "sha256": "b25f555d26cb26d5eb03674ff8eb33c452fd1dedaf103a44c1fd936e07073096"
+    },
+    {
+      "path": "04 Entrenamiento y alineamiento/16 AMPLIACIÓN - Cómo aprende un LLM desde el texto.md",
+      "sha256": "aae638ec38d0c258491d4607f43b9a29489de70a2581c516ec8cba20b66caa56"
+    },
+    {
+      "path": "04 Entrenamiento y alineamiento/21 S03 - Preentrenamiento autosupervisado y MLE.md",
+      "sha256": "70430bd0bdb0526b97b633a0ff6e08fd2f152f51dda4a5f221b41b3a9480f150"
+    },
+    {
+      "path": "04 Entrenamiento y alineamiento/22 S03 - SFT RLHF DPO y Constitutional AI.md",
+      "sha256": "699306612350ebccd25ee1cf61aeddd1bc6a6be42a39a96217001baf6c92b9b1"
+    },
+    {
+      "path": "05 Inferencia y prompting/23 S04 - Greedy temperatura top-k y top-p.md",
+      "sha256": "c45bc1fe76144b891d66db8c98683e882f866921761f34d8170316f86dc23cc2"
+    },
+    {
+      "path": "05 Inferencia y prompting/24 S04 - Zero-shot few-shot y razonamiento.md",
+      "sha256": "098465bf6c28605a9b419cb23509bf68773a22ddb430de58c9fdccea4cb56968"
+    },
+    {
+      "path": "05 Inferencia y prompting/25 S04 - Salidas estructuradas costo y razonamiento interno.md",
+      "sha256": "85fc9239cd702d05f1f82d02c9998315ba7cc6e8da69b03576d3405c54fb2ed2"
+    },
+    {
+      "path": "06 Talleres y práctica/13 PRÁCTICA - Repaso integrado y ejercicios resueltos.md",
+      "sha256": "13db0a51fb2f4d583b3d5107a520813c6694fbfa4092af10b0c89142cc59ba29"
+    },
+    {
+      "path": "06 Talleres y práctica/17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas.md",
+      "sha256": "56e2d7f45fb476e5b2d11eb8eaf3d0ce278f076e0bb1c1f8352c37c0569f6b18"
+    },
+    {
+      "path": "06 Talleres y práctica/26 S05 - Diseñar una comparación de modelos.md",
+      "sha256": "346d80512f674351847224eb566aedcdb1fd8d5c52f320861c3f2cc496850412"
+    },
+    {
+      "path": "06 Talleres y práctica/27 PRÁCTICA - Sesiones 02 a 05.md",
+      "sha256": "6c0b7b4ee056477f3c0392c4bd794c2c7bb51713094009aec06a9725a9b41d35"
+    }
+  ],
+  "session_sources": [
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-00.pdf",
+      "pages": 15,
+      "text_pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "visual_pages_reviewed": [
+        13,
+        14
+      ],
+      "printed_pdf_offset": 0
+    },
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-01.pdf",
+      "pages": 20,
+      "text_pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "visual_pages_reviewed": [
+        13,
+        16,
+        17
+      ],
+      "printed_pdf_offset": 0
+    },
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-02.pdf",
+      "pages": 24,
+      "text_pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "visual_pages_reviewed": [
+        12,
+        15,
+        17,
+        18,
+        19,
+        21
+      ],
+      "printed_pdf_offset": 0
+    },
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-03-1.pdf",
+      "pages": 24,
+      "text_pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "visual_pages_reviewed": [
+        15,
+        18,
+        19,
+        22
+      ],
+      "printed_pdf_offset": 0
+    },
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-04.pdf",
+      "pages": 32,
+      "text_pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "visual_pages_reviewed": [
+        7,
+        21,
+        22,
+        28,
+        29
+      ],
+      "printed_pdf_offset": 0
+    },
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-05.pdf",
+      "pages": 15,
+      "text_pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "visual_pages_reviewed": [
+        5,
+        6,
+        7,
+        11
+      ],
+      "printed_pdf_offset": 0
+    }
+  ],
+  "session_pages_total": 130,
+  "notebooks": [
+    {
+      "path": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/s1-lun-estudiante.ipynb",
+      "cells_read": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "stored_outputs_read": true,
+      "stored_image_inspected": "cell10 GMM scatter",
+      "execution": "No notebook completo ejecutado. Solo corpus y cálculos locales sin API."
+    }
+  ],
+  "supporting_primary_sources": [
+    {
+      "file": "vaswani-2017-attention-is-all-you-need.pdf",
+      "pages_read": [
+        4,
+        5,
+        6,
+        9
+      ]
+    },
+    {
+      "file": "rafailov-2023-dpo.pdf",
+      "pages_read": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "file": "ouyang-2022-instructgpt.pdf",
+      "pages_read": [
+        1,
+        8,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "file": "bai-2022-constitutional-ai.pdf",
+      "pages_read": [
+        5,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "file": "wei-2022-chain-of-thought.pdf",
+      "pages_read": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "file": "kingma-2013-vae.pdf",
+      "pages_read": [
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "file": "bishop-2006-prml.pdf",
+      "pages_read": [
+        459,
+        460,
+        635,
+        636,
+        639,
+        640,
+        641,
+        642,
+        643,
+        644,
+        645
+      ],
+      "printed_pdf_offset": 20
+    }
+  ],
+  "web_primary_checked": [
+    {
+      "url": "https://arxiv.org/abs/2205.14135",
+      "claim": "FlashAttention reduce IO y memoria de atención exacta; su aritmética sigue siendo cuadrática."
+    },
+    {
+      "url": "https://arxiv.org/abs/2104.09864",
+      "claim": "RoPE rota Q y K; sus productos incorporan posición relativa."
+    },
+    {
+      "url": "https://docs.pydantic.dev/latest/concepts/strict_mode/",
+      "claim": "Modo estricto reduce coerción de tipos; se documenta en nota25."
+    }
+  ],
+  "linked_figures_visual_reviewed": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/01-perceptron.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/02-and-xor.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/03-bayes-conteos.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/04-gmm-componentes.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/05-em-ciclo.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/06-hmm.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/07-vae.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/08-llm-ciclo.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/09-bayes-incertidumbre.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/10-causalidad.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/11-transformer-decoder.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/12-atencion-causal.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/13-decodificacion.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/14-ciclo-alineamiento.png",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Recursos visuales/15-comparacion-modelos.png"
+  ],
+  "figures_findings": "PNG 01–15 legibles, sin solapes relevantes y matemáticamente coherentes. Figura 14 simplifica Constitutional AI; nota 22 explicita sus dos etapas. No se modificaron recursos compartidos.",
+  "findings_before_after": [
+    {
+      "nota": "01",
+      "antes": "Evaluación operativa correcta; no calculaba sensibilidad ni discutía precisión indefinida.",
+      "despues": "Añadidas sensibilidad cero, precisión indefinida y evaluación por grupos en el caso de 990 correos normales."
+    },
+    {
+      "nota": "02",
+      "antes": "El bucle de aprendizaje se explicaba principalmente con etiquetas supervisadas.",
+      "despues": "Distingue señales supervisadas, sin etiquetas, autosupervisadas y por refuerzo; regularización y combinación de reglas con modelos."
+    },
+    {
+      "nota": "03",
+      "antes": "XOR se justificaba mediante geometría y una red OR/AND verbal.",
+      "despues": "Incluye contradicción algebraica y pesos/sesgos completos de la red oculta; explicación natural de la figura."
+    },
+    {
+      "nota": "04",
+      "antes": "Observar e intervenir se distinguían solo conceptualmente.",
+      "despues": "Ejemplo calculado de 0.74 observacional frente a 0.50 por intervención, con supuestos explícitos y matiz de retroalimentación."
+    },
+    {
+      "nota": "05",
+      "antes": "No se distinguía completamente la normalización de la posterior de la verosimilitud sobre parámetros.",
+      "despues": "Incluye verosimilitud de moneda, coeficiente binomial, evidencia integral y requisito de evidencia positiva."
+    },
+    {
+      "nota": "08",
+      "antes": "Paso M limitado a medias/pesos y garantía EM resumida.",
+      "despues": "Covarianzas ponderadas, varianza 5.247, log-verosimilitud observada, no descenso de EM exacto y singularidades."
+    },
+    {
+      "nota": "09",
+      "antes": "Predicción del estado 0.78 sin terminar el ejemplo de observación.",
+      "despues": "Posterior 0.3071/0.6929, siguiente predicción 0.4843 y diferencias entre filtrado, suavizado y Viterbi."
+    },
+    {
+      "nota": "10",
+      "antes": "ELBO correcta; faltaban puente con EM, distinción de las dos KL y ejemplo de regularización.",
+      "despues": "Identidad de la cota, KL gaussiana 2.318, likelihood de reconstrucción, colapso posterior y posibilidad de decoder autorregresivo."
+    },
+    {
+      "nota": "18",
+      "antes": "Pipeline correcto con formas de matrices y normalización resumidas.",
+      "despues": "Añade formas V×d, n×d y n×V, FFN, LayerNorm, pre/post-norm y diferencia entre ancho 512 y contexto."
+    },
+    {
+      "nota": "19",
+      "antes": "Ejemplo banco consultaba parque futuro; dominio universal de diagonal XXᵀ; multi-head presentado sin capacidad adicional; saturación de dimensión 256 demasiado fuerte.",
+      "despues": "Separa atención bidireccional/causal, usa contraejemplo y condición de normas iguales, aclara varias funciones de atención, escala probabilística, KV y FlashAttention."
+    },
+    {
+      "nota": "20",
+      "antes": "Tabla de posiciones sin desarrollar seno/coseno ni rotación.",
+      "despues": "Incluye fórmula sinusoidal, ejemplo de rotación 2D, límites de extrapolación y familias por flujo de información."
+    },
+    {
+      "nota": "21",
+      "antes": "Descenso sencillo sin distinguir AdamW y análisis de corpus resumido.",
+      "despues": "Distingue AdamW, variación por minilotes, contaminación de pruebas y alcance del resultado InstructGPT 1.3B frente a GPT-3 175B."
+    },
+    {
+      "nota": "22",
+      "antes": "DPO explicado por recompensa implícita sin pérdida completa; Constitutional AI con segunda etapa resumida.",
+      "despues": "Pérdida DPO completa, log-probabilidad de respuestas, cuenta 0.405, MLE de preferencias frente a texto y etapas supervisada/RLAIF de Constitutional AI."
+    },
+    {
+      "nota": "23",
+      "antes": "Greedy y top-p sin ejemplos completos de secuencia y cortes.",
+      "despues": "Contraejemplo de rutas 0.30 frente a 0.36, cortes top-p 0.9/0.8, límites y desempates explícitos."
+    },
+    {
+      "nota": "24",
+      "antes": "Auto-consistencia y árboles no desarrollaban equivalencia de respuestas y límites del controlador.",
+      "despues": "Normalización 9/9.0/nueve, mayoría errónea, latencia paralela, búsqueda frente a simulación de expertos y resultado histórico 18→57 con greedy."
+    },
+    {
+      "nota": "25",
+      "antes": "Faltaban matices de coerción, calibración y conteo de razonamiento.",
+      "despues": "Modo estricto, confianza frente a calibración, gramática/interrupciones, desconocidos, entrenamiento de razonamiento y no doble conteo de salida interna."
+    },
+    {
+      "nota": "26",
+      "antes": "La revisión de S05 resumía sus partes sin desarrollar Parte 0, 2.a, 4.b y rúbrica.",
+      "despues": "Tabla de pesos 100%, taller 25% del curso, entropía/núcleo 0.9, 180 llamadas, casos frente a repeticiones, contaminación y dominancia."
+    },
+    {
+      "nota": "27",
+      "antes": "Salida D tenía un prefijo que fallaba al parsear aunque la solución asumía JSON válido.",
+      "despues": "Objeto D corregido y enum también como esquema; tres ejercicios añadidos sobre XXᵀ, preferencias y contaminación."
+    }
+  ],
+  "numeric_verification": {
+    "GMM_mu": 1.4444444444444442,
+    "GMM_variance": 5.246913580246913,
+    "HMM_stable": 0.30708661417322836,
+    "HMM_next": 0.48425196850393704,
+    "VAE_KL": 2.3181471805599454,
+    "DPO_loss": 0.40546510810816444,
+    "Bradley_Terry_loss": 0.2410084538329922,
+    "Bayes_observation": 0.7400000000000001,
+    "Bayes_intervention": 0.5,
+    "LM_loss": 0.7675283643313485,
+    "Beta8_4_sd": 0.1307440900921227,
+    "Beta71_31_sd": 0.045320139412985405,
+    "NB_spam_tokens": 33,
+    "NB_ham_tokens": 39,
+    "NB_vocab": 44,
+    "NB_posterior": 0.9825663914710489,
+    "bigram_counts": {
+      "tokens": 57,
+      "vocab": 29,
+      "pairs": 56
+    }
+  },
+  "validation": {
+    "notes": 25,
+    "yaml_preserved": true,
+    "wiki_links_checked": 140,
+    "pdf_anchors_checked": 65,
+    "images_unique": 15,
+    "errors": [],
+    "mermaid": "render a cargo del agente coordinador; no nuevos bloques añadidos"
+  },
+  "coverage": {
+    "S00": [
+      "criterio operativo e historia",
+      "reglas y aprendizaje",
+      "perceptrón XOR",
+      "causalidad"
+    ],
+    "S01": [
+      "probabilidad/Bayes",
+      "discriminativo/generativo",
+      "NB",
+      "GMM/EM",
+      "Markov/HMM/bigramas",
+      "VAE",
+      "LLM/RAG/agente introducción"
+    ],
+    "S02": [
+      "EM→VAE",
+      "tokenización",
+      "QKV/escala/máscara/MHA",
+      "posiciones y familias",
+      "bloques/costos/generación"
+    ],
+    "S03": [
+      "autosupervisión/MLE/gradiente/perplejidad",
+      "modelo base/SFT",
+      "recompensa/RLHF/KL",
+      "DPO",
+      "ConstitutionalAI",
+      "límites yregresiones"
+    ],
+    "S04": [
+      "greedy/temperatura/top-k/top-p",
+      "ICL/CoT/auto-consistencia/árboles",
+      "esquema/validación",
+      "costo",
+      "razonamiento interno/fidelidad"
+    ],
+    "S05": [
+      "tarea/verificador",
+      "latencia/costo",
+      "barridos/repeticiones",
+      "partes0–5/rúbrica/entregables",
+      "reproducibilidad"
+    ]
+  },
+  "limits": [
+    "Los seis PDF se leyeron completos por texto; 24 diapositivas clave se inspeccionaron también visualmente. No se afirma inspección visual individual de las 130 páginas.",
+    "Libros y papers de apoyo se consultaron por secciones indicadas; no se afirma lectura completa de todos sus volúmenes.",
+    "No se ejecutaron llamadas API ni barridos de proveedores ni notebooks completos. No se validan precios/modelos actuales ni compatibilidad de endpoints.",
+    "Los notebooks s1-mar/s1-mie/s1-jue referidos por diapositivas no están en Materiales; las tareas de esos notebooks quedan documentadas a nivel académico a partir de las diapositivas, sin auditar sus celdas ausentes.",
+    "S04 cita papers adicionales sobre test-time compute/fidelidad no presentes localmente; no se incorporaron sus cifras como resultados propios verificados.",
+    "No se auditaron en este alcance todas las entregas personales de talleres ni se certifica cumplimiento de rúbrica docente.",
+    "Mermaid renderizado se coordina centralmente con agente raíz; no se crearon nuevos bloques ni figuras compartidas.",
+    "Se conservaron frontmatters originales; no se inventó fecha de creación de notas antiguas."
+  ],
+  "completeness_recommendation": "Cobertura conceptual sustancial de todos los núcleos de las sesiones00–05 y notebook del lunes. Las notas corregidas son autosuficientes para estudiar esos temas, con ejemplos y condiciones explícitas. No afirmar completitud absoluta de todos los materiales externos ni de notebooks ausentes; registrar esos límites en fuentes90.",
+  "shared_files_not_modified": true
+}

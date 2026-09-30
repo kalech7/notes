@@ -117,4 +117,4 @@ La tienda abre en veinte ciudades y las promociones de fin de semana multiplican
 
 ---
 
-[[Obsidian/lecturas/Fundamentals of Software Architecture/11 Monolito modular/08 Caso EasyMeals|← Anterior]] · [[Obsidian/lecturas/Fundamentals of Software Architecture/11 Monolito modular/00 Índice|Índice del capítulo 11]]
+[[Obsidian/lecturas/Fundamentals of Software Architecture/11 Monolito modular/08 Caso EasyMeals|← Anterior]] · [[Obsidian/lecturas/Fundamentals of Software Architecture/12 Arquitectura pipeline/00 Índice|Capítulo 12 · Pipeline →]]

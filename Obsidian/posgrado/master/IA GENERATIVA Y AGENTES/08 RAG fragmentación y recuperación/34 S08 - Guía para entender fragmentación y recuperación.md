@@ -59,9 +59,9 @@ Si alguno de estos conceptos todavía se siente abstracto, consulta [[29 S06 - D
 
 ## Qué fuente se está explicando
 
-Estas notas desarrollan [[sesion-08.pdf]], de 28 páginas, titulada *Fragmentación y recuperación*. Las referencias a páginas corresponden al PDF. La sesión 07 no está incorporada en los materiales de este conjunto; el puente conceptual se explica aquí sin atribuirle contenido no consultado.
+Estas notas desarrollan [[sesion-08.pdf]], de 28 páginas, titulada *Fragmentación y recuperación*. Las referencias a páginas corresponden al PDF. La sesión 07, incorporada posteriormente al conjunto, desarrolla bases de datos vectoriales. Su revisión está en sus notas correspondientes; estas notas desarrollan el contenido de la sesión 08.
 
-Los ejemplos, derivaciones y gráficos añadidos se identifican como explicaciones propias. Los modelos, configuraciones y resultados históricos del curso se presentan **según las diapositivas**, no como una verificación actual de servicios o bibliotecas. No se ejecutó el notebook ni el Lab 02, que esta solicitud no adjunta.
+Los ejemplos, derivaciones y gráficos añadidos se identifican como explicaciones propias. Los modelos, configuraciones y resultados históricos del curso se presentan **según las diapositivas**, no como una verificación actual de servicios o bibliotecas. La entrega archivada del Taller 2 sí está disponible y se inspeccionó de forma estática para complementar las notas 50–58. No se volvió a ejecutar el laboratorio ni se contactaron servicios de modelos.
 
 > [!abstract] Para recordar
 > **RAG es una cadena de selección de evidencia.** La respuesta depende tanto de lo que el modelo recibe como de su capacidad para redactar.

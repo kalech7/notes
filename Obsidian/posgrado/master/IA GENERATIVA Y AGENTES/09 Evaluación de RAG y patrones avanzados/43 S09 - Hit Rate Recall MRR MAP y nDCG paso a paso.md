@@ -40,7 +40,7 @@ $$
 
 Hit Rate no distingue recuperar una pieza de recuperar todas. Tampoco distingue el primer puesto del último admitido. Es útil para saber en cuántas preguntas llegó **alguna evidencia relevante**, pero un acierto no demuestra que haya evidencia suficiente para responder todo.
 
-## 3. Recall: ¿qué fracción de lo necesario recuperé?
+## 3. Recall: ¿qué fracción de los relevantes anotados recuperé?
 
 $$
 \mathrm{Recall}_q@k=\frac{|R_q\cap T_{q,k}|}{|R_q|}
@@ -65,8 +65,6 @@ $$
 El corte importa. Si el primer relevante está quinto, RR@3 = 0 y RR@5 = 0,2. No puedes revisar todo el ranking al calcular una métrica que declaraste cortada en 3.
 
 ![[28-s09-metricas-y-posicion.png]]
-
-### Cómo leer el gráfico
 
 El panel izquierdo muestra un ejemplo propio: A y B son necesarios; A está segundo y B cuarto. Verde significa relevante, gris significa no relevante y la línea naranja cierra el top-3. Dentro del corte hay una de dos piezas: Hit@3 = 1, Recall@3 = 0,5 y RR@3 = 0,5. Al ampliar a 5, Recall sube a 1, pero RR sigue en 0,5 porque el primer acierto no se movió.
 
@@ -112,13 +110,22 @@ A veces un resultado es parcialmente útil y otro responde completamente. Puedes
 
 $$DCG@k=\sum_{i=1}^{k}\frac{2^{g_i}-1}{\log_2(i+1)},\qquad nDCG@k=\frac{DCG@k}{IDCG@k}$$
 
-$g_i$ es el grado en el puesto i. La ganancia $2^{g_i}-1$ da más peso a los grados altos; el logaritmo descuenta los puestos tardíos. IDCG es el valor del orden ideal con los mismos juicios y corte. Hay variantes con ganancia lineal: especifica la usada.
+$g_i$ es el grado en el puesto i. La ganancia $2^{g_i}-1$ da más peso a los grados altos; el logaritmo descuenta los puestos tardíos. IDCG es el valor del orden ideal con el mismo corte y **todos los candidatos juzgados relevantes**, incluidos los que el buscador omitió. Ordenar solo los resultados devueltos puede inflar nDCG al esconder evidencias ausentes. Hay variantes con ganancia lineal: especifica la usada.
 
-Ejemplo: grados `[0,2,1]`. DCG ≈ 0 + 3/1,585 + 1/2 = 2,393. El orden ideal `[2,1,0]` produce IDCG ≈ 3 + 1/1,585 = 3,631. Por tanto nDCG ≈ 0,659. No quiere decir «65,9 % de respuestas correctas»: es ganancia descontada relativa al orden ideal. Si IDCG = 0, el protocolo debe declarar cómo maneja ese caso.
+Ejemplo: grados recuperados `[0,2,1]`, suponiendo que no hay otros candidatos con grado positivo en los juicios de referencia. DCG ≈ 0 + 3/1,585 + 1/2 = 2,393. El orden ideal `[2,1,0]` produce IDCG ≈ 3 + 1/1,585 = 3,631. Por tanto nDCG ≈ 0,659. No quiere decir «65,9 % de respuestas correctas»: es ganancia descontada relativa al orden ideal. Si IDCG = 0, el protocolo debe declarar cómo maneja ese caso.
 
 ## 8. Dónde no usar estas cuentas
 
 Las preguntas negativas tienen cero relevantes. Recall tendría denominador cero. En el protocolo de esta sesión se excluyen de Hit Rate, Recall y MRR y se evalúan por abstención. Si no hay preguntas respondibles, reporta **no aplicable**, no un cero que sugiera fracaso.
+
+## Relevancia alternativa y evidencia que debe combinarse
+
+Recall cuenta unidades relevantes anotadas, que pueden ser **alternativas**. Si A y B explican por separado toda la misma regla, recuperar solo A da Recall $1/2$, aunque la respuesta ya tenga evidencia suficiente. Si A contiene la regla y B una excepción necesaria, el mismo $1/2$ indica una carencia importante. La métrica por sí sola no distingue ambos casos.
+
+Una evaluación de suficiencia puede anotar grupos de requisitos. Supón dos requisitos: regla general, satisfecha por A1 **o** A2, y excepción, satisfecha por B. Recuperar A1 y A2 cubre solo uno de dos requisitos; recuperar A1 y B cubre ambos. La cobertura de requisitos es $\#\text{requisitos cubiertos}/\#\text{requisitos necesarios}$, con una regla explícita para considerar cubierto cada grupo. No la llames Recall de fragmentos sin declarar que cambiaste la unidad.
+
+Para medir el foco, **Precision@k** es $|R_q\cap T_{q,k}|/k$ si el protocolo entrega exactamente $k$ resultados. Si entrega menos, declara si divides por $k$ o por el número realmente entregado. Un top-5 con un relevante puede tener Hit = 1, Recall = 1 para un único relevante y Precision = 0.2 a la vez. Antes de calcular AP o Recall, los identificadores duplicados no deben contarse como nuevos aciertos; establece una lista de resultados y unidades de referencia sin duplicados.
+
 
 > [!abstract] Para recordar
 > Hit Rate = presencia de alguna evidencia. Recall = cobertura de la evidencia anotada. MRR = prontitud del primer acierto. MAP = orden de varios aciertos. nDCG = orden con grados de relevancia.

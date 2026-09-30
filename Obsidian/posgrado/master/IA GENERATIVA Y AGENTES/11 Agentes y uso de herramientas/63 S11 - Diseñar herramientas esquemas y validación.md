@@ -1,5 +1,7 @@
 ---
 title: "63 S11 - Diseñar herramientas esquemas y validación"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -23,7 +25,7 @@ Para el modelo, una herramienta es una posibilidad descrita: qué hace, cuándo 
 
 ![[44-s11-contrato-herramienta.png]]
 
-**Cómo leerlo:** la columna izquierda mejora la selección; la derecha hace cumplir el contrato. El dato `2026-99` puede parecer una cadena de mes, pero el ejecutor debe rechazarlo porque 99 no es un mes válido.
+La columna izquierda mejora la selección; la derecha hace cumplir el contrato. El dato `2026-99` puede parecer una cadena de mes, pero el ejecutor debe rechazarlo porque 99 no es un mes válido.
 
 ## 2. Diseñar desde la intención del usuario
 

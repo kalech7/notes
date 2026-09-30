@@ -83,9 +83,26 @@ En [[18 S02 - Transformer de extremo a extremo]] estudiaste cómo un transformer
 > [!question]- Comprueba tu comprensión
 > **¿Por qué el bi-encoder permite precalcular documentos y el cross-encoder no de la misma manera?** Porque el primero calcula cada documento independientemente de la consulta; el segundo puntúa un par completo y debe ejecutar el modelo con cada consulta y candidato.
 
+## Qué significan las pérdidas de entrenamiento
+
+**NLI** significa inferencia en lenguaje natural: dado un texto y una hipótesis, se clasifican relaciones como implicación, contradicción o neutralidad. No equivale a asignar una distancia universal entre todas las frases. En la clasificación de SBERT, una cabeza usa $[u;v;|u-v|]$ y minimiza entropía cruzada: para una etiqueta correcta $y$, $L=-\log p_y$. Si asigna $p_y=0.8$, la pérdida es aproximadamente $0.223$; si asigna $0.2$, es $1.609$.
+
+En regresión de similitud, para un par con objetivo escalado $y$, puede usarse $L=(\cos(u,v)-y)^2$. Un objetivo $0.8$ y una predicción $0.5$ producen pérdida $0.09$. La escala de las etiquetas debe concordar con el entrenamiento.
+
+Para triplet, con ancla $a$, positivo $p$ y negativo $n$:
+
+$$L=\max\{0,\|a-p\|-\|a-n\|+\varepsilon\}.$$
+
+Con distancias $0.4$ y $0.9$ y margen $1$, resulta $L=0.5$. Si la distancia al negativo sube a $1.5$, la pérdida queda en cero: ya se cumple el margen. El objetivo no exige seguir alejando indefinidamente al negativo. Son objetivos supervisados sobre relaciones entre textos; la palabra «contrastivo» de la diapositiva no hace idénticas sus fórmulas.
+
+La comparación de todos los pares del ejemplo histórico es distinta de una búsqueda corriente. Con $N$ documentos precalculados, una consulta requiere un nuevo embedding y comparar con el índice; una búsqueda exhaustiva de vectores cuesta del orden de $Nd$ operaciones, y un índice puede reducir el trabajo con sus propios compromisos. El cross-encoder, en cambio, debe procesar cada par consulta-candidato que quiera puntuar.
+
+
 ## Fuente y alcance
 
 - [[sesion-06.pdf#page=8|Sesión 06, p. 8]]: estructura siamesa, objetivos y configuración NLI.
 - [[sesion-06.pdf#page=9|Sesión 06, p. 9]]: comparación histórica de correlaciones.
 - [[sesion-06.pdf#page=10|Sesión 06, p. 10]]: bi-encoder, cross-encoder y costos del experimento.
 - La posible etapa de reordenamiento se presenta como aplicación conceptual de ambas arquitecturas, no como resultado medido en esta sesión.
+
+Fuente primaria complementaria de las pérdidas: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s2-rag-vector-search/reimers-2019-sentence-bert.pdf#page=3|Sentence-BERT, PDF p. 3]]. Las cuentas numéricas son ejemplos propios.

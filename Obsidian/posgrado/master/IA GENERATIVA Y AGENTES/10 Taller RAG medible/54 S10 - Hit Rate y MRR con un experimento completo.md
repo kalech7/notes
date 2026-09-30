@@ -49,7 +49,7 @@ MRR promedia esas recompensas. Valora encontrar pronto la primera evidencia, per
 
 ![[38-s10-metricas-por-pregunta.png]]
 
-**Cómo leerlo:** cada fila es una pregunta. Un recuadro verde marca el primer relevante; los anteriores son candidatos no relevantes. Las columnas finales muestran lo que aporta esa fila al promedio. Las preguntas q5 y q8 tienen cero porque no hay relevante en el top-5; no afirmamos que sea imposible encontrarlo más abajo.
+Cada fila es una pregunta. Un recuadro verde marca el primer relevante; los anteriores son candidatos no relevantes. Las columnas finales muestran lo que aporta esa fila al promedio. Las preguntas q5 y q8 tienen cero porque no hay relevante en el top-5; no afirmamos que sea imposible encontrarlo más abajo.
 
 | Pregunta | Primer relevante | H@3 | RR@3 | H@5 | RR@5 |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -117,9 +117,20 @@ Compara por pregunta: cuál mejoró, cuál empeoró y por qué. Si eliges la ext
 
 Sin nombre de métrica, referencia, corte y población, el número es ambiguo. Puede ser un coseno, una proporción de aciertos, un promedio de rangos recíprocos o una evaluación de fidelidad; sus interpretaciones son distintas.
 
-Además, con ocho respondibles y promedio binario simple, **0,70 no es un Hit Rate exacto posible**: los valores avanzan de 0,125 en 0,125. Podría proceder de otra cantidad de casos, otra agregación o un redondeo poco preciso. La página 3 menciona «aquel 0,70», pero este PDF no permite identificar su experimento original. No debemos inventarlo.
+Además, con ocho respondibles y promedio binario simple, **0,70 no es un Hit Rate exacto posible**: los valores avanzan de 0,125 en 0,125. Podría proceder de otra cantidad de casos, otra agregación o un redondeo poco preciso. La página 3 remite al ejemplo desarrollado en la sesión 09, p. 16: siete respondibles y tres negativas, con siete aciertos. Allí 7/10 = 0,70 es el denominador incorrecto, y 7/7 = 1 el Hit correcto; véase [[45 S09 - Preguntas negativas y abstención]]. Ese ejemplo docente es distinto del golden set real de la entrega.
 
 > [!abstract] Plantilla para explicar una cifra
 > «Esta métrica mide ___, usa como referencia ___, se calcula a k=___ sobre ___ preguntas y vale ___. No mide ___».
 
-**Fuente:** PDF, pp. 3, 5, 11 y 13. Los ocho rankings y todas sus cuentas son ejemplos propios, reproducibles en `verificar_ejemplos_s10.py`.
+## Resultados de la entrega archivada: un segundo experimento
+
+Los rankings didácticos anteriores se conservan como ejercicio propio. En `resultados.csv` de la entrega, las posiciones del primer acierto para las ocho respondibles son $[1,3,3,2,3,\varnothing,1,1]$, tanto a k=3 como a k=5. Por tanto:
+
+$$Hit=7/8=0.875,\qquad MRR=\frac{1+1/3+1/3+1/2+1/3+0+1+1}{8}=0.5625.$$
+
+En ese snapshot, subir a cinco no gana preguntas ni adelanta el primer acierto, aunque cambia las respuestas del generador. Si se dividieran los siete aciertos por las diez preguntas incluidas las negativas, aparecería otra vez $0.70$: aquí el valor correcto sería $0.875$, y el techo incorrecto sería $8/10=0.8$. El mismo decimal puede ocultar diseños experimentales distintos; siempre muestra el numerador y la población.
+
+Fuente adicional: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/talleres/taller 2/Entrega_Taller_02.zip|Entrega archivada]], `resultados.csv` y `evidencias/tabla_metricas_baseline.csv`. Son salidas históricas revisadas, no mediciones nuevas del corpus editado.
+
+
+**Fuente:** PDF, pp. 3, 5, 11 y 13. Los ocho rankings de la sección 4 y sus cuentas son ejemplos propios, reproducibles en `verificar_ejemplos_s10.py`.

@@ -1,0 +1,24 @@
+{
+  "fecha": "2026-09-30",
+  "notas_capitulo": 11,
+  "archivos_markdown_validados": 21,
+  "wikilinks_comprobados": 195,
+  "referencias_pdf_comprobadas": 29,
+  "png": 10,
+  "preguntas_plegables": 38,
+  "bloques_mermaid": 3,
+  "pdf_paginas": 31,
+  "copia_sha256_identica": true,
+  "errores": [],
+  "mermaid_renderizados": 3,
+  "png_revisados_visualmente": 10,
+  "laboratorio_ejecutado": true,
+  "fifo_misses": {
+    "3_frames": 9,
+    "4_frames": 10
+  },
+  "lru_misses": {
+    "3_frames": 10,
+    "4_frames": 8
+  }
+}

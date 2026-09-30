@@ -135,6 +135,22 @@ No interpretes una traza visible como una explicación garantizada del mecanismo
 - [ ] Se manejan rechazos y entradas fuera de dominio.
 - [ ] Se comparan niveles de razonamiento con la misma tarea y verificador.
 
+## El validador también tiene supuestos
+
+El ejemplo de clase declara los campos, pero las librerías pueden **coaccionar** ciertos tipos. Por ejemplo, aceptar la cadena `"0.7"` como número permite convertir una entrada, pero no demuestra que el modelo devolviera originalmente el tipo solicitado. Si la evaluación exige tipos exactos, el validador debe activar su modo estricto. [Documentación oficial de Pydantic: strict mode](https://docs.pydantic.dev/latest/concepts/strict_mode/). También necesita decidir si admite claves adicionales y cómo valida relaciones entre campos. El rango 0–1 de `confianza` garantiza un dominio numérico; no garantiza calibración, es decir, que entre respuestas con confianza 0.7 aproximadamente 70 % sean correctas.
+
+El **muestreo restringido** conecta formato con decodificación: una gramática o un esquema limita tokens compatibles con una continuación válida, de modo parecido al enmascarado de candidatos. Aun así, una interrupción por límite de tokens puede dejar una salida incompleta; una negativa y un error de transporte necesitan rutas de manejo propias. Un esquema estricto puede imponer enums y algunos dominios **si están declarados y admitidos**; «cumple esquema» no implica todas las reglas del problema ni la corrección de la etiqueta.
+
+El curso usa un clasificador de tickets. Si el ticket es «necesito una factura», `categoria="facturacion"` tiene sentido, pero el texto no determina necesariamente la urgencia. Un esquema que obliga a inventar ese dato fuerza una apariencia de precisión. Para ese dominio puede convenir un valor explícito de desconocido o una política declarada de urgencia por omisión, en lugar de ocultar el supuesto.
+
+Este apartado amplía las distinciones de [[sesion-04.pdf#page=20|Sesión 04, pp. 20–22]]. La clase de la sección 4 es ilustrativa; antes de implementarla se verifica la versión de la librería y el subconjunto de esquema del proveedor.
+
+## Tokens de razonamiento no se suman dos veces
+
+Ejemplo didáctico: el contador registra 1 500 tokens de salida totales y aclara que 1 000 fueron razonamiento interno; por tanto hay 500 restantes de salida visible. Si los 1 500 ya se facturan a la misma tarifa de salida, el costo se calcula con 1 500, **no** con 1 500+1 000. Si el proveedor devuelve categorías disjuntas o tarifas distintas, se aplica la tarifa a cada categoría según su contrato. Se guardan los contadores originales para poder comprobar qué se incluyó.
+
+El esfuerzo interno depende también del entrenamiento y del diseño del modelo. No basta mover una cadena visible «adentro» para describir su mecanismo completo. Más cómputo permite explorar o revisar candidatos, pero puede reforzar una distracción. Para compararlo usa la misma pregunta, mide acierto y tokens totales, y conserva también los casos que empeoran. Las cifras y nombres de parámetros del PDF son datos fechados del curso, no garantía de compatibilidad actual de una API.
+
 ## Fuentes de esta explicación
 
 - [[sesion-04.pdf#page=19|Sesión 04, páginas 19–25: prompt estructurado, validación y costo]]

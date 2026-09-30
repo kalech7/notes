@@ -141,6 +141,30 @@ Además:
 
 La arquitectura sigue siendo generativa y autorregresiva. Cambia la distribución hacia la que se empujan sus respuestas.
 
+## Calcula una pérdida de preferencia antes de entrenar
+
+La sigmoide logística es $\sigma(a)=1/(1+e^{-a})$. En el modelo de recompensa, si la ganadora tiene recompensa 2.4 y la perdedora 1.1, la diferencia es 1.3: la probabilidad modelada de preferir la primera es $\sigma(1.3)\approx0.786$ y su pérdida $-\log\sigma(1.3)\approx0.241$. Si las recompensas se empatan, la probabilidad es 0.5 y la pérdida aproximadamente 0.693. Si el modelo ordena al revés, la pérdida aumenta. El entrenamiento busca diferencias compatibles con las comparaciones, sin fijar por sí solo un origen absoluto de la escala.
+
+La pérdida completa de DPO es:
+
+$$L_{DPO}=-\mathbb E_D\left[\log\sigma\left(\beta\left[
+\log\frac{\pi_\theta(y_w\mid x)}{\pi_{ref}(y_w\mid x)}-
+\log\frac{\pi_\theta(y_l\mid x)}{\pi_{ref}(y_l\mid x)}\right]\right)\right].$$
+
+Son probabilidades de **respuestas completas**. Para una respuesta $y=(y_1,\ldots,y_m)$, $\log\pi(y\mid x)=\sum_t\log\pi(y_t\mid x,y_{<t})$: se evalúan los tokens observados de cada respuesta usando el prompt y sus prefijos. La referencia se mantiene congelada; los gradientes actualizan la política entrenada.
+
+Ejemplo didáctico con $\beta=1$: referencia da 0.1 a ambas respuestas; política actual da 0.2 a la preferida y 0.1 a la rechazada. La diferencia de log-cocientes es $\log2-\log1=\log2$, su sigmoide es $2/3$ y la pérdida $-\log(2/3)\approx0.405$. Las probabilidades restantes se reparten entre otras respuestas posibles. Inicializar política igual a referencia da diferencia cero y pérdida $\log2$. Cambiar $\beta$ altera el ajuste y su relación con la referencia; no conviene trasladar mecánicamente la intuición de una penalización KL explícita a cada efecto de una actualización DPO.
+
+Esta ecuación procede de [[rafailov-2023-dpo.pdf#page=4|Rafailov et al., ec. 7, PDF 4]]; las cuentas son elaboración propia. «No es MLE sobre el texto» se refiere al objetivo de siguiente token del preentrenamiento. La pérdida DPO sí puede describirse como máxima verosimilitud de **las etiquetas de preferencia** bajo Bradley–Terry; cambia qué observaciones se modelan.
+
+## Constitutional AI completo y el alcance de sus resultados
+
+El esquema de vida del modelo es una simplificación. En el estudio original de Constitutional AI hay dos etapas: aprendizaje supervisado sobre respuestas criticadas y revisadas, y aprendizaje por refuerzo contra un **modelo de preferencias**. Para la segunda, una IA compara pares según principios de inocuidad; esas etiquetas se mezclan con comparaciones humanas de utilidad para entrenar el modelo de preferencias. Luego la política supervisada se optimiza contra él. La crítica dentro de un prompt solo genera material: los pesos cambian cuando se entrena con ese material.
+
+El paper usó 16 principios de inocuidad, muestreados durante la revisión. Es una configuración del estudio, no un número obligatorio del método. Tampoco una autocrítica acertada está garantizada: el propio estudio describe críticas inexactas o exageradas. [[bai-2022-constitutional-ai.pdf#page=5|Bai et al., §1.2, PDF 5]] y [[bai-2022-constitutional-ai.pdf#page=10|§§3.5–4.1, PDF 10]].
+
+El impuesto de alineamiento se refiere a regresiones en tareas concretas al optimizar otra señal; no es inevitable ni uniforme. InstructGPT mitigó varias mezclando actualizaciones de preferencia con el objetivo del corpus previo. Y una mejora en toxicidad bajo cierto prompt no demuestra mejora del sesgo ni de todas las métricas. Al informar un resultado se conservan condiciones, población evaluada y resultados negativos. [[ouyang-2022-instructgpt.pdf#page=17|Ouyang et al., §5.1, PDF 17]] y [[ouyang-2022-instructgpt.pdf#page=18|§§5.2–5.3, PDF 18–19]].
+
 ## Fuentes de esta explicación
 
 - [[sesion-03-1.pdf#page=10|Sesión 03, páginas 10–24: SFT, RLHF, DPO, Constitutional AI y límites]]

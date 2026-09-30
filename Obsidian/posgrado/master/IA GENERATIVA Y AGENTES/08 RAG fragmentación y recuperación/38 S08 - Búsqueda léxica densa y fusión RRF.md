@@ -134,4 +134,19 @@ Una interpretación útil de esa comparación es que tareas que dependen de enti
 
 **Ampliación:** los efectos de $k_1$ y $b$ se deducen de la fórmula presentada; no son mediciones. Se consultó [[Hands-On_Large_Language_Models.pdf#page=254|cap. 8, p. impresa 232 (PDF 254)]] para el índice y la recuperación de texto mediante identificadores.
 
+## Una cuenta pequeña de BM25
+
+Para aislar la saturación y la longitud, supón un solo término con IDF = 2, $k_1=1.2$, $b=0.75$ y longitud media 100 tokens. El factor de frecuencia y longitud es
+
+$$F=\frac{f(1.2+1)}{f+1.2(1-0.75+0.75|d|/100)}.$$
+
+| Fragmento | Frecuencia $f$ | Longitud | $F$ | Aporte $2F$ |
+| --- | ---: | ---: | ---: | ---: |
+| A | 1 | 100 | 1 | 2 |
+| B | 3 | 100 | 1.5714 | 3.1429 |
+| C | 1 | 200 | 0.7097 | 1.4194 |
+
+Triplicar la frecuencia no triplica el puntaje: se satura. Duplicar la longitud con una sola aparición reduce el aporte: se normaliza la ventaja de un texto largo. IDF pondera la rareza en el corpus; una convención positiva es $\log(1+(N-df+0.5)/(df+0.5))$, con $N$ documentos y $df$ documentos que contienen el término. Hay otras convenciones de IDF y de tokenización: para reproducir una búsqueda se registra la implementación. Esta tabla es un ejemplo propio, no un resultado del taller.
+
+
 **Fuente:** [[sesion-08.pdf#page=18|páginas 18–22]]. Los cálculos RRF son propios a partir de la fórmula. Continúa con [[39 S08 - Reranking contexto y abstención]].

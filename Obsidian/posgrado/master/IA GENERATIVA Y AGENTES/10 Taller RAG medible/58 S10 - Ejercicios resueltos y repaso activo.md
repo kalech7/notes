@@ -160,4 +160,22 @@ Recuperaste cinco párrafos sobre becas. El usuario pregunta por todos los requi
 7. **Generación:** reviso afirmaciones, condiciones y citas.
 8. **Extensión:** pruebo una hipótesis y conservo los resultados comparables.
 
+## Dos comprobaciones nuevas del evaluador
+
+**1. Evidencias alternativas.** Dos fragmentos A y B explican la misma regla completa. Recuperas A y nada más. ¿Recall = 0.5 demuestra una respuesta incompleta?
+
+> [!success]- Solución
+> No. Esa cuenta mide recuperación de los dos fragmentos anotados. A puede bastar para responder. Si la tarea requiere además una excepción C, se anota otro requisito; A o B cubren la regla y C cubre la excepción.
+
+**2. nDCG con una omisión.** Devuelves un documento de grado 1 primero, pero omites otro juzgado con grado 2. ¿Puedes calcular IDCG@1 usando solo lo devuelto?
+
+> [!success]- Solución
+> No. Con ganancia $2^g-1$, DCG@1 = 1 e IDCG@1 = 3 usando el mejor candidato juzgado: nDCG@1 = 1/3. Usar solo el resultado devuelto daría 1 y ocultaría la omisión.
+
+**3. El ZIP tiene siete aciertos en ocho respondibles y dos negativas.** Calcula Hit y el valor que obtendrías al incluir incorrectamente las negativas.
+
+> [!success]- Solución
+> Hit correcto = 7/8 = 0.875. Con denominador total: 7/10 = 0.70. Esto no es el mismo ejemplo docente de siete respondibles y tres negativas, cuyo Hit correcto es 1.
+
+
 **Fuente:** síntesis de [[sesion-10.pdf]] y de las notas 50–57. Los ejercicios y soluciones son elaboraciones propias.

@@ -21,4 +21,6 @@ Consulta el atlas mientras lees y practica después de cada bloque de capítulos
 
 6. [Atlas y práctica de estilos y capas](06%20Atlas%20y%20pr%C3%A1ctica%20de%20estilos%20y%20capas.md): ocho gráficos explicados y laboratorio transversal de los capítulos 9–10.
 
+7. [Comparación visual de módulos, filtros, plugins y servicios](07%20Comparaci%C3%B3n%20visual%20de%20m%C3%B3dulos%20filtros%20plugins%20y%20servicios.md): cuatro topologías, dimensiones de independencia y ejercicios de elección.
+
 Las fórmulas están escritas en Markdown con notación LaTeX dentro de las notas de [Modularidad](../03%20Modularidad/00%20%C3%8Dndice.md) y [Características arquitectónicas](../04%20Caracter%C3%ADsticas%20arquitect%C3%B3nicas/00%20%C3%8Dndice.md), junto con variables, ejemplos y límites de aplicación.

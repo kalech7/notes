@@ -22,3 +22,7 @@ Estas notas documentan la procedencia del material. Puedes consultarlas cuando n
 - [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/DDIA 2e - Capítulo 5 - escaneo.pdf|Capítulo 5 · Codificación y evolución]].
 
 Las imágenes permanecen en **Recursos visuales**. El cálculo del gráfico numérico está en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/04 Almacenamiento y recuperación/08 Complemento - Coste de proyectar columnas|el complemento de proyección del capítulo 4]].
+
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/04 Cobertura y validación de capítulos 6 y 7|04 · Nuevos capítulos: cobertura, figuras y verificación]].
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/06 Replicación.pdf|Capítulo 6 · Replicación]].
+- [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/07 Sharding.pdf|Capítulo 7 · Sharding]].

@@ -1,0 +1,353 @@
+{
+  "agente": "agentes",
+  "fecha": "2026-09-29",
+  "zona_horaria": "America/Guayaquil",
+  "alcance": "Notas59–78 en carpetas11–12; prácticas internas",
+  "notas_leidas": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/59 S11 - Guía para entender agentes y herramientas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/60 S11 - Chatbot pipeline RAG y agente quién decide.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/61 S11 - PEAS racionalidad y observación parcial.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/62 S11 - Function calling y bucle del agente paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/63 S11 - Diseñar herramientas esquemas y validación.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/64 S11 - Memoria contexto y costo de repetir el historial.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/65 S11 - Toolformer aprendizaje resultados y límites.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/66 S11 - Límites trazas y laboratorio del bucle.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/67 S11 - Ejercicios resueltos y repaso activo.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/70 S12 - ReAct pensamiento acción observación y evidencia.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/71 S12 - Autopsia de trazas y detector de repetición.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/72 S12 - Pasos presupuestos timeouts y condiciones de parada.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/73 S12 - Reflexion entre intentos memoria y aprendizaje.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/74 S12 - Verificadores fiables y errores del notebook.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/75 S12 - Plan-and-Execute y elección de patrones.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/76 S12 - Toolsets validación errores y límites efectivos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/77 S12 - Laboratorio local y soluciones del martes.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/78 S12 - Ejercicios resueltos y repaso activo.md"
+  ],
+  "notas_leidas_completas": 20,
+  "fuentes": [
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-11.pdf",
+      "paginas_leidas": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "lectura": "texto completo y revisión visual de las26 páginas",
+      "numeracion": "PDF=visible1–26"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-12.pdf",
+      "paginas_leidas": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "lectura": "texto completo y revisión visual de las25 páginas",
+      "numeracion": "PDF=visible1–25"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/s3-lun-estudiante.ipynb",
+      "celdas_leidas": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "lectura": "texto completo; no configuración ni red"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/s3-mar-estudiante.ipynb",
+      "celdas_leidas": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "lectura": "texto completo; definiciones aisladas verificadas"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s3-agentes/schick-2023-toolformer.pdf",
+      "paginas_contrastadas": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "lectura": "apartados seleccionados; regla de filtrado, herramientas y cifras cotejadas con fuentes previas"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s3-agentes/yao-2023-react.pdf",
+      "paginas_contrastadas": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "lectura": "apartados completos seleccionados: definición,acciones,tabla1–4,denominadores,prompts,conmutación"
+    },
+    {
+      "archivo": "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/fuentes/papers/s3-agentes/shinn-2023-reflexion.pdf",
+      "paginas_contrastadas": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "lectura": "apartados completos seleccionados:Algoritmo1,memoria,reinicio,ensayos,tablas1–3,denominadores,límites"
+    }
+  ],
+  "figuras_revisadas_visualmente": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56
+  ],
+  "archivos_modificados": [
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/59 S11 - Guía para entender agentes y herramientas.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/60 S11 - Chatbot pipeline RAG y agente quién decide.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/61 S11 - PEAS racionalidad y observación parcial.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/62 S11 - Function calling y bucle del agente paso a paso.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/63 S11 - Diseñar herramientas esquemas y validación.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/64 S11 - Memoria contexto y costo de repetir el historial.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/65 S11 - Toolformer aprendizaje resultados y límites.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/66 S11 - Límites trazas y laboratorio del bucle.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/67 S11 - Ejercicios resueltos y repaso activo.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/70 S12 - ReAct pensamiento acción observación y evidencia.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/72 S12 - Pasos presupuestos timeouts y condiciones de parada.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/73 S12 - Reflexion entre intentos memoria y aprendizaje.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/76 S12 - Toolsets validación errores y límites efectivos.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/77 S12 - Laboratorio local y soluciones del martes.md",
+    "/Users/alech/Documents/notes/Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/78 S12 - Ejercicios resueltos y repaso activo.md"
+  ],
+  "archivos_practica_modificados": "Ningún script modificado; s12_resultados_verificados.json regenerado y coincide con datos deterministas existentes",
+  "hallazgos": [
+    {
+      "antes": "Nota66 decía no se inspeccionó notebook",
+      "despues": "Referencia a68 y distinción explícita de dataset independiente frente a datos docentes",
+      "notas": [
+        66
+      ]
+    },
+    {
+      "antes": "Pies de figuras41–48 llevaban rótulos imperativos Cómo leer",
+      "despues": "Explicación integrada en prosa",
+      "notas": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66
+      ]
+    },
+    {
+      "antes": "Notas59–67 no tenían created/capitulo",
+      "despues": "Propiedades añadidas preservando fecha y resto del YAML",
+      "notas": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
+      ]
+    },
+    {
+      "antes": "Mapa ejecutivo y utilidad tratados con poco detalle",
+      "despues": "Capas solapadas no universales; objetivos vs utilidad; aprendizaje como dimensión diferente",
+      "notas": [
+        60,
+        61
+      ]
+    },
+    {
+      "antes": "Dataset del lunes solo resumido; detalles del backend/JSON incompletos",
+      "despues": "Tabla de7 filas,moneda no declarada,catálogo no inventario,JSON inválido como cierre de error y selección real del backend explicadas",
+      "notas": [
+        68
+      ]
+    },
+    {
+      "antes": "ReAct no explicaba individualmente search/lookup/finish ni los4 entornos",
+      "despues": "Interfaz y limitación de recuperación,Mermaid,benchmarks,prompts,conmutaciones exactas,comparadores supervisados,WebShop y bestof6 explicados",
+      "notas": [
+        70
+      ]
+    },
+    {
+      "antes": "0.84/1.33 y límite implícito de librería podían perder contexto",
+      "despues": "Denominador de trayectorias correctas y diferencia entre constructor y ejecutor efectivo aclarados",
+      "notas": [
+        72
+      ]
+    },
+    {
+      "antes": "Reinicio y heurística Reflexion poco desarrollados",
+      "despues": "Reinicio del entorno,memoria persistente,hasta12 ensayos y peligro de repetir efectos explicado",
+      "notas": [
+        73
+      ]
+    },
+    {
+      "antes": "Contradicción PDF12p24 no identificada",
+      "despues": "Tabla visual marca validación/error sí en Lab03,pese a diagnóstico contrario de pp21–22; conflicto registrado",
+      "notas": [
+        76
+      ]
+    },
+    {
+      "antes": "Laboratorio12 podía parecer adaptador completo de APIs",
+      "despues": "Presunciones del formato y generación propia de IDs delimitadas",
+      "notas": [
+        77
+      ]
+    },
+    {
+      "antes": "Caso integrado solo mencionaba descomposición descriptiva",
+      "despues": "Tabla laptop/monitor/teclado con cuenta -1050+20+5=-1025 y separación explícita de causalidad",
+      "notas": [
+        78
+      ]
+    },
+    {
+      "antes": "Figura46 decía supera umbral aunque filtro acepta igualdad;47 solapaba rótulo de eje y tick80",
+      "despues": "Se notificó al padre;el padre comunicó que corrigió y regeneró figurasS11",
+      "figuras": [
+        46,
+        47
+      ]
+    }
+  ],
+  "errores_originales_reconfirmados": [
+    "simulador lunes requiere tool_result_meta no pedido por consigna",
+    "JSON original del martes falla con raíz lista/null y categoría lista",
+    "bool pasa por int en original",
+    "Algoritmo1 de Reflexion usa OR donde continuación correcta exige AND",
+    "PDF12p24 contradice manejo de erroresLab03 de pp21–22"
+  ],
+  "comprobaciones": {
+    "practica_s11": "9 escenarios y cuentas pasan",
+    "practica_s12": "detector3trazas,contratos,adaptaciónlunes,crítica,agotamiento y presupuestos pasan",
+    "calculos_ventas": "marzo2695,abril1670,promedios673.75/556.67,caída-38.0334%,contribuciones-1025",
+    "yaml": "Propiedades title/created/capitulo/tags presentes por inspección; parser PyYAML no disponible en Pythonbundled. Validación sintáctica global delegada al padre",
+    "mermaid": "1 nuevo flujo en70;render global delegado al padre",
+    "enlaces": "validación global delegada al padre"
+  },
+  "limites_honestos": [
+    "No se leyeron íntegros todos los apéndices de los3papers",
+    "No se consultó nuevamente Hands-OnLLMs ni AIMA;se mantuvo atribución ya existente sin fingir lectura nueva",
+    "Lab03 y repositorio docente citados por diapositivas no disponibles/no inspeccionados",
+    "No ejecución LLM,API,H200,VPN,.env,SQL ni servicios externos",
+    "La certeza de prácticas cubre simuladores por reglas y contratos locales,no rendimiento LLM",
+    "Sesiones13–14,MCP y multiagente solo anunciadas por estas fuentes;sin afirmar cobertura completa de futuras sesiones",
+    "Figuras compartidas corregidas por agente padre,no por este subagente"
+  ],
+  "evaluacion_completitud": {
+    "fuentes_asignadas": "51/51 páginas docentes,38/38 celdas y20/20 notas leídas completas",
+    "contenido": "Cobertura completa de conceptos y ejercicios disponibles de sesiones11–12;detalle ampliado donde faltaba mecanismo o interpretación de cifras",
+    "fuera_de_alcance": "No garantiza cobertura de materiales no recibidos,de todo el universo de agentes ni de frameworks actuales"
+  },
+  "respaldo_antes_edicion": "/tmp/ia-auditoria-agentes-originales"
+}

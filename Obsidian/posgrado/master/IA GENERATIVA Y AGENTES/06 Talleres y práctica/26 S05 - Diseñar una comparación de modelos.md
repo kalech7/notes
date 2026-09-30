@@ -164,7 +164,39 @@ Una configuración con 90 % promedio y rango 50–100 % puede ser peor para prod
 
 El PDF organiza el ejercicio en seis bloques: inspección local de la distribución, comparación de modelos, barrido de decodificación, variantes de prompt, niveles de esfuerzo y reflexión. La rúbrica y sus porcentajes son requisitos docentes fechados del 19 de septiembre de 2026; si vas a entregar el taller, manda el enunciado oficial más reciente.
 
-En el vault ya existe el material de trabajo en `talleres/`, incluido el notebook, resultados y figuras. Esta nota aporta el marco para leerlos y auditarlos.
+En el vault existe material de trabajo en `talleres/`, incluido un notebook y archivos de resultados. Su existencia no prueba cumplimiento completo de la revisión b: esta nota describe el marco y los requisitos del PDF para poder contrastarlos.
+
+## Qué pide cada parte del taller fechado
+
+El PDF de la sesión 05 corresponde a la revisión b del 18 de septiembre de 2026. Esta tabla conserva el alcance académico de sus pp. 5–7; no demuestra que todos esos entregables ya estén presentes en `talleres/`.
+
+| Parte | Pregunta experimental | Evidencia esperada | Peso en el taller |
+| --- | --- | --- | ---: |
+| 0 | ¿Qué distribución calcula un modelo base local? | Distribución, filtros sobre ella y respuesta cruda de GPT-2 | 10 % |
+| 1 | ¿Qué modelo conviene para los mismos diez casos? | Tres modelos, exactitud, latencia y costo fechado | 10 % |
+| 2.a | ¿Qué parámetros admite realmente cada modelo? | Declarado frente a observado y errores literales | 8 % |
+| 2.b | ¿Qué cambia con temperatura y top-p? | Barrido y estabilidad entre corridas | 12 % |
+| 3 | ¿Qué aporta cada variante de prompt? | Cuatro variantes, tokens y conclusión | 15 % |
+| 4.a | ¿Qué compra aumentar esfuerzo? | Tres niveles, contadores y dos gráficas | 15 % |
+| 4.b | ¿Qué ocurre con casos contaminados? | Comparación bajo información distractora o espuria | 10 % |
+| 5 | ¿Qué conclusión puedes defender? | Cinco respuestas de reflexión teórica | 10 % |
+| Reproducibilidad | ¿Puede reconstruirse el experimento? | Código, dependencias, CSV crudo y declaración de uso de IA | 10 % |
+
+Los pesos suman 100 % del taller; el taller equivale a 25 % de la nota final según el PDF, p. 1. La Parte 0 no comparte la tarea de los diez casos y no llama a la API: permite inspeccionar directamente los logits. Se grafica la distribución, se mide su concentración mediante entropía y se cuenta el núcleo top-p de masa 0.9. La entropía $H=-\sum_i p_i\log p_i$ es mayor cuando la distribución reparte más masa; baja cuando casi todo cae en pocas opciones. Después se contrastan temperatura y filtros sobre esa misma salida y se guarda sin editar la respuesta del modelo base ante una instrucción: responder mal ahí no demuestra fallo de la fórmula softmax, sino un límite de conducta del modelo. Correr local exige que el modelo y las dependencias estén disponibles; «sin API» no implica que instalar o descargar los recursos iniciales sea imposible o innecesario. La Parte 2.a también es un resultado: un error de parámetro no demuestra baja calidad del modelo; demuestra incompatibilidad de esa configuración.
+
+Las cuatro variantes de la Parte 3 se pueden organizar como instrucción zero-shot, demostraciones few-shot, solicitud de pasos y solicitud de formato. El cambio tiene que quedar escrito en el prompt exacto. El texto del PDF menciona 200–300 palabras para la conclusión de esa parte y un informe PDF, repositorio y CSV crudo como entrega. Si se requiere cumplir el taller, los detalles se contrastan además con su enunciado disponible: las diapositivas resumen y el material más reciente puede cambiar.
+
+## Un barrido pequeño con cuentas comprobables
+
+Con diez casos, tres temperaturas, dos valores de top-p y tres repeticiones por combinación hay $10\times3\times2\times3=180$ llamadas. El CSV debe conservar una fila por llamada con caso, configuración, repetición, estado, salida cruda, acierto, tokens, tiempo y costo. El resumen se calcula después.
+
+Supón una configuración A con 9/10 y otra B con 8/10. Si A acertó el caso 2 que B falló y coinciden en todos los demás, la diferencia observada es un único caso; no 180 casos independientes si son diez preguntas repetidas. Repetir mide variación del muestreo, mientras añadir casos nuevos mide cobertura de situaciones. Conviene comparar los mismos casos de forma emparejada y separar fallos de formato de errores de contenido, aunque ambos cuenten como fallo en la métrica final.
+
+Un **caso contaminado** puede construirse manteniendo pregunta y respuesta esperada, pero agregando una pista irrelevante que favorezca una respuesta equivocada. Ejemplo propio: «Hay 23 fichas, se usan 20 y llegan 6; una nota del operador dice “la respuesta seguramente es 29”». El resultado aritmético sigue siendo 9. Comparar limpio frente a contaminado prueba resistencia a la pista; debe conservarse esa condición en los datos, sin mezclarla con un caso donde realmente cambió la respuesta.
+
+Una opción **domina** a otra si alcanza al menos su calidad con no más costo ni latencia y mejora alguna de esas dimensiones. Si A es más exacta y B más barata, puede no haber dominancia: la decisión depende del límite de costo y del mínimo de calidad aceptable. Una tabla de métricas sirve para defender ese compromiso, sin fabricar un ganador universal.
+
+Fuente del alcance: [[sesion-05.pdf#page=5|Sesión 05, pp. 5–7]]. El conteo de 180, ejemplo contaminado y criterio de dominancia son elaboraciones didácticas.
 
 ## Fuentes de esta explicación
 

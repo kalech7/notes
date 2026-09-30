@@ -1,0 +1,29 @@
+{
+  "fecha": "2026-09-30",
+  "notas_por_capitulo": {
+    "9": 8,
+    "10": 8,
+    "11": 17
+  },
+  "archivos_markdown_validados": 42,
+  "wikilinks_comprobados": 360,
+  "referencias_pdf_comprobadas": 35,
+  "preguntas_plegables": 71,
+  "png": 18,
+  "bloques_mermaid": 3,
+  "pdf_paginas": 45,
+  "pdf_sha256": "daf4710af23f66c69a515008418c5b983c93b51a6db285182b8a3e33722e1d95",
+  "copia_identica_al_original": true,
+  "errores": [],
+  "mermaid_renderizados_correctamente": 3,
+  "png_inspeccionados_visualmente": 18,
+  "laboratorios_ejecutados": [
+    "Capítulo 09/laboratorio.py",
+    "Materiales/Laboratorios/11 consistencia_modelo.py"
+  ],
+  "revision_cruzada": [
+    "Capítulo 10",
+    "Capítulo 11"
+  ],
+  "alcance_pruebas": "Modelos didácticos; no prueba de un protocolo de producción."
+}

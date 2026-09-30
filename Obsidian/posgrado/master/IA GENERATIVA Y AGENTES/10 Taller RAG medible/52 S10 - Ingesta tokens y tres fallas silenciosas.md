@@ -39,7 +39,7 @@ El umbral es una **heurística**: una regla práctica para detectar sospechas. N
 
 ![[36-s10-truncamiento.png]]
 
-**Cómo leer la imagen:** el bloque completo sigue almacenado. Para crear el embedding solo entra el prefijo dentro del presupuesto. Si luego el sistema recupera ese registro, puede enviar al generador el bloque completo. El sufijo puede leerse en la respuesta aunque no haya contribuido a que el buscador encontrara ese fragmento.
+El bloque completo sigue almacenado. Para crear el embedding solo entra el prefijo dentro del presupuesto. Si luego el sistema recupera ese registro, puede enviar al generador el bloque completo. El sufijo puede leerse en la respuesta aunque no haya contribuido a que el buscador encontrara ese fragmento.
 
 Un **token** es una unidad del tokenizador: puede ser una palabra, una parte de ella, un signo u otra secuencia. La relación palabras/tokens depende del idioma, el texto y el tokenizador. Mide con el tokenizador del modelo utilizado; contar espacios no sustituye esa medición.
 
@@ -92,5 +92,14 @@ El solapamiento ayuda a conservar una frase cortada en un borde, pero repite inf
 Un ranking responde a «¿qué candidatos son más próximos dentro de los disponibles?». No responde automáticamente a «¿existe suficiente evidencia para contestar?». Si todos los documentos son inadecuados, alguno puede seguir ocupando el primer puesto.
 
 El PDF compara una pregunta ausente del corpus con otra cuya respuesta está en un documento rechazado. Las dos pueden producir vecinos plausibles. El puntaje solo no permite reconstruir la causa. Para separarlas necesitas el inventario original, el registro de ingesta y una anotación explícita del corpus evaluado; continúa en [[53 S10 - Golden set y límites de lo respondible]].
+
+## Qué ocurrió en la ejecución archivada
+
+La entrega preserva dos casos distintos. En la reproducción de truncamiento, 900 **palabras** producen 1200 tokens de contenido y 1202 con especiales; una configuración limitada a 128 conserva solo el prefijo. Dos textos que solo difieren fuera de ese prefijo dan coseno 1: eso confirma que la representación no distingue sus sufijos, no que los textos completos signifiquen lo mismo.
+
+En el baseline de las notas 28–49 se utilizó **BGE-M3**, con límite registrado de 8192 tokens, fragmentos de 512 y solapamiento 102. El máximo medido después de decodificar y volver a tokenizar, incluidos especiales, fue 515. Esa diferencia recuerda que cortar una lista de tokens y decodificarla no garantiza que una nueva tokenización tenga exactamente la misma longitud. Los 515 quedan por debajo de 8192: el registro no respalda culpar al límite 128 de los fallos de este baseline.
+
+El código archivado calcula por defecto `max(32, min(512, tope_modelo - 2))`, con solapamiento de aproximadamente un quinto, mientras las diapositivas explican el presupuesto del caso pequeño. Son configuraciones que deben fecharse. La auditoría no ejecutó esa ingesta; revisó sus salidas y código. Un índice Markdown tampoco conserva las imágenes como información visual: el texto de un enlace a PNG no contiene los datos dibujados en la figura.
+
 
 **Fuente:** PDF, pp. 7–10. Las cuentas con 900 tokens y el ejemplo de solapamiento son propios; no se ejecutaron las reproducciones de la Parte 0.

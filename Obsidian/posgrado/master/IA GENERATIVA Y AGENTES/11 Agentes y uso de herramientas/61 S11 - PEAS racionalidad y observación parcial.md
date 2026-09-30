@@ -1,5 +1,7 @@
 ---
 title: "61 S11 - PEAS racionalidad y observación parcial"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -23,7 +25,7 @@ PEAS es una forma de especificar el problema antes de construir el agente. Sus l
 
 ![[42-s11-peas.png]]
 
-**Cómo leerlo:** el entorno produce información que llega mediante sensores; el agente elige acciones que se realizan mediante actuadores. La barra superior define cómo juzgamos el resultado. La métrica no se deduce de que el agente «parezca inteligente».
+El entorno produce información que llega mediante sensores; el agente elige acciones que se realizan mediante actuadores. La barra superior define cómo juzgamos el resultado. La métrica no se deduce de que el agente «parezca inteligente».
 
 | Letra | Pregunta de diseño | Ejemplo del asistente |
 | --- | --- | --- |
@@ -66,6 +68,10 @@ Aquí $o_t$ es una observación, $a_t$ una acción y $f$ la regla que transforma
 **«Basado en modelos» aquí no significa simplemente «usa un modelo de lenguaje».** Significa que mantiene una representación de cómo está o cómo evoluciona el entorno. Confundir ambas acepciones impide entender la clasificación.
 
 El PDF ubica al agente LLM del curso en la categoría basada en objetivos. Es una simplificación útil del diseño mostrado, no una imposibilidad de que un sistema con LLM maneje restricciones, preferencias o funciones de utilidad explícitas. Tampoco todo agente reactivo requiere observabilidad total para hacer algo útil; esa limitación afecta qué desempeño puede alcanzar en una tarea determinada.
+
+Una utilidad permite distinguir **dos resultados que cumplen la misma meta**. Supón, como ejemplo propio, que una respuesta correcta obtenida en 2 segundos y otra obtenida en 30 segundos reciben distinta preferencia por la latencia. Se podría definir $U=100\,\mathbf{1}_{\text{correcto}}-\lambda C-\mu T$, donde $C$ es costo, $T$ tiempo y los coeficientes representan cuánto pesan. Esa fórmula no es una política recomendada: una mala elección de pesos puede hacer rentable equivocarse. Sirve para mostrar por qué «cumplió el objetivo» y «escogió la alternativa preferida» son preguntas diferentes.
+
+Los cuatro tipos no describen cuatro niveles obligatorios de una misma aplicación. Sus mecanismos pueden coexistir, y **aprender** es otra dimensión: un agente reactivo o uno basado en utilidad puede ajustar su comportamiento con experiencia. En el sistema del curso, actualizar historial cambia el estado y el contexto; no es por sí solo entrenamiento de sus parámetros.
 
 ## 5. Observación parcial: lo que existe y lo que llega al contexto
 

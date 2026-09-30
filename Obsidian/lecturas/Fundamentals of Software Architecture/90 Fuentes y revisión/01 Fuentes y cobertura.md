@@ -11,7 +11,7 @@ tags:
 [Inicio del libro](../00%20Empieza%20aqu%C3%AD.md) → [Fuentes y revisión](00%20%C3%8Dndice.md)
 
 > [!info] Cobertura actualizada al 29 de septiembre de 2026
-> Esta nota conserva el inventario y la revisión iniciales de los capítulos 1–5. La colección ahora abarca material de los capítulos 1–11 y 171 páginas de PDF. La primera ampliación añadió 47 folios, documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|Ampliación capítulos 6 a 8]]. La segunda añadió otros 35 folios: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/05 Ampliación capítulos 9 y 10|Ampliación capítulos 9 y 10]]. Los 16 restantes corresponden a [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/06 Ampliación capítulo 11|Ampliación capítulo 11]].
+> Esta nota conserva el inventario y la revisión iniciales de los capítulos 1–5. La colección ahora abarca material de los capítulos 1–15 y 272 páginas de PDF. La primera ampliación añadió 47 folios, documentados en [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/04 Ampliación capítulos 6 a 8|Ampliación capítulos 6 a 8]]. La segunda añadió otros 35 folios: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/05 Ampliación capítulos 9 y 10|Ampliación capítulos 9 y 10]]. Otros 16 corresponden a [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/06 Ampliación capítulo 11|Ampliación capítulo 11]]. El escaneo del capítulo 12 aporta 12 páginas adicionales: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/07 Ampliación capítulo 12|Ampliación capítulo 12]]. Los dos escaneos de los capítulos 13–14 suman 34 páginas: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/08 Ampliación capítulo 13|Microkernel, capítulo 13]] y [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/09 Ampliación capítulo 14|Basada en servicios, capítulo 14]]. El capítulo 15 añade 55 páginas: [[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/10 Ampliación capítulo 15|Dirigida por eventos, capítulo 15]].
 
 ## Revisión editorial del 29 de septiembre de 2026
 
@@ -108,3 +108,7 @@ La ampliación visual contiene **33 imágenes PNG distintas: seis ilustraciones 
 ---
 
 [← Índice de este bloque](00%20%C3%8Dndice.md)
+
+## Ampliación del capítulo 15
+
+[[Obsidian/lecturas/Fundamentals of Software Architecture/90 Fuentes y revisión/10 Ampliación capítulo 15|Cobertura de arquitectura dirigida por eventos]]: escaneo de 55 páginas, impresas 227–281, 40 figuras y dos tablas. La colección alcanza 12 PDF y 272 páginas de escaneo, con los huecos iniciales ya documentados.

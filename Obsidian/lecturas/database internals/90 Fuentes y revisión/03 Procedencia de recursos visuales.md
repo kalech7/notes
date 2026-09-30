@@ -26,6 +26,10 @@ Los recursos `01`–`08` son SVG técnicos originales creados directamente como 
 
 La explicación completa de cada figura está en [[Obsidian/lecturas/database internals/00 Guía y fundamentos/02 Atlas visual explicado|Atlas visual explicado]].
 
+## Recursos del capítulo 5
+
+Se añadieron diez PNG técnicos reproducibles mediante dos scripts Pillow, con adaptaciones de figuras y ejemplos propios. El inventario, las páginas y las verificaciones están en [[Obsidian/lecturas/database internals/90 Fuentes y revisión/04 Cobertura y validación del capítulo 5|Cobertura y validación del capítulo 5]].
+
 ## Principios usados
 
 - el título expresa la relación, no un tema genérico;
@@ -46,3 +50,12 @@ Su función es fijar cuatro correspondencias: cajón lleno → página antes del
 ---
 
 **Anterior:** [[Obsidian/lecturas/database internals/90 Fuentes y revisión/02 Revisión de estructura y calidad|Revisión de calidad]] · **Índice:** [[Obsidian/lecturas/database internals/90 Fuentes y revisión/00 Índice|Fuentes]] · **Inicio:** [[Obsidian/lecturas/database internals/00 Empieza aquí|Ruta de estudio]]
+
+
+## Ampliación: capítulo 6
+
+Se añadieron 12 PNG deterministas creados con Pillow en `Recursos visuales/Capítulo 06/`. Recrean en español las figuras 6-1 a 6-9, combinando 6-2 y 6-3 en un ejemplo con claves. Los restantes explican representaciones de nodos, CAS, split/merge y reclamación por épocas. El script y la revisión están registrados en [[Obsidian/lecturas/database internals/90 Fuentes y revisión/05 Cobertura y validación del capítulo 6|Cobertura y validación del capítulo 6]].
+
+## Ampliación: capítulos 9–11
+
+Los gráficos PNG de `Recursos visuales/Capítulo 09/`, `Capítulo 10/` y `Capítulo 11/` son diagramas técnicos propios generados mediante scripts Python conservados junto a las imágenes. Representan señales de falla, elecciones, intervalos y órdenes de operaciones, quórums y convergencia. Los nombres y valores de los ejemplos son didácticos; no son mediciones de sistemas reales. Cada imagen está explicada donde se integra. El inventario y la revisión están en [[Obsidian/lecturas/database internals/90 Fuentes y revisión/08 Cobertura y validación de detección liderazgo y replicación|Cobertura y validación de capítulos 9–11]].

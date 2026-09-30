@@ -76,7 +76,7 @@ flowchart LR
     G --> A[Respuesta o abstención]
 ```
 
-**Lectura:** la pregunta entra tanto al buscador como al generador. Recuperar un texto correcto no obliga al generador a respetarlo. La evaluación debe mirar las dos etapas.
+La pregunta entra tanto al buscador como al generador. Recuperar un texto correcto no obliga al generador a respetarlo. La evaluación debe mirar las dos etapas.
 
 ## 4. Por qué RAG no es reentrenamiento
 
@@ -99,5 +99,10 @@ Esta separación permite actualizar información sin reentrenar todo el modelo, 
 > Si el relevante está en el ranking pero no en el prompt, ¿debes cambiar inmediatamente el embedding?
 >
 > No. Primero revisa la construcción del contexto. Un cambio anterior puede no afectar la causa observada.
+
+## El prompt docente y el prompt realmente archivado
+
+La sesión 08 muestra una instrucción para citar documento y página. En `rag_pipeline.py` de la entrega archivada, el prompt etiqueta los pasajes y exige usar el contexto y abstenerse si no alcanza, pero **no exige explícitamente incluir citas en la respuesta**. Tener fuentes en el prompt no basta para esperar referencias consistentes en la salida. Para estudiar citas hay que conservar la respuesta completa, localizar qué pasaje sustenta cada afirmación y evaluar el vínculo; Hit Rate no lo mide. Esta diferencia corresponde al snapshot entregado, no a toda versión posible del laboratorio.
+
 
 **Fuente:** PDF, pp. 2–5 y 7. La descomposición detallada y el caso universitario son ampliaciones didácticas.

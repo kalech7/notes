@@ -49,8 +49,6 @@ Cada RR es cero si no hay acierto y como máximo uno si lo hay. Por eso un MRR m
 
 ![[34-s09-resolucion-hit-rate.png]]
 
-### Cómo leer el gráfico
-
 El eje horizontal cuenta preguntas con acierto; el vertical muestra Hit Rate. Son las nueve posibilidades con ocho respondibles, desde cero hasta ocho aciertos. Cada escalón tiene altura 1/8 = 0,125, es decir, 12,5 puntos porcentuales.
 
 Pasar de 0,75 a 0,875 significa acertar una pregunta adicional en este conjunto. No demuestra una mejora de 12,5 puntos en cualquier población futura. Si una pregunta cambia de etiqueta o una anotación está mal, también puede alterar mucho el resultado.
@@ -90,6 +88,13 @@ La p. 25 sitúa el Taller 2 el sábado 26 de septiembre y le asigna 25 %. Pide u
 El PDF indica probar Docker con Qdrant antes del taller y aclara que el RAG multimodal se expone pero no se evalúa allí. La Parte 4 incluye explicar el problema del 0,70 con los resultados propios y plantear una pregunta global sobre el corpus, relacionándola con GraphRAG.
 
 Para estudiar esa Parte 4, debes poder explicar **por qué el denominador cambia el significado del número** y **por qué una síntesis global necesita otra referencia de evaluación**. El contenido de estas notas prepara esas ideas; no sustituye revisar el enunciado oficial ni el código del laboratorio.
+
+## Ampliar k requiere conservar la comparación
+
+Con **una misma lista ordenada fija** y juicios de referencia fijos, Hit@k y Recall@k no disminuyen al ampliar el corte; RR@k tampoco disminuye, aunque solo cambia si aparece el primer acierto. Esto no garantiza mejora de nDCG ni de la respuesta generada: el nuevo pasaje puede distraer o consumir presupuesto. Si la búsqueda aproximada se ejecuta otra vez y devuelve una lista distinta, top-3 y top-5 podrían ni siquiera ser prefijos del mismo ranking. Guarda las listas para distinguir aumentar el corte de cambiar los resultados.
+
+El «Recall del índice» de esta sesión compara vecinos de búsqueda aproximada con vecinos exactos según **los mismos vectores**. El Recall relevante para la tarea compara con evidencias anotadas. Un índice puede tener 0.98 frente a búsqueda exacta y aun recuperar poca evidencia útil: encontró casi todos los vecinos que ese espacio ofrece, pero el espacio o la consulta no representan bien la necesidad.
+
 
 > [!abstract] Para recordar
 > Primero valida qué mide el número; después úsalo para decidir qué componente cambiar.

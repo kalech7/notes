@@ -52,11 +52,11 @@ Las páginas PDF 1–32 corresponden a impresas 161–192: suma 160. Incluyen la
 | Evolución | Versiones de lectores y escritores, defaults, campos desconocidos, conservación y significado |
 | Comunicación | Bases, APIs, REST/RPC, descubrimiento, balanceo, workflows, idempotencia, brokers y actores |
 
-No se presenta como cobertura de capítulos posteriores sobre replicación, sharding, transacciones, consenso, batch o streaming. Cuando un concepto de esos ámbitos sirve para aclarar un límite, se menciona como contexto y no como un capítulo leído.
+La cobertura inicial de los capítulos 4 y 5 no incluía replicación ni sharding. La ampliación del 29 de septiembre desarrolla los capítulos 6 y 7, documentados más abajo. Transacciones, consenso, batch y streaming siguen fuera de la cobertura de sus capítulos propios. Cuando un concepto de esos ámbitos sirve para aclarar un límite, se menciona como contexto y no como un capítulo leído.
 
 ## Qué es elaboración didáctica
 
-Los pedidos, clientes, café y té, monedas, claves, bitmaps pequeños, cálculos de almacenamiento, matrices de compatibilidad y ejercicios son ejemplos creados para explicar los mecanismos. Las analogías visuales y diagramas también son originales. No son benchmarks ni reconstrucciones de figuras del libro.
+Los pedidos, clientes, café y té, monedas, claves, bitmaps pequeños, cálculos de almacenamiento, matrices de compatibilidad y ejercicios son ejemplos creados para explicar los mecanismos. Las analogías visuales iniciales de los capítulos 4 y 5 son originales y no son benchmarks ni reconstrucciones de figuras del libro. Las figuras nuevas de los capítulos 6 y 7 sí son recreaciones didácticas contrastadas con sus escaneos, documentadas en la ampliación.
 
 La introducción de fundamentos, el caso integrador, las tarjetas, las conexiones y el patrón de ampliar/migrar/retirar son desarrollos pedagógicos. Los escaneos son la base temática; las notas no pretenden ser una traducción literal ni reproducir la totalidad del texto.
 
@@ -100,3 +100,16 @@ La comprobación de Markdown y diagramas se hizo con analizadores locales; no se
 ---
 
 [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/00 Índice|← Índice de este bloque]] · [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/00 Empieza aquí|Inicio del libro]]
+
+## Ampliación del 29 de septiembre de 2026
+
+Se añadieron el capítulo 6 (*Replication*) y el 7 (*Sharding*) a partir de los dos escaneos nuevos.
+
+| Original | Copia | Páginas | Correspondencia |
+|---|---|---|---|
+| CamScanner 2026-09-29 22.20.pdf | [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/06 Replicación.pdf\|06 Replicación]] | 48 | PDF 1–48 = impresas 197–244 |
+| CamScanner 2026-09-29 22.28.pdf | [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/Materiales/07 Sharding.pdf\|07 Sharding]] | 22 | PDF 1–22 = impresas 251–272 |
+
+Se leyó el OCR completo y se revisaron visualmente todas las páginas. Las páginas 4 y 5 del segundo PDF estaban invertidas; se giraron únicamente las imágenes temporales para leerlas. Las copias PDF son idénticas a los originales. Se recrearon las figuras con scripts Pillow y se explican bajo sus embeds. Los capítulos no incluyen toda su bibliografía: el 6 muestra las referencias iniciales [1] y [2], y el 7 termina con el resumen.
+
+Claude Code colaboró en las notas 08–14 de replicación y en sharding. Otros subagentes prepararon figuras y revisaron precisión y claridad. Se distinguió el contenido de los documentos de las instrucciones del usuario. La cobertura y las verificaciones concretas están en [[Obsidian/lecturas/Designing Data-Intensive Applications 2a edición/90 Fuentes y revisión/04 Cobertura y validación de capítulos 6 y 7|la revisión de los capítulos 6 y 7]].

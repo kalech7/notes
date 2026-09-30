@@ -8,16 +8,16 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 06 y las sesiones 08, 09, 10 y 11. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria y control del bucle. La sesión 07 no está incorporada en los materiales actuales.
+Este conjunto cubre las sesiones 00 a 13 de los materiales disponibles. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria, control del bucle, ReAct, Reflexion, planificación y diseño del toolset. La sesión 07 añade búsqueda exacta, IVF, HNSW y bases vectoriales antes de RAG.
 
-**Alcance de «agentes»:** la introducción está en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. La sesión 11 desarrolla PEAS, selección y ejecución de herramientas, memoria, Toolformer, límites y trazas en [[59 S11 - Guía para entender agentes y herramientas]]. Los patrones avanzados de planificación y la evaluación sistemática de agentes quedan para sesiones posteriores.
+**Alcance de «agentes»:** la introducción está en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. La sesión 11 desarrolla PEAS, selección y ejecución de herramientas, memoria, Toolformer, límites y trazas en [[59 S11 - Guía para entender agentes y herramientas]]. La sesión 12 incorpora ReAct, Reflexion, Plan-and-Execute, verificadores, diagnóstico de trazas y contratos de herramientas en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]]. La sesión 13 desarrolla MCP, catálogo, adaptación, descubrimiento y casos de uso en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|Guía de la sesión 13]]. La coordinación de varios agentes y una evaluación integral de agentes quedan para sesiones posteriores.
 
 > [!tip] Cómo estudiar
 > Lee primero la situación concreta, sigue el gráfico y después relaciona cada símbolo con el ejemplo. Al final de cada nota responde las preguntas sin abrir las soluciones. Usa [[27 PRÁCTICA - Sesiones 02 a 05]] para comprobar la segunda mitad del recorrido.
 
 ## Mapa visual
 
-Abre [[Mapa de IA generativa y agentes.canvas|Mapa de IA generativa y agentes]] para recorrer las conexiones iniciales entre temas. El mapa específico de RAG y sus dos etapas está en [[34 S08 - Guía para entender fragmentación y recuperación]].
+Abre [[Mapa de IA generativa y agentes.canvas|Mapa de IA generativa y agentes]] para recorrer las conexiones entre fundamentos, embeddings, índices, RAG y agentes. El mapa específico de RAG y sus dos etapas está en [[34 S08 - Guía para entender fragmentación y recuperación]].
 
 ## El hilo conductor en seis preguntas
 
@@ -85,6 +85,17 @@ Ampliaciones: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|in
 5. [[32 S06 - Elegir modelo y reconocer límites|Cómo elegir un modelo y detectar límites de recuperación]].
 6. [[33 PRÁCTICA - Embeddings y similitud semántica|Ejercicios resueltos de la sesión 06]].
 
+## 7B. Bases de datos vectoriales — sesión 07
+
+Empieza por [[79 S07 - Guía de búsqueda vectorial e índices]]. Este bloque completa el puente entre embeddings y RAG: cómo organizar vectores, qué se pierde al aproximar y cómo medir el intercambio entre calidad, tiempo y memoria. Incluye seis gráficos explicados y quince ejercicios resueltos.
+
+1. [[80 S07 - Búsqueda exacta aproximación y costo]]
+2. [[81 S07 - IVF celdas centroides y nprobe]]
+3. [[82 S07 - HNSW capas conexiones y exploración]]
+4. [[83 S07 - Recall del índice latencia y memoria]]
+5. [[84 S07 - Colecciones payload filtros y operación]]
+6. [[85 S07 - Ejercicios resueltos de búsqueda vectorial]]
+
 ## 8. RAG: fragmentación y recuperación — sesión 08
 
 Empieza por [[34 S08 - Guía para entender fragmentación y recuperación|la guía de la sesión 08]]. Cada nota desarrolla **qué es, cómo funciona, por qué se necesita y cómo se relaciona con el sistema**. Incluye diagramas, gráficos explicados, mecanismos desarrollados paso a paso y recordatorios. La revisión añade conexiones entre etapas y preguntas para anticipar qué ocurre al cambiar el sistema.
@@ -124,7 +135,7 @@ Empieza por [[50 S10 - Guía para comprender el taller RAG|la guía de la sesió
 
 ## 11. Agentes y uso de herramientas — sesión 11
 
-Empieza por [[59 S11 - Guía para entender agentes y herramientas|la guía de la sesión 11]]. Nueve notas desarrollan el mecanismo con un ejemplo continuo de ventas, ocho figuras explicadas, 24 ejercicios resueltos y un simulador local con nueve escenarios verificados.
+Empieza por [[59 S11 - Guía para entender agentes y herramientas|la guía de la sesión 11]]. Nueve notas teóricas desarrollan el mecanismo con un ejemplo continuo de ventas, ocho figuras explicadas, 24 ejercicios resueltos y un simulador local con nueve escenarios verificados. El complemento del notebook del lunes añade los datos originales y una novena figura.
 
 1. [[60 S11 - Chatbot pipeline RAG y agente quién decide]]
 2. [[61 S11 - PEAS racionalidad y observación parcial]]
@@ -135,7 +146,40 @@ Empieza por [[59 S11 - Guía para entender agentes y herramientas|la guía de la
 7. [[66 S11 - Límites trazas y laboratorio del bucle]]
 8. [[67 S11 - Ejercicios resueltos y repaso activo]]
 
-## 12. Referencias
+## 12. Patrones de agentes y diseño del toolset — sesión 12
+
+Empieza por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]]. Diez notas de la sesión 12 y una práctica explicativa del lunes desarrollan tres patrones, fallas de trazas, presupuestos, verificadores y contratos de herramientas. Incluyen ocho figuras explicadas, 24 preguntas resueltas, un caso integrado y una práctica local determinista verificada.
+
+El lunes está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/68 S11 - Notebook del lunes explicado y revisado|Notebook del lunes explicado y revisado]]; sus originales y los del martes están en `Materiales`. Las correcciones didácticas se conservan en una práctica complementaria.
+
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/70 S12 - ReAct pensamiento acción observación y evidencia|70 S12 - ReAct pensamiento acción observación y evidencia]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/71 S12 - Autopsia de trazas y detector de repetición|71 S12 - Autopsia de trazas y detector de repetición]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/72 S12 - Pasos presupuestos timeouts y condiciones de parada|72 S12 - Pasos presupuestos timeouts y condiciones de parada]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/73 S12 - Reflexion entre intentos memoria y aprendizaje|73 S12 - Reflexion entre intentos memoria y aprendizaje]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/74 S12 - Verificadores fiables y errores del notebook|74 S12 - Verificadores fiables y errores del notebook]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/75 S12 - Plan-and-Execute y elección de patrones|75 S12 - Plan-and-Execute y elección de patrones]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/76 S12 - Toolsets validación errores y límites efectivos|76 S12 - Toolsets validación errores y límites efectivos]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/77 S12 - Laboratorio local y soluciones del martes|77 S12 - Laboratorio local y soluciones del martes]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/78 S12 - Ejercicios resueltos y repaso activo|78 S12 - Ejercicios resueltos y repaso activo]]
+
+## 13. MCP descubrimiento y casos de uso — sesión 13
+
+Empieza por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|el índice de la sesión 13]]. Nueve notas explican cuándo conviene MCP, host/cliente/servidor, catálogos, adaptadores, versiones, permisos y tres tipos de agentes. Incluyen siete figuras reproducibles, cuatro diagramas Mermaid, veinte preguntas resueltas y un simulador local verificado. Se contrastó la revisión 2026-07-28 con documentación oficial.
+
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/86 S13 - Cuándo conviene MCP y la cuenta de integraciones|86 S13 - Cuándo conviene MCP y la cuenta de integraciones]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/87 S13 - Host cliente servidor y descubrimiento|87 S13 - Host cliente servidor y descubrimiento]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/88 S13 - Catálogo adaptador y function calling|88 S13 - Catálogo adaptador y function calling]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/89 S13 - Mensajes transportes y versiones de MCP|89 S13 - Mensajes transportes y versiones de MCP]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/90 S13 - Confianza permisos costo y límites|90 S13 - Confianza permisos costo y límites]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/91 S13 - Agentes analistas de código y de investigación|91 S13 - Agentes analistas de código y de investigación]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/92 S13 - Laboratorio local de descubrimiento y extensión B|92 S13 - Laboratorio local de descubrimiento y extensión B]]
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/93 S13 - Ejercicios resueltos y repaso activo|93 S13 - Ejercicios resueltos y repaso activo]]
+
+## Revisión de calidad y límites
+
+La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas las notas del curso]] registra las correcciones, las comprobaciones y los materiales no disponibles. La incorporación posterior de MCP está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|revisión de S13]]. La cobertura se refiere a estas catorce sesiones; los libros completos, los laboratorios no recibidos y las sesiones posteriores tienen un alcance diferente.
+
+## 14. Referencias
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Glosario explicado]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Fuentes y cobertura por sesión]].
@@ -151,10 +195,13 @@ Empieza por [[59 S11 - Guía para entender agentes y herramientas|la guía de la
 05 Inferencia y prompting/
 06 Talleres y práctica/
 07 Embeddings y recuperación/
+07B Bases de datos vectoriales/
 08 RAG fragmentación y recuperación/
 09 Evaluación de RAG y patrones avanzados/
 10 Taller RAG medible/
 11 Agentes y uso de herramientas/
+12 Patrones de agentes y diseño del toolset/
+13 MCP descubrimiento y casos de uso/
 90 Referencias/
 Materiales/
 Recursos visuales/

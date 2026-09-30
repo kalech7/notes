@@ -1,5 +1,7 @@
 ---
 title: "60 S11 - Chatbot pipeline RAG y agente quién decide"
+created: 2026-09-28
+capitulo: 11
 sesion: "11"
 fecha: 2026-09-28
 tags:
@@ -91,6 +93,8 @@ Esto no demuestra que un agente sea siempre más lento o que un pipeline sea sie
 La p. 25 plantea una taxonomía de divulgación, no una frontera técnica certificada. No existe en el material una línea de código que convierta automáticamente «agente» en «Agentic AI».
 
 Una empresa puede usar esa etiqueta para sistemas con planificación larga, varias herramientas o coordinación. Sin una definición explícita no se puede deducir una arquitectura de la palabra. Describe lo observable: acciones disponibles, quién las selecciona, qué estado se conserva, cómo se evalúa y cuándo se detiene.
+
+El mapa ejecutivo del notebook llama **ML** a predecir con datos históricos, **IA generativa** a producir contenido, **agentes de IA** a resolver tareas con herramientas y **Agentic AI** a orquestar procesos completos. Sus categorías no son una escala donde cada nivel elimine al anterior: un agente puede usar un modelo generativo y un predictor clásico como herramienta. «Proceso completo» depende del alcance elegido, por ejemplo resolver una consulta o tramitar una solicitud de principio a fin. Para comparar dos productos o arquitecturas, hace falta describir esas capacidades, no solo asignarles una capa.
 
 Un chatbot con un prompt largo no adquiere herramientas, memoria persistente o un bucle de ejecución por la longitud del texto. Debemos inspeccionar sus capacidades reales.
 

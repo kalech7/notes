@@ -29,7 +29,7 @@ La respuesta de referencia puede admitir paráfrasis. La evidencia debe permitir
 
 ![[37-s10-corpus-y-contexto.png]]
 
-**Cómo leerlo:** empieza por los documentos originales. Solo parte de su contenido puede haber llegado al índice; en cada consulta se recupera una parte todavía menor, que luego se selecciona para el prompt. La reducción del diagrama representa disponibilidad, no porcentajes medidos. Cada paso puede perder justo la evidencia que necesitas.
+Empieza por los documentos originales. Solo parte de su contenido puede haber llegado al índice; en cada consulta se recupera una parte todavía menor, que luego se selecciona para el prompt. La reducción del diagrama representa disponibilidad, no porcentajes medidos. Cada paso puede perder justo la evidencia que necesitas.
 
 Conviene distinguir:
 
@@ -41,7 +41,7 @@ Una pregunta puede ser respondible en el primer nivel e irresoluble con el terce
 
 ## 3. La sutileza de la página 10
 
-La presentación dice que en `golden_ejemplo.json` las dos preguntas del ejemplo están anotadas como negativas, incluida aquella cuya respuesta está en un PDF rechazado. Es una convención del ejemplo, atribuida al PDF; no inspeccionamos ese archivo.
+La presentación dice que en `golden_ejemplo.json` las dos preguntas del ejemplo están anotadas como negativas, incluida aquella cuya respuesta está en un PDF rechazado. La inspección de `golden_ejemplo.json` de la entrega confirma esa convención en sus ítems 5 y 6. Describe el corpus indexable del ejemplo; conviene conservar por separado que el ítem 6 sí es respondible en los documentos originales.
 
 Hay dos evaluaciones legítimas, pero **responden preguntas diferentes**:
 
@@ -91,11 +91,24 @@ Conserva anclas estables a documento, versión y pasaje, y vuelve a resolver cu�
 
 ## 7. Composición y límites de la muestra
 
-El taller pide diez preguntas con dos negativas; quedan ocho respondibles. Incluye variedad de redacción y dificultad: paráfrasis, códigos, condiciones, información en distintos documentos y ausencias reales. Esta diversidad sirve para identificar fallas, pero diez casos no representan automáticamente el universo de uso.
+El taller pide diez preguntas con **al menos dos negativas**; hay ocho respondibles solo si se eligen exactamente dos negativas. La entrega archivada eligió esa distribución. Incluye variedad de redacción y dificultad: paráfrasis, códigos, condiciones, información en distintos documentos y ausencias reales. Esta diversidad sirve para identificar fallas, pero diez casos no representan automáticamente el universo de uso.
 
 Las negativas deben comprobarse contra el corpus declarado. Una pregunta difícil de buscar no es necesariamente negativa. Y una pregunta global como «¿qué temas se repiten en todos los documentos?» puede ser respondible, aunque un top-5 local no aporte toda la cobertura.
 
 > [!abstract] Para recordar
 > La etiqueta define el problema que estás midiendo. Antes de calcular, fija corpus, versión, unidad de relevancia y población de preguntas.
 
+## El golden set real y su criterio de acierto
+
+El archivo entregado contiene diez preguntas: cuatro simples, tres multi-fragmento, dos negativas y una adversarial respondible. Las ocho respondibles forman el denominador de Hit y MRR. `evaluation.py` declara respondible un ítem si `documentos_fuente` no está vacío; cada hit acierta si su documento pertenece a esa lista y su texto normalizado contiene `fragmento_esperado`. El nombre «multi» no obliga al código a exigir todos los documentos.
+
+Se incluyó además `evidencias_esperadas` para los casos multi-fragmento. El evaluador de Hit/MRR no consume ese campo; una comprobación separada mide presencia literal de las anclas. El ejemplo es valioso porque muestra la distancia entre **escribir una anotación rica** y **hacer que la métrica realmente la utilice**. Las cadenas literales pueden fallar ante paráfrasis o frente a un pasaje alternativo válido: una ausencia de ancla exige revisión semántica, además de la cuenta.
+
+
 **Fuente:** PDF, pp. 3, 5, 7, 10 y 13. La separación explícita entre los tres niveles amplía el problema planteado en la página 10.
+
+### Un error de anotación en el ejemplo del laboratorio
+
+La inspección de los documentos `nimbus_remoto.md` y `nimbus_gastos.md` permite detectar un problema del ítem 4 de `golden_ejemplo.json`: la pregunta pide trámites con aprobación **30 días antes**, pero su respuesta esperada incluye presentar facturas **dentro de los 30 días después** del gasto. Compartir «30 días» no hace iguales ambas condiciones, y el documento de gastos no exige esa aprobación anticipada. La regla de trabajo desde el exterior sí establece aprobación de Recursos Humanos con 30 días de anticipación.
+
+Ese ítem mezcla una regla pertinente con otra cuyo plazo tiene sentido temporal diferente. La solución de evaluación es revisar la pregunta y su referencia, conservando el original para explicar el hallazgo: puede preguntarse solo por la aprobación anticipada, o reformularse para comparar expresamente ambos plazos. Este hallazgo afecta al golden de ejemplo del laboratorio; no se traslada automáticamente al `golden_set.json` personalizado de las diez preguntas sobre las notas.

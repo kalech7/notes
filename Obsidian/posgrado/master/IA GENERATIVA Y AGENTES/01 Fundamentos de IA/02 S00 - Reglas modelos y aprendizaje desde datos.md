@@ -70,6 +70,21 @@ En muchos métodos tradicionales, una persona diseña características como long
 
 Para entender qué significa esto, comienza con una unidad sencilla: [[03 S00 - Perceptrón redes neuronales y XOR|el perceptrón]].
 
+## Qué señal recibe cada tipo de aprendizaje
+
+«Aprender de datos» no significa siempre comparar con una etiqueta escrita por una persona:
+
+| Tipo | Señal del ejemplo | Caso de este curso |
+| --- | --- | --- |
+| Supervisado | Etiqueta o respuesta observada | Spam/normal en Naive Bayes |
+| Sin etiquetas | Estructura de los datos observados | Componentes ocultos de un GMM |
+| Autosupervisado | Un objetivo construido a partir del propio dato | El siguiente token del texto |
+| Por refuerzo | Recompensa por las respuestas o acciones | Optimización de la política en RLHF |
+
+La secuencia de predicción y comparación de la sección 3 describe bien el caso supervisado; otros métodos construyen otra señal. En todos ellos importan el objetivo y los supuestos. **Regularizar** significa favorecer ciertos ajustes frente a otros, por ejemplo penalizar pesos grandes. **Parada temprana** significa detener el entrenamiento según un criterio de validación antes de seguir ajustando el ruido. Ambas pueden ayudar a generalizar, pero su efecto se comprueba con datos nuevos.
+
+Los enfoques simbólico y estadístico también se combinan. Un sistema puede usar una red para reconocer un documento y reglas para comprobar sus campos. Ninguna de las dos familias obtiene causalidad automáticamente: escribir una flecha o aprender una correlación no basta para justificar una intervención.
+
 ## Fuentes de esta explicación
 
 Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.

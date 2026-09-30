@@ -27,7 +27,7 @@ Una ficha incompleta no autoriza suponer. Por ejemplo, un valor `null` sobre nor
 
 ## 2. El límite de tokens puede borrar contenido sin error visible
 
-El PDF plantea un caso concreto: fragmentos propuestos de 512 tokens enviados a un modelo cuya secuencia máxima es 128 tokens. Si se truncan, gran parte del final nunca entra en el embedding. La búsqueda puede devolver resultados plausibles y aun así ser incapaz de encontrar una respuesta situada al final. La cuenta simple $512-128=384$ tokens omitidos es una aproximación del ejemplo; los tokens especiales y la política exacta de truncamiento afectan el límite útil.
+El PDF plantea un caso concreto: fragmentos propuestos de 512 tokens enviados a un modelo cuya secuencia máxima es 128 tokens. Si se truncan, gran parte del final nunca entra en el embedding. La búsqueda puede devolver resultados plausibles y perder consultas cuya evidencia distintiva está al final. Ese sufijo no contribuyó directamente al vector; el fragmento todavía podría recuperarse gracias a su prefijo y entregar al generador el payload completo. La cuenta simple $512-128=384$ tokens omitidos es una aproximación del ejemplo; los tokens especiales y la política exacta de truncamiento afectan el límite útil.
 
 ```mermaid
 flowchart LR
@@ -82,6 +82,13 @@ Esto es una propuesta de estudio y diagnóstico. Los requisitos de entrega y eva
 
 > [!question]- Comprueba tu comprensión
 > **Si una respuesta está en los últimos 300 tokens de un fragmento de 512 y el modelo solo procesa 128, ¿qué estudiarías primero?** El truncamiento real con el tokenizador y la posición de la respuesta; un resultado plausible del buscador no descarta ese fallo.
+
+## Límite del modelo, límite configurado y longitud de entrenamiento
+
+La tabla docente debe leerse como configuración del caso. La ficha primaria de **all-MiniLM-L6-v2** distingue entrenamiento con secuencias de 128 tokens y truncamiento predeterminado a **256 wordpieces** en Sentence Transformers; la de **paraphrase-multilingual-MiniLM-L12-v2** muestra `max_seq_length: 128`. La familia MiniLM no tiene un único límite que puedas inferir del nombre. Estas fichas se consultaron el 29 de septiembre de 2026: [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) y [modelo multilingüe](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2).
+
+Hay que registrar el checkpoint, su tokenizador y el valor efectivo con que se ejecutó. Un usuario puede configurar un límite menor al admitido; elevarlo arbitrariamente no demuestra que el modelo funcione bien con entradas más largas que las de su diseño o entrenamiento. En el taller archivado se usó otro modelo, BGE-M3, con límite registrado de 8192; el diagnóstico 512/128 sigue siendo una explicación válida de una configuración concreta.
+
 
 ## Fuente y alcance
 

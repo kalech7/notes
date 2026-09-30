@@ -31,7 +31,7 @@ es una identidad; todavía no dice **cómo** calcular cada factor. Un bigrama co
 
 ![Arquitectura simplificada de un transformer decoder-only](<../Recursos visuales/11-transformer-decoder.png>)
 
-Lee el gráfico de izquierda a derecha:
+Las cajas del gráfico corresponden a estas operaciones sucesivas:
 
 1. El **tokenizador** parte el texto en unidades y las convierte en IDs.
 2. Una tabla entrenable transforma cada ID en un **embedding**.
@@ -110,6 +110,16 @@ La ventana de contexto indica cuántos tokens puede procesar juntos una ejecuci�
 ## 8. Qué debes poder explicar
 
 El transformer decoder-only aprende $P(x_t\mid x_{<t})$. Los embeddings convierten IDs en vectores; la posición conserva el orden; la atención incorpora contexto; la red feed-forward transforma cada posición; la LM head y softmax producen una distribución. La elección final del token no pertenece a los pesos del modelo.
+
+## Las formas que conectan el recorrido
+
+Con vocabulario de $V$ tokens, representación de dimensión $d$ y secuencia de $n$ tokens, la tabla de entrada $E$ tiene forma $V\times d$. Consultar $n$ IDs devuelve $H^{(0)}$ de forma $n\times d$. Cada bloque conserva esa forma para que sus residuales se puedan sumar. La LM head utiliza una matriz de forma $d\times V$ y produce logits de forma $n\times V$; softmax normaliza cada fila sobre el **vocabulario**, no sobre las posiciones. En generación basta la fila de la última posición para el siguiente token.
+
+La red feed-forward original tiene la forma $\operatorname{FFN}(h)=\operatorname{ReLU}(hW_1+b_1)W_2+b_2$. Primero expande de $d$ a una dimensión interna $d_{ff}$, introduce una no linealidad y regresa a $d$. Los pesos se comparten **entre posiciones de una misma capa**; distintas capas tienen sus propios pesos. En el transformer base de 2017, $d=512$ y $d_{ff}=2048$. El 512 describe el ancho de cada vector, no una ventana de 512 tokens. Sus aproximadamente 65 millones de parámetros tampoco son un límite de contexto.
+
+LayerNorm suele normalizar las coordenadas de una posición, con parámetros aprendidos de escala y desplazamiento; no promedia todos los tokens para construir un único vector. Hay variantes de normalización y de FFN. La conexión residual y la normalización ayudan a propagar señales y a entrenar pilas profundas, pero no sustituyen la función de la atención.
+
+El original de 2017 usa normalización **después** de la suma residual (*post-norm*). El ejemplo de fórmulas de la nota 19 coloca normalización **antes** de la subcapa (*pre-norm*), otra organización frecuente. Son alternativas arquitectónicas, no operaciones idénticas. Fuente primaria: [[vaswani-2017-attention-is-all-you-need.pdf#page=3|Vaswani et al., §§3.1–3.4, PDF 3–5]] y [[vaswani-2017-attention-is-all-you-need.pdf#page=9|Tabla 3, PDF 9]].
 
 ## Fuentes de esta explicación
 

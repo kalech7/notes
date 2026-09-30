@@ -51,8 +51,6 @@ Un matiz importante: si el corpus sí contiene la respuesta pero la recuperació
 
 ![[30-s09-abstencion.png]]
 
-### Cómo leer el gráfico
-
 El eje horizontal mide abstención correcta en negativas: más a la derecha es mejor. El vertical mide abstención indebida en respondibles: más abajo es mejor. El punto ideal está abajo a la derecha, en (1,0).
 
 «Siempre responde» está en (0,0): nunca rechaza una negativa, aunque no rechace ninguna respondible. «Siempre se abstiene» está en (1,1): reconoce todas las negativas a costa de no ayudar en ninguna respondible. El sistema didáctico está en (0,75; 0,125), que corresponde al ejemplo siguiente. La zona sombreada orienta la lectura; no establece un umbral universal de aceptación.

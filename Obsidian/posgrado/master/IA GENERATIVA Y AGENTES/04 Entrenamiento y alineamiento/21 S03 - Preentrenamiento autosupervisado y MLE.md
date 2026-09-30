@@ -126,6 +126,14 @@ La pila conceptual es:
 3. **preferencias:** favorecer unas respuestas sobre otras;
 4. **inferencia:** usar los pesos sin actualizarlos.
 
+## Qué hace el optimizador y qué aporta el corpus
+
+La fórmula $\theta\leftarrow\theta-\eta\nabla L$ es descenso de gradiente sencillo. **AdamW**, utilizado en el libro y citado en la sesión 03, mantiene estimaciones móviles de gradientes y de sus cuadrados para adaptar cada actualización, y aplica decaimiento de pesos separado. Las tres líneas del bucle también sirven con ese optimizador, pero su `step()` no es literalmente la fórmula de descenso sencillo. Un gradiente calculado en un minilote es una estimación del objetivo general; cada paso no tiene obligación de reducir la pérdida de todos los textos.
+
+Un corpus masivo puede contener duplicados, contradicciones y datos personales, además de lenguaje útil. Quitar duplicados y separar correctamente evaluación reduce contaminación, donde el modelo pudo ver las respuestas de una prueba. Una pérdida baja en textos filtrados del entrenamiento no demuestra generalización. Las capacidades y los sesgos dependen de qué textos entraron y con qué proporción, no solo de cuántos parámetros hay.
+
+Un ejemplo histórico concreto del PDF 03, p. 11: en la distribución de prompts evaluada en InstructGPT, los anotadores prefirieron el modelo ajustado de 1.3B al GPT-3 base de 175B. Es evidencia de que cambiar datos y objetivo puede importar más que aumentar tamaño **en esa comparación**; no demuestra que un modelo pequeño siempre supere a uno grande. [[ouyang-2022-instructgpt.pdf#page=1|Ouyang et al., abstract, PDF 1]].
+
 ## Fuentes de esta explicación
 
 - [[sesion-03-1.pdf#page=2|Sesión 03, páginas 2–8: ciclo, autosupervisión, pérdida, gradiente y modelo base]]

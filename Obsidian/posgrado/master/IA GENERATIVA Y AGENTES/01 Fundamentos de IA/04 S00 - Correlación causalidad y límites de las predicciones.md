@@ -53,6 +53,20 @@ En transformers encontrarás **atención causal**. Allí significa impedir que u
 
 Esa máscara controla qué partes del texto puede leer. No demuestra causas del mundo ni calcula por sí sola efectos de intervenciones. Recuerda esta diferencia cuando llegues a los modelos de lenguaje.
 
+## Un contraste numérico entre observar e intervenir
+
+Este ejemplo es propio. Supón que la mitad de los días son calurosos. En un día caluroso hay ventas altas con probabilidad 0.9 y mucha natación con 0.8; en uno fresco, esas probabilidades son 0.1 y 0.2. Supón además que ventas y natación son independientes **una vez conocido el calor**, como propone el grafo.
+
+Entre los días de ventas altas, la probabilidad de calor es $0.9\times0.5/(0.9\times0.5+0.1\times0.5)=0.9$. Entonces:
+
+$$P(\text{mucha natación}\mid\text{ventas altas})=0.9(0.8)+0.1(0.2)=0.74.$$
+
+Al fijar ventas altas mediante la intervención ideal del dibujo, la proporción de días calurosos sigue siendo 0.5:
+
+$$P(\text{mucha natación}\mid\operatorname{do}(\text{ventas altas}))=0.5(0.8)+0.5(0.2)=0.50.$$
+
+La diferencia aparece porque observar ventas selecciona sobre todo días calurosos, mientras intervenir no cambia el calor. Si los supuestos fueran otros, el efecto podría ser otro. Esto concreta la diferencia de la sesión 00, p. 14, y corrige su formulación demasiado fuerte de que A causa B o B causa A «y no las dos cosas»: las influencias recíprocas pueden representarse desplegando estados a lo largo del tiempo.
+
 ## Fuentes de esta explicación
 
 Las explicaciones y ejemplos están desarrollados en esta nota. Los enlaces permiten consultar su base sin que necesites leer los libros completos.
