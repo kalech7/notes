@@ -313,3 +313,8 @@ El evaluador usa «alguno de los IDs anotados», que no comprueba haber recupera
 Se incorporó [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-13.pdf|sesion-13.pdf]], 26 páginas, con revisión del texto y de todas sus figuras. [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|S13: MCP y casos de uso]] añade el índice y las notas 86–93, siete figuras reproducibles, cuatro diagramas Mermaid, veinte preguntas resueltas y un simulador educativo ejecutado. La paginación visible coincide con las páginas PDF.
 
 El mapa completo de páginas, las precisiones sobre revisión 2026-07-28, los límites de material y el resultado de la validación están en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|fuentes y validación de S13]]. Esta incorporación amplía la cobertura posterior a la revisión histórica del 29 de septiembre; no cambia el alcance de esa revisión previa.
+
+
+## Sesión 14 y tutorial incorporados el 2 de octubre de 2026
+
+[[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/00 Índice - S14 Multiagente LangGraph y robustez|S14: multiagente, LangGraph y robustez]] incorpora las 31 páginas de sesión 14, las 15 del tutorial y las 13 celdas del jueves. Añade once notas temáticas, índice, nueve PNG explicados, cinco diagramas Mermaid y un notebook resuelto local. [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|Fuentes y validación de S14]] contiene el mapa completo, precisiones, límites y registros de comprobación. Se conservaron los tres originales y se actualizaron los índices del curso y de prácticas.

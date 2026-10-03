@@ -1,7 +1,7 @@
 # Obsidian notes
 ## IA generativa y agentes
 
-Notas de clase: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/00 INICIO - Ruta de aprendizaje|Ruta de aprendizaje]]. Última ampliación: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]], con notebooks del lunes y martes, gráficos explicados, verificadores y ejercicios resueltos.
+Notas de clase: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/00 INICIO - Ruta de aprendizaje|Ruta de aprendizaje]]. Última ampliación: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/00 Índice - S14 Multiagente LangGraph y robustez|S14: multiagente, LangGraph y robustez]], con los dos PDF explicados, nueve gráficos, una práctica local resuelta y repaso activo.
 
 Revisión completa del curso: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|Calidad, cobertura y claridad]], con la sesión07 incorporada y el mapa actualizado.
 

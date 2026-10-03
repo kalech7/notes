@@ -1,0 +1,8 @@
+flowchart LR
+    D[Documento o ticket] --> M[Modelo propone acción]
+    M --> G{Permiso y argumentos válidos}
+    G -->|no| R[Rechazo registrado]
+    G -->|sí| H{Acción exige aprobación}
+    H -->|sí| P[Pausa antes del efecto]
+    H -->|no| E[Ejecutar dentro del alcance]
+    P --> A[Decisión vinculada a la propuesta]

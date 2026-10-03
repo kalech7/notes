@@ -1,0 +1,89 @@
+{
+  "sql": {
+    "pregunta": "¿Cuánto vendimos en marzo?",
+    "_traza": [
+      "clasificar",
+      "sql",
+      "redactar"
+    ],
+    "_pausa": false,
+    "ruta": "sql",
+    "_siguiente": "FIN",
+    "datos": {
+      "total_marzo": 2695,
+      "n_ventas": 4
+    },
+    "respuesta": "[respuesta redactada con {\"total_marzo\": 2695, \"n_ventas\": 4}]",
+    "_estado_ejecucion": "finalizado"
+  },
+  "rag": {
+    "pregunta": "¿Qué política de trabajo remoto existe?",
+    "_traza": [
+      "clasificar",
+      "rag",
+      "redactar"
+    ],
+    "_pausa": false,
+    "ruta": "rag",
+    "_siguiente": "FIN",
+    "datos": {
+      "chunk": "El trabajo remoto está permitido hasta 3 días por semana."
+    },
+    "respuesta": "[respuesta redactada con {\"chunk\": \"El trabajo remoto está permitido hasta 3 días por semana.\"}]",
+    "_estado_ejecucion": "finalizado"
+  },
+  "checkpoint": {
+    "pregunta": "Autoriza una excepción especial",
+    "_traza": [
+      "clasificar",
+      "aprobacion"
+    ],
+    "_pausa": true,
+    "ruta": "sensible",
+    "_siguiente": "aprobacion",
+    "_estado_ejecucion": "pausado"
+  },
+  "aprobacion": {
+    "pregunta": "Autoriza una excepción especial",
+    "_traza": [
+      "clasificar",
+      "aprobacion",
+      "aprobacion",
+      "redactar"
+    ],
+    "_pausa": false,
+    "ruta": "sensible",
+    "_siguiente": "FIN",
+    "_estado_ejecucion": "finalizado",
+    "aprobado": true,
+    "respuesta": "[respuesta redactada con {}]"
+  },
+  "rechazo": {
+    "pregunta": "Autoriza una excepción especial",
+    "_traza": [
+      "clasificar",
+      "aprobacion",
+      "aprobacion",
+      "rechazar"
+    ],
+    "_pausa": false,
+    "ruta": "sensible",
+    "_siguiente": "FIN",
+    "_estado_ejecucion": "finalizado",
+    "aprobado": false,
+    "respuesta": "Solicitud rechazada por la persona revisora."
+  },
+  "tools_descubiertas": [
+    "ventas__consultar_ventas",
+    "ventas__listar_productos",
+    "rrhh__consultar_politica"
+  ],
+  "mcp_ventas_marzo": {
+    "mes": "2026-03",
+    "total": 52300
+  },
+  "verificacion": "Todas las comprobaciones locales pasaron",
+  "langgraph_opcional": "No ejecutado; solo lectura",
+  "original_sha256": "ff8b91cd927fa4f43616dd679660c53d3bcf33fb86c4380546676df836766d17",
+  "fecha_revision": "2026-09-30"
+}

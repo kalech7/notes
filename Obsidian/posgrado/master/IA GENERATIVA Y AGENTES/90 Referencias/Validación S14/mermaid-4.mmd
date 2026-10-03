@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant A as Aplicación
+    participant M as Modelo
+    participant T as Herramienta
+    A->>M: Mensajes y catálogo permitido
+    M-->>A: Petición con nombre, argumentos e id
+    A->>A: Validar permisos, costo y argumentos
+    A->>T: Ejecutar llamada autorizada
+    T-->>A: Resultado o error controlado
+    A->>M: Resultado vinculado al id
+    M-->>A: Respuesta o nueva petición

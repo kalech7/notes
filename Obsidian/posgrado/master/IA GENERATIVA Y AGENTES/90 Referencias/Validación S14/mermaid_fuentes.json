@@ -1,0 +1,22 @@
+[
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/100 S14 - Estado nodos y aristas en LangGraph.md",
+    "source": "flowchart LR\n    I[START] --> C[Clasificar]\n    C -->|sql| S[Consultar datos]\n    C -->|rag| R[Recuperar documentos]\n    S --> F[END]\n    R --> F\n"
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/102 S14 - Pausas aprobación humana y contrato de salida.md",
+    "source": "flowchart TD\n    P[Propuesta concreta] --> I[Guardar y pausar]\n    I --> H{Respuesta humana válida}\n    H -->|rechazo| R[Registrar rechazo sin ejecutar]\n    H -->|aprobación| E[Ejecutar propuesta aprobada]\n    R --> F[Respuesta y traza]\n    E --> F\n"
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/104 S14 - Inyección indirecta mínimo privilegio y responsabilidad.md",
+    "source": "flowchart LR\n    D[Documento o ticket] --> M[Modelo propone acción]\n    M --> G{Permiso y argumentos válidos}\n    G -->|no| R[Rechazo registrado]\n    G -->|sí| H{Acción exige aprobación}\n    H -->|sí| P[Pausa antes del efecto]\n    H -->|no| E[Ejecutar dentro del alcance]\n    P --> A[Decisión vinculada a la propuesta]\n"
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/105 S14 - LangChain modelos herramientas RAG y salidas estructuradas.md",
+    "source": "sequenceDiagram\n    participant A as Aplicación\n    participant M as Modelo\n    participant T as Herramienta\n    A->>M: Mensajes y catálogo permitido\n    M-->>A: Petición con nombre, argumentos e id\n    A->>A: Validar permisos, costo y argumentos\n    A->>T: Ejecutar llamada autorizada\n    T-->>A: Resultado o error controlado\n    A->>M: Resultado vinculado al id\n    M-->>A: Respuesta o nueva petición\n"
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/98 S14 - Contratos de traspaso y paralelismo.md",
+    "source": "flowchart LR\n    P[Petición] --> D[Dividir trabajo independiente]\n    D --> A[Datos: resultado con id]\n    D --> B[Políticas: resultado con id]\n    A --> C[Consolidar por identidad y evidencia]\n    B --> C\n    C --> R[Respuesta]\n"
+  }
+]

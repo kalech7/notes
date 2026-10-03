@@ -41,6 +41,8 @@ La caja azul grande representa la aplicación. Sus clientes separan la comunicac
 
 Las notas 86–89 explican el mecanismo; 90–91 conectan ese mecanismo con límites y comprobación. La práctica 92 permite reproducir el descubrimiento con dos proveedores locales y el repaso 93 contiene 20 preguntas resueltas.
 
+El notebook del miércoles está explicado en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/94 PRÁCTICA - Notebook del miércoles grafos checkpoints y MCP|94 PRÁCTICA - Notebook del miércoles grafos checkpoints y MCP]]. Incluye un motor de grafo, pausa y restauración con aprobación o rechazo, un cliente MCP simulado y una copia resuelta con resultados locales verificados.
+
 ## Qué debes poder explicar
 
 - Por qué $M\times N$ cuenta integraciones y $M+N$ cuenta componentes.
@@ -56,7 +58,7 @@ Se leyó el texto completo y se revisaron visualmente las **26 páginas** de *MC
 
 El PDF se conserva sin cambios en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/sesion-13.pdf|Materiales/sesion-13.pdf]]. Las siete figuras son recreaciones conceptuales propias, con PNG, SVG y script reproducible. Los ejemplos numéricos y el simulador son elaboración didáctica, no resultados medidos del curso.
 
-Se contrastó la revisión 2026-07-28 con páginas oficiales de MCP, consultadas el 30 de septiembre de 2026. Las precisiones y el mapa de páginas se registran en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|Fuentes y validación de S13]]. El notebook del miércoles y los archivos fuente de Lab 03 citados por las diapositivas no se adjuntaron: no se atribuye inspección directa de ellos.
+Se contrastó la revisión 2026-07-28 con páginas oficiales de MCP, consultadas el 30 de septiembre de 2026. Las precisiones y el mapa de páginas se registran en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|Fuentes y validación de S13]]. El notebook del miércoles se adjuntó posteriormente y se revisó en la práctica 94. Los archivos fuente de Lab 03 citados por las diapositivas siguen sin adjuntarse; no se atribuye inspección directa de ellos.
 
 > [!info] Contexto académico
 > Según las páginas 24–26, la Parte 5 del cuaderno trata MCP y la extensión B del Taller 3 es opcional. El PDF anuncia el taller para el sábado 3 de octubre de 2026 y como 25 % de la nota final, sin fijar el peso de cada criterio. Estas consignas son contenido de estudio; no equivalen a instrucciones para entregar un taller o modificar servicios.

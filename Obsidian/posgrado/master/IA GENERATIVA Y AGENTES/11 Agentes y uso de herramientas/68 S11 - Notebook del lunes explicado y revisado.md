@@ -16,6 +16,8 @@ tags:
 
 El notebook [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/Materiales/s3-lun-estudiante.ipynb|s3-lun-estudiante.ipynb]] enseña la maquinaria que permite a un modelo pedir herramientas. Está asociado a la semana 3, lunes, y a la sesión 11. Esta nota completa la teoría con sus **datos reales de ejemplo**, aunque la empresa es ficticia. Los importes no son datos personales ni resultados de un LLM.
 
+La copia ejecutable con todos los ejercicios resueltos y explicaciones junto a sus celdas está ahora en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/Practica lunes/s3-lun-resuelto.ipynb|Talleres y práctica: lunes resuelto]]. Sigue el código paso a paso en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/95 PRÁCTICA - Notebook del lunes resuelto y explicado|la guía de la práctica del lunes]]. Esa copia corrige directamente el filtro del simulador; el adaptador descrito más abajo corresponde al laboratorio complementario anterior.
+
 ## 1. Qué piezas construyes y para qué
 
 Un modelo puede escribir «consulta marzo», pero esa frase no consulta nada. El **harness**, o programa que rodea al modelo, interpreta la solicitud, valida sus argumentos, llama una función y añade el resultado al historial. El historial es la lista de mensajes que permite a la próxima decisión saber qué ocurrió.
@@ -125,4 +127,3 @@ Fuentes: notebook del lunes, 18 celdas, numeradas aquí desde 0. Se leyeron comp
 ---
 
 ← [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/11 Agentes y uso de herramientas/67 S11 - Ejercicios resueltos y repaso activo|Anterior]] · [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Siguiente]] →
-

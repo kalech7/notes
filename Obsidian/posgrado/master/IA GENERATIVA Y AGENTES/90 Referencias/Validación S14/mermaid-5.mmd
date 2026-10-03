@@ -1,0 +1,7 @@
+flowchart LR
+    P[Petición] --> D[Dividir trabajo independiente]
+    D --> A[Datos: resultado con id]
+    D --> B[Políticas: resultado con id]
+    A --> C[Consolidar por identidad y evidencia]
+    B --> C
+    C --> R[Respuesta]

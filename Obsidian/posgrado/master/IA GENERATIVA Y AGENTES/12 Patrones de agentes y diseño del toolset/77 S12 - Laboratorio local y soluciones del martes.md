@@ -16,6 +16,8 @@ tags:
 
 La práctica [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/Practica/s12_laboratorio_local.py|s12_laboratorio_local.py]] conecta los dos notebooks con las explicaciones. Usa biblioteca estándar de Python, datos ficticios y un modelo por reglas. Sus resultados se conservan en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/Practica/s12_resultados_verificados.json|s12_resultados_verificados.json]]. **Comprueba mecánica y contratos; no mide desempeño de un LLM.**
 
+Para seguir la actividad celda por celda, usa también [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/Practica martes/s3-mar-resuelto.ipynb|el notebook del martes resuelto en Talleres y práctica]] y [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/96 PRÁCTICA - Notebook del martes resuelto y explicado|su explicación del código]]. Esa copia une el control de pasos, costo y repetición en una misma envoltura simulada; las funciones de esta nota pertenecen al laboratorio complementario anterior.
+
 ## 1. Cómo ejecutar y qué lee
 
 Desde la carpeta `Practica`:
@@ -103,4 +105,3 @@ Fuentes: ambos notebooks completos; implementación complementaria propia. La re
 ---
 
 ← [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/76 S12 - Toolsets validación errores y límites efectivos|Anterior]] · [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/78 S12 - Ejercicios resueltos y repaso activo|Siguiente]] →
-

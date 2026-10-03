@@ -1,0 +1,71 @@
+{
+  "fecha_validacion": "2026-10-02",
+  "notas_nuevas": 13,
+  "enlaces_comprobados": 118,
+  "anclas_pdf": 14,
+  "fragmentos_python_json": 6,
+  "diagramas_mermaid": 5,
+  "formulas": 1,
+  "png": 9,
+  "original_notebook_celdas": 13,
+  "notebook_resuelto": {
+    "markdown": 8,
+    "code": 6
+  },
+  "comprobaciones_practica": 17,
+  "sha256_originales": {
+    "sesion-14.pdf": "377b1a528827877581175cb50e2c8d722e57f2b0f19e6962e2368af57fdfc5bd",
+    "tutorial-langgraph.pdf": "f5ca578f092681b5c386187612b917121772fc90144e241d096deb44b53d4eeb",
+    "s3-jue-estudiante.ipynb": "1989311322088f84c2030f884efb4086104e4abf9440cd4eedcc66c2d0eb12ec"
+  },
+  "mermaid_renderizado": [
+    {
+      "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/100 S14 - Estado nodos y aristas en LangGraph.md",
+      "render": "mermaid-1.svg",
+      "correcto": true,
+      "error": ""
+    },
+    {
+      "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/102 S14 - Pausas aprobación humana y contrato de salida.md",
+      "render": "mermaid-2.svg",
+      "correcto": true,
+      "error": ""
+    },
+    {
+      "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/104 S14 - Inyección indirecta mínimo privilegio y responsabilidad.md",
+      "render": "mermaid-3.svg",
+      "correcto": true,
+      "error": ""
+    },
+    {
+      "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/105 S14 - LangChain modelos herramientas RAG y salidas estructuradas.md",
+      "render": "mermaid-4.svg",
+      "correcto": true,
+      "error": ""
+    },
+    {
+      "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/98 S14 - Contratos de traspaso y paralelismo.md",
+      "render": "mermaid-5.svg",
+      "correcto": true,
+      "error": ""
+    }
+  ],
+  "katex": {
+    "formulas": 1,
+    "correcto": true
+  },
+  "guard_textual": {
+    "consulta_A": {
+      "texto": "select * from t; drop table t",
+      "pasa_filtro": false
+    },
+    "consulta_B": {
+      "texto": "select 1;drop table t",
+      "pasa_filtro": true
+    },
+    "alcance": "Solo predicado textual descrito por el PDF; no se ejecutó SQL"
+  },
+  "errores": [],
+  "revision_visual_png": "9 PNG inspeccionados; figura 06 corregida y revisada",
+  "alcance": "Capítulo S14, fuentes S14 y enlaces nuevos de navegación; LangGraph no ejecutado"
+}

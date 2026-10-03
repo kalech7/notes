@@ -1,0 +1,11 @@
+{
+  "consulta_A": {
+    "texto": "select * from t; drop table t",
+    "pasa_filtro": false
+  },
+  "consulta_B": {
+    "texto": "select 1;drop table t",
+    "pasa_filtro": true
+  },
+  "alcance": "Solo predicado textual descrito por el PDF; no se ejecutó SQL"
+}

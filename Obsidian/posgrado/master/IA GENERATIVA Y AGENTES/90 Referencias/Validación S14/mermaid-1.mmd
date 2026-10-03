@@ -1,0 +1,6 @@
+flowchart LR
+    I[START] --> C[Clasificar]
+    C -->|sql| S[Consultar datos]
+    C -->|rag| R[Recuperar documentos]
+    S --> F[END]
+    R --> F

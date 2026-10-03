@@ -8,9 +8,9 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 13 de los materiales disponibles. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria, control del bucle, ReAct, Reflexion, planificación y diseño del toolset. La sesión 07 añade búsqueda exacta, IVF, HNSW y bases vectoriales antes de RAG.
+Este conjunto cubre las sesiones 00 a 14 de los materiales disponibles. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria, control del bucle, ReAct, Reflexion, planificación y diseño del toolset. La sesión 07 añade búsqueda exacta, IVF, HNSW y bases vectoriales antes de RAG.
 
-**Alcance de «agentes»:** la introducción está en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. La sesión 11 desarrolla PEAS, selección y ejecución de herramientas, memoria, Toolformer, límites y trazas en [[59 S11 - Guía para entender agentes y herramientas]]. La sesión 12 incorpora ReAct, Reflexion, Plan-and-Execute, verificadores, diagnóstico de trazas y contratos de herramientas en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]]. La sesión 13 desarrolla MCP, catálogo, adaptación, descubrimiento y casos de uso en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|Guía de la sesión 13]]. La coordinación de varios agentes y una evaluación integral de agentes quedan para sesiones posteriores.
+**Alcance de «agentes»:** la introducción está en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. La sesión 11 desarrolla PEAS, selección y ejecución de herramientas, memoria, Toolformer, límites y trazas en [[59 S11 - Guía para entender agentes y herramientas]]. La sesión 12 incorpora ReAct, Reflexion, Plan-and-Execute, verificadores, diagnóstico de trazas y contratos de herramientas en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]]. La sesión 13 desarrolla MCP, catálogo, adaptación, descubrimiento y casos de uso en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|Guía de la sesión 13]]. La sesión 14 añade supervisor, handoff, paralelismo, LangGraph, presupuestos, inyección indirecta y observabilidad en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/00 Índice - S14 Multiagente LangGraph y robustez|el índice de S14]]. La evaluación integral de agentes conserva el alcance de las sesiones posteriores.
 
 > [!tip] Cómo estudiar
 > Lee primero la situación concreta, sigue el gráfico y después relaciona cada símbolo con el ejemplo. Al final de cada nota responde las preguntas sin abrir las soluciones. Usa [[27 PRÁCTICA - Sesiones 02 a 05]] para comprobar la segunda mitad del recorrido.
@@ -71,10 +71,14 @@ Ampliaciones: [[15 AMPLIACIÓN - Bayes incertidumbre y suavizado con números|in
 
 ## 6. Talleres y práctica
 
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/00 Índice - Prácticas de la semana 3|Prácticas de la semana 3: lunes, martes y miércoles]], con originales, notebooks resueltos y explicaciones del código.
 - [[13 PRÁCTICA - Repaso integrado y ejercicios resueltos|Repaso de sesiones 00 y 01]].
 - [[17 PRÁCTICA - Modelos generativos Naive Bayes GMM y bigramas|Notebook de Naive Bayes, GMM y bigramas]].
 - [[26 S05 - Diseñar una comparación de modelos|Cómo comparar modelos con un experimento controlado]].
 - [[27 PRÁCTICA - Sesiones 02 a 05|Ejercicios resueltos de transformer, alineamiento, inferencia y evaluación]].
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/95 PRÁCTICA - Notebook del lunes resuelto y explicado|Lunes: el bucle de herramientas resuelto y explicado]].
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/96 PRÁCTICA - Notebook del martes resuelto y explicado|Martes: trazas, límites y Mini-Reflexion resueltos y explicados]].
+- [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/06 Talleres y práctica/94 PRÁCTICA - Notebook del miércoles grafos checkpoints y MCP|Notebook del miércoles: grafos, checkpoints y MCP]], con una copia resuelta ejecutable, diagramas y resultados verificados.
 
 ## 7. Embeddings y recuperación semántica
 
@@ -175,11 +179,17 @@ Empieza por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimi
 - [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/92 S13 - Laboratorio local de descubrimiento y extensión B|92 S13 - Laboratorio local de descubrimiento y extensión B]]
 - [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/93 S13 - Ejercicios resueltos y repaso activo|93 S13 - Ejercicios resueltos y repaso activo]]
 
+## 14. Multiagente, LangGraph y robustez — sesión 14
+
+Empieza por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/00 Índice - S14 Multiagente LangGraph y robustez|el índice de S14]]. Once notas temáticas y su índice explican topologías, evidencia histórica, estado y reductores, pausas, presupuestos, permisos e inyección indirecta, y LangChain/LangGraph/LangSmith. Incluyen nueve gráficos con explicación, cinco diagramas Mermaid, 18 preguntas resueltas y un notebook local con 17 comprobaciones.
+
+El cierre práctico está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/107 S14 - Notebook del jueves laboratorio y repaso resuelto|notebook del jueves y repaso]]. La revisión de fuentes distingue resultados docentes, cifras de 2023 y la simulación propia: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|fuentes y validación de S14]].
+
 ## Revisión de calidad y límites
 
-La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas las notas del curso]] registra las correcciones, las comprobaciones y los materiales no disponibles. La incorporación posterior de MCP está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|revisión de S13]]. La cobertura se refiere a estas catorce sesiones; los libros completos, los laboratorios no recibidos y las sesiones posteriores tienen un alcance diferente.
+La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas las notas del curso]] registra las correcciones, las comprobaciones y los materiales no disponibles. La incorporación posterior de MCP está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|revisión de S13]]. La incorporación de robustez y coordinación está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|la revisión de S14]]. La cobertura se refiere a estas quince sesiones; los libros completos, los laboratorios no recibidos y las sesiones posteriores tienen un alcance diferente.
 
-## 14. Referencias
+## 15. Referencias
 
 - [[12 GLOSARIO - Diccionario explicado para estas sesiones|Glosario explicado]].
 - [[14 FUENTES - Materiales y mapa de cobertura|Fuentes y cobertura por sesión]].
@@ -202,6 +212,7 @@ La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas l
 11 Agentes y uso de herramientas/
 12 Patrones de agentes y diseño del toolset/
 13 MCP descubrimiento y casos de uso/
+14 Multiagente LangGraph y robustez/
 90 Referencias/
 Materiales/
 Recursos visuales/

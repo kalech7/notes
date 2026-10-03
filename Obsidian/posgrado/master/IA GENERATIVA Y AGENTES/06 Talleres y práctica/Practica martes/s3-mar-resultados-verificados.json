@@ -1,0 +1,350 @@
+{
+  "tipo": "simulacion local; no ejecuta busquedas ni evalua un LLM",
+  "detector": {
+    "sana": false,
+    "loop": true,
+    "fabrica": false
+  },
+  "ventana_y_herramienta": {
+    "loop_ultimos_3_eventos": false,
+    "loop_ultimos_6_eventos": true,
+    "misma_entrada_otra_tool": false,
+    "traza_vacia": false
+  },
+  "corte_por_costo": {
+    "estado": "presupuesto",
+    "pasos": 3,
+    "gastado": 6,
+    "traza": [
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 1",
+        "ejecutada": true,
+        "paso": 1
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 2
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 2",
+        "ejecutada": true,
+        "paso": 2
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 4
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 3",
+        "ejecutada": true,
+        "paso": 3
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 6
+      },
+      {
+        "tipo": "parada",
+        "motivo": "presupuesto"
+      }
+    ]
+  },
+  "corte_por_pasos": {
+    "estado": "max_pasos",
+    "pasos": 5,
+    "gastado": 10,
+    "traza": [
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 1",
+        "ejecutada": true,
+        "paso": 1
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 2
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 2",
+        "ejecutada": true,
+        "paso": 2
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 4
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 3",
+        "ejecutada": true,
+        "paso": 3
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 6
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 4",
+        "ejecutada": true,
+        "paso": 4
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 8
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 5",
+        "ejecutada": true,
+        "paso": 5
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 10
+      },
+      {
+        "tipo": "parada",
+        "motivo": "max_pasos"
+      }
+    ]
+  },
+  "corte_por_repeticion": {
+    "estado": "repeticion",
+    "pasos": 1,
+    "gastado": 2,
+    "traza": [
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "precio acción NimbusSoft",
+        "ejecutada": true,
+        "paso": 1
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 2
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "NimbusSoft precio acción",
+        "ejecutada": false
+      },
+      {
+        "tipo": "parada",
+        "motivo": "repeticion"
+      }
+    ]
+  },
+  "verificador": {
+    "[]": [
+      false,
+      "La raíz debe ser un objeto JSON"
+    ],
+    "null": [
+      false,
+      "La raíz debe ser un objeto JSON"
+    ],
+    "no es JSON": [
+      false,
+      "Entrega solo JSON válido, sin texto adicional"
+    ],
+    "{\"categoria\": [], \"urgencia\": 4}": [
+      false,
+      "categoria debe ser tecnico o ventas, sin tilde"
+    ],
+    "{\"categoria\": \"tecnico\", \"urgencia\": true}": [
+      false,
+      "urgencia debe ser un entero, no booleano ni decimal"
+    ],
+    "{\"categoria\": \"tecnico\", \"urgencia\": 4.0}": [
+      false,
+      "urgencia debe ser un entero, no booleano ni decimal"
+    ],
+    "{\"categoria\": \"técnico\", \"urgencia\": 4}": [
+      false,
+      "categoria debe ser tecnico o ventas, sin tilde"
+    ],
+    "{\"categoria\": \"tecnico\", \"urgencia\": 4, \"extra\": 1}": [
+      false,
+      "Usa exactamente las claves categoria y urgencia"
+    ],
+    "{\"categoria\": \"tecnico\", \"urgencia\": 4}": [
+      true,
+      "OK"
+    ]
+  },
+  "reflexion": {
+    "estado": "verificado",
+    "respuesta": "{\"categoria\": \"tecnico\", \"urgencia\": 4}",
+    "traza": [
+      {
+        "intento": 1,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      },
+      {
+        "intento": 2,
+        "respuesta": "{\"categoria\": \"técnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional"
+        ],
+        "ok": false,
+        "critica": "categoria debe ser tecnico o ventas, sin tilde"
+      },
+      {
+        "intento": 3,
+        "respuesta": "{\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional",
+          "categoria debe ser tecnico o ventas, sin tilde"
+        ],
+        "ok": true,
+        "critica": "OK"
+      }
+    ]
+  },
+  "reflexion_agotada": {
+    "estado": "intentos_agotados",
+    "respuesta": null,
+    "traza": [
+      {
+        "intento": 1,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      },
+      {
+        "intento": 2,
+        "respuesta": "{\"categoria\": \"técnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional"
+        ],
+        "ok": false,
+        "critica": "categoria debe ser tecnico o ventas, sin tilde"
+      }
+    ]
+  },
+  "generador_ignora_feedback": {
+    "estado": "intentos_agotados",
+    "respuesta": null,
+    "traza": [
+      {
+        "intento": 1,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      },
+      {
+        "intento": 2,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional"
+        ],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      },
+      {
+        "intento": 3,
+        "respuesta": "La categoría es técnica con urgencia 4: {\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [
+          "Entrega solo JSON válido, sin texto adicional",
+          "Entrega solo JSON válido, sin texto adicional"
+        ],
+        "ok": false,
+        "critica": "Entrega solo JSON válido, sin texto adicional"
+      }
+    ]
+  },
+  "aceptacion_temprana": {
+    "estado": "verificado",
+    "respuesta": "{\"categoria\": \"tecnico\", \"urgencia\": 4}",
+    "traza": [
+      {
+        "intento": 1,
+        "respuesta": "{\"categoria\": \"tecnico\", \"urgencia\": 4}",
+        "criticas_recibidas": [],
+        "ok": true,
+        "critica": "OK"
+      }
+    ]
+  },
+  "sin_presupuesto": {
+    "estado": "presupuesto",
+    "pasos": 0,
+    "gastado": 0,
+    "traza": [
+      {
+        "tipo": "parada",
+        "motivo": "presupuesto"
+      }
+    ]
+  },
+  "completado_en_limite": {
+    "estado": "completado",
+    "pasos": 2,
+    "gastado": 4,
+    "traza": [
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 1",
+        "ejecutada": true,
+        "paso": 1
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 2
+      },
+      {
+        "tipo": "action",
+        "tool": "buscar",
+        "input": "consulta 2",
+        "ejecutada": true,
+        "paso": 2
+      },
+      {
+        "tipo": "observation",
+        "texto": "Resultado simulado",
+        "gasto_acumulado": 4
+      }
+    ]
+  },
+  "verificacion": "Todas las comprobaciones del martes pasaron",
+  "original_sha256": "d3f7565c16ff4ced9aaa4fdc9ed27f100f55132fc23f43f7d6eafe165f4eb1bf",
+  "fecha_revision": "2026-09-30",
+  "celdas_codigo_ejecutadas": 10,
+  "validacion_notebook": {
+    "celdas_totales": 32,
+    "ids_unicos_y_validos": true,
+    "namespace_limpio": true,
+    "python": "3.14.7"
+  }
+}

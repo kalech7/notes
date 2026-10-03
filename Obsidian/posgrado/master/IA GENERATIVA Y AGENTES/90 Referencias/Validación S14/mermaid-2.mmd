@@ -1,0 +1,7 @@
+flowchart TD
+    P[Propuesta concreta] --> I[Guardar y pausar]
+    I --> H{Respuesta humana válida}
+    H -->|rechazo| R[Registrar rechazo sin ejecutar]
+    H -->|aprobación| E[Ejecutar propuesta aprobada]
+    R --> F[Respuesta y traza]
+    E --> F

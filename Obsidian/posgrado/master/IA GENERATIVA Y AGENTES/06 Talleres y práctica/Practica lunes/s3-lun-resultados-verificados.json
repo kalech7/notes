@@ -1,0 +1,345 @@
+{
+  "tipo": "simulacion local, no evaluacion de un LLM",
+  "marzo": {
+    "estado": "respuesta_final",
+    "respuesta": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75).",
+    "pasos": 2,
+    "traza": [
+      {
+        "paso": 1,
+        "tipo": "tool_use",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "input": {
+          "mes": "2026-03"
+        },
+        "resultado": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+      },
+      {
+        "paso": 2,
+        "tipo": "texto",
+        "texto": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75)."
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cuánto vendimos en marzo?"
+      },
+      {
+        "role": "assistant_tool_use",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "input": {
+          "mes": "2026-03"
+        }
+      },
+      {
+        "role": "tool_result",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "content": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+      },
+      {
+        "role": "assistant",
+        "content": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75)."
+      }
+    ]
+  },
+  "ejercicio_4_1": {
+    "¿Cuánto vendimos en marzo?": {
+      "estado": "respuesta_final",
+      "respuesta": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75).",
+      "pasos": 2,
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "tool_use",
+          "id": "c1",
+          "name": "estadisticas_ventas",
+          "input": {
+            "mes": "2026-03"
+          },
+          "resultado": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+        },
+        {
+          "paso": 2,
+          "tipo": "texto",
+          "texto": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75)."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "¿Cuánto vendimos en marzo?"
+        },
+        {
+          "role": "assistant_tool_use",
+          "id": "c1",
+          "name": "estadisticas_ventas",
+          "input": {
+            "mes": "2026-03"
+          }
+        },
+        {
+          "role": "tool_result",
+          "id": "c1",
+          "name": "estadisticas_ventas",
+          "content": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+        },
+        {
+          "role": "assistant",
+          "content": "En ese mes hubo 4 ventas por un total de $2695 (promedio $673.75)."
+        }
+      ]
+    },
+    "¿Qué productos vendemos?": {
+      "estado": "respuesta_final",
+      "respuesta": "Los productos son: [\"laptop\", \"monitor\", \"teclado\"]",
+      "pasos": 2,
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "tool_use",
+          "id": "c1",
+          "name": "listar_productos",
+          "input": {},
+          "resultado": "[\"laptop\", \"monitor\", \"teclado\"]"
+        },
+        {
+          "paso": 2,
+          "tipo": "texto",
+          "texto": "Los productos son: [\"laptop\", \"monitor\", \"teclado\"]"
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "¿Qué productos vendemos?"
+        },
+        {
+          "role": "assistant_tool_use",
+          "id": "c1",
+          "name": "listar_productos",
+          "input": {}
+        },
+        {
+          "role": "tool_result",
+          "id": "c1",
+          "name": "listar_productos",
+          "content": "[\"laptop\", \"monitor\", \"teclado\"]"
+        },
+        {
+          "role": "assistant",
+          "content": "Los productos son: [\"laptop\", \"monitor\", \"teclado\"]"
+        }
+      ]
+    },
+    "Dame el detalle de ventas de marzo en sierra": {
+      "estado": "respuesta_final",
+      "respuesta": "Detalle encontrado: [{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]",
+      "pasos": 2,
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "tool_use",
+          "id": "c1",
+          "name": "consultar_ventas",
+          "input": {
+            "mes": "2026-03",
+            "region": "sierra"
+          },
+          "resultado": "[{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]"
+        },
+        {
+          "paso": 2,
+          "tipo": "texto",
+          "texto": "Detalle encontrado: [{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]"
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Dame el detalle de ventas de marzo en sierra"
+        },
+        {
+          "role": "assistant_tool_use",
+          "id": "c1",
+          "name": "consultar_ventas",
+          "input": {
+            "mes": "2026-03",
+            "region": "sierra"
+          }
+        },
+        {
+          "role": "tool_result",
+          "id": "c1",
+          "name": "consultar_ventas",
+          "content": "[{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]"
+        },
+        {
+          "role": "assistant",
+          "content": "Detalle encontrado: [{\"fecha\": \"2026-03-02\", \"producto\": \"laptop\", \"region\": \"sierra\", \"monto\": 1200}, {\"fecha\": \"2026-03-15\", \"producto\": \"teclado\", \"region\": \"sierra\", \"monto\": 45}]"
+        }
+      ]
+    },
+    "¿Cuál es el sentido de la vida?": {
+      "estado": "respuesta_final",
+      "respuesta": "¿Puedes reformular? Puedo consultar ventas, estadísticas o productos.",
+      "pasos": 1,
+      "traza": [
+        {
+          "paso": 1,
+          "tipo": "texto",
+          "texto": "¿Puedes reformular? Puedo consultar ventas, estadísticas o productos."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "¿Cuál es el sentido de la vida?"
+        },
+        {
+          "role": "assistant",
+          "content": "¿Puedes reformular? Puedo consultar ventas, estadísticas o productos."
+        }
+      ]
+    }
+  },
+  "limite_un_paso": {
+    "estado": "max_pasos",
+    "respuesta": null,
+    "pasos": 1,
+    "traza": [
+      {
+        "paso": 1,
+        "tipo": "tool_use",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "input": {
+          "mes": "2026-03"
+        },
+        "resultado": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+      },
+      {
+        "tipo": "parada",
+        "motivo": "max_pasos"
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cuánto vendimos en marzo?"
+      },
+      {
+        "role": "assistant_tool_use",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "input": {
+          "mes": "2026-03"
+        }
+      },
+      {
+        "role": "tool_result",
+        "id": "c1",
+        "name": "estadisticas_ventas",
+        "content": "{\"n\": 4, \"total\": 2695, \"promedio\": 673.75}"
+      }
+    ]
+  },
+  "errores_controlados": {
+    "('no_existe', {})": "{\"error\": \"Herramienta no registrada\"}",
+    "('estadisticas_ventas', {})": "{\"error\": \"mes debe usar YYYY-MM con mes entre 01 y 12\"}",
+    "('estadisticas_ventas', {'mes': '2026'})": "{\"error\": \"mes debe usar YYYY-MM con mes entre 01 y 12\"}",
+    "('estadisticas_ventas', [])": "{\"error\": \"input debe ser un diccionario\"}",
+    "('estadisticas_ventas', {'mes': '2026-13'})": "{\"error\": \"mes debe usar YYYY-MM con mes entre 01 y 12\"}",
+    "('consultar_ventas', {'mes': '2026-03', 'region': 'sur'})": "{\"error\": \"region debe ser sierra, costa u oriente\"}",
+    "('listar_productos', {'mes': '2026-03'})": "{\"error\": \"Hay argumentos inesperados\"}",
+    "('estadisticas_ventas', {'mes': '2026-05'})": "{\"error\": \"sin datos para 2026-05\"}"
+  },
+  "repeticion_hasta_limite": {
+    "estado": "max_pasos",
+    "respuesta": null,
+    "pasos": 3,
+    "traza": [
+      {
+        "paso": 1,
+        "tipo": "tool_use",
+        "id": "c1",
+        "name": "listar_productos",
+        "input": {},
+        "resultado": "[\"laptop\", \"monitor\", \"teclado\"]"
+      },
+      {
+        "paso": 2,
+        "tipo": "tool_use",
+        "id": "c2",
+        "name": "listar_productos",
+        "input": {},
+        "resultado": "[\"laptop\", \"monitor\", \"teclado\"]"
+      },
+      {
+        "paso": 3,
+        "tipo": "tool_use",
+        "id": "c3",
+        "name": "listar_productos",
+        "input": {},
+        "resultado": "[\"laptop\", \"monitor\", \"teclado\"]"
+      },
+      {
+        "tipo": "parada",
+        "motivo": "max_pasos"
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "prueba de repetición"
+      },
+      {
+        "role": "assistant_tool_use",
+        "id": "c1",
+        "name": "listar_productos",
+        "input": {}
+      },
+      {
+        "role": "tool_result",
+        "id": "c1",
+        "name": "listar_productos",
+        "content": "[\"laptop\", \"monitor\", \"teclado\"]"
+      },
+      {
+        "role": "assistant_tool_use",
+        "id": "c2",
+        "name": "listar_productos",
+        "input": {}
+      },
+      {
+        "role": "tool_result",
+        "id": "c2",
+        "name": "listar_productos",
+        "content": "[\"laptop\", \"monitor\", \"teclado\"]"
+      },
+      {
+        "role": "assistant_tool_use",
+        "id": "c3",
+        "name": "listar_productos",
+        "input": {}
+      },
+      {
+        "role": "tool_result",
+        "id": "c3",
+        "name": "listar_productos",
+        "content": "[\"laptop\", \"monitor\", \"teclado\"]"
+      }
+    ]
+  },
+  "protocolo_y_limites_invalidos": "rechazados correctamente",
+  "verificacion": "Todas las comprobaciones del lunes pasaron",
+  "original_sha256": "17baf4a2bfe1cba85f2b3232660324ee9b88f2f1fc9fb5d13b76cb072a9a858e",
+  "fecha_revision": "2026-09-30",
+  "celdas_codigo_ejecutadas": 10,
+  "dataset_identico_al_original": true,
+  "version_python_verificacion": "3.14.7",
+  "ids_celdas_validos_y_unicos": true
+}

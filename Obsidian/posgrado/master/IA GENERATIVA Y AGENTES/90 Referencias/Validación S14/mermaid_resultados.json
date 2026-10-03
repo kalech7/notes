@@ -1,0 +1,32 @@
+[
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/100 S14 - Estado nodos y aristas en LangGraph.md",
+    "render": "mermaid-1.svg",
+    "correcto": true,
+    "error": ""
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/102 S14 - Pausas aprobación humana y contrato de salida.md",
+    "render": "mermaid-2.svg",
+    "correcto": true,
+    "error": ""
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/104 S14 - Inyección indirecta mínimo privilegio y responsabilidad.md",
+    "render": "mermaid-3.svg",
+    "correcto": true,
+    "error": ""
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/105 S14 - LangChain modelos herramientas RAG y salidas estructuradas.md",
+    "render": "mermaid-4.svg",
+    "correcto": true,
+    "error": ""
+  },
+  {
+    "file": "Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/98 S14 - Contratos de traspaso y paralelismo.md",
+    "render": "mermaid-5.svg",
+    "correcto": true,
+    "error": ""
+  }
+]
