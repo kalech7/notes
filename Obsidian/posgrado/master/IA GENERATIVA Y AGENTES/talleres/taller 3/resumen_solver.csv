@@ -1,0 +1,16 @@
+variante,tarea,aprobados,total_checks,centrales_aprobados,centrales_total,procedencia
+completo,control-1,8,8,8,8,1.0
+completo,control-3,11,13,11,11,1.0
+completo,demo-A,13,13,8,8,1.0
+completo,demo-B,12,12,9,9,1.0
+completo,demo-C,9,9,8,8,1.0
+memoria,control-1,8,8,8,8,1.0
+memoria,control-3,10,13,10,11,1.0
+memoria,demo-A,12,13,7,8,1.0
+memoria,demo-B,12,12,9,9,1.0
+memoria,demo-C,9,9,8,8,1.0
+sin_grafo,control-1,8,8,8,8,1.0
+sin_grafo,control-3,11,13,9,11,1.0
+sin_grafo,demo-A,13,13,8,8,1.0
+sin_grafo,demo-B,12,12,9,9,1.0
+sin_grafo,demo-C,3,9,3,8,0.0

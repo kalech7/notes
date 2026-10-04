@@ -1,0 +1,16 @@
+variante,tarea,status,subtareas_fallidas,intentos_codigo,rechazos,tokens_entrada,tokens_salida,duracion_s,pared_s,modelo,scope,duracion_metodo
+completo,demo-A,completado,0,3,0,53585,13558,103.2537643979922,144.83998212200095,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+completo,demo-B,completado,0,2,0,46933,13840,102.650598017015,134.29754139699799,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+completo,demo-C,completado,0,2,0,47576,11271,84.1172414259745,117.85536846100149,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+completo,control-1,parcial,0,2,0,42527,8611,58.290329067996936,87.0468393029987,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+completo,control-3,completado,0,4,1,68445,16493,88.96891096499166,128.6900957910002,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+sin_grafo,demo-A,completado,0,3,0,53070,15383,114.65578605001065,128.40382370500083,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+sin_grafo,demo-B,completado,0,2,0,38332,12839,85.01287992899961,98.6885959650026,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+sin_grafo,demo-C,parcial,3,3,3,44912,17563,122.34196509300091,129.24392071200054,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+sin_grafo,control-1,completado,0,1,0,29119,8288,62.622574209010054,72.02410174100078,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+sin_grafo,control-3,completado,0,5,2,41310,13148,69.16944766099914,78.0580680589992,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+memoria,demo-A,parcial,0,3,0,51259,11433,85.86925095699189,136.8706496779996,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+memoria,demo-B,completado,0,2,0,39199,8444,57.76609258800818,90.93411399699835,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+memoria,demo-C,completado,0,2,0,47629,14639,121.37119762899601,161.19281025500095,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+memoria,control-1,completado,0,1,0,38962,7286,46.75420906499858,70.8071170309995,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte
+memoria,control-3,parcial,0,3,0,114781,18966,99.1884322829901,170.6955736359996,zai-org/GLM-5.3-Flash,kit_reconstruido,latencias_mas_ejecucion; preparación común aparte

@@ -1,0 +1,168 @@
+variante,tarea,check,tipo,grupo,aprobado,valor,detalle
+completo,demo-A,demo-A-archivo,archivo,central,True,,
+completo,demo-A,demo-A-secciones,secciones,central,True,,
+completo,demo-A,demo-A-n_samples,cifra,diagnostico,True,569.0,etiqueta=n_samples; verdad=569; observada=569.0. 
+completo,demo-A,demo-A-n_train,cifra,central,True,455.0,etiqueta=n_train; verdad=455; observada=455.0. 
+completo,demo-A,demo-A-n_test,cifra,diagnostico,True,114.0,etiqueta=n_test; verdad=114; observada=114.0. 
+completo,demo-A,demo-A-accuracy_nb,cifra,central,True,0.9385964912280702,etiqueta=accuracy_nb; verdad=0.9385964912280702; observada=0.9385964912280702. 
+completo,demo-A,demo-A-accuracy_lr,cifra,central,True,0.9824561403508771,etiqueta=accuracy_lr; verdad=0.9824561403508771; observada=0.9824561403508771. 
+completo,demo-A,demo-A-accuracy_lr_f005,cifra,central,True,0.9385964912280702,etiqueta=accuracy_lr_f005; verdad=0.9385964912280702; observada=0.9385964912280702. 
+completo,demo-A,demo-A-accuracy_lr_f020,cifra,diagnostico,True,0.9736842105263158,etiqueta=accuracy_lr_f020; verdad=0.9736842105263158; observada=0.9736842105263158. 
+completo,demo-A,demo-A-accuracy_lr_f100,cifra,diagnostico,True,0.9824561403508771,etiqueta=accuracy_lr_f100; verdad=0.9824561403508771; observada=0.9824561403508771. 
+completo,demo-A,demo-A-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+completo,demo-A,demo-A-consistencia,contiene,diagnostico,True,,
+completo,demo-A,demo-A-palabras,palabras_max,central,True,1143,
+completo,demo-B,demo-B-archivo,archivo,central,True,,
+completo,demo-B,demo-B-secciones,secciones,central,True,,
+completo,demo-B,demo-B-prob0_T05,cifra,central,True,0.8668133321973347,etiqueta=prob0_T05; verdad=0.8668133321973347; observada=0.8668133321973347. 
+completo,demo-B,demo-B-prob0_T1,cifra,diagnostico,True,0.6652409557748218,etiqueta=prob0_T1; verdad=0.6652409557748218; observada=0.6652409557748218. 
+completo,demo-B,demo-B-prob0_T2,cifra,diagnostico,True,0.506480391055654,etiqueta=prob0_T2; verdad=0.506480391055654; observada=0.506480391055654. 
+completo,demo-B,demo-B-entropy_T1,cifra,central,True,0.8323955818399389,etiqueta=entropy_T1; verdad=0.8323955818399389; observada=0.8323955818399389. 
+completo,demo-B,demo-B-nucleus_size,cifra,central,True,2.0,etiqueta=nucleus_size; verdad=2; observada=2.0. 
+completo,demo-B,demo-B-nucleus_mass,cifra,central,True,0.9099694268296195,etiqueta=nucleus_mass; verdad=0.9099694268296195; observada=0.9099694268296195. 
+completo,demo-B,demo-B-sample_freq0,cifra,central,True,0.6719,etiqueta=sample_freq0; verdad=0.6719; observada=0.6719. 
+completo,demo-B,demo-B-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+completo,demo-B,demo-B-consistencia,contiene,diagnostico,True,,
+completo,demo-B,demo-B-ejecutado,ipynb_ejecutado,central,True,,
+completo,demo-C,demo-C-archivo,archivo,central,True,,
+completo,demo-C,demo-C-secciones,secciones,central,True,,
+completo,demo-C,demo-C-n_documents,cifra,central,True,6.0,etiqueta=n_documents; verdad=6; observada=6.0. 
+completo,demo-C,demo-C-n_queries,cifra,central,True,3.0,etiqueta=n_queries; verdad=3; observada=3.0. 
+completo,demo-C,demo-C-tfidf_p2_mean,cifra,central,True,1.0,etiqueta=tfidf_p2_mean; verdad=1.0; observada=1.0. 
+completo,demo-C,demo-C-lsa_p2_mean,cifra,central,True,0.6666666666666666,etiqueta=lsa_p2_mean; verdad=0.6666666666666666; observada=0.6666666666666666. 
+completo,demo-C,demo-C-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+completo,demo-C,demo-C-consistencia,contiene,diagnostico,True,,
+completo,demo-C,demo-C-paginas,paginas_max,central,True,2,
+completo,control-1,control-1-archivo,archivo,real,True,,
+completo,control-1,control-1-secciones,secciones,real,True,,
+completo,control-1,control-1-ejecutado,ipynb_ejecutado,real,True,,
+completo,control-1,control-1-n_menor,cifra,real,True,10000,"etiqueta=n_menor; verdad=10000; observada=10000. Control 1: oracle de protocolo, no del tiempo variable."
+completo,control-1,control-1-n_mayor,cifra,real,True,100000,"etiqueta=n_mayor; verdad=100000; observada=100000. Control 1: oracle de protocolo, no del tiempo variable."
+completo,control-1,control-1-consultas_ausentes,cifra,real,True,200,"etiqueta=consultas_ausentes; verdad=200; observada=200. Control 1: oracle de protocolo, no del tiempo variable."
+completo,control-1,control-1-procedencia,procedencia,real,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+completo,control-1,control-1-trampa,restriccion,real,True,,Heurística estática de construcción antes del reloj; revisar el script para excluir construcciones ocultas.
+completo,control-3,control-3-archivo,archivo,real,True,,
+completo,control-3,control-3-secciones,secciones,real,True,,
+completo,control-3,control-3-ejecutado,ipynb_ejecutado,real,True,,
+completo,control-3,control-3-g_num_h_1e-5,cifra,real,True,10.000000000198739,etiqueta=g_num_h_1e-5; verdad=10.000000000198739; observada=10.000000000198739. 
+completo,control-3,control-3-g_num_h_1e-16,cifra,real,True,0.0,etiqueta=g_num_h_1e-16; verdad=0.0; observada=0.0. 
+completo,control-3,control-3-gA_en_w,cifra,real,True,10.0,etiqueta=gA_en_w; verdad=10.0; observada=10.0. 
+completo,control-3,control-3-gB_en_w,cifra,real,True,4.0,etiqueta=gB_en_w; verdad=4.0; observada=4.0. 
+completo,control-3,control-3-procedencia,procedencia,real,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+completo,control-3,control-3-trampa,restriccion,real,True,,"función independiente=True; predicción=3, ejecución=149"
+completo,control-3,control-3-csv,archivo,real,True,,
+completo,control-3,control-3-csv_integridad,csv_integridad,real,True,,Todos los CSV conservan tres pasos y ceros numéricos; se aceptan alias explícitos con el mismo significado.
+completo,control-3,control-3-igualdad_w2,semantica_numerica,diagnostico_real,False,False,Posición w=2.0: A=10.0; B=4.0; igualdad calculada=False; afirmación detectada=True. Diagnóstico post hoc de salida o texto del script: en coincidir en un punto (de hecho g_A(2) = g_B(2) = 10). Para acercarse a una conclusion mas gen
+completo,control-3,control-3-igualdad_w_tercio,semantica_numerica,diagnostico_real,False,False,"Posición w=0.3333333333333333: A=-1.6666666666666667; B=-1.0; igualdad calculada=False; afirmación detectada=True. Diagnóstico post hoc de salida o texto del script: unto y divergir en otros (de hecho g_A y g_B coinciden en w = 1 y w = 1/3). ""
+          ""Otra comprobación sin program"
+sin_grafo,demo-A,demo-A-archivo,archivo,central,True,,
+sin_grafo,demo-A,demo-A-secciones,secciones,central,True,,
+sin_grafo,demo-A,demo-A-n_samples,cifra,diagnostico,True,569.0,etiqueta=n_samples; verdad=569; observada=569.0. 
+sin_grafo,demo-A,demo-A-n_train,cifra,central,True,455.0,etiqueta=n_train; verdad=455; observada=455.0. 
+sin_grafo,demo-A,demo-A-n_test,cifra,diagnostico,True,114.0,etiqueta=n_test; verdad=114; observada=114.0. 
+sin_grafo,demo-A,demo-A-accuracy_nb,cifra,central,True,0.9385964912280702,etiqueta=accuracy_nb; verdad=0.9385964912280702; observada=0.9385964912280702. 
+sin_grafo,demo-A,demo-A-accuracy_lr,cifra,central,True,0.9824561403508771,etiqueta=accuracy_lr; verdad=0.9824561403508771; observada=0.9824561403508771. 
+sin_grafo,demo-A,demo-A-accuracy_lr_f005,cifra,central,True,0.9385964912280702,etiqueta=accuracy_lr_f005; verdad=0.9385964912280702; observada=0.9385964912280702. 
+sin_grafo,demo-A,demo-A-accuracy_lr_f020,cifra,diagnostico,True,0.9736842105263158,etiqueta=accuracy_lr_f020; verdad=0.9736842105263158; observada=0.9736842105263158. 
+sin_grafo,demo-A,demo-A-accuracy_lr_f100,cifra,diagnostico,True,0.9824561403508771,etiqueta=accuracy_lr_f100; verdad=0.9824561403508771; observada=0.9824561403508771. 
+sin_grafo,demo-A,demo-A-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+sin_grafo,demo-A,demo-A-consistencia,contiene,diagnostico,True,,
+sin_grafo,demo-A,demo-A-palabras,palabras_max,central,True,930,
+sin_grafo,demo-B,demo-B-archivo,archivo,central,True,,
+sin_grafo,demo-B,demo-B-secciones,secciones,central,True,,
+sin_grafo,demo-B,demo-B-prob0_T05,cifra,central,True,0.8668133321973347,etiqueta=prob0_T05; verdad=0.8668133321973347; observada=0.8668133321973347. 
+sin_grafo,demo-B,demo-B-prob0_T1,cifra,diagnostico,True,0.6652409557748218,etiqueta=prob0_T1; verdad=0.6652409557748218; observada=0.6652409557748218. 
+sin_grafo,demo-B,demo-B-prob0_T2,cifra,diagnostico,True,0.506480391055654,etiqueta=prob0_T2; verdad=0.506480391055654; observada=0.506480391055654. 
+sin_grafo,demo-B,demo-B-entropy_T1,cifra,central,True,0.8323955818399389,etiqueta=entropy_T1; verdad=0.8323955818399389; observada=0.8323955818399389. 
+sin_grafo,demo-B,demo-B-nucleus_size,cifra,central,True,2.0,etiqueta=nucleus_size; verdad=2; observada=2.0. 
+sin_grafo,demo-B,demo-B-nucleus_mass,cifra,central,True,0.9099694268296196,etiqueta=nucleus_mass; verdad=0.9099694268296195; observada=0.9099694268296196. 
+sin_grafo,demo-B,demo-B-sample_freq0,cifra,central,True,0.6719,etiqueta=sample_freq0; verdad=0.6719; observada=0.6719. 
+sin_grafo,demo-B,demo-B-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+sin_grafo,demo-B,demo-B-consistencia,contiene,diagnostico,True,,
+sin_grafo,demo-B,demo-B-ejecutado,ipynb_ejecutado,central,True,,
+sin_grafo,demo-C,demo-C-archivo,archivo,central,True,,
+sin_grafo,demo-C,demo-C-secciones,secciones,central,False,,
+sin_grafo,demo-C,demo-C-n_documents,cifra,central,False,3.0,etiqueta=n_documents; verdad=6; observada=3.0. 
+sin_grafo,demo-C,demo-C-n_queries,cifra,central,True,3.0,etiqueta=n_queries; verdad=3; observada=3.0. 
+sin_grafo,demo-C,demo-C-tfidf_p2_mean,cifra,central,False,3.0,etiqueta=tfidf_p2_mean; verdad=1.0; observada=3.0. 
+sin_grafo,demo-C,demo-C-lsa_p2_mean,cifra,central,False,3.0,etiqueta=lsa_p2_mean; verdad=0.6666666666666666; observada=3.0. 
+sin_grafo,demo-C,demo-C-procedencia,procedencia,central,False,0.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+sin_grafo,demo-C,demo-C-consistencia,contiene,diagnostico,False,,
+sin_grafo,demo-C,demo-C-paginas,paginas_max,central,True,2,
+sin_grafo,control-1,control-1-archivo,archivo,real,True,,
+sin_grafo,control-1,control-1-secciones,secciones,real,True,,
+sin_grafo,control-1,control-1-ejecutado,ipynb_ejecutado,real,True,,
+sin_grafo,control-1,control-1-n_menor,cifra,real,True,10000,"etiqueta=n_menor; verdad=10000; observada=10000. Control 1: oracle de protocolo, no del tiempo variable."
+sin_grafo,control-1,control-1-n_mayor,cifra,real,True,100000,"etiqueta=n_mayor; verdad=100000; observada=100000. Control 1: oracle de protocolo, no del tiempo variable."
+sin_grafo,control-1,control-1-consultas_ausentes,cifra,real,True,200,"etiqueta=consultas_ausentes; verdad=200; observada=200. Control 1: oracle de protocolo, no del tiempo variable."
+sin_grafo,control-1,control-1-procedencia,procedencia,real,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+sin_grafo,control-1,control-1-trampa,restriccion,real,True,,Heurística estática de construcción antes del reloj; revisar el script para excluir construcciones ocultas.
+sin_grafo,control-3,control-3-archivo,archivo,real,True,,
+sin_grafo,control-3,control-3-secciones,secciones,real,False,,
+sin_grafo,control-3,control-3-ejecutado,ipynb_ejecutado,real,True,,
+sin_grafo,control-3,control-3-g_num_h_1e-5,cifra,real,True,10.000000000198739,etiqueta=g_num_h_1e-5; verdad=10.000000000198739; observada=10.000000000198739. 
+sin_grafo,control-3,control-3-g_num_h_1e-16,cifra,real,True,0.0,etiqueta=g_num_h_1e-16; verdad=0.0; observada=0.0. 
+sin_grafo,control-3,control-3-gA_en_w,cifra,real,True,10.0,etiqueta=gA_en_w; verdad=10.0; observada=10.0. 
+sin_grafo,control-3,control-3-gB_en_w,cifra,real,True,4.0,etiqueta=gB_en_w; verdad=4.0; observada=4.0. 
+sin_grafo,control-3,control-3-procedencia,procedencia,real,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+sin_grafo,control-3,control-3-trampa,restriccion,real,True,,"función independiente=True; predicción=3, ejecución=145"
+sin_grafo,control-3,control-3-csv,archivo,real,True,,
+sin_grafo,control-3,control-3-csv_integridad,csv_integridad,real,False,,Todos los CSV conservan tres pasos y ceros numéricos; se aceptan alias explícitos con el mismo significado.
+sin_grafo,control-3,control-3-igualdad_w2,semantica_numerica,diagnostico_real,True,False,Posición w=2.0: A=10.0; B=4.0; igualdad calculada=False; afirmación detectada=False. Diagnóstico post hoc de salida o texto del script: Sin afirmación falsa de este patrón.
+sin_grafo,control-3,control-3-igualdad_w_tercio,semantica_numerica,diagnostico_real,True,False,Posición w=0.3333333333333333: A=-1.6666666666666667; B=-1.0; igualdad calculada=False; afirmación detectada=False. Diagnóstico post hoc de salida o texto del script: Sin afirmación falsa de este patrón.
+memoria,demo-A,demo-A-archivo,archivo,central,True,,
+memoria,demo-A,demo-A-secciones,secciones,central,True,,
+memoria,demo-A,demo-A-n_samples,cifra,diagnostico,True,569.0,etiqueta=n_samples; verdad=569; observada=569.0. 
+memoria,demo-A,demo-A-n_train,cifra,central,True,455.0,etiqueta=n_train; verdad=455; observada=455.0. 
+memoria,demo-A,demo-A-n_test,cifra,diagnostico,True,114.0,etiqueta=n_test; verdad=114; observada=114.0. 
+memoria,demo-A,demo-A-accuracy_nb,cifra,central,True,0.9385964912280702,etiqueta=accuracy_nb; verdad=0.9385964912280702; observada=0.9385964912280702. 
+memoria,demo-A,demo-A-accuracy_lr,cifra,central,True,0.9824561403508771,etiqueta=accuracy_lr; verdad=0.9824561403508771; observada=0.9824561403508771. 
+memoria,demo-A,demo-A-accuracy_lr_f005,cifra,central,True,0.9385964912280702,etiqueta=accuracy_lr_f005; verdad=0.9385964912280702; observada=0.9385964912280702. 
+memoria,demo-A,demo-A-accuracy_lr_f020,cifra,diagnostico,True,0.9736842105263158,etiqueta=accuracy_lr_f020; verdad=0.9736842105263158; observada=0.9736842105263158. 
+memoria,demo-A,demo-A-accuracy_lr_f100,cifra,diagnostico,True,0.9824561403508771,etiqueta=accuracy_lr_f100; verdad=0.9824561403508771; observada=0.9824561403508771. 
+memoria,demo-A,demo-A-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+memoria,demo-A,demo-A-consistencia,contiene,diagnostico,True,,
+memoria,demo-A,demo-A-palabras,palabras_max,central,False,1266,
+memoria,demo-B,demo-B-archivo,archivo,central,True,,
+memoria,demo-B,demo-B-secciones,secciones,central,True,,
+memoria,demo-B,demo-B-prob0_T05,cifra,central,True,0.8668133321973347,etiqueta=prob0_T05; verdad=0.8668133321973347; observada=0.8668133321973347. 
+memoria,demo-B,demo-B-prob0_T1,cifra,diagnostico,True,0.6652409557748218,etiqueta=prob0_T1; verdad=0.6652409557748218; observada=0.6652409557748218. 
+memoria,demo-B,demo-B-prob0_T2,cifra,diagnostico,True,0.506480391055654,etiqueta=prob0_T2; verdad=0.506480391055654; observada=0.506480391055654. 
+memoria,demo-B,demo-B-entropy_T1,cifra,central,True,0.8323955818399389,etiqueta=entropy_T1; verdad=0.8323955818399389; observada=0.8323955818399389. 
+memoria,demo-B,demo-B-nucleus_size,cifra,central,True,2.0,etiqueta=nucleus_size; verdad=2; observada=2.0. 
+memoria,demo-B,demo-B-nucleus_mass,cifra,central,True,0.9099694268296195,etiqueta=nucleus_mass; verdad=0.9099694268296195; observada=0.9099694268296195. 
+memoria,demo-B,demo-B-sample_freq0,cifra,central,True,0.6719,etiqueta=sample_freq0; verdad=0.6719; observada=0.6719. 
+memoria,demo-B,demo-B-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+memoria,demo-B,demo-B-consistencia,contiene,diagnostico,True,,
+memoria,demo-B,demo-B-ejecutado,ipynb_ejecutado,central,True,,
+memoria,demo-C,demo-C-archivo,archivo,central,True,,
+memoria,demo-C,demo-C-secciones,secciones,central,True,,
+memoria,demo-C,demo-C-n_documents,cifra,central,True,6.0,etiqueta=n_documents; verdad=6; observada=6.0. 
+memoria,demo-C,demo-C-n_queries,cifra,central,True,3.0,etiqueta=n_queries; verdad=3; observada=3.0. 
+memoria,demo-C,demo-C-tfidf_p2_mean,cifra,central,True,1.0,etiqueta=tfidf_p2_mean; verdad=1.0; observada=1.0. 
+memoria,demo-C,demo-C-lsa_p2_mean,cifra,central,True,0.6666666666666666,etiqueta=lsa_p2_mean; verdad=0.6666666666666666; observada=0.6666666666666666. 
+memoria,demo-C,demo-C-procedencia,procedencia,central,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+memoria,demo-C,demo-C-consistencia,contiene,diagnostico,True,,
+memoria,demo-C,demo-C-paginas,paginas_max,central,True,2,
+memoria,control-1,control-1-archivo,archivo,real,True,,
+memoria,control-1,control-1-secciones,secciones,real,True,,
+memoria,control-1,control-1-ejecutado,ipynb_ejecutado,real,True,,
+memoria,control-1,control-1-n_menor,cifra,real,True,10000,"etiqueta=n_menor; verdad=10000; observada=10000. Control 1: oracle de protocolo, no del tiempo variable."
+memoria,control-1,control-1-n_mayor,cifra,real,True,100000,"etiqueta=n_mayor; verdad=100000; observada=100000. Control 1: oracle de protocolo, no del tiempo variable."
+memoria,control-1,control-1-consultas_ausentes,cifra,real,True,200,"etiqueta=consultas_ausentes; verdad=200; observada=200. Control 1: oracle de protocolo, no del tiempo variable."
+memoria,control-1,control-1-procedencia,procedencia,real,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+memoria,control-1,control-1-trampa,restriccion,real,True,,Heurística estática de construcción antes del reloj; revisar el script para excluir construcciones ocultas.
+memoria,control-3,control-3-archivo,archivo,real,True,,
+memoria,control-3,control-3-secciones,secciones,real,False,,
+memoria,control-3,control-3-ejecutado,ipynb_ejecutado,real,True,,
+memoria,control-3,control-3-g_num_h_1e-5,cifra,real,True,10.000000000198739,etiqueta=g_num_h_1e-5; verdad=10.000000000198739; observada=10.000000000198739. 
+memoria,control-3,control-3-g_num_h_1e-16,cifra,real,True,0.0,etiqueta=g_num_h_1e-16; verdad=0.0; observada=0.0. 
+memoria,control-3,control-3-gA_en_w,cifra,real,True,10.0,etiqueta=gA_en_w; verdad=10.0; observada=10.0. 
+memoria,control-3,control-3-gB_en_w,cifra,real,True,4.0,etiqueta=gB_en_w; verdad=4.0; observada=4.0. 
+memoria,control-3,control-3-procedencia,procedencia,real,True,1.0,Cobertura literal de cifras; no comprueba el significado de cada frase. Sin decimales ajenos y con métricas: cobertura vacua.
+memoria,control-3,control-3-trampa,restriccion,real,True,,"función independiente=True; predicción=3, ejecución=153"
+memoria,control-3,control-3-csv,archivo,real,True,,
+memoria,control-3,control-3-csv_integridad,csv_integridad,real,True,,Todos los CSV conservan tres pasos y ceros numéricos; se aceptan alias explícitos con el mismo significado.
+memoria,control-3,control-3-igualdad_w2,semantica_numerica,diagnostico_real,False,False,Posición w=2.0: A=10.0; B=4.0; igualdad calculada=False; afirmación detectada=True. Diagnóstico post hoc de salida o texto del script: en coincidir en un punto (de hecho g_A(2) = g_B(2) = 10). Para acercarse a una conclusión más gen
+memoria,control-3,control-3-igualdad_w_tercio,semantica_numerica,diagnostico_real,False,False,"Posición w=0.3333333333333333: A=-1.6666666666666667; B=-1.0; igualdad calculada=False; afirmación detectada=True. Diagnóstico post hoc de salida o texto del script: unto y divergir en otros (de hecho g_A y g_B coinciden en w = 1 y w = 1/3). ""
+          ""Otra comprobación sin program"
