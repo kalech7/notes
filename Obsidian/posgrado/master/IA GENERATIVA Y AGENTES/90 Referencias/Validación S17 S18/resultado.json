@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-09",
+  "notes": 28,
+  "words_approx": 35470,
+  "word_count_method": "Texto de lectura, sin YAML, código, rutas ni URLs de enlaces",
+  "wikilinks": 234,
+  "mermaid": 17,
+  "questions": 71,
+  "pdf_copies": {
+    "17": {
+      "pages": 37,
+      "identical": true,
+      "original_identical": true
+    },
+    "18": {
+      "pages": 31,
+      "identical": true,
+      "original_identical": true
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,12 @@
+{
+  "17": {
+    "file": "S17 Observabilidad y versionado de prompts.pdf",
+    "pages": 37,
+    "sha256": "32ae4cef0f7e799bb6f8a8517e13927dcb1eeb3f8f95ca2b2fe5e902ad6aa277"
+  },
+  "18": {
+    "file": "S18 Guardrails costo y latencia.pdf",
+    "pages": 31,
+    "sha256": "a33f81b6d8321a9bbd09cc22aae228c93e0461f497695bae7a654d0347731520"
+  }
+}

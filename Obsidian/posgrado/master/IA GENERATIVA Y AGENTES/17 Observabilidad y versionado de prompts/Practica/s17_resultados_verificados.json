@@ -1,0 +1,24 @@
+{
+  "alcance": "Ejemplo propio, sin API, tokens ficticios y latencias reales variables",
+  "corridas": 10,
+  "spans": 46,
+  "bloqueadas": 1,
+  "fallidas": 1,
+  "fallos_propagados": 1,
+  "costo_estimado_total_usd": 0.0404,
+  "corrida_mas_cara": 7,
+  "costo_mas_caro_usd": 0.0215,
+  "corrida_mas_lenta_en_esta_ejecucion": 10,
+  "latencia_media_ms": 0.4060798,
+  "latencia_p50_ms": 0.42834300000000003,
+  "latencia_p95_ms": 0.4931525,
+  "latencia_maxima_ms": 0.503813,
+  "verificaciones": {
+    "diez_corridas_conservadas": true,
+    "error_herramienta_y_corrida_conservados": true,
+    "excepcion_propagada": true,
+    "correo_ficticio_original_ausente_en_exportacion": true,
+    "dict_list_tuple_saneados": true,
+    "contexto_restaurado": true
+  }
+}

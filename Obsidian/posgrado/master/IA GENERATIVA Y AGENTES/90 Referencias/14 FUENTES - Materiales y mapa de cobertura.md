@@ -318,3 +318,10 @@ El mapa completo de páginas, las precisiones sobre revisión 2026-07-28, los l�
 ## Sesión 14 y tutorial incorporados el 2 de octubre de 2026
 
 [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/00 Índice - S14 Multiagente LangGraph y robustez|S14: multiagente, LangGraph y robustez]] incorpora las 31 páginas de sesión 14, las 15 del tutorial y las 13 celdas del jueves. Añade once notas temáticas, índice, nueve PNG explicados, cinco diagramas Mermaid y un notebook resuelto local. [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|Fuentes y validación de S14]] contiene el mapa completo, precisiones, límites y registros de comprobación. Se conservaron los tres originales y se actualizaron los índices del curso y de prácticas.
+
+
+## Sesiones 17 y 18 incorporadas el 9 de octubre de 2026
+
+Se añadieron las 37 páginas de observabilidad y versionado de prompts y las 31 de guardrails, costo y latencia. Sus notas desarrollan todo el contenido con ejemplos propios, diagramas, cuatro imágenes reproducibles, prácticas locales y preguntas resueltas. Las consignas de curso se conservaron como contexto académico.
+
+La ruta comienza en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/01 Guía - Entender las sesiones 17 y 18|la guía conjunta]], continúa por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/17 Observabilidad y versionado de prompts/00 Índice - S17 Observabilidad y prompts|el índice de S17]] y [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/18 Guardrails costo y latencia/00 Índice - S18 Guardrails costo y latencia|el índice de S18]]. El mapa página a nota, los límites documentales, las precisiones y las validaciones están en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/18 FUENTES - Sesiones 17 y 18 integración|fuentes y revisión de S17 y S18]]. La incorporación no extiende automáticamente la cobertura a las sesiones 15 y 16 ni a los cuadernos y datos no adjuntos.

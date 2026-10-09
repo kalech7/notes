@@ -8,7 +8,7 @@ aliases:
 
 # IA generativa y agentes: empieza aquí
 
-Este conjunto cubre las sesiones 00 a 14 de los materiales disponibles. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria, control del bucle, ReAct, Reflexion, planificación y diseño del toolset. La sesión 07 añade búsqueda exacta, IVF, HNSW y bases vectoriales antes de RAG.
+Este conjunto cubre las sesiones 00 a 14 y las sesiones 17 y 18 de los materiales disponibles. Las notas avanzan desde qué es un modelo hasta transformer, preentrenamiento, alineamiento, inferencia, prompting, evaluación experimental, embeddings y RAG: fragmentación, recuperación, construcción del contexto, evaluación y patrones avanzados; y agentes, uso de herramientas, memoria, control del bucle, ReAct, Reflexion, planificación y diseño del toolset. La sesión 07 añade búsqueda exacta, IVF, HNSW y bases vectoriales antes de RAG. Las sesiones 17 y 18 desarrollan observabilidad, versionado de prompts, controles de entrada y salida, costo y latencia. Sus PDF no incorporan por sí mismos la cobertura de las sesiones 15 y 16.
 
 **Alcance de «agentes»:** la introducción está en [[11 S01 - Del bigrama al LLM y primeros conceptos de agentes]]. La sesión 11 desarrolla PEAS, selección y ejecución de herramientas, memoria, Toolformer, límites y trazas en [[59 S11 - Guía para entender agentes y herramientas]]. La sesión 12 incorpora ReAct, Reflexion, Plan-and-Execute, verificadores, diagnóstico de trazas y contratos de herramientas en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/12 Patrones de agentes y diseño del toolset/69 S12 - Guía para entender patrones y toolsets|Guía de la sesión 12]]. La sesión 13 desarrolla MCP, catálogo, adaptación, descubrimiento y casos de uso en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/13 MCP descubrimiento y casos de uso/00 Índice - S13 MCP y casos de uso|Guía de la sesión 13]]. La sesión 14 añade supervisor, handoff, paralelismo, LangGraph, presupuestos, inyección indirecta y observabilidad en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/00 Índice - S14 Multiagente LangGraph y robustez|el índice de S14]]. La evaluación integral de agentes conserva el alcance de las sesiones posteriores.
 
@@ -185,9 +185,17 @@ Empieza por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente La
 
 El cierre práctico está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/14 Multiagente LangGraph y robustez/107 S14 - Notebook del jueves laboratorio y repaso resuelto|notebook del jueves y repaso]]. La revisión de fuentes distingue resultados docentes, cifras de 2023 y la simulación propia: [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|fuentes y validación de S14]].
 
+## 17 y 18. Observabilidad, prompts y controles
+
+La [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/01 Guía - Entender las sesiones 17 y 18|guía conjunta]] introduce el vocabulario con un ejemplo de ventas. Continúa por [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/17 Observabilidad y versionado de prompts/00 Índice - S17 Observabilidad y prompts|S17: observabilidad y prompts]] y [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/18 Guardrails costo y latencia/00 Índice - S18 Guardrails costo y latencia|S18: guardrails, costo y latencia]]. Las notas incluyen imágenes propias, diagramas Mermaid, cálculos paso a paso, prácticas locales y repaso resuelto.
+
+La procedencia, las precisiones técnicas y las comprobaciones están en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/18 FUENTES - Sesiones 17 y 18 integración|fuentes y validación de S17 y S18]].
+
+El [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/00 Inicio/02 Caso resuelto - Diagnosticar y mejorar un asistente de ventas|caso completo de ventas]] muestra cómo se pierde información en un control y cómo localizar, corregir y evaluar ese fallo. La [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/19 REVISIÓN - Profundidad y comprensión S17 S18|segunda revisión de profundidad]] documenta los ejemplos y mecanismos ampliados para facilitar la comprensión desde cero.
+
 ## Revisión de calidad y límites
 
-La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas las notas del curso]] registra las correcciones, las comprobaciones y los materiales no disponibles. La incorporación posterior de MCP está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|revisión de S13]]. La incorporación de robustez y coordinación está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|la revisión de S14]]. La cobertura se refiere a estas quince sesiones; los libros completos, los laboratorios no recibidos y las sesiones posteriores tienen un alcance diferente.
+La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas las notas del curso]] registra las correcciones, las comprobaciones y los materiales no disponibles. La incorporación posterior de MCP está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/16 FUENTES - Sesión 13 MCP y validación|revisión de S13]]. La incorporación de robustez y coordinación está en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/17 FUENTES - Sesión 14 tutorial y robustez|la revisión de S14]]. La ampliación del 9 de octubre cubre las 68 páginas de S17 y S18 y conserva sus límites documentales en [[Obsidian/posgrado/master/IA GENERATIVA Y AGENTES/90 Referencias/18 FUENTES - Sesiones 17 y 18 integración|su revisión]]. Los libros completos, los laboratorios no recibidos y las sesiones restantes tienen un alcance diferente.
 
 ## 15. Referencias
 
@@ -213,6 +221,8 @@ La [[15 REVISIÓN - Calidad cobertura y claridad 2026-09-29|revisión de todas l
 12 Patrones de agentes y diseño del toolset/
 13 MCP descubrimiento y casos de uso/
 14 Multiagente LangGraph y robustez/
+17 Observabilidad y versionado de prompts/
+18 Guardrails costo y latencia/
 90 Referencias/
 Materiales/
 Recursos visuales/
